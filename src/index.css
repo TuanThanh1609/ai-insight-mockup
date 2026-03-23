@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colors - The Intelligent Canvas */
+  --color-surface: #f7f9fb;
+  --color-surface-container-low: #f0f4f7;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-high: #e8ecf0;
+  --color-on-surface: #2c3437;
+  --color-on-surface-variant: #5a6368;
+  --color-outline-variant: rgba(42, 52, 55, 0.15);
+
+  --color-primary: #0048e2;
+  --color-primary-dim: #0038b8;
+  --color-primary-container: #0052fe;
+  --color-on-primary: #ffffff;
+  --color-primary-fixed: #0048e2;
+  --color-primary-fixed-dim: #0038b8;
+
+  --color-tertiary-container: #d1fae5;
+  --color-on-tertiary-container: #065f46;
+  --color-error-container: #fee2e2;
+  --color-on-error-container: #991b1b;
+  --color-warning-container: #fef3c7;
+  --color-on-warning-container: #92400e;
+
+  --color-facebook: #1877f2;
+  --color-zalo: #0068ff;
+
+  /* Typography */
+  --font-display: 'Manrope', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* Roundedness */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-diffused: 0 8px 32px rgba(44, 52, 55, 0.06);
+  --shadow-modal: 0 20px 60px rgba(44, 52, 55, 0.12);
+}
+
+/* Base styles */
+html {
+  font-family: var(--font-body);
+  color: var(--color-on-surface);
+  background-color: var(--color-surface);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-surface-container-low);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-outline-variant);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-on-surface-variant);
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Selection */
+::selection {
+  background: rgba(0, 72, 226, 0.15);
+  color: var(--color-on-surface);
+}
+
+/* Glassmorphism utility */
+.glass {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
