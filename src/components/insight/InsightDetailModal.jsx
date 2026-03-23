@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { BarChart3, Users, AlertCircle, Activity, TrendingUp, CheckCircle2, Target, MessageCircle, ChevronLeft, ChevronRight, X, MousePointerClick } from 'lucide-react';
+import { BarChart3, Users, AlertCircle, Activity, TrendingUp, CheckCircle2, Target, MessageCircle, ChevronLeft, ChevronRight, X, MousePointerClick, Search } from 'lucide-react';
 import { Modal, ModalHeader, ModalBody } from '../ui/Modal';
 import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
@@ -384,9 +384,10 @@ export function InsightDetailModal({ insight, isOpen, onClose }) {
   const [activeTab, setActiveTab] = useState('overview');
   const [currentPage, setCurrentPage] = useState(1);
   const [crossFilter, setCrossFilter] = useState(null); // { field, value, label, count }
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Reset page when tab or filter changes
-  useEffect(() => { setCurrentPage(1); }, [activeTab, crossFilter]);
+  useEffect(() => { setCurrentPage(1); }, [activeTab, crossFilter, searchQuery]);
 
   // Auto-switch to detail tab when cross-filter is applied from overview/results
   const handleCrossFilter = useCallback((filter) => {
@@ -404,6 +405,7 @@ export function InsightDetailModal({ insight, isOpen, onClose }) {
       setActiveTab('overview');
       setCrossFilter(null);
       setCurrentPage(1);
+      setSearchQuery('');
     }
   }, [isOpen, insight?.id]);
 
@@ -413,16 +415,23 @@ export function InsightDetailModal({ insight, isOpen, onClose }) {
   const analysis = mockAnalysisResults[insight.templateId] || null;
   const conversations = mockConversations[insight.templateId] || null;
 
-  // Apply cross-filter to conversation rows
+  // Apply search + cross-filter to conversation rows
+  const q = searchQuery.trim().toLowerCase();
   const filteredRows = conversations
     ? conversations.rows.filter((row) => {
-        if (!crossFilter) return true;
-        const fieldValue = row[crossFilter.field];
-        // Handle boolean fields (hasCompetitor, isJunk, isNegative)
-        if (typeof crossFilter.value === 'boolean') {
-          return fieldValue === crossFilter.value;
+        // Search filter — match customer name OR any field value
+        if (q) {
+          const matches = row.customer.toLowerCase().includes(q) ||
+            Object.values(row).some(v => v !== undefined && String(v).toLowerCase().includes(q));
+          if (!matches) return false;
         }
-        return String(fieldValue) === String(crossFilter.value);
+        // Cross-filter
+        if (crossFilter) {
+          const fieldValue = row[crossFilter.field];
+          if (typeof crossFilter.value === 'boolean') return fieldValue === crossFilter.value;
+          return String(fieldValue) === String(crossFilter.value);
+        }
+        return true;
       })
     : [];
 
@@ -962,27 +971,35 @@ export function InsightDetailModal({ insight, isOpen, onClose }) {
               </div>
             ) : (
               <>
-                {/* Column headers with highlight for active filter field */}
-                <div className="flex items-center justify-between px-1 mb-1">
-                  <p className="text-xs text-on-surface-variant">
-                    {crossFilter ? (
-                      <span>
-                        <span className="font-semibold text-primary">{filteredRows.length}</span>
-                        <span className="text-on-surface-variant"> / {conversations.rows.length} hội thoại</span>
-                      </span>
-                    ) : (
-                      <span>{filteredRows.length} hội thoại</span>
-                    )}
-                  </p>
+                {/* Search + Filter bar */}
+                <div className="flex items-center gap-3 mb-2">
+                  {/* Search input */}
+                  <div className="relative flex-1 max-w-xs">
+                    <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant" />
+                    <input
+                      type="text"
+                      placeholder="Tìm kiếm khách hàng..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full pl-8 pr-3 py-1.5 text-xs bg-surface-container-lowest border border-[var(--color-outline-variant)] rounded-[--radius-sm] text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:border-primary"
+                    />
+                  </div>
+
+                  {/* Cross-filter active? */}
                   {crossFilter && (
-                    <button
-                      onClick={clearCrossFilter}
-                      className="flex items-center gap-1 text-xs text-primary hover:text-primary/80 font-medium transition-colors"
-                    >
-                      <X size={11} />
-                      Bỏ lọc
-                    </button>
+                    <div className="flex items-center gap-1.5 px-2.5 py-1 bg-primary-container text-on-primary-container text-xs rounded-full">
+                      <span>{crossFilter.label}: <strong>{crossFilter.valueLabel || crossFilter.value}</strong></span>
+                      <button onClick={clearCrossFilter} className="hover:opacity-70">
+                        <X size={10} />
+                      </button>
+                    </div>
                   )}
+
+                  {/* Count */}
+                  <p className="text-xs text-on-surface-variant ml-auto shrink-0">
+                    <span className="font-semibold text-primary">{filteredRows.length}</span>
+                    <span> / {conversations.rows.length} hội thoại</span>
+                  </p>
                 </div>
 
                 {/* Table */}
