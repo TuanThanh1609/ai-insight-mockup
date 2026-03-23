@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutGrid, Sparkles, Zap, BarChart2 } from 'lucide-react';
+import { LayoutGrid, Sparkles, Zap, BarChart2, TrendingUp } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
 const navItems = [
@@ -17,8 +17,14 @@ const navItems = [
   },
   {
     to: '/insight/dashboard',
-    label: 'Dashboard Ads',
+    label: 'Tổng quan Ads',
     icon: Sparkles,
+  },
+  {
+    to: '/insight/ads-optimization',
+    label: 'Gợi ý tối ưu Ads',
+    icon: TrendingUp,
+    badge: 'AI',
   },
 ];
 

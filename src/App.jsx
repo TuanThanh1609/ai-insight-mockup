@@ -3,6 +3,7 @@ import { ToastProvider } from './components/ui/Toast';
 import { Sidebar } from './components/layout/Sidebar';
 import InsightSettings from './pages/InsightSettings';
 import AdsDashboard from './pages/AdsDashboard';
+import AdsOptimization from './pages/AdsOptimization';
 import InsightDashboard from './pages/InsightDashboard';
 
 function AppLayout({ children }) {
@@ -26,6 +27,7 @@ export default function App() {
             <Route path="/insight/settings" element={<InsightSettings />} />
             <Route path="/insight/dashboard" element={<AdsDashboard />} />
             <Route path="/insight/insight-dashboard" element={<InsightDashboard />} />
+            <Route path="/insight/ads-optimization" element={<AdsOptimization />} />
           </Routes>
         </AppLayout>
       </BrowserRouter>

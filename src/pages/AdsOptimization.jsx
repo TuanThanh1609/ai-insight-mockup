@@ -5,18 +5,10 @@ import { PageContainer } from '../components/layout/PageContainer';
 import { Tabs } from '../components/ui/Tabs';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
-import { OverviewCards } from '../components/insight/OverviewCards';
-import { RevenueCards } from '../components/insight/RevenueCards';
-import { ContributionChart } from '../components/insight/ContributionChart';
-import { SourceChart } from '../components/insight/SourceChart';
-import { CampaignSummaryTable } from '../components/insight/CampaignSummaryTable';
+import { CampaignOptimizationTable } from '../components/insight/CampaignOptimizationTable';
 import { AIInsightPanel } from '../components/insight/AIInsightPanel';
-import { DailyDetailChart } from '../components/insight/DailyDetailChart';
 import { ExecutiveSummaryCard } from '../components/insight/ExecutiveSummaryCard';
-import { PlatformROASCard } from '../components/insight/PlatformROASCard';
-import { CostPerQualityLeadCard } from '../components/insight/CostPerQualityLeadCard';
-import { RevenueSpendTrendChart } from '../components/insight/RevenueSpendTrendChart';
-import { mockCampaigns, mockConversationTrend, mockOverviewStats, mockDailyBreakdown } from '../data/mockCampaigns';
+import { mockCampaigns, mockOverviewStats } from '../data/mockCampaigns';
 import { mockAIInsights } from '../data/mockAIInsights';
 import { mockExecutiveSummary } from '../data/mockExecutiveSummary';
 
@@ -28,7 +20,7 @@ const filterTabs = [
   { value: 'paused', label: 'Đã dừng' },
 ];
 
-export default function AdsDashboard() {
+export default function AdsOptimization() {
   const [activeFilter, setActiveFilter] = useState('all');
   const [selectedCampaign, setSelectedCampaign] = useState(null);
 
@@ -50,8 +42,8 @@ export default function AdsDashboard() {
   return (
     <>
       <Header
-        title="Dashboard Quảng Cáo AI"
-        subtitle="Phân tích hiệu quả chiến dịch dựa trên chất lượng hội thoại"
+        title="Gợi ý Tối ưu Ads"
+        subtitle="AI phân tích và đề xuất hành động cho từng chiến dịch"
       />
 
       <PageContainer className="pt-0">
@@ -70,49 +62,19 @@ export default function AdsDashboard() {
           </div>
         )}
 
-        {/* Overview cards */}
-        <OverviewCards stats={mockOverviewStats} />
-
-        {/* Executive Summary — CEO 3-second scan */}
+        {/* Executive Summary — AI action items */}
         <div className="mt-4">
           <ExecutiveSummaryCard summary={mockExecutiveSummary} />
         </div>
 
-        {/* Revenue + Platform ROAS + Cost-per-Lead (3-column grid) */}
-        <div className="mt-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <RevenueCards stats={mockOverviewStats} />
-            <PlatformROASCard campaigns={mockCampaigns} stats={mockOverviewStats} />
-            <CostPerQualityLeadCard campaigns={mockCampaigns} stats={mockOverviewStats} />
-          </div>
-        </div>
-
-        {/* Contribution chart */}
-        <div className="mt-6 overflow-x-auto -mx-1 px-1">
-          <ContributionChart campaigns={filtered} />
-        </div>
-
-        {/* Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 mt-6 mb-6">
-          <div className="lg:col-span-3">
-            <RevenueSpendTrendChart dailyBreakdown={mockDailyBreakdown} />
-          </div>
-          <div className="lg:col-span-2">
-            <SourceChart
-              facebook={mockOverviewStats.facebookConversations}
-              zalo={mockOverviewStats.zaloConversations}
-            />
-          </div>
-        </div>
-
-        {/* Campaign table section */}
-        <div>
+        {/* Campaign optimization table */}
+        <div className="mt-6">
           {/* Header */}
           <div className="flex items-center justify-between mb-4 gap-4">
             <div>
-              <h2 className="font-display font-bold text-base text-on-surface">Chiến dịch</h2>
+              <h2 className="font-display font-bold text-base text-on-surface">Gợi ý tối ưu</h2>
               <p className="text-xs text-on-surface-variant mt-0.5">
-                {filtered.length} chiến dịch
+                {filtered.length} chiến dịch — sắp xếp theo mức ưu tiên
               </p>
             </div>
             <Tabs
@@ -125,21 +87,11 @@ export default function AdsDashboard() {
 
           {/* Table */}
           <Card className="p-4">
-            <CampaignSummaryTable
+            <CampaignOptimizationTable
               campaigns={filtered}
               onSelectCampaign={setSelectedCampaign}
             />
           </Card>
-
-          {/* Daily detail panel — slides in on row click */}
-          {selectedCampaign && mockDailyBreakdown[selectedCampaign.id] && (
-            <div className="mt-4 transition-all duration-200">
-              <DailyDetailChart
-                dailyData={mockDailyBreakdown[selectedCampaign.id]}
-                campaignName={selectedCampaign.name}
-              />
-            </div>
-          )}
         </div>
       </PageContainer>
 
