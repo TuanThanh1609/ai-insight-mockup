@@ -388,7 +388,6 @@ function InsightSelectorCard({ insight, isSelected, onClick }) {
 const detailTabs = [
   { value: 'overview', label: 'Tổng quan' },
   { value: 'template', label: 'Cấu hình' },
-  { value: 'results', label: 'Kết quả phân tích' },
   { value: 'detail', label: 'Chi tiết' },
 ];
 
@@ -529,7 +528,7 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
 
           {/* ── Tab Content ── */}
           <div className="flex-1 overflow-y-auto px-6 py-5">
-            {/* ── TAB 1: Tổng quan ── */}
+            {/* ── TAB 1: Tổng quan (gộp cả Kết quả phân tích) ── */}
             {activeTab === 'overview' && (
               <div className="flex flex-col gap-5">
                 {/* Summary stats */}
@@ -552,11 +551,10 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
                   </Card>
                 </div>
 
-                {/* Two-column layout */}
+                {/* Main grid: 3 columns */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                  {/* Left: Cột dữ liệu + Live Feed */}
-                  <div className="lg:col-span-1 flex flex-col gap-5">
-                    {/* Cột dữ liệu thông minh */}
+                  {/* ── Left column: Cột dữ liệu + Live Feed ── */}
+                  <div className="flex flex-col gap-5">
                     <Card className="p-5">
                       <h3 className="font-display font-bold text-sm text-on-surface mb-4 flex items-center gap-2">
                         <Sparkles size={15} className="text-primary" />
@@ -605,50 +603,48 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
                     </Card>
                   </div>
 
-                  {/* Right: Key metrics + charts */}
+                  {/* ── Middle + Right: all metrics combined ── */}
                   <div className="lg:col-span-2 flex flex-col gap-5">
-                    {/* Lead Temperature */}
-                    {analysis?.temperature && (
-                      <Card className="p-5">
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="flex items-center gap-2">
-                            <Activity size={16} className="text-primary" />
-                            <h3 className="font-display font-bold text-sm text-on-surface">Mức độ quan tâm (Lead Temperature)</h3>
-                          </div>
-                          <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
-                            <MousePointerClick size={10} />Click để lọc
-                          </span>
-                        </div>
-                        <TemperatureChart data={analysis.temperature} onItemClick={handleCrossFilter} />
-                      </Card>
-                    )}
 
-                    {/* Phone + Attitude */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                      {analysis?.phoneCollection && (
-                        <Card className="p-5">
-                          <div className="flex items-center justify-between mb-4">
+                    {/* Row: Lead Temp + Phone + Attitude */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      {analysis?.temperature && (
+                        <Card className="p-4">
+                          <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center gap-2">
-                              <CheckCircle2 size={16} className="text-primary" />
-                              <h3 className="font-display font-bold text-sm text-on-surface">Thu thập SĐT</h3>
+                              <Activity size={14} className="text-primary" />
+                              <h3 className="font-display font-bold text-xs text-on-surface">Mức độ quan tâm</h3>
                             </div>
-                            <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
-                              <MousePointerClick size={10} />Click để lọc
+                            <span className="text-[9px] text-on-surface-variant/50 flex items-center gap-1">
+                              <MousePointerClick size={9} />Lọc
+                            </span>
+                          </div>
+                          <TemperatureChart data={analysis.temperature} onItemClick={handleCrossFilter} />
+                        </Card>
+                      )}
+                      {analysis?.phoneCollection && (
+                        <Card className="p-4">
+                          <div className="flex items-center justify-between mb-3">
+                            <div className="flex items-center gap-2">
+                              <CheckCircle2 size={14} className="text-primary" />
+                              <h3 className="font-display font-bold text-xs text-on-surface">Thu thập SĐT</h3>
+                            </div>
+                            <span className="text-[9px] text-on-surface-variant/50 flex items-center gap-1">
+                              <MousePointerClick size={9} />Lọc
                             </span>
                           </div>
                           <PhoneCollectionChart data={analysis.phoneCollection} onItemClick={handleCrossFilter} />
                         </Card>
                       )}
-
                       {analysis?.attitude && (
-                        <Card className="p-5">
-                          <div className="flex items-center justify-between mb-4">
+                        <Card className="p-4">
+                          <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center gap-2">
-                              <Users size={16} className="text-primary" />
-                              <h3 className="font-display font-bold text-sm text-on-surface">Đánh giá thái độ Sale</h3>
+                              <Users size={14} className="text-primary" />
+                              <h3 className="font-display font-bold text-xs text-on-surface">Thái độ Sale</h3>
                             </div>
-                            <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
-                              <MousePointerClick size={10} />Click để lọc
+                            <span className="text-[9px] text-on-surface-variant/50 flex items-center gap-1">
+                              <MousePointerClick size={9} />Lọc
                             </span>
                           </div>
                           <AttitudeChart data={analysis.attitude} onItemClick={handleCrossFilter} />
@@ -656,30 +652,106 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
                       )}
                     </div>
 
-                    {/* Top products */}
-                    {analysis?.productInterest && (
-                      <Card className="p-5">
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center gap-2">
-                            <TrendingUp size={16} className="text-primary" />
-                            <h3 className="font-display font-bold text-sm text-on-surface">Sản phẩm quan tâm nhiều nhất</h3>
-                          </div>
-                          <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
-                            <MousePointerClick size={10} />Click để lọc
-                          </span>
-                        </div>
-                        <ListItems items={analysis.productInterest} onItemClick={handleCrossFilter} clickableField="product" />
-                      </Card>
-                    )}
-
-                    {/* Gender + Location */}
-                    {analysis?.gender && (
-                      <div className="grid grid-cols-2 gap-5">
-                        <Card className="p-5">
+                    {/* Row: Pain Points + Objections */}
+                    <div className="grid grid-cols-2 gap-4">
+                      {analysis?.topPainPoints && (
+                        <Card className="p-4">
                           <div className="flex items-center justify-between mb-3">
-                            <h3 className="font-display font-bold text-sm text-on-surface">Giới tính</h3>
-                            <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
-                              <MousePointerClick size={10} />Click để lọc
+                            <div className="flex items-center gap-2">
+                              <AlertCircle size={14} className="text-warning-container" />
+                              <h3 className="font-display font-bold text-xs text-on-surface">Nhu cầu cốt lõi</h3>
+                            </div>
+                            <span className="text-[9px] text-on-surface-variant/50 flex items-center gap-1">
+                              <MousePointerClick size={9} />Lọc
+                            </span>
+                          </div>
+                          <ListItems items={analysis.topPainPoints} highlight onItemClick={handleCrossFilter} clickableField="painPoint" />
+                        </Card>
+                      )}
+                      {analysis?.topObjections && (
+                        <Card className="p-4">
+                          <div className="flex items-center justify-between mb-3">
+                            <div className="flex items-center gap-2">
+                              <BarChart3 size={14} className="text-primary" />
+                              <h3 className="font-display font-bold text-xs text-on-surface">Rào cản chốt đơn</h3>
+                            </div>
+                            <span className="text-[9px] text-on-surface-variant/50 flex items-center gap-1">
+                              <MousePointerClick size={9} />Lọc
+                            </span>
+                          </div>
+                          <ListItems items={analysis.topObjections} onItemClick={handleCrossFilter} clickableField="objection" />
+                        </Card>
+                      )}
+                      {analysis?.topMistakes && (
+                        <Card className="p-4">
+                          <div className="flex items-center justify-between mb-3">
+                            <div className="flex items-center gap-2">
+                              <AlertCircle size={14} className="text-error-container" />
+                              <h3 className="font-display font-bold text-xs text-on-surface">Lỗi mất khách</h3>
+                            </div>
+                            <span className="text-[9px] text-on-surface-variant/50 flex items-center gap-1">
+                              <MousePointerClick size={9} />Lọc
+                            </span>
+                          </div>
+                          <ListItems items={analysis.topMistakes} highlight onItemClick={handleCrossFilter} clickableField="mistake" />
+                        </Card>
+                      )}
+                    </div>
+
+                    {/* Row: Competitor + Products */}
+                    <div className="grid grid-cols-2 gap-4">
+                      {analysis?.competitorMentions && (
+                        <Card className="p-4">
+                          <div className="flex items-center justify-between mb-3">
+                            <div className="flex items-center gap-2">
+                              <Target size={14} className="text-primary" />
+                              <h3 className="font-display font-bold text-xs text-on-surface">Tỉ lệ nhắc đối thủ</h3>
+                            </div>
+                            <span className="text-[9px] text-on-surface-variant/50 flex items-center gap-1">
+                              <MousePointerClick size={9} />Lọc
+                            </span>
+                          </div>
+                          <CompetitorMentionChart data={analysis.competitorMentions} onItemClick={handleCrossFilter} />
+                        </Card>
+                      )}
+                      {analysis?.topCompetitors && (
+                        <Card className="p-4">
+                          <div className="flex items-center justify-between mb-3">
+                            <div className="flex items-center gap-2">
+                              <TrendingUp size={14} className="text-tertiary-container" />
+                              <h3 className="font-display font-bold text-xs text-on-surface">Top đối thủ</h3>
+                            </div>
+                            <span className="text-[9px] text-on-surface-variant/50 flex items-center gap-1">
+                              <MousePointerClick size={9} />Lọc
+                            </span>
+                          </div>
+                          <ListItems items={analysis.topCompetitors?.slice(0, 3) || []} onItemClick={handleCrossFilter} clickableField="competitorName" />
+                        </Card>
+                      )}
+                      {analysis?.productInterest && (
+                        <Card className="p-4">
+                          <div className="flex items-center justify-between mb-3">
+                            <div className="flex items-center gap-2">
+                              <TrendingUp size={14} className="text-primary" />
+                              <h3 className="font-display font-bold text-xs text-on-surface">Sản phẩm quan tâm</h3>
+                            </div>
+                            <span className="text-[9px] text-on-surface-variant/50 flex items-center gap-1">
+                              <MousePointerClick size={9} />Lọc
+                            </span>
+                          </div>
+                          <ListItems items={analysis.productInterest} onItemClick={handleCrossFilter} clickableField="product" />
+                        </Card>
+                      )}
+                    </div>
+
+                    {/* Row: Gender + Location */}
+                    {analysis?.gender && (
+                      <div className="grid grid-cols-2 gap-4">
+                        <Card className="p-4">
+                          <div className="flex items-center justify-between mb-3">
+                            <h3 className="font-display font-bold text-xs text-on-surface">Giới tính</h3>
+                            <span className="text-[9px] text-on-surface-variant/50 flex items-center gap-1">
+                              <MousePointerClick size={9} />Lọc
                             </span>
                           </div>
                           <div className="flex flex-col gap-2">
@@ -719,104 +791,67 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
                             })}
                           </div>
                         </Card>
-                        <Card className="p-5">
+                        <Card className="p-4">
                           <div className="flex items-center justify-between mb-3">
-                            <h3 className="font-display font-bold text-sm text-on-surface">Top 3 khu vực</h3>
-                            <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
-                              <MousePointerClick size={10} />Click để lọc
+                            <h3 className="font-display font-bold text-xs text-on-surface">Top khu vực</h3>
+                            <span className="text-[9px] text-on-surface-variant/50 flex items-center gap-1">
+                              <MousePointerClick size={9} />Lọc
                             </span>
                           </div>
-                          <ListItems
-                            items={analysis.topLocations?.slice(0, 3) || []}
-                            onItemClick={handleCrossFilter}
-                            clickableField="location"
-                          />
+                          <ListItems items={analysis.topLocations?.slice(0, 4) || []} onItemClick={handleCrossFilter} clickableField="location" />
                         </Card>
                       </div>
                     )}
 
-                    {/* Competitor */}
-                    {analysis?.competitorMentions && (
-                      <div className="grid grid-cols-2 gap-5">
-                        <Card className="p-5">
-                          <div className="flex items-center justify-between mb-3">
-                            <div className="flex items-center gap-2">
-                              <Target size={16} className="text-primary" />
-                              <h3 className="font-display font-bold text-sm text-on-surface">Tỉ lệ nhắc đến đối thủ</h3>
-                            </div>
-                            <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
-                              <MousePointerClick size={10} />Click để lọc
-                            </span>
-                          </div>
-                          <CompetitorMentionChart data={analysis.competitorMentions} onItemClick={handleCrossFilter} />
-                        </Card>
-                        <Card className="p-5">
-                          <div className="flex items-center justify-between mb-3">
-                            <div className="flex items-center gap-2">
-                              <TrendingUp size={16} className="text-tertiary-container" />
-                              <h3 className="font-display font-bold text-sm text-on-surface">Top đối thủ</h3>
-                            </div>
-                            <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
-                              <MousePointerClick size={10} />Click để lọc
-                            </span>
-                          </div>
-                          <ListItems
-                            items={analysis.topCompetitors?.slice(0, 3) || []}
-                            onItemClick={handleCrossFilter}
-                            clickableField="competitorName"
-                          />
-                        </Card>
-                      </div>
-                    )}
-
-                    {analysis?.sentimentByCompetitor && (
-                      <Card className="p-5">
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center gap-2">
-                            <TrendingUp size={16} className="text-primary" />
-                            <h3 className="font-display font-bold text-sm text-on-surface">Cảm xúc khi nhắc đến đối thủ</h3>
-                          </div>
-                          <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
-                            <MousePointerClick size={10} />Click để lọc
-                          </span>
-                        </div>
-                        <CompetitorSentiment data={analysis.sentimentByCompetitor} onItemClick={handleCrossFilter} />
-                      </Card>
-                    )}
-
-                    {/* Post-sale */}
+                    {/* Row: Post-sale metrics */}
                     {analysis?.messageType && (
-                      <div className="grid grid-cols-2 gap-5">
-                        <Card className="p-5">
+                      <div className="grid grid-cols-2 gap-4">
+                        <Card className="p-4">
                           <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center gap-2">
-                              <MessageCircle size={16} className="text-primary" />
-                              <h3 className="font-display font-bold text-sm text-on-surface">Phân loại tin nhắn</h3>
+                              <MessageCircle size={14} className="text-primary" />
+                              <h3 className="font-display font-bold text-xs text-on-surface">Phân loại tin nhắn</h3>
                             </div>
-                            <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
-                              <MousePointerClick size={10} />Click để lọc
+                            <span className="text-[9px] text-on-surface-variant/50 flex items-center gap-1">
+                              <MousePointerClick size={9} />Lọc
                             </span>
                           </div>
                           <MessageTypeChart data={analysis.messageType} onItemClick={handleCrossFilter} />
                         </Card>
-                        <Card className="p-5">
+                        <Card className="p-4">
                           <div className="flex items-center gap-2 mb-3">
-                            <AlertCircle size={16} className="text-error-container" />
-                            <h3 className="font-display font-bold text-sm text-on-surface">Mức độ tiêu cực</h3>
+                            <AlertCircle size={14} className="text-error-container" />
+                            <h3 className="font-display font-bold text-xs text-on-surface">Mức độ tiêu cực</h3>
                           </div>
                           <SentimentDonut data={analysis.negativeSentiment} onItemClick={handleCrossFilter} />
                           <div className="flex items-center justify-between mt-2 pt-2 border-t border-[var(--color-outline-variant)]">
                             <div className="text-center">
-                              <p className="font-display font-bold text-base text-tertiary-container">{analysis.resolutionRate}%</p>
-                              <p className="text-[10px] text-on-surface-variant">Tỉ lệ giải quyết</p>
+                              <p className="font-display font-bold text-sm text-tertiary-container">{analysis.resolutionRate}%</p>
+                              <p className="text-[10px] text-on-surface-variant">Giải quyết</p>
                             </div>
                             <div className="text-center">
-                              <p className="font-display font-bold text-base text-on-surface">{analysis.avgResponseTime}</p>
+                              <p className="font-display font-bold text-sm text-on-surface">{analysis.avgResponseTime}</p>
                               <p className="text-[10px] text-on-surface-variant">Phản hồi TB</p>
                             </div>
                           </div>
                         </Card>
                       </div>
+                    )}
+
+                    {/* Competitor sentiment */}
+                    {analysis?.sentimentByCompetitor && (
+                      <Card className="p-4">
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-2">
+                            <TrendingUp size={14} className="text-primary" />
+                            <h3 className="font-display font-bold text-xs text-on-surface">Cảm xúc khi nhắc đến đối thủ</h3>
+                          </div>
+                          <span className="text-[9px] text-on-surface-variant/50 flex items-center gap-1">
+                            <MousePointerClick size={9} />Lọc
+                          </span>
+                        </div>
+                        <CompetitorSentiment data={analysis.sentimentByCompetitor} onItemClick={handleCrossFilter} />
+                      </Card>
                     )}
                   </div>
                 </div>
@@ -866,105 +901,7 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
               </div>
             )}
 
-            {/* ── TAB 3: Kết quả phân tích ── */}
-            {activeTab === 'results' && (
-              <div className="flex flex-col gap-5">
-                {analysis?.topPainPoints && (
-                  <Card className="p-5">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        <AlertCircle size={16} className="text-warning-container" />
-                        <h3 className="font-display font-bold text-sm text-on-surface">Top Nhu cầu cốt lõi (Pain Points)</h3>
-                      </div>
-                      <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
-                        <MousePointerClick size={10} />Click để lọc
-                      </span>
-                    </div>
-                    <ListItems items={analysis.topPainPoints} highlight onItemClick={handleCrossFilter} clickableField="painPoint" />
-                  </Card>
-                )}
-
-                {analysis?.topObjections && (
-                  <Card className="p-5">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        <BarChart3 size={16} className="text-primary" />
-                        <h3 className="font-display font-bold text-sm text-on-surface">Top Rào cản chốt đơn</h3>
-                      </div>
-                      <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
-                        <MousePointerClick size={10} />Click để lọc
-                      </span>
-                    </div>
-                    <ListItems items={analysis.topObjections} onItemClick={handleCrossFilter} clickableField="objection" />
-                  </Card>
-                )}
-
-                {analysis?.topMistakes && (
-                  <Card className="p-5">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        <AlertCircle size={16} className="text-error-container" />
-                        <h3 className="font-display font-bold text-sm text-on-surface">Top Lỗi mất khách do Sale</h3>
-                      </div>
-                      <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
-                        <MousePointerClick size={10} />Click để lọc
-                      </span>
-                    </div>
-                    <ListItems items={analysis.topMistakes} highlight onItemClick={handleCrossFilter} clickableField="mistake" />
-                  </Card>
-                )}
-
-                {analysis?.topLocations && (
-                  <Card className="p-5">
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="font-display font-bold text-sm text-on-surface">Khu vực khách hàng</h3>
-                      <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
-                        <MousePointerClick size={10} />Click để lọc
-                      </span>
-                    </div>
-                    <ListItems items={analysis.topLocations} onItemClick={handleCrossFilter} clickableField="location" />
-                  </Card>
-                )}
-
-                {analysis?.competitorMentions && (
-                  <>
-                    <Card className="p-5">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-2">
-                          <TrendingUp size={16} className="text-primary" />
-                          <h3 className="font-display font-bold text-sm text-on-surface">Top tiêu chí so sánh với đối thủ</h3>
-                        </div>
-                        <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
-                          <MousePointerClick size={10} />Click để lọc
-                        </span>
-                      </div>
-                      <ListItems items={analysis.comparisonCriteria} onItemClick={handleCrossFilter} clickableField="criteria" />
-                    </Card>
-                    <Card className="p-5">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-2">
-                          <BarChart3 size={16} className="text-primary" />
-                          <h3 className="font-display font-bold text-sm text-on-surface">Danh sách đối thủ được nhắc</h3>
-                        </div>
-                        <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
-                          <MousePointerClick size={10} />Click để lọc
-                        </span>
-                      </div>
-                      <ListItems items={analysis.topCompetitors} highlight onItemClick={handleCrossFilter} clickableField="competitorName" />
-                    </Card>
-                  </>
-                )}
-
-                {!analysis?.topPainPoints && !analysis?.topObjections && !analysis?.topMistakes && !analysis?.topLocations && !analysis?.competitorMentions && (
-                  <div className="text-center py-12">
-                    <BarChart3 size={40} className="text-on-surface-variant/30 mx-auto mb-3" />
-                    <p className="text-sm text-on-surface-variant">Chưa có đủ dữ liệu phân tích để hiển thị.</p>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* ── TAB 4: Chi tiết ── */}
+            {/* ── TAB 3: Chi tiết ── */}
             {activeTab === 'detail' && (
               <div className="flex flex-col gap-4">
                 {crossFilter && (
