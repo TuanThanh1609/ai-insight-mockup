@@ -67,7 +67,7 @@ export function InsightTable({ insights, onView, onDelete }) {
                 <button
                   className="p-1.5 rounded-[--radius-sm] text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors cursor-pointer"
                   title="Xem"
-                  onClick={() => onView && onView(insight)}
+                  onClick={() => onView && onView(insight.id)}
                 >
                   <Eye size={14} />
                 </button>
