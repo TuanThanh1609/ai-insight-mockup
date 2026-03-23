@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import {
   LineChart,
   Line,
@@ -7,55 +7,100 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  defs,
-  linearGradient,
-  Stop,
+  Legend,
 } from 'recharts';
-import { TrendingUp } from 'lucide-react';
+import { TrendingUp, FilterX } from 'lucide-react';
 import { Card } from '../ui/Card';
+import { Button } from '../ui/Button';
 import { mockInsightTrend } from '../../data/mockInsightTrend';
 
 const PERIODS = [
-  { key: 'week', label: 'Theo Tuần', sub: '7 ngày' },
+  { key: 'week',  label: 'Theo Tuần',  sub: '7 ngày' },
   { key: 'month', label: 'Theo Tháng', sub: '30 ngày' },
 ];
 
-// Palette — saturated colors that pop on white background
-const COLOR_PALETTE = [
-  { stroke: '#0048e2', fill: '#0048e2', bg: 'rgba(0,72,226,0.10)' },   // blue
-  { stroke: '#ef4444', fill: '#ef4444', bg: 'rgba(239,68,68,0.10)' },   // red
-  { stroke: '#10b981', fill: '#10b981', bg: 'rgba(16,185,129,0.10)' },  // green
-  { stroke: '#f59e0b', fill: '#f59e0b', bg: 'rgba(245,158,11,0.10)' },  // amber
-  { stroke: '#8b5cf6', fill: '#8b5cf6', bg: 'rgba(139,92,246,0.10)' },  // violet
-  { stroke: '#06b6d4', fill: '#06b6d4', bg: 'rgba(6,182,212,0.10)' },  // cyan
+// Palette — saturated, distinct colors
+const PALETTE = [
+  { stroke: '#0048e2', fill: '#0048e2' },
+  { stroke: '#ef4444', fill: '#ef4444' },
+  { stroke: '#10b981', fill: '#10b981' },
+  { stroke: '#f59e0b', fill: '#f59e0b' },
+  { stroke: '#8b5cf6', fill: '#8b5cf6' },
+  { stroke: '#06b6d4', fill: '#06b6d4' },
 ];
 
-function ColorBar({ color }) {
+function LegendDot({ color }) {
   return (
     <div
-      className="w-8 h-1.5 rounded-full"
+      className="w-3 h-0.5 rounded-full"
       style={{ background: color }}
     />
   );
 }
 
-export function InsightTrendChart({ insightId }) {
+export function InsightTrendChart({ insightId, crossFilter, conversations }) {
   const [period, setPeriod] = useState('week');
+  const [chartFilter, setChartFilter] = useState(null); // local filter for chart
 
   const trend = mockInsightTrend[insightId] || mockInsightTrend['fsh-1'];
-  const data = period === 'week' ? trend.week : trend.month;
+  const rawData = period === 'week' ? trend.week : trend.month;
 
-  // Assign colors from palette to each metric
+  // ── Compute filtered data ─────────────────────────────────────────────────
+  const data = useMemo(() => {
+    if (!crossFilter || !conversations) return rawData;
+
+    // Compute period length (7 or 30) and slice conversations into buckets
+    const bucketCount = period === 'week' ? 7 : 30;
+    const buckets = Array.from({ length: bucketCount }, () => []);
+
+    const rows = conversations.rows || [];
+    rows.forEach((row) => {
+      // Try to extract a date from the row
+      const ts = row.timestamp || row.date;
+      if (!ts) return;
+      const d = new Date(ts);
+      const daysAgo = Math.floor((new Date('2026-03-23') - d) / 86400000);
+      const bucketIdx = period === 'week'
+        ? 6 - daysAgo  // reversed: most recent at index 6 (rightmost)
+        : 29 - daysAgo; // reversed: most recent at index 29
+      if (bucketIdx >= 0 && bucketIdx < bucketCount) {
+        buckets[bucketIdx].push(row);
+      }
+    });
+
+    // Count filtered rows per bucket
+    const matched = rawData.map((d, i) => {
+      const bucket = buckets[i] || [];
+      const filtered = bucket.filter((row) => {
+        if (!crossFilter) return true;
+        const fieldValue = row[crossFilter.field];
+        if (typeof crossFilter.value === 'boolean') return fieldValue === crossFilter.value;
+        return String(fieldValue) === String(crossFilter.value);
+      });
+
+      // Scale each metric by the proportion of filtered rows
+      const scale = bucket.length === 0 ? 0 : filtered.length / bucket.length;
+      const entry = { ...d };
+      trend.metrics.forEach((m) => {
+        entry[m.key] = Math.round(d[m.key] * scale);
+      });
+      return entry;
+    });
+
+    return matched;
+  }, [crossFilter, conversations, rawData, period, trend.metrics]);
+
+  // ── Y-axis auto-scale ─────────────────────────────────────────────────────
+  const allValues = data.flatMap((d) => trend.metrics.map((m) => d[m.key] || 0));
+  const maxVal = Math.max(...allValues);
+  const yMax = Math.ceil(maxVal * 1.2 / 10) * 10 || 100;
+
   const metricsWithColor = trend.metrics.map((m, i) => ({
     ...m,
-    palette: COLOR_PALETTE[i % COLOR_PALETTE.length],
+    palette: PALETTE[i % PALETTE.length],
   }));
 
-  const allValues = data.flatMap((d) => metricsWithColor.map((m) => d[m.key]));
-  const maxVal = Math.max(...allValues);
-  const yMax = Math.ceil(maxVal * 1.15 / 10) * 10 || 100;
-
-  const gradId = (key) => `grad_${key}`;
+  const hasFilter = !!crossFilter;
 
   return (
     <Card className="p-4">
@@ -74,25 +119,41 @@ export function InsightTrendChart({ insightId }) {
         </div>
 
         {/* Period toggle */}
-        <div className="flex items-center bg-surface-container-low rounded-full p-0.5 gap-0.5 shrink-0">
-          {PERIODS.map((p) => (
-            <button
-              key={p.key}
-              onClick={() => setPeriod(p.key)}
-              className={`
-                flex flex-col items-center px-3 py-1 rounded-full transition-all duration-200
-                ${period === p.key
-                  ? 'bg-primary text-on-primary shadow-sm'
-                  : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-lowest'
-                }
-              `}
-            >
-              <span className="text-[11px] font-semibold leading-tight">{p.label}</span>
-              {period === p.key && (
-                <span className="text-[9px] opacity-70 leading-tight">{p.sub}</span>
-              )}
-            </button>
-          ))}
+        <div className="flex items-center gap-2">
+          {hasFilter && (
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/8 border border-primary/20">
+              <span className="text-[10px] font-medium text-primary">
+                Đang lọc: {crossFilter.label}
+              </span>
+              <button
+                onClick={() => setChartFilter(null)}
+                className="text-primary hover:text-primary/70 transition-colors"
+                title="Xóa lọc chart"
+              >
+                <FilterX size={11} />
+              </button>
+            </div>
+          )}
+          <div className="flex items-center bg-surface-container-low rounded-full p-0.5 gap-0.5 shrink-0">
+            {PERIODS.map((p) => (
+              <button
+                key={p.key}
+                onClick={() => setPeriod(p.key)}
+                className={`
+                  flex flex-col items-center px-3 py-1 rounded-full transition-all duration-200
+                  ${period === p.key
+                    ? 'bg-primary text-on-primary shadow-sm'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-lowest'
+                  }
+                `}
+              >
+                <span className="text-[11px] font-semibold leading-tight">{p.label}</span>
+                {period === p.key && (
+                  <span className="text-[9px] opacity-70 leading-tight">{p.sub}</span>
+                )}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -100,25 +161,16 @@ export function InsightTrendChart({ insightId }) {
       <div className="flex flex-wrap gap-x-4 gap-y-2 mb-4">
         {metricsWithColor.map((m) => (
           <div key={m.key} className="flex items-center gap-2">
-            <ColorBar color={m.palette.stroke} />
+            <LegendDot color={m.palette.stroke} />
             <span className="text-[11px] font-medium text-on-surface">{m.label}</span>
           </div>
         ))}
       </div>
 
-      {/* Chart */}
+      {/* Chart area */}
       <div style={{ background: 'var(--color-surface-container-low)', borderRadius: 10, padding: '12px 8px 8px 0' }}>
         <ResponsiveContainer width="100%" height={220}>
           <LineChart data={data} margin={{ top: 4, right: 12, left: -16, bottom: 0 }}>
-            <defs>
-              {metricsWithColor.map((m) => (
-                <linearGradient key={m.key} id={gradId(m.key)} x1="0" y1="0" x2="0" y2="1">
-                  <Stop offset="0%" stopColor={m.palette.stroke} stopOpacity={0.20} />
-                  <Stop offset="100%" stopColor={m.palette.stroke} stopOpacity={0} />
-                </linearGradient>
-              ))}
-            </defs>
-
             <CartesianGrid
               strokeDasharray="3 3"
               stroke="rgba(42,52,55,0.14)"
@@ -163,9 +215,9 @@ export function InsightTrendChart({ insightId }) {
                 name={m.label}
                 stroke={m.palette.stroke}
                 strokeWidth={2.5}
-                fill={gradId(m.key)}
                 dot={{ r: 3, fill: m.palette.fill, strokeWidth: 0 }}
                 activeDot={{ r: 5, fill: m.palette.fill, strokeWidth: 0 }}
+                connectNulls={false}
               />
             ))}
           </LineChart>

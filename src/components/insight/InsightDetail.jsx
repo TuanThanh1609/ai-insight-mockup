@@ -554,7 +554,11 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
                 </div>
 
                 {/* Row 2: Xu hướng Line Chart */}
-                <InsightTrendChart insightId={selectedInsight.templateId || selectedInsight.id} />
+                <InsightTrendChart
+                  insightId={selectedInsight.templateId || selectedInsight.id}
+                  crossFilter={crossFilter}
+                  conversations={conversations}
+                />
 
                 {/* Row 2+: Smart columns + auto-fill metrics grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
