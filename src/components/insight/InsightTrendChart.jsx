@@ -7,6 +7,9 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  defs,
+  linearGradient,
+  Stop,
 } from 'recharts';
 import { TrendingUp } from 'lucide-react';
 import { Card } from '../ui/Card';
@@ -17,16 +20,42 @@ const PERIODS = [
   { key: 'month', label: 'Theo Tháng', sub: '30 ngày' },
 ];
 
+// Palette — saturated colors that pop on white background
+const COLOR_PALETTE = [
+  { stroke: '#0048e2', fill: '#0048e2', bg: 'rgba(0,72,226,0.10)' },   // blue
+  { stroke: '#ef4444', fill: '#ef4444', bg: 'rgba(239,68,68,0.10)' },   // red
+  { stroke: '#10b981', fill: '#10b981', bg: 'rgba(16,185,129,0.10)' },  // green
+  { stroke: '#f59e0b', fill: '#f59e0b', bg: 'rgba(245,158,11,0.10)' },  // amber
+  { stroke: '#8b5cf6', fill: '#8b5cf6', bg: 'rgba(139,92,246,0.10)' },  // violet
+  { stroke: '#06b6d4', fill: '#06b6d4', bg: 'rgba(6,182,212,0.10)' },  // cyan
+];
+
+function ColorBar({ color }) {
+  return (
+    <div
+      className="w-8 h-1.5 rounded-full"
+      style={{ background: color }}
+    />
+  );
+}
+
 export function InsightTrendChart({ insightId }) {
   const [period, setPeriod] = useState('week');
 
   const trend = mockInsightTrend[insightId] || mockInsightTrend['fsh-1'];
   const data = period === 'week' ? trend.week : trend.month;
-  const allValues = data.flatMap((d) => trend.metrics.map((m) => d[m.key]));
-  const maxVal = Math.max(...allValues);
 
-  // Auto Y-axis domain with 10% headroom
-  const yMax = Math.ceil(maxVal * 1.1 / 10) * 10 || 100;
+  // Assign colors from palette to each metric
+  const metricsWithColor = trend.metrics.map((m, i) => ({
+    ...m,
+    palette: COLOR_PALETTE[i % COLOR_PALETTE.length],
+  }));
+
+  const allValues = data.flatMap((d) => metricsWithColor.map((m) => d[m.key]));
+  const maxVal = Math.max(...allValues);
+  const yMax = Math.ceil(maxVal * 1.15 / 10) * 10 || 100;
+
+  const gradId = (key) => `grad_${key}`;
 
   return (
     <Card className="p-4">
@@ -40,7 +69,7 @@ export function InsightTrendChart({ insightId }) {
             </h3>
           </div>
           <p className="text-[10px] text-on-surface-variant ml-5">
-            Biến động theo thời gian — click dòng để xem chi tiết
+            Biến động theo thời gian
           </p>
         </div>
 
@@ -68,69 +97,80 @@ export function InsightTrendChart({ insightId }) {
       </div>
 
       {/* Legend */}
-      <div className="flex flex-wrap gap-x-4 gap-y-1.5 mb-3">
-        {trend.metrics.map((m) => (
-          <div key={m.key} className="flex items-center gap-1.5">
-            <div
-              className="w-3 h-0.5 rounded-full"
-              style={{ background: m.color }}
-            />
-            <span className="text-[11px] text-on-surface-variant">{m.label}</span>
+      <div className="flex flex-wrap gap-x-4 gap-y-2 mb-4">
+        {metricsWithColor.map((m) => (
+          <div key={m.key} className="flex items-center gap-2">
+            <ColorBar color={m.palette.stroke} />
+            <span className="text-[11px] font-medium text-on-surface">{m.label}</span>
           </div>
         ))}
       </div>
 
       {/* Chart */}
-      <ResponsiveContainer width="100%" height={200}>
-        <LineChart data={data} margin={{ top: 4, right: 4, left: -24, bottom: 0 }}>
-          <CartesianGrid
-            strokeDasharray="2 4"
-            stroke="rgba(42,52,55,0.06)"
-            vertical={false}
-          />
-          <XAxis
-            dataKey="label"
-            tick={{ fontSize: 10, fill: 'var(--color-on-surface-variant)', fontFamily: 'Inter' }}
-            axisLine={false}
-            tickLine={false}
-            interval="preserveStartEnd"
-          />
-          <YAxis
-            tick={{ fontSize: 10, fill: 'var(--color-on-surface-variant)', fontFamily: 'Inter' }}
-            axisLine={false}
-            tickLine={false}
-            domain={[0, yMax]}
-            tickCount={5}
-            width={32}
-          />
-          <Tooltip
-            contentStyle={{
-              background: 'var(--color-surface-container-lowest)',
-              border: '1px solid var(--color-outline-variant)',
-              borderRadius: 8,
-              boxShadow: '0 4px 16px rgba(44,52,55,0.1)',
-              fontFamily: 'Inter',
-              fontSize: 11,
-              padding: '6px 10px',
-            }}
-            itemStyle={{ fontWeight: 600, paddingBottom: 2 }}
-            labelStyle={{ color: 'var(--color-on-surface-variant)', marginBottom: 4, fontSize: 10 }}
-            cursor={{ stroke: 'var(--color-primary)', strokeWidth: 1, strokeDasharray: '3 3' }}
-          />
-          {trend.metrics.map((m) => (
-            <Line
-              key={m.key}
-              type="monotone"
-              dataKey={m.key}
-              name={m.label}
-              stroke={m.color}
-              strokeWidth={2}
-              dot={false}
-              activeDot={{ r: 4, strokeWidth: 0, fill: m.color }}
+      <div style={{ background: 'var(--color-surface-container-low)', borderRadius: 10, padding: '12px 8px 8px 0' }}>
+        <ResponsiveContainer width="100%" height={220}>
+          <LineChart data={data} margin={{ top: 4, right: 12, left: -16, bottom: 0 }}>
+            <defs>
+              {metricsWithColor.map((m) => (
+                <linearGradient key={m.key} id={gradId(m.key)} x1="0" y1="0" x2="0" y2="1">
+                  <Stop offset="0%" stopColor={m.palette.stroke} stopOpacity={0.20} />
+                  <Stop offset="100%" stopColor={m.palette.stroke} stopOpacity={0} />
+                </linearGradient>
+              ))}
+            </defs>
+
+            <CartesianGrid
+              strokeDasharray="3 3"
+              stroke="rgba(42,52,55,0.14)"
+              vertical={false}
             />
-          ))}
-        </LineChart>
-      </ResponsiveContainer>
+            <XAxis
+              dataKey="label"
+              tick={{ fontSize: 11, fill: '#5a6368', fontFamily: 'Inter', fontWeight: 500 }}
+              axisLine={false}
+              tickLine={false}
+              interval="preserveStartEnd"
+            />
+            <YAxis
+              tick={{ fontSize: 11, fill: '#5a6368', fontFamily: 'Inter', fontWeight: 500 }}
+              axisLine={false}
+              tickLine={false}
+              domain={[0, yMax]}
+              tickCount={5}
+              width={36}
+            />
+            <Tooltip
+              contentStyle={{
+                background: '#ffffff',
+                border: '1px solid rgba(42,52,55,0.12)',
+                borderRadius: 10,
+                boxShadow: '0 4px 16px rgba(44,52,55,0.14)',
+                fontFamily: 'Inter',
+                fontSize: 12,
+                padding: '8px 12px',
+                minWidth: 120,
+              }}
+              itemStyle={{ fontWeight: 700, paddingBottom: 2 }}
+              labelStyle={{ color: '#2c3437', marginBottom: 6, fontSize: 11, fontWeight: 600 }}
+              cursor={{ stroke: 'rgba(42,52,55,0.15)', strokeWidth: 1, strokeDasharray: '4 4' }}
+            />
+
+            {metricsWithColor.map((m) => (
+              <Line
+                key={m.key}
+                type="monotone"
+                dataKey={m.key}
+                name={m.label}
+                stroke={m.palette.stroke}
+                strokeWidth={2.5}
+                fill={gradId(m.key)}
+                dot={{ r: 3, fill: m.palette.fill, strokeWidth: 0 }}
+                activeDot={{ r: 5, fill: m.palette.fill, strokeWidth: 0 }}
+              />
+            ))}
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
     </Card>
   );
 }
