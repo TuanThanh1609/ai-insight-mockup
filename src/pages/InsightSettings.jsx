@@ -56,6 +56,20 @@ export default function InsightSettings() {
     );
   };
 
+  // Handle AI-generated insights from "Tạo Insight bằng AI" flow
+  const handleSaveAIScratch = ({ masterInsight, insights }) => {
+    if (!insights || insights.length === 0) return;
+    setInsights((prev) => [...insights, ...prev]);
+    if (insights.length === 1) {
+      addToast(`Đã tạo "${insights[0].name}" — AI bắt đầu phân tích!`, 'success');
+    } else {
+      addToast(
+        `Đã tạo ${insights.length} Insight cho "${masterInsight?.name || 'doanh nghiệp của bạn'}" — AI bắt đầu phân tích!`,
+        'success'
+      );
+    }
+  };
+
   return (
     <>
       <Header
@@ -111,7 +125,8 @@ export default function InsightSettings() {
               Tạo Insight mới từ Template
             </Button>
             <Button variant="secondary" onClick={() => setIsScratchModalOpen(true)}>
-              Tạo Insight từ đầu
+              <Sparkles size={15} />
+              Tạo Insight bằng AI
             </Button>
           </div>
         </div>
@@ -163,9 +178,7 @@ export default function InsightSettings() {
       <CreateInsightFromScratchModal
         isOpen={isScratchModalOpen}
         onClose={() => setIsScratchModalOpen(false)}
-        onSave={(newInsight) => {
-          setInsights((prev) => [newInsight, ...prev]);
-        }}
+        onSave={handleSaveAIScratch}
       />
     </>
   );

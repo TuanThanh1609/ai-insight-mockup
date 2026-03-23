@@ -236,7 +236,7 @@ function CompetitorMentionChart({ data, onItemClick }) {
   );
 }
 
-function CompetitorSentiment({ data }) {
+function CompetitorSentiment({ data, onItemClick }) {
   return (
     <div className="flex flex-col gap-3">
       {data.map((item) => {
@@ -246,8 +246,14 @@ function CompetitorSentiment({ data }) {
         return (
           <div key={item.name}>
             <div className="flex items-center justify-between mb-1">
-              <span className="text-xs font-medium text-on-surface">{item.name}</span>
-              <span className="text-[10px] text-on-surface-variant">{item.positive + item.neutral + item.negative} lượt</span>
+              <button
+                onClick={() => onItemClick?.({ field: 'competitorName', value: item.name, label: item.name, count: total })}
+                className="text-xs font-medium text-on-surface hover:text-primary cursor-pointer transition-colors"
+                title={`Lọc ${total} hội thoại về "${item.name}"`}
+              >
+                {item.name}
+              </button>
+              <span className="text-[10px] text-on-surface-variant">{total} lượt</span>
             </div>
             <div className="flex h-2 rounded-full overflow-hidden gap-0.5">
               <div className="bg-tertiary-container rounded-l-full" style={{ width: `${pos}%` }} title={`Tích cực ${pos}%` } />
@@ -318,8 +324,13 @@ function MessageTypeChart({ data, onItemClick }) {
   );
 }
 
-function SentimentDonut({ data }) {
+function SentimentDonut({ data, onItemClick }) {
   const total = data.negative + data.neutral + data.positive;
+  const items = [
+    { label: 'Tiêu cực', value: data.negative, color: '#ef4444', filterKey: 'Tiêu cực' },
+    { label: 'Trung lập', value: data.neutral, color: '#f59e0b', filterKey: 'Trung lập' },
+    { label: 'Tích cực', value: data.positive, color: '#10b981', filterKey: 'Tích cực' },
+  ];
   return (
     <div className="flex items-center gap-4">
       <div className="relative w-20 h-20 shrink-0">
@@ -337,16 +348,23 @@ function SentimentDonut({ data }) {
         </div>
       </div>
       <div className="flex flex-col gap-1.5">
-        {[
-          { label: 'Tiêu cực', value: data.negative, color: '#ef4444' },
-          { label: 'Trung lập', value: data.neutral, color: '#f59e0b' },
-          { label: 'Tích cực', value: data.positive, color: '#10b981' },
-        ].map((item) => (
-          <div key={item.label} className="flex items-center gap-2">
+        {items.map((item) => (
+          <button
+            key={item.label}
+            onClick={() => item.value > 0 && onItemClick?.({ field: 'sentiment', value: item.filterKey, label: item.label, count: item.value })}
+            className={cn(
+              "flex items-center gap-2 rounded-[--radius-sm] transition-colors px-1 -mx-1 py-0.5",
+              item.value > 0 ? "cursor-pointer hover:bg-surface-container-low active:bg-surface-container-low/70" : "cursor-default opacity-50"
+            )}
+            title={item.value > 0 ? `Lọc ${item.value} hội thoại "${item.label}"` : "Không có dữ liệu"}
+          >
             <div className="w-2 h-2 rounded-full shrink-0" style={{ background: item.color }} />
             <span className="text-[11px] text-on-surface-variant">{item.label}</span>
-            <span className="text-[11px] font-bold text-on-surface ml-auto">{item.value}</span>
-          </div>
+            <span className={cn(
+              "text-[11px] font-bold ml-auto transition-colors",
+              item.value > 0 ? "text-on-surface" : "text-on-surface-variant/40"
+            )}>{item.value}</span>
+          </button>
         ))}
       </div>
     </div>
@@ -379,6 +397,15 @@ export function InsightDetailModal({ insight, isOpen, onClose }) {
   const clearCrossFilter = useCallback(() => {
     setCrossFilter(null);
   }, []);
+
+  // Reset cross-filter and tab when modal opens with new insight
+  useEffect(() => {
+    if (isOpen) {
+      setActiveTab('overview');
+      setCrossFilter(null);
+      setCurrentPage(1);
+    }
+  }, [isOpen, insight?.id]);
 
   if (!insight) return null;
 
@@ -659,11 +686,16 @@ export function InsightDetailModal({ insight, isOpen, onClose }) {
             {/* Template 5: Competitor Sentiment */}
             {analysis.sentimentByCompetitor && (
               <Card className="p-5">
-                <div className="flex items-center gap-2 mb-3">
-                  <TrendingUp size={16} className="text-primary" />
-                  <h3 className="font-display font-bold text-sm text-on-surface">Cảm xúc khi nhắc đến đối thủ</h3>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp size={16} className="text-primary" />
+                    <h3 className="font-display font-bold text-sm text-on-surface">Cảm xúc khi nhắc đến đối thủ</h3>
+                  </div>
+                  <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
+                    <MousePointerClick size={10} />Click để lọc
+                  </span>
                 </div>
-                <CompetitorSentiment data={analysis.sentimentByCompetitor} />
+                <CompetitorSentiment data={analysis.sentimentByCompetitor} onItemClick={handleCrossFilter} />
               </Card>
             )}
 
@@ -671,18 +703,23 @@ export function InsightDetailModal({ insight, isOpen, onClose }) {
             {analysis.messageType && (
               <div className="grid grid-cols-2 gap-4">
                 <Card className="p-5">
-                  <div className="flex items-center gap-2 mb-3">
-                    <MessageCircle size={16} className="text-primary" />
-                    <h3 className="font-display font-bold text-sm text-on-surface">Phân loại tin nhắn hậu mãi</h3>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <MessageCircle size={16} className="text-primary" />
+                      <h3 className="font-display font-bold text-sm text-on-surface">Phân loại tin nhắn hậu mãi</h3>
+                    </div>
+                    <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
+                      <MousePointerClick size={10} />Click để lọc
+                    </span>
                   </div>
-                  <MessageTypeChart data={analysis.messageType} />
+                  <MessageTypeChart data={analysis.messageType} onItemClick={handleCrossFilter} />
                 </Card>
                 <Card className="p-5">
                   <div className="flex items-center gap-2 mb-3">
                     <AlertCircle size={16} className="text-error-container" />
                     <h3 className="font-display font-bold text-sm text-on-surface">Mức độ tiêu cực (Sentiment)</h3>
                   </div>
-                  <SentimentDonut data={analysis.negativeSentiment} />
+                  <SentimentDonut data={analysis.negativeSentiment} onItemClick={handleCrossFilter} />
                   <div className="flex items-center justify-between mt-2 pt-2 border-t border-[var(--color-outline-variant)]">
                     <div className="text-center">
                       <p className="font-display font-bold text-base text-tertiary-container">{analysis.resolutionRate}%</p>
@@ -747,45 +784,70 @@ export function InsightDetailModal({ insight, isOpen, onClose }) {
           <div className="flex flex-col gap-5">
             {analysis.topPainPoints && (
               <Card className="p-5">
-                <div className="flex items-center gap-2 mb-3">
-                  <AlertCircle size={16} className="text-warning-container" />
-                  <h3 className="font-display font-bold text-sm text-on-surface">Top Nhu cầu cốt lõi (Pain Points)</h3>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <AlertCircle size={16} className="text-warning-container" />
+                    <h3 className="font-display font-bold text-sm text-on-surface">Top Nhu cầu cốt lõi (Pain Points)</h3>
+                  </div>
+                  <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
+                    <MousePointerClick size={10} />Click để lọc
+                  </span>
                 </div>
-                <ListItems items={analysis.topPainPoints} highlight />
+                <ListItems items={analysis.topPainPoints} highlight onItemClick={handleCrossFilter} clickableField="painPoint" />
               </Card>
             )}
 
             {analysis.topObjections && (
               <Card className="p-5">
-                <div className="flex items-center gap-2 mb-3">
-                  <BarChart3 size={16} className="text-primary" />
-                  <h3 className="font-display font-bold text-sm text-on-surface">Top Rào cản chốt đơn</h3>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <BarChart3 size={16} className="text-primary" />
+                    <h3 className="font-display font-bold text-sm text-on-surface">Top Rào cản chốt đơn</h3>
+                  </div>
+                  <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
+                    <MousePointerClick size={10} />Click để lọc
+                  </span>
                 </div>
-                <ListItems items={analysis.topObjections} />
+                <ListItems items={analysis.topObjections} onItemClick={handleCrossFilter} clickableField="objection" />
               </Card>
             )}
 
             {analysis.topMistakes && (
               <Card className="p-5">
-                <div className="flex items-center gap-2 mb-3">
-                  <AlertCircle size={16} className="text-error-container" />
-                  <h3 className="font-display font-bold text-sm text-on-surface">Top Lỗi mất khách do Sale</h3>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <AlertCircle size={16} className="text-error-container" />
+                    <h3 className="font-display font-bold text-sm text-on-surface">Top Lỗi mất khách do Sale</h3>
+                  </div>
+                  <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
+                    <MousePointerClick size={10} />Click để lọc
+                  </span>
                 </div>
-                <ListItems items={analysis.topMistakes} highlight />
+                <ListItems items={analysis.topMistakes} highlight onItemClick={handleCrossFilter} clickableField="mistake" />
               </Card>
             )}
 
             {analysis.topLocations && (
               <Card className="p-5">
-                <h3 className="font-display font-bold text-sm text-on-surface mb-3">Khu vực khách hàng</h3>
-                <ListItems items={analysis.topLocations} />
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-display font-bold text-sm text-on-surface">Khu vực khách hàng</h3>
+                  <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
+                    <MousePointerClick size={10} />Click để lọc
+                  </span>
+                </div>
+                <ListItems items={analysis.topLocations} onItemClick={handleCrossFilter} clickableField="location" />
               </Card>
             )}
 
             {analysis.budgetRanges && (
               <Card className="p-5">
-                <h3 className="font-display font-bold text-sm text-on-surface mb-3">Phân bổ ngân sách</h3>
-                <ListItems items={analysis.budgetRanges} />
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-display font-bold text-sm text-on-surface">Phân bổ ngân sách</h3>
+                  <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
+                    <MousePointerClick size={10} />Click để lọc
+                  </span>
+                </div>
+                <ListItems items={analysis.budgetRanges} onItemClick={handleCrossFilter} clickableField="budget" />
               </Card>
             )}
 
@@ -793,38 +855,58 @@ export function InsightDetailModal({ insight, isOpen, onClose }) {
             {analysis.competitorMentions && (
               <>
                 <Card className="p-5">
-                  <div className="flex items-center gap-2 mb-3">
-                    <TrendingUp size={16} className="text-primary" />
-                    <h3 className="font-display font-bold text-sm text-on-surface">Top tiêu chí so sánh với đối thủ</h3>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <TrendingUp size={16} className="text-primary" />
+                      <h3 className="font-display font-bold text-sm text-on-surface">Top tiêu chí so sánh với đối thủ</h3>
+                    </div>
+                    <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
+                      <MousePointerClick size={10} />Click để lọc
+                    </span>
                   </div>
-                  <ListItems items={analysis.comparisonCriteria} />
+                  <ListItems items={analysis.comparisonCriteria} onItemClick={handleCrossFilter} clickableField="criteria" />
                 </Card>
                 <Card className="p-5">
-                  <div className="flex items-center gap-2 mb-3">
-                    <BarChart3 size={16} className="text-primary" />
-                    <h3 className="font-display font-bold text-sm text-on-surface">Danh sách đối thủ được nhắc đến</h3>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <BarChart3 size={16} className="text-primary" />
+                      <h3 className="font-display font-bold text-sm text-on-surface">Danh sách đối thủ được nhắc đến</h3>
+                    </div>
+                    <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
+                      <MousePointerClick size={10} />Click để lọc
+                    </span>
                   </div>
-                  <ListItems items={analysis.topCompetitors} highlight />
+                  <ListItems items={analysis.topCompetitors} highlight onItemClick={handleCrossFilter} clickableField="competitorName" />
                 </Card>
               </>
             )}
 
-            {/* Template 6: Urgent tickets + Full message breakdown */}
+            {/* Template 6: Urgent tickets */}
             {analysis.urgentTickets && (
               <>
                 <Card className="p-5">
-                  <div className="flex items-center gap-2 mb-3">
-                    <AlertCircle size={16} className="text-error-container" />
-                    <h3 className="font-display font-bold text-sm text-on-surface">⚠️ Ticket cần ưu tiên xử lý</h3>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <AlertCircle size={16} className="text-error-container" />
+                      <h3 className="font-display font-bold text-sm text-on-surface">⚠️ Ticket cần ưu tiên xử lý</h3>
+                    </div>
+                    <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
+                      <MousePointerClick size={10} />Click để lọc
+                    </span>
                   </div>
-                  <ListItems items={analysis.urgentTickets} highlight />
+                  <ListItems items={analysis.urgentTickets} highlight onItemClick={handleCrossFilter} clickableField="priority" />
                 </Card>
                 <Card className="p-5">
-                  <div className="flex items-center gap-2 mb-3">
-                    <MessageCircle size={16} className="text-primary" />
-                    <h3 className="font-display font-bold text-sm text-on-surface">Phân bổ ngân sách KH</h3>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <MessageCircle size={16} className="text-primary" />
+                      <h3 className="font-display font-bold text-sm text-on-surface">Phân bổ ngân sách KH</h3>
+                    </div>
+                    <span className="text-[10px] text-on-surface-variant/50 flex items-center gap-1">
+                      <MousePointerClick size={10} />Click để lọc
+                    </span>
                   </div>
-                  <ListItems items={analysis.budgetRanges || analysis.comparisonCriteria || []} />
+                  <ListItems items={analysis.budgetRanges || analysis.comparisonCriteria || []} onItemClick={handleCrossFilter} clickableField="budget" />
                 </Card>
               </>
             )}
@@ -841,13 +923,68 @@ export function InsightDetailModal({ insight, isOpen, onClose }) {
         {/* ── TAB 4: Chi tiết ── */}
         {activeTab === 'detail' && (
           <div className="flex flex-col gap-4">
+            {/* Cross-filter active banner */}
+            {crossFilter && (
+              <div className="flex items-center justify-between gap-3 px-4 py-3 rounded-[--radius-md] bg-primary/8 border border-primary/20">
+                <div className="flex items-center gap-2 min-w-0">
+                  <MousePointerClick size={14} className="text-primary shrink-0" />
+                  <span className="text-xs text-on-surface">
+                    <span className="font-semibold text-primary">{crossFilter.count} hội thoại</span>
+                    <span className="text-on-surface-variant"> có </span>
+                    <span className="font-semibold text-on-surface">{crossFilter.label}</span>
+                  </span>
+                </div>
+                <button
+                  onClick={clearCrossFilter}
+                  className="flex items-center gap-1 shrink-0 text-xs text-primary hover:text-primary/80 font-medium transition-colors px-2 py-1 rounded-full hover:bg-primary/10"
+                >
+                  <X size={12} />
+                  Bỏ lọc
+                </button>
+              </div>
+            )}
+
             {!conversations ? (
               <div className="text-center py-12">
                 <BarChart3 size={40} className="text-on-surface-variant/30 mx-auto mb-3" />
                 <p className="text-sm text-on-surface-variant">Chưa có dữ liệu hội thoại để hiển thị.</p>
               </div>
+            ) : filteredRows.length === 0 ? (
+              <div className="text-center py-12">
+                <BarChart3 size={40} className="text-on-surface-variant/30 mx-auto mb-3" />
+                <p className="text-sm text-on-surface-variant">Không có hội thoại nào phù hợp với bộ lọc.</p>
+                <button
+                  onClick={clearCrossFilter}
+                  className="mt-3 text-xs text-primary hover:underline"
+                >
+                  Xóa bộ lọc
+                </button>
+              </div>
             ) : (
               <>
+                {/* Column headers with highlight for active filter field */}
+                <div className="flex items-center justify-between px-1 mb-1">
+                  <p className="text-xs text-on-surface-variant">
+                    {crossFilter ? (
+                      <span>
+                        <span className="font-semibold text-primary">{filteredRows.length}</span>
+                        <span className="text-on-surface-variant"> / {conversations.rows.length} hội thoại</span>
+                      </span>
+                    ) : (
+                      <span>{filteredRows.length} hội thoại</span>
+                    )}
+                  </p>
+                  {crossFilter && (
+                    <button
+                      onClick={clearCrossFilter}
+                      className="flex items-center gap-1 text-xs text-primary hover:text-primary/80 font-medium transition-colors"
+                    >
+                      <X size={11} />
+                      Bỏ lọc
+                    </button>
+                  )}
+                </div>
+
                 {/* Table */}
                 <div className="overflow-x-auto rounded-[--radius-md] border border-[var(--color-outline-variant)]">
                   <table className="w-full text-xs">
@@ -855,7 +992,17 @@ export function InsightDetailModal({ insight, isOpen, onClose }) {
                       <tr className="bg-surface-container-low">
                         <th className="px-3 py-2.5 text-left font-semibold text-on-surface-variant whitespace-nowrap">Khách hàng</th>
                         {conversations.columns.map((col) => (
-                          <th key={col.id} className="px-3 py-2.5 text-left font-semibold text-on-surface-variant whitespace-nowrap">{col.name}</th>
+                          <th
+                            key={col.id}
+                            className={cn(
+                              "px-3 py-2.5 text-left font-semibold whitespace-nowrap transition-colors",
+                              crossFilter?.field === col.field
+                                ? "text-primary bg-primary/5"
+                                : "text-on-surface-variant"
+                            )}
+                          >
+                            {col.name}
+                          </th>
                         ))}
                         <th className="px-3 py-2.5 text-left font-semibold text-on-surface-variant whitespace-nowrap">Kênh</th>
                       </tr>
@@ -865,15 +1012,22 @@ export function InsightDetailModal({ insight, isOpen, onClose }) {
                         <tr
                           key={row.id}
                           className={cn(
-                            'border-t border-[var(--color-outline-variant)]',
+                            'border-t border-[var(--color-outline-variant)] transition-colors',
                             idx % 2 === 0 ? 'bg-surface-container-lowest' : 'bg-surface-container-low/40',
                           )}
                         >
                           <td className="px-3 py-2.5 font-medium text-on-surface whitespace-nowrap">{row.customer}</td>
                           {conversations.columns.map((col) => {
                             const raw = row[col.field];
+                            const isHighlighted = crossFilter?.field === col.field;
                             return (
-                              <td key={col.id} className="px-3 py-2.5 text-on-surface-variant whitespace-nowrap">
+                              <td
+                                key={col.id}
+                                className={cn(
+                                  "px-3 py-2.5 whitespace-nowrap transition-colors",
+                                  isHighlighted ? "bg-primary/5" : "text-on-surface-variant"
+                                )}
+                              >
                                 {col.field === 'temperature' && (
                                   <span className={cn(
                                     'inline-flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full',
@@ -982,7 +1136,8 @@ export function InsightDetailModal({ insight, isOpen, onClose }) {
                 {totalPages > 1 && (
                   <div className="flex items-center justify-between">
                     <p className="text-xs text-on-surface-variant">
-                      Hiển thị {(currentPage - 1) * ROWS_PER_PAGE + 1}–{Math.min(currentPage * ROWS_PER_PAGE, conversations.rows.length)} trong {conversations.rows.length} hội thoại
+                      Hiển thị {(currentPage - 1) * ROWS_PER_PAGE + 1}–{Math.min(currentPage * ROWS_PER_PAGE, filteredRows.length)} trong {filteredRows.length} hội thoại
+                      {crossFilter && <span className="text-on-surface-variant/60"> (đã lọc)</span>}
                     </p>
                     <div className="flex items-center gap-1">
                       <button

@@ -1,120 +1,318 @@
 // =====================================================================
-// Mock conversations hiển thị trong tab "Chi tiết" của InsightDetailModal
-// Key = templateId thực tế trong mockTemplates (fsh-*, mbb-*, cos-*, spa-*, rls-*, fb-*, trv-*)
+// Mock conversations cho tab "Chi tiết" — InsightDetailModal
+// Key = templateId thực tế (fsh-*, mbb-*, cos-*, spa-*, rls-*, fb-*, trv-*)
 //
-// Cấu trúc:
-//   columns: [{ id, name, field }]  — field khớp với col.field trong InsightDetailModal
-//   rows: [{ id, customer, [field]: value, platform }]  — platform: 'facebook' | 'zalo'
+// Cấu trúc mỗi entry:
+//   columns: [{ id, name, field }]  field phải khớp với template column id
+//   rows:    [{ id, customer, [field]: value, platform }]
+// platform: 'facebook' | 'zalo'
 // =====================================================================
 
 export const mockConversations = {
-  // ─── Template 1: Phân tích Nhu Cầu KH Đa Kênh ─────────────────────────
-  'tpl-1': {
+
+  // ═══════════════════════════════════════════════════════════════════
+  // NGÀNH 1: THỜI TRANG
+  // ═══════════════════════════════════════════════════════════════════
+
+  // ─── fsh-1: Phân Tích Nhu Cầu KH ─────────────────────────────
+  'fsh-1': {
     columns: [
-      { id: 'col-product', name: 'Sản phẩm quan tâm', field: 'product' },
-      { id: 'col-temp', name: 'Mức độ quan tâm', field: 'temperature' },
-      { id: 'col-pain', name: 'Nhu cầu cốt lõi', field: 'painPoint' },
-      { id: 'col-gender', name: 'Giới tính', field: 'gender' },
+      { id: 'fsh-1-1', name: 'Sản phẩm / Mẫu quan tâm', field: 'product' },
+      { id: 'fsh-1-2', name: 'Size quan tâm',            field: 'size' },
+      { id: 'fsh-1-3', name: 'Mức độ quan tâm',          field: 'temperature' },
+      { id: 'fsh-1-4', name: 'Nhu cầu cốt lõi',           field: 'painPoint' },
     ],
     rows: [
-      { id: 'c1', customer: 'Nguyễn Thị Lan', product: 'Serum trị mụn ẩn', temperature: 'Nóng', painPoint: 'Da dầu nhờn mụn ẩn', gender: 'Nữ', platform: 'facebook' },
-      { id: 'c2', customer: 'Trần Văn Minh', product: 'Kem dưỡng ẩm', temperature: 'Ấm', painPoint: 'Tìm sản phẩm dưới 500k', gender: 'Nam', platform: 'zalo' },
-      { id: 'c3', customer: 'Phạm Thị Hương', product: 'Sữa rửa mặt', temperature: 'Nóng', painPoint: 'Da nhạy cảm hay kích ứng', gender: 'Nữ', platform: 'facebook' },
-      { id: 'c4', customer: 'Lê Hoàng Nam', product: 'Kem chống nắng', temperature: 'Lạnh', painPoint: 'Hỏi 1 câu rồi không rep', gender: 'Nam', platform: 'zalo' },
-      { id: 'c5', customer: 'Đỗ Minh Thy', product: 'Serum trị mụn ẩn', temperature: 'Nóng', painPoint: 'Mụn ẩn lâu năm không hết', gender: 'Nữ', platform: 'facebook' },
-      { id: 'c6', customer: 'Bùi Đức Anh', product: 'Tinh chất Vitamin C', temperature: 'Ấm', painPoint: 'Da dầu nhờn mụn ẩn', gender: 'Nam', platform: 'zalo' },
-      { id: 'c7', customer: 'Vũ Thu Hà', product: 'Kem dưỡng ẩm', temperature: 'Ấm', painPoint: 'Tìm sản phẩm dưới 500k', gender: 'Nữ', platform: 'facebook' },
-      { id: 'c8', customer: 'Hoàng Minh Tuấn', product: 'Sữa rửa mặt', temperature: 'Lạnh', painPoint: 'Khách từ chối mua', gender: 'Nam', platform: 'zalo' },
+      { id: 'f1c1', customer: 'Trần Minh Châu',    product: 'Đầm maxi hoa nhí',   size: 'M',         temperature: 'Nóng', painPoint: 'Tìm đầm đi tiệc dưới 1 triệu',   platform: 'facebook' },
+      { id: 'f1c2', customer: 'Nguyễn Hoàng Nam',  product: 'Áo thun oversize',   size: 'XL',        temperature: 'Ấm', painPoint: 'Cần áo thu đông cho mùa lạnh',     platform: 'zalo' },
+      { id: 'f1c3', customer: 'Lê Thu Hương',      product: 'Quần jeans wide leg',size: '28',        temperature: 'Nóng', painPoint: 'Mua quà sinh nhật cho mẹ',          platform: 'facebook' },
+      { id: 'f1c4', customer: 'Phạm Đức Tùng',     product: 'Giày sneaker',        size: '42',        temperature: 'Lạnh', painPoint: 'Hỏi 1 câu rồi không rep',          platform: 'zalo' },
+      { id: 'f1c5', customer: 'Vũ Thị Lan',        product: 'Áo len dày',         size: 'L',         temperature: 'Ấm', painPoint: 'Tìm size L cho người lớn tuổi',   platform: 'facebook' },
+      { id: 'f1c6', customer: 'Đặng Minh Tuấn',     product: 'Áo thun nam',         size: 'M',         temperature: 'Nóng', painPoint: 'Cần mua gấp trước cuối tuần',     platform: 'zalo' },
     ],
   },
 
-  // ─── Template 2: Đánh Giá Chất Lượng Nguồn Lead ───────────────────
-  'tpl-2': {
+  // ─── fsh-2: Đánh Giá Chất Lượng Lead ─────────────────────────
+  'fsh-2': {
     columns: [
-      { id: 'col-junk', name: 'Khách rác', field: 'isJunk' },
-      { id: 'col-phone', name: 'Thu thập SĐT', field: 'phoneStatus' },
-      { id: 'col-objection', name: 'Rào cản chốt đơn', field: 'objection' },
-      { id: 'col-quality', name: 'Chất lượng', field: 'quality' },
+      { id: 'fsh-2-1', name: 'Khách hàng rác',        field: 'isJunk' },
+      { id: 'fsh-2-2', name: 'Trạng thái thu thập SĐT', field: 'phoneStatus' },
+      { id: 'fsh-2-3', name: 'Rào cản chốt đơn',      field: 'objection' },
+      { id: 'fsh-2-4', name: 'Nguồn Ads',             field: 'adsSource' },
     ],
     rows: [
-      { id: 'c1', customer: 'Nguyễn Thị Lan', isJunk: false, phoneStatus: 'Đã cho SĐT', objection: 'Không có rào cản', quality: 'Tốt', platform: 'facebook' },
-      { id: 'c2', customer: 'Trần Văn Minh', isJunk: false, phoneStatus: 'Đã cho SĐT', objection: 'Chê giá đắt', quality: 'Khá', platform: 'zalo' },
-      { id: 'c3', customer: 'Phạm Thị Hương', isJunk: true, phoneStatus: 'Chưa cho', objection: 'Khách hàng rác', quality: 'Rác', platform: 'facebook' },
-      { id: 'c4', customer: 'Lê Hoàng Nam', isJunk: false, phoneStatus: 'Từ chối', objection: 'Phí ship cao', quality: 'Trung bình', platform: 'zalo' },
-      { id: 'c5', customer: 'Đỗ Minh Thy', isJunk: false, phoneStatus: 'Đã cho SĐT', objection: 'Không có rào cản', quality: 'Tốt', platform: 'facebook' },
-      { id: 'c6', customer: 'Bùi Đức Anh', isJunk: false, phoneStatus: 'Chưa cho', objection: 'Đang cân nhắc', quality: 'Trung bình', platform: 'zalo' },
+      { id: 'f2c1', customer: 'Trần Minh Châu',    isJunk: false, phoneStatus: 'Đã cho SĐT', objection: 'Không có rào cản',              adsSource: 'Facebook Ads', platform: 'facebook' },
+      { id: 'f2c2', customer: 'Nguyễn Hoàng Nam',  isJunk: false, phoneStatus: 'Đã cho SĐT', objection: 'Chê giá đắt',                  adsSource: 'Facebook Ads', platform: 'zalo' },
+      { id: 'f2c3', customer: 'Lê Thu Hương',      isJunk: true,  phoneStatus: 'Chưa cho',    objection: 'Khách hàng rác',                adsSource: 'Zalo Ads',     platform: 'facebook' },
+      { id: 'f2c4', customer: 'Phạm Đức Tùng',     isJunk: false, phoneStatus: 'Từ chối',    objection: 'Phí ship cao',                 adsSource: 'Facebook Ads', platform: 'zalo' },
+      { id: 'f2c5', customer: 'Vũ Thị Lan',         isJunk: false, phoneStatus: 'Đã cho SĐT', objection: 'Đang cân nhắc nhiều shop',      adsSource: 'Tiktok Ads',   platform: 'facebook' },
     ],
   },
 
-  // ─── Template 3: Đánh Giá Nhân Viên Tư Vấn Sale ──────────────────
-  'tpl-3': {
+  // ─── fsh-3: Đánh Giá Sale ────────────────────────────────────
+  'fsh-3': {
     columns: [
-      { id: 'col-sale', name: 'Nhân viên Sale', field: 'saleName' },
-      { id: 'col-attitude', name: 'Thái độ tư vấn', field: 'attitude' },
-      { id: 'col-mistake', name: 'Lỗi mất khách', field: 'mistake' },
-      { id: 'col-customer', name: 'Khách hàng', field: 'customer' },
+      { id: 'fsh-3-1', name: 'Đánh giá Thái độ tư vấn', field: 'attitude' },
+      { id: 'fsh-3-2', name: 'Lỗi mất khách do Sale',    field: 'mistake' },
     ],
     rows: [
-      { id: 'c1', saleName: 'Nguyễn Thị Lan', attitude: 'Tốt', mistake: 'Không có lỗi', customer: 'Nguyễn Thị Lan', platform: 'facebook' },
-      { id: 'c2', saleName: 'Trần Văn Minh', attitude: 'Tốt', mistake: 'Không có lỗi', customer: 'Trần Văn Minh', platform: 'zalo' },
-      { id: 'c3', saleName: 'Phạm Thị Hương', attitude: 'Trung bình', mistake: 'Trả lời cộc lốc', customer: 'Phạm Thị Hương', platform: 'facebook' },
-      { id: 'c4', saleName: 'Lê Hoàng Nam', attitude: 'Tốt', mistake: 'Không có lỗi', customer: 'Lê Hoàng Nam', platform: 'zalo' },
-      { id: 'c5', saleName: 'Vũ Thu Hà', attitude: 'Kém', mistake: 'Không báo giá rõ ràng', customer: 'Vũ Thu Hà', platform: 'facebook' },
-      { id: 'c6', saleName: 'Nguyễn Thị Lan', attitude: 'Tốt', mistake: 'Không có lỗi', customer: 'Hoàng Minh Tuấn', platform: 'zalo' },
+      { id: 'f3c1', customer: 'Trần Minh Châu',    attitude: 'Tốt', mistake: 'Không có lỗi',                     platform: 'facebook' },
+      { id: 'f3c2', customer: 'Nguyễn Hoàng Nam',  attitude: 'Tốt', mistake: 'Không có lỗi',                     platform: 'zalo' },
+      { id: 'f3c3', customer: 'Lê Thu Hương',      attitude: 'Trung bình', mistake: 'Trả lời cộc lốc',            platform: 'facebook' },
+      { id: 'f3c4', customer: 'Phạm Đức Tùng',     attitude: 'Tốt', mistake: 'Không có lỗi',                     platform: 'zalo' },
+      { id: 'f3c5', customer: 'Vũ Thị Lan',         attitude: 'Kém', mistake: 'Không tư vấn size',                 platform: 'facebook' },
+      { id: 'f3c6', customer: 'Đặng Minh Tuấn',     attitude: 'Tốt', mistake: 'Không có lỗi',                     platform: 'zalo' },
     ],
   },
 
-  // ─── Template 4: Phân Tích Chân Dung Khách Hàng ──────────────────
-  'tpl-4': {
+  // ─── fsh-4: Phân Tích Chân Dung KH ───────────────────────────
+  'fsh-4': {
     columns: [
-      { id: 'col-gender', name: 'Giới tính', field: 'gender' },
-      { id: 'col-location', name: 'Khu vực', field: 'location' },
-      { id: 'col-budget', name: 'Ngân sách', field: 'budget' },
-      { id: 'col-product', name: 'SP quan tâm', field: 'product' },
+      { id: 'fsh-4-1', name: 'Giới tính dự đoán', field: 'gender' },
+      { id: 'fsh-4-2', name: 'Khu vực địa lý',     field: 'location' },
+      { id: 'fsh-4-3', name: 'Khoảng ngân sách',   field: 'budget' },
+      { id: 'fsh-4-4', name: 'Phân loại KH',       field: 'segment' },
     ],
     rows: [
-      { id: 'c1', customer: 'Nguyễn Thị Lan', gender: 'Nữ', location: 'TP. Hồ Chí Minh', budget: '300k - 500k', product: 'Serum trị mụn', platform: 'facebook' },
-      { id: 'c2', customer: 'Trần Văn Minh', gender: 'Nam', location: 'Hà Nội', budget: 'Dưới 300.000đ', product: 'Kem dưỡng ẩm', platform: 'zalo' },
-      { id: 'c3', customer: 'Phạm Thị Hương', gender: 'Nữ', location: 'Đà Nẵng', budget: '500k - 1 triệu', product: 'Kem chống nắng', platform: 'facebook' },
-      { id: 'c4', customer: 'Lê Hoàng Nam', gender: 'Nam', location: 'TP. Hồ Chí Minh', budget: 'Không đề cập', product: 'Sữa rửa mặt', platform: 'zalo' },
-      { id: 'c5', customer: 'Đỗ Minh Thy', gender: 'Nữ', location: 'Cần Thơ', budget: 'Dưới 300.000đ', product: 'Serum trị mụn', platform: 'facebook' },
-      { id: 'c6', customer: 'Bùi Đức Anh', gender: 'Nam', location: 'Hà Nội', budget: 'Trên 1 triệu', product: 'Tinh chất Vitamin C', platform: 'zalo' },
+      { id: 'f4c1', customer: 'Trần Minh Châu',    gender: 'Nữ', location: 'TP. Hồ Chí Minh', budget: '300k - 500k',   segment: 'Khách mới',   platform: 'facebook' },
+      { id: 'f4c2', customer: 'Nguyễn Hoàng Nam',  gender: 'Nam', location: 'Hà Nội',           budget: 'Dưới 300k',     segment: 'Khách mới',   platform: 'zalo' },
+      { id: 'f4c3', customer: 'Lê Thu Hương',      gender: 'Nữ', location: 'Đà Nẵng',           budget: '500k - 1 triệu', segment: 'Khách quen',  platform: 'facebook' },
+      { id: 'f4c4', customer: 'Phạm Đức Tùng',     gender: 'Nam', location: 'TP. Hồ Chí Minh', budget: 'Không đề cập', segment: 'Khách mới',   platform: 'zalo' },
+      { id: 'f4c5', customer: 'Vũ Thị Lan',        gender: 'Nữ', location: 'Cần Thơ',           budget: 'Dưới 300k',     segment: 'Khách hoàn tiền', platform: 'facebook' },
     ],
   },
 
-  // ─── Template 5: Phân Tích Đối Thủ Cạnh Tranh ──────────────────────
-  'tpl-5': {
+  // ─── fsh-5: Phân Tích Đối Thủ ────────────────────────────────
+  'fsh-5': {
     columns: [
-      { id: 'col-mention', name: 'Nhắc đến đối thủ', field: 'hasCompetitor' },
-      { id: 'col-name', name: 'Tên đối thủ', field: 'competitorName' },
-      { id: 'col-criteria', name: 'Tiêu chí so sánh', field: 'criteria' },
-      { id: 'col-sentiment', name: 'Cảm xúc', field: 'sentiment' },
+      { id: 'fsh-5-1', name: 'Có nhắc đến đối thủ?', field: 'hasCompetitor' },
+      { id: 'fsh-5-2', name: 'Tên đối thủ',           field: 'competitorName' },
+      { id: 'fsh-5-3', name: 'Tiêu chí so sánh',      field: 'criteria' },
     ],
     rows: [
-      { id: 'c1', customer: 'Nguyễn Thị Lan', hasCompetitor: true, competitorName: 'Dr. G', criteria: 'Giá cả', sentiment: 'Tiêu cực', platform: 'facebook' },
-      { id: 'c2', customer: 'Trần Văn Minh', hasCompetitor: true, competitorName: 'Some By Mi', criteria: 'Chất lượng', sentiment: 'Trung lập', platform: 'zalo' },
-      { id: 'c3', customer: 'Phạm Thị Hương', hasCompetitor: false, competitorName: 'Không có', criteria: 'Không có', sentiment: 'Tích cực', platform: 'facebook' },
-      { id: 'c4', customer: 'Lê Hoàng Nam', hasCompetitor: true, competitorName: 'La Roche-Posay', criteria: 'Phí giao hàng', sentiment: 'Tiêu cực', platform: 'zalo' },
-      { id: 'c5', customer: 'Đỗ Minh Thy', hasCompetitor: true, competitorName: 'Cocoon', criteria: 'Giá cả', sentiment: 'Tích cực', platform: 'facebook' },
-      { id: 'c6', customer: 'Bùi Đức Anh', hasCompetitor: false, competitorName: 'Không có', criteria: 'Không có', sentiment: 'Trung lập', platform: 'zalo' },
+      { id: 'f5c1', customer: 'Trần Minh Châu',    hasCompetitor: true,  competitorName: 'Zara',              criteria: 'Giá cả',           platform: 'facebook' },
+      { id: 'f5c2', customer: 'Nguyễn Hoàng Nam', hasCompetitor: false, competitorName: 'Không có',         criteria: 'Không có',         platform: 'zalo' },
+      { id: 'f5c3', customer: 'Lê Thu Hương',      hasCompetitor: true,  competitorName: 'H&M',               criteria: 'Chất lượng',        platform: 'facebook' },
+      { id: 'f5c4', customer: 'Phạm Đức Tùng',     hasCompetitor: true,  competitorName: 'Uniqlo',            criteria: 'Phí giao hàng',    platform: 'zalo' },
+      { id: 'f5c5', customer: 'Vũ Thị Lan',        hasCompetitor: false, competitorName: 'Không có',         criteria: 'Không có',         platform: 'facebook' },
     ],
   },
 
-  // ─── Template 6: Phân Tích Chăm Sóc Sau Mua ────────────────────────
-  'tpl-6': {
+  // ─── fsh-6: Phân Tích Retargeting ────────────────────────────
+  'fsh-6': {
     columns: [
-      { id: 'col-type', name: 'Loại tin nhắn', field: 'messageType' },
-      { id: 'col-negative', name: 'Tiêu cực', field: 'isNegative' },
-      { id: 'col-priority', name: 'Mức độ ưu tiên', field: 'priority' },
-      { id: 'col-status', name: 'Trạng thái', field: 'status' },
+      { id: 'fsh-6-1', name: 'Phân loại mục đích tin nhắn', field: 'messageType' },
+      { id: 'fsh-6-2', name: 'Mức độ hài lòng',               field: 'satisfaction' },
+      { id: 'fsh-6-3', name: 'Khách có giới thiệu được?',      field: 'canRefer' },
     ],
     rows: [
-      { id: 'c1', customer: 'Nguyễn Thị Lan', messageType: 'Hỏi giao hàng', isNegative: false, priority: 'Bình thường', status: 'Đã xử lý', platform: 'facebook' },
-      { id: 'c2', customer: 'Trần Văn Minh', messageType: 'Xin hướng dẫn sử dụng', isNegative: false, priority: 'Bình thường', status: 'Đã xử lý', platform: 'zalo' },
-      { id: 'c3', customer: 'Phạm Thị Hương', messageType: 'Khiếu nại lỗi', isNegative: true, priority: 'Cao', status: 'Đang xử lý', platform: 'facebook' },
-      { id: 'c4', customer: 'Lê Hoàng Nam', messageType: 'Khiếu nại lỗi', isNegative: true, priority: 'Cao', status: 'Đang xử lý', platform: 'zalo' },
-      { id: 'c5', customer: 'Đỗ Minh Thy', messageType: 'Hỏi giao hàng', isNegative: false, priority: 'Bình thường', status: 'Đã xử lý', platform: 'facebook' },
-      { id: 'c6', customer: 'Bùi Đức Anh', messageType: 'Khác', isNegative: false, priority: 'Thấp', status: 'Đã xử lý', platform: 'zalo' },
+      { id: 'f6c1', customer: 'Trần Minh Châu',    messageType: 'Hỏi về đơn hàng', satisfaction: 'Hài lòng',      canRefer: true,  platform: 'facebook' },
+      { id: 'f6c2', customer: 'Nguyễn Hoàng Nam', messageType: 'Xin đổi trả',      satisfaction: 'Không hài lòng', canRefer: false, platform: 'zalo' },
+      { id: 'f6c3', customer: 'Lê Thu Hương',      messageType: 'Hỏi sản phẩm mới', satisfaction: 'Hài lòng',      canRefer: true,  platform: 'facebook' },
+      { id: 'f6c4', customer: 'Phạm Đức Tùng',     messageType: 'Hỏi về đơn hàng', satisfaction: 'Trung bình',    canRefer: false, platform: 'zalo' },
+      { id: 'f6c5', customer: 'Vũ Thị Lan',        messageType: 'Xin đổi trả',      satisfaction: 'Không hài lòng', canRefer: false, platform: 'facebook' },
+    ],
+  },
+
+  // ═══════════════════════════════════════════════════════════════════
+  // NGÀNH 2: MẸ VÀ BÉ
+  // ═══════════════════════════════════════════════════════════════════
+
+  // ─── mbb-1: Phân Tích Nhu Cầu KH ───────────────────────────
+  'mbb-1': {
+    columns: [
+      { id: 'mbb-1-1', name: 'Sản phẩm / Danh mục quan tâm', field: 'product' },
+      { id: 'mbb-1-2', name: 'Độ tuổi bé / Giai đoạn',       field: 'babyAge' },
+      { id: 'mbb-1-3', name: 'Mức độ quan tâm',                field: 'temperature' },
+      { id: 'mbb-1-4', name: 'Nhu cầu cốt lõi',                field: 'painPoint' },
+    ],
+    rows: [
+      { id: 'm1c1', customer: 'Nguyễn Thị Mai',   product: 'Sữa công thức',   babyAge: '6 tháng', temperature: 'Nóng', painPoint: 'Con bị táo bón cần sữa gì',       platform: 'facebook' },
+      { id: 'm1c2', customer: 'Trần Văn Hùng',   product: 'Tã quần',         babyAge: '18 tháng', temperature: 'Ấm', painPoint: 'Tìm tã cho bé 18 tháng chạy nhiều', platform: 'zalo' },
+      { id: 'm1c3', customer: 'Lê Thu Phương',   product: 'Đồ ăn dặm',       babyAge: '7 tháng', temperature: 'Nóng', painPoint: 'Cần giao gấp vì hết đồ ăn dặm',  platform: 'facebook' },
+      { id: 'm1c4', customer: 'Phạm Đức Anh',    product: 'Sữa công thức',   babyAge: 'Không xác định', temperature: 'Lạnh', painPoint: 'Hỏi 1 câu rồi không rep',        platform: 'zalo' },
+      { id: 'm1c5', customer: 'Vũ Hoàng Yến',     product: 'Bỉm tã',           babyAge: '3 tháng', temperature: 'Ấm', painPoint: 'Da bé bị hăm cần sản phẩm nhẹ',   platform: 'facebook' },
+    ],
+  },
+
+  // ─── mbb-2: Đánh Giá Chất Lượng Lead ────────────────────────
+  'mbb-2': {
+    columns: [
+      { id: 'mbb-2-1', name: 'Khách hàng rác',       field: 'isJunk' },
+      { id: 'mbb-2-2', name: 'Trạng thái thu thập SĐT', field: 'phoneStatus' },
+      { id: 'mbb-2-3', name: 'Rào cản chốt đơn',       field: 'objection' },
+      { id: 'mbb-2-4', name: 'Quan tâm mua sỉ / Combo', field: 'isBulk' },
+    ],
+    rows: [
+      { id: 'm2c1', customer: 'Nguyễn Thị Mai',   isJunk: false, phoneStatus: 'Đã cho SĐT', objection: 'Không có rào cản',           isBulk: true,  platform: 'facebook' },
+      { id: 'm2c2', customer: 'Trần Văn Hùng',   isJunk: false, phoneStatus: 'Đã cho SĐT', objection: 'Lo ngại an toàn / chất lượng', isBulk: false, platform: 'zalo' },
+      { id: 'm2c3', customer: 'Lê Thu Phương',   isJunk: true,  phoneStatus: 'Chưa cho',    objection: 'Khách hàng rác',              isBulk: false, platform: 'facebook' },
+      { id: 'm2c4', customer: 'Phạm Đức Anh',   isJunk: false, phoneStatus: 'Từ chối',    objection: 'Cần hỏi chồng',              isBulk: false, platform: 'zalo' },
+      { id: 'm2c5', customer: 'Vũ Hoàng Yến',     isJunk: false, phoneStatus: 'Đã cho SĐT', objection: 'Không có rào cản',           isBulk: true,  platform: 'facebook' },
+    ],
+  },
+
+  // ─── mbb-3: Đánh Giá Sale ────────────────────────────────────
+  'mbb-3': {
+    columns: [
+      { id: 'mbb-3-1', name: 'Đánh giá Thái độ tư vấn', field: 'attitude' },
+      { id: 'mbb-3-2', name: 'Lỗi mất khách do Sale',    field: 'mistake' },
+    ],
+    rows: [
+      { id: 'm3c1', customer: 'Nguyễn Thị Mai',   attitude: 'Tốt', mistake: 'Không có lỗi',                           platform: 'facebook' },
+      { id: 'm3c2', customer: 'Trần Văn Hùng',   attitude: 'Tốt', mistake: 'Không có lỗi',                           platform: 'zalo' },
+      { id: 'm3c3', customer: 'Lê Thu Phương',   attitude: 'Trung bình', mistake: 'Không giải đáp lo ngại về an toàn', platform: 'facebook' },
+      { id: 'm3c4', customer: 'Phạm Đức Anh',     attitude: 'Tốt', mistake: 'Không có lỗi',                           platform: 'zalo' },
+      { id: 'm3c5', customer: 'Vũ Hoàng Yến',    attitude: 'Kém', mistake: 'Trả lời cộc lốc về thành phần sữa',     platform: 'facebook' },
+    ],
+  },
+
+  // ─── mbb-4: Phân Tích Chân Dung KH ──────────────────────────
+  'mbb-4': {
+    columns: [
+      { id: 'mbb-4-1', name: 'Giới tính phụ huynh', field: 'gender' },
+      { id: 'mbb-4-2', name: 'Độ tuổi bé',          field: 'babyAge' },
+      { id: 'mbb-4-3', name: 'Khu vực địa lý',      field: 'location' },
+      { id: 'mbb-4-4', name: 'Khoảng ngân sách',    field: 'budget' },
+    ],
+    rows: [
+      { id: 'm4c1', customer: 'Nguyễn Thị Mai',   gender: 'Mẹ', location: 'TP. Hồ Chí Minh', budget: '500k - 1 triệu',    platform: 'facebook' },
+      { id: 'm4c2', customer: 'Trần Văn Hùng',   gender: 'Bố', location: 'Hà Nội',           budget: 'Dưới 500k',         platform: 'zalo' },
+      { id: 'm4c3', customer: 'Lê Thu Phương',   gender: 'Mẹ', location: 'Đà Nẵng',           budget: '1 - 2 triệu',       platform: 'facebook' },
+      { id: 'm4c4', customer: 'Vũ Hoàng Yến',    gender: 'Người thân', location: 'Cần Thơ', budget: 'Dưới 500k',     platform: 'facebook' },
+      { id: 'm4c5', customer: 'Phạm Đức Anh',    gender: 'Mẹ', location: 'TP. Hồ Chí Minh', budget: 'Không đề cập',     platform: 'zalo' },
+    ],
+  },
+
+  // ─── mbb-5: Phân Tích Đối Thủ ────────────────────────────────
+  'mbb-5': {
+    columns: [
+      { id: 'mbb-5-1', name: 'Có nhắc đến đối thủ?', field: 'hasCompetitor' },
+      { id: 'mbb-5-2', name: 'Tên đối thủ / Thương hiệu', field: 'competitorName' },
+      { id: 'mbb-5-3', name: 'Tiêu chí so sánh',        field: 'criteria' },
+    ],
+    rows: [
+      { id: 'm5c1', customer: 'Nguyễn Thị Mai',   hasCompetitor: true,  competitorName: 'Friso',          criteria: 'Chất lượng',    platform: 'facebook' },
+      { id: 'm5c2', customer: 'Trần Văn Hùng',   hasCompetitor: false, competitorName: 'Không có',       criteria: 'Không có',      platform: 'zalo' },
+      { id: 'm5c3', customer: 'Lê Thu Phương',   hasCompetitor: true,  competitorName: 'Bobby',          criteria: 'An toàn',       platform: 'facebook' },
+      { id: 'm5c4', customer: 'Vũ Hoàng Yến',    hasCompetitor: true,  competitorName: 'Pampers',         criteria: 'Giá cả',       platform: 'facebook' },
+      { id: 'm5c5', customer: 'Phạm Đức Anh',   hasCompetitor: false, competitorName: 'Không có',       criteria: 'Không có',      platform: 'zalo' },
+    ],
+  },
+
+  // ─── mbb-6: Phân Tích Sau Mua ──────────────────────────────
+  'mbb-6': {
+    columns: [
+      { id: 'mbb-6-1', name: 'Phân loại mục đích tin nhắn', field: 'messageType' },
+      { id: 'mbb-6-2', name: 'Mức độ bức xúc',              field: 'isNegative' },
+    ],
+    rows: [
+      { id: 'm6c1', customer: 'Nguyễn Thị Mai',   messageType: 'Hỏi giao hàng',       isNegative: false, platform: 'facebook' },
+      { id: 'm6c2', customer: 'Trần Văn Hùng',   messageType: 'Xin hướng dẫn sử dụng', isNegative: false, platform: 'zalo' },
+      { id: 'm6c3', customer: 'Lê Thu Phương',   messageType: 'Khiếu nại lỗi-an toàn', isNegative: true,  platform: 'facebook' },
+      { id: 'm6c4', customer: 'Vũ Hoàng Yến',    messageType: 'Xin đổi trả',           isNegative: false, platform: 'facebook' },
+      { id: 'm6c5', customer: 'Phạm Đức Anh',    messageType: 'Khiếu nại lỗi-an toàn', isNegative: true,  platform: 'zalo' },
+    ],
+  },
+
+  // ═══════════════════════════════════════════════════════════════════
+  // NGÀNH 3: MỸ PHẨM
+  // ═══════════════════════════════════════════════════════════════════
+
+  // ─── cos-1: Phân Tích Nhu Cầu KH ───────────────────────────
+  'cos-1': {
+    columns: [
+      { id: 'cos-1-1', name: 'Sản phẩm / Dịch vụ quan tâm', field: 'product' },
+      { id: 'cos-1-2', name: 'Loại da / Vấn đề da',        field: 'skinType' },
+      { id: 'cos-1-3', name: 'Mức độ quan tâm',              field: 'temperature' },
+      { id: 'cos-1-4', name: 'Nhu cầu cốt lõi',              field: 'painPoint' },
+    ],
+    rows: [
+      { id: 'c1c1', customer: 'Trần Thị Lan',    product: 'Serum trị mụn ẩn',   skinType: 'Da dầu nhờn',    temperature: 'Nóng', painPoint: 'Trị mụn ẩn lâu năm không hết',    platform: 'facebook' },
+      { id: 'c1c2', customer: 'Nguyễn Đức Minh', product: 'Kem dưỡng ẩm',       skinType: 'Da nhạy cảm',    temperature: 'Ấm', painPoint: 'Tìm kem dưỡng cho da nhạy cảm', platform: 'zalo' },
+      { id: 'c1c3', customer: 'Lê Hoàng Yến',    product: 'Kem chống nắng',     skinType: 'Da hỗn hợp',     temperature: 'Nóng', painPoint: 'Tìm kem chống nắng cho da dầu',  platform: 'facebook' },
+      { id: 'c1c4', customer: 'Phạm Thu Hà',    product: 'Toner',               skinType: 'Da dầu',        temperature: 'Lạnh', painPoint: 'Hỏi 1 câu rồi không rep',        platform: 'zalo' },
+      { id: 'c1c5', customer: 'Vũ Minh Tuấn',    product: 'Serum trị nám',      skinType: 'Da nám',         temperature: 'Ấm', painPoint: 'Cần serum giá bình dân trị nám',   platform: 'facebook' },
+    ],
+  },
+
+  // ─── cos-2: Đánh Giá Chất Lượng Lead ───────────────────────
+  'cos-2': {
+    columns: [
+      { id: 'cos-2-1', name: 'Khách hàng rác',            field: 'isJunk' },
+      { id: 'cos-2-2', name: 'Trạng thái thu thập SĐT',  field: 'phoneStatus' },
+      { id: 'cos-2-3', name: 'Rào cản chốt đơn',          field: 'objection' },
+      { id: 'cos-2-4', name: 'Yêu cầu chứng minh real',   field: 'askReal' },
+    ],
+    rows: [
+      { id: 'c2c1', customer: 'Trần Thị Lan',    isJunk: false, phoneStatus: 'Đã cho SĐT', objection: 'Lo ngại hàng fake',        askReal: true,  platform: 'facebook' },
+      { id: 'c2c2', customer: 'Nguyễn Đức Minh', isJunk: false, phoneStatus: 'Đã cho SĐT', objection: 'Hỏi thêm về thành phần',   askReal: false, platform: 'zalo' },
+      { id: 'c2c3', customer: 'Lê Hoàng Yến',   isJunk: true,  phoneStatus: 'Chưa cho',    objection: 'Khách hàng rác',          askReal: false, platform: 'facebook' },
+      { id: 'c2c4', customer: 'Phạm Thu Hà',     isJunk: false, phoneStatus: 'Từ chối',    objection: 'Đang cân nhắc nhiều nơi', askReal: true,  platform: 'zalo' },
+      { id: 'c2c5', customer: 'Vũ Minh Tuấn',   isJunk: false, phoneStatus: 'Đã cho SĐT', objection: 'Không có rào cản',         askReal: false, platform: 'facebook' },
+    ],
+  },
+
+  // ─── cos-3: Đánh Giá Sale ───────────────────────────────────
+  'cos-3': {
+    columns: [
+      { id: 'cos-3-1', name: 'Đánh giá Thái độ tư vấn', field: 'attitude' },
+      { id: 'cos-3-2', name: 'Lỗi mất khách do Sale',     field: 'mistake' },
+    ],
+    rows: [
+      { id: 'c3c1', customer: 'Trần Thị Lan',    attitude: 'Tốt', mistake: 'Không có lỗi',                    platform: 'facebook' },
+      { id: 'c3c2', customer: 'Nguyễn Đức Minh', attitude: 'Tốt', mistake: 'Không có lỗi',                    platform: 'zalo' },
+      { id: 'c3c3', customer: 'Lê Hoàng Yến',   attitude: 'Trung bình', mistake: 'Không hỏi về tình trạng da', platform: 'facebook' },
+      { id: 'c3c4', customer: 'Phạm Thu Hà',     attitude: 'Tốt', mistake: 'Không có lỗi',                    platform: 'zalo' },
+      { id: 'c3c5', customer: 'Vũ Minh Tuấn',    attitude: 'Kém', mistake: 'Không giải đáp lo ngại về hàng fake', platform: 'facebook' },
+    ],
+  },
+
+  // ─── cos-4: Phân Tích Chân Dung KH ──────────────────────────
+  'cos-4': {
+    columns: [
+      { id: 'cos-4-1', name: 'Giới tính',        field: 'gender' },
+      { id: 'cos-4-2', name: 'Loại da / Vấn đề da', field: 'skinType' },
+      { id: 'cos-4-3', name: 'Khu vực địa lý',   field: 'location' },
+      { id: 'cos-4-4', name: 'Khoảng ngân sách', field: 'budget' },
+    ],
+    rows: [
+      { id: 'c4c1', customer: 'Trần Thị Lan',    gender: 'Nữ', location: 'TP. Hồ Chí Minh', budget: '500k - 1 triệu',    platform: 'facebook' },
+      { id: 'c4c2', customer: 'Nguyễn Đức Minh', gender: 'Nam', location: 'Hà Nội',           budget: 'Dưới 500k',         platform: 'zalo' },
+      { id: 'c4c3', customer: 'Lê Hoàng Yến',    gender: 'Nữ', location: 'Đà Nẵng',           budget: '1 - 2 triệu',       platform: 'facebook' },
+      { id: 'c4c4', customer: 'Phạm Thu Hà',     gender: 'Nữ', location: 'TP. Hồ Chí Minh', budget: 'Không đề cập',     platform: 'zalo' },
+      { id: 'c4c5', customer: 'Vũ Minh Tuấn',    gender: 'Nam', location: 'Hà Nội',           budget: 'Dưới 500k',         platform: 'facebook' },
+    ],
+  },
+
+  // ─── cos-5: Phân Tích Đối Thủ ──────────────────────────────
+  'cos-5': {
+    columns: [
+      { id: 'cos-5-1', name: 'Có nhắc đến đối thủ?', field: 'hasCompetitor' },
+      { id: 'cos-5-2', name: 'Tên đối thủ',            field: 'competitorName' },
+      { id: 'cos-5-3', name: 'Tiêu chí so sánh',       field: 'criteria' },
+    ],
+    rows: [
+      { id: 'c5c1', customer: 'Trần Thị Lan',    hasCompetitor: true,  competitorName: 'Some By Mi',    criteria: 'Hàng real',      platform: 'facebook' },
+      { id: 'c5c2', customer: 'Nguyễn Đức Minh', hasCompetitor: false, competitorName: 'Không có',       criteria: 'Không có',        platform: 'zalo' },
+      { id: 'c5c3', customer: 'Lê Hoàng Yến',   hasCompetitor: true,  competitorName: 'La Roche-Posay', criteria: 'Thành phần',     platform: 'facebook' },
+      { id: 'c5c4', customer: 'Phạm Thu Hà',     hasCompetitor: true,  competitorName: 'Dr. G',           criteria: 'Giá cả',         platform: 'zalo' },
+      { id: 'c5c5', customer: 'Vũ Minh Tuấn',   hasCompetitor: false, competitorName: 'Không có',       criteria: 'Không có',        platform: 'facebook' },
+    ],
+  },
+
+  // ─── cos-6: Phân Tích Sau Mua ──────────────────────────────
+  'cos-6': {
+    columns: [
+      { id: 'cos-6-1', name: 'Phân loại mục đích tin nhắn', field: 'messageType' },
+      { id: 'cos-6-2', name: 'Mức độ bức xúc',             field: 'isNegative' },
+    ],
+    rows: [
+      { id: 'c6c1', customer: 'Trần Thị Lan',    messageType: 'Khiếu nại dị ứng',    isNegative: true,  platform: 'facebook' },
+      { id: 'c6c2', customer: 'Nguyễn Đức Minh', messageType: 'Hỏi giao hàng',     isNegative: false, platform: 'zalo' },
+      { id: 'c6c3', customer: 'Lê Hoàng Yến',   messageType: 'Xin hướng dẫn sử dụng', isNegative: false, platform: 'facebook' },
+      { id: 'c6c4', customer: 'Phạm Thu Hà',     messageType: 'Khiếu nại dị ứng',    isNegative: true,  platform: 'zalo' },
+      { id: 'c6c5', customer: 'Vũ Minh Tuấn',   messageType: 'Khiếu nại khác',      isNegative: false, platform: 'facebook' },
     ],
   },
 };
