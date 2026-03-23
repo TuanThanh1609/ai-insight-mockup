@@ -437,7 +437,7 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col flex-1 min-h-0 overflow-y-auto">
       {/* ── Carousel Selector ── */}
       <div className="border-b border-[var(--color-outline-variant)] bg-surface-container-lowest px-6 pt-5 pb-4">
         {/* Back button + title */}
@@ -460,13 +460,21 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
               <InsightSelectorCard
                 insight={ins}
                 isSelected={ins.id === selectedInsightId}
-                onClick={() => onSelectInsight(ins.id)}
+                onClick={() => {
+                  onSelectInsight(ins.id);
+                  // Scroll to detail area after selecting
+                  setTimeout(() => {
+                    document.getElementById('insight-detail-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }, 50);
+                }}
               />
             </div>
           ))}
         </div>
       </div>
 
+      {/* ── Detail content area ── */}
+      <div id="insight-detail-content" className="flex-1 min-h-0 overflow-y-auto">
       {/* ── No insight selected ── */}
       {!selectedInsight ? (
         <div className="flex-1 flex flex-col items-center justify-center gap-4 py-20">
@@ -1154,6 +1162,7 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
           </div>
         </>
       )}
+      </div>
     </div>
   );
 }
