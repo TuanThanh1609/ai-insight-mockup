@@ -8,6 +8,7 @@ import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
 import { Tabs } from '../ui/Tabs';
 import { Button } from '../ui/Button';
+import { InsightTrendChart } from './InsightTrendChart';
 import { mockTemplates } from '../../data/mockTemplates';
 import { mockAnalysisResults } from '../../data/mockAnalysisResults';
 import { mockConversations } from '../../data/mockConversations';
@@ -551,6 +552,9 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
                     <p className="font-display font-bold text-2xl text-primary">{selectedInsight.columnCount}</p>
                   </Card>
                 </div>
+
+                {/* Row 2: Xu hướng Line Chart */}
+                <InsightTrendChart insightId={selectedInsight.templateId || selectedInsight.id} />
 
                 {/* Row 2+: Smart columns + auto-fill metrics grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
