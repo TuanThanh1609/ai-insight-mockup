@@ -8,13 +8,17 @@ import { Button } from '../components/ui/Button';
 import { OverviewCards } from '../components/insight/OverviewCards';
 import { RevenueCards } from '../components/insight/RevenueCards';
 import { ContributionChart } from '../components/insight/ContributionChart';
-import { TrendChart } from '../components/insight/TrendChart';
 import { SourceChart } from '../components/insight/SourceChart';
 import { CampaignTable } from '../components/insight/CampaignTable';
 import { AIInsightPanel } from '../components/insight/AIInsightPanel';
 import { DailyDetailChart } from '../components/insight/DailyDetailChart';
+import { ExecutiveSummaryCard } from '../components/insight/ExecutiveSummaryCard';
+import { PlatformROASCard } from '../components/insight/PlatformROASCard';
+import { CostPerQualityLeadCard } from '../components/insight/CostPerQualityLeadCard';
+import { RevenueSpendTrendChart } from '../components/insight/RevenueSpendTrendChart';
 import { mockCampaigns, mockConversationTrend, mockOverviewStats, mockDailyBreakdown } from '../data/mockCampaigns';
 import { mockAIInsights } from '../data/mockAIInsights';
+import { mockExecutiveSummary } from '../data/mockExecutiveSummary';
 
 const filterTabs = [
   { value: 'all', label: 'Tất cả' },
@@ -69,9 +73,18 @@ export default function AdsDashboard() {
         {/* Overview cards */}
         <OverviewCards stats={mockOverviewStats} />
 
-        {/* Revenue + ROAS summary */}
+        {/* Executive Summary — CEO 3-second scan */}
         <div className="mt-4">
-          <RevenueCards stats={mockOverviewStats} />
+          <ExecutiveSummaryCard summary={mockExecutiveSummary} />
+        </div>
+
+        {/* Revenue + Platform ROAS + Cost-per-Lead (3-column grid) */}
+        <div className="mt-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <RevenueCards stats={mockOverviewStats} />
+            <PlatformROASCard campaigns={mockCampaigns} stats={mockOverviewStats} />
+            <CostPerQualityLeadCard campaigns={mockCampaigns} stats={mockOverviewStats} />
+          </div>
         </div>
 
         {/* Contribution chart */}
@@ -82,7 +95,7 @@ export default function AdsDashboard() {
         {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 mt-6 mb-6">
           <div className="lg:col-span-3">
-            <TrendChart data={mockConversationTrend} />
+            <RevenueSpendTrendChart dailyBreakdown={mockDailyBreakdown} />
           </div>
           <div className="lg:col-span-2">
             <SourceChart
