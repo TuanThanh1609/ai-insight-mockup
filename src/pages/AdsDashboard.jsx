@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { cn } from '../lib/utils';
 import { AlertTriangle } from 'lucide-react';
 import { Header } from '../components/layout/Header';
 import { PageContainer } from '../components/layout/PageContainer';
@@ -9,7 +10,8 @@ import { OverviewCards } from '../components/insight/OverviewCards';
 import { RevenueCards } from '../components/insight/RevenueCards';
 import { ContributionChart } from '../components/insight/ContributionChart';
 import { SourceChart } from '../components/insight/SourceChart';
-import { CampaignTable } from '../components/insight/CampaignTable';
+import { CampaignSummaryTable } from '../components/insight/CampaignSummaryTable';
+import { CampaignOptimizationTable } from '../components/insight/CampaignOptimizationTable';
 import { AIInsightPanel } from '../components/insight/AIInsightPanel';
 import { DailyDetailChart } from '../components/insight/DailyDetailChart';
 import { ExecutiveSummaryCard } from '../components/insight/ExecutiveSummaryCard';
@@ -30,6 +32,7 @@ const filterTabs = [
 
 export default function AdsDashboard() {
   const [activeFilter, setActiveFilter] = useState('all');
+  const [tableView, setTableView] = useState('summary'); // 'summary' | 'optimization'
   const [selectedCampaign, setSelectedCampaign] = useState(null);
 
   const filtered = mockCampaigns.filter((camp) => {
@@ -108,13 +111,40 @@ export default function AdsDashboard() {
         {/* Campaign table section */}
         <div>
           {/* Header */}
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-4 gap-4">
             <div>
               <h2 className="font-display font-bold text-base text-on-surface">Chiến dịch</h2>
               <p className="text-xs text-on-surface-variant mt-0.5">
                 {filtered.length} chiến dịch
               </p>
             </div>
+
+            {/* Table view tabs */}
+            <div className="flex items-center gap-1 p-1 bg-surface-container-low rounded-[--radius-md]">
+              <button
+                onClick={() => setTableView('summary')}
+                className={cn(
+                  'px-3 py-1.5 rounded-[--radius-sm] text-xs font-medium transition-all duration-150 cursor-pointer',
+                  tableView === 'summary'
+                    ? 'bg-surface-container-highest text-on-surface shadow-sm'
+                    : 'text-on-surface-variant hover:text-on-surface'
+                )}
+              >
+                Tổng quan
+              </button>
+              <button
+                onClick={() => setTableView('optimization')}
+                className={cn(
+                  'px-3 py-1.5 rounded-[--radius-sm] text-xs font-medium transition-all duration-150 cursor-pointer',
+                  tableView === 'optimization'
+                    ? 'bg-surface-container-highest text-on-surface shadow-sm'
+                    : 'text-on-surface-variant hover:text-on-surface'
+                )}
+              >
+                Gợi ý tối ưu
+              </button>
+            </div>
+
             <Tabs
               tabs={filterTabs}
               activeTab={activeFilter}
@@ -125,14 +155,21 @@ export default function AdsDashboard() {
 
           {/* Table */}
           <Card className="p-4">
-            <CampaignTable
-              campaigns={filtered}
-              onSelectCampaign={setSelectedCampaign}
-            />
+            {tableView === 'summary' ? (
+              <CampaignSummaryTable
+                campaigns={filtered}
+                onSelectCampaign={setSelectedCampaign}
+              />
+            ) : (
+              <CampaignOptimizationTable
+                campaigns={filtered}
+                onSelectCampaign={setSelectedCampaign}
+              />
+            )}
           </Card>
 
           {/* Daily detail panel — slides in on row click */}
-          {selectedCampaign && mockDailyBreakdown[selectedCampaign.id] && (
+          {tableView === 'summary' && selectedCampaign && mockDailyBreakdown[selectedCampaign.id] && (
             <div className="mt-4 transition-all duration-200">
               <DailyDetailChart
                 dailyData={mockDailyBreakdown[selectedCampaign.id]}
