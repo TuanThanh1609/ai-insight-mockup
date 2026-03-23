@@ -1,4 +1,4 @@
-import { Eye, Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Trash2 } from 'lucide-react';
 
 export function InsightTable({ insights, onView, onDelete }) {
   const statusMap = {
@@ -33,7 +33,8 @@ export function InsightTable({ insights, onView, onDelete }) {
           return (
             <div
               key={insight.id}
-              className="grid grid-cols-[1fr_100px_80px_100px_100px_80px] gap-4 px-4 py-3.5 items-center rounded-[--radius-md] hover:bg-surface-container-low transition-colors duration-150 group"
+              onClick={() => onView && onView(insight.id)}
+              className="grid grid-cols-[1fr_100px_80px_100px_100px_80px] gap-4 px-4 py-3.5 items-center rounded-[--radius-md] hover:bg-surface-container-low cursor-pointer transition-colors duration-150 group"
             >
               {/* Name */}
               <div>
@@ -62,16 +63,15 @@ export function InsightTable({ insights, onView, onDelete }) {
                 {insight.conversationsCount.toLocaleString('vi-VN')}
               </span>
 
-              {/* Actions */}
-              <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+              {/* Actions — stop propagation so clicking them doesn't open detail */}
+              <div
+                className="flex items-center justify-end gap-1"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <button
                   className="p-1.5 rounded-[--radius-sm] text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors cursor-pointer"
-                  title="Xem"
-                  onClick={() => onView && onView(insight.id)}
+                  title="Sửa"
                 >
-                  <Eye size={14} />
-                </button>
-                <button className="p-1.5 rounded-[--radius-sm] text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors cursor-pointer" title="Sửa">
                   <Pencil size={14} />
                 </button>
                 <button
