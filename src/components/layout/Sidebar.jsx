@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutGrid, Sparkles, Zap } from 'lucide-react';
+import { LayoutGrid, Sparkles, Zap, BarChart2 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
 const navItems = [
@@ -10,10 +10,15 @@ const navItems = [
     exact: true,
   },
   {
+    to: '/insight/insight-dashboard',
+    label: 'Dashboard Insight',
+    icon: BarChart2,
+    badge: 'AI',
+  },
+  {
     to: '/insight/dashboard',
     label: 'Dashboard Ads',
     icon: Sparkles,
-    badge: 'AI',
   },
 ];
 
