@@ -7,17 +7,10 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Legend,
 } from 'recharts';
 import { TrendingUp, FilterX } from 'lucide-react';
 import { Card } from '../ui/Card';
-import { Button } from '../ui/Button';
 import { mockInsightTrend } from '../../data/mockInsightTrend';
-
-const PERIODS = [
-  { key: 'week',  label: 'Theo Tuần',  sub: '7 ngày' },
-  { key: 'month', label: 'Theo Tháng', sub: '30 ngày' },
-];
 
 // Palette — saturated, distinct colors
 const PALETTE = [
@@ -29,6 +22,19 @@ const PALETTE = [
   { stroke: '#06b6d4', fill: '#06b6d4' },
 ];
 
+const PERIODS = [
+  { key: 'week',  label: 'Theo Tuần',  sub: '7 ngày' },
+  { key: 'month', label: 'Theo Tháng', sub: '30 ngày' },
+];
+
+// Runtime default metrics (when no static mock data exists)
+const RUNTIME_METRICS = [
+  { key: 'Hội_thoại',   label: 'Hội thoại' },
+  { key: 'Nóng (%)',    label: 'Nóng' },
+  { key: 'Ấm (%)',     label: 'Ấm' },
+  { key: 'Lạnh (%)',   label: 'Lạnh' },
+];
+
 function LegendDot({ color }) {
   return (
     <div
@@ -38,69 +44,129 @@ function LegendDot({ color }) {
   );
 }
 
-export function InsightTrendChart({ insightId, crossFilter, conversations }) {
+/**
+ * InsightTrendChart
+ *
+ * Supports two data formats:
+ *  - Static (mockInsightTrend): { week: [], month: [], label, metrics }
+ *    where each data point has keys: label, nong, am, lang, ...
+ *  - Runtime (generateTrendData): [{ date, Hội_thoại, 'Nóng (%)', 'Ấm (%)', 'Lạnh (%)' }]
+ *    label key = 'date'
+ *
+ * Props:
+ *  - insightId: lookup key for static mockInsightTrend
+ *  - trendData: runtime trend array (from getTrendData) — overrides static if present
+ *  - conversations: rows for cross-filtering
+ *  - crossFilter: active filter
+ */
+export function InsightTrendChart({ insightId, trendData, crossFilter, conversations }) {
   const [period, setPeriod] = useState('week');
-  const [chartFilter, setChartFilter] = useState(null); // local filter for chart
 
-  const trend = mockInsightTrend[insightId] || mockInsightTrend['fsh-1'];
-  const rawData = period === 'week' ? trend.week : trend.month;
+  // ── Determine format and extract raw data ──────────────────────────────────
+  const isStatic = (() => {
+    if (trendData && trendData.length > 0) return false;
+    const t = mockInsightTrend[insightId];
+    return !!(t && (Array.isArray(t.week) || Array.isArray(t.month)));
+  })();
 
-  // ── Compute filtered data ─────────────────────────────────────────────────
+  const staticTrend = isStatic ? (mockInsightTrend[insightId] || null) : null;
+  const runtimeTrend = (trendData && trendData.length > 0) ? trendData : null;
+
+  // For static: build metrics from staticTrend.metrics
+  // For runtime: use RUNTIME_METRICS (detect which keys actually exist)
+  const metrics = isStatic
+    ? (staticTrend?.metrics || RUNTIME_METRICS)
+    : (() => {
+        if (!runtimeTrend || runtimeTrend.length === 0) return RUNTIME_METRICS;
+        const keys = Object.keys(runtimeTrend[0]).filter(
+          (k) => k !== 'date' && k !== 'label'
+        );
+        return keys.length > 0
+          ? keys.map((key) => ({ key, label: key }))
+          : RUNTIME_METRICS;
+      })();
+
+  const rawData = useMemo(() => {
+    if (isStatic && staticTrend) {
+      return period === 'week' ? staticTrend.week : staticTrend.month;
+    }
+    if (runtimeTrend) {
+      return period === 'week' ? runtimeTrend.slice(-7) : runtimeTrend;
+    }
+    return [];
+  }, [isStatic, staticTrend, runtimeTrend, period]);
+
+  // label/dataKey: static uses 'label', runtime uses 'date'
+  const labelKey = isStatic ? 'label' : 'date';
+
+  // ── Cross-filter ────────────────────────────────────────────────────────────
   const data = useMemo(() => {
     if (!crossFilter || !conversations) return rawData;
 
-    // Compute period length (7 or 30) and slice conversations into buckets
+    const rows = conversations.rows || [];
     const bucketCount = period === 'week' ? 7 : 30;
     const buckets = Array.from({ length: bucketCount }, () => []);
 
-    const rows = conversations.rows || [];
     rows.forEach((row) => {
-      // Try to extract a date from the row
       const ts = row.timestamp || row.date;
       if (!ts) return;
       const d = new Date(ts);
-      const daysAgo = Math.floor((new Date('2026-03-23') - d) / 86400000);
+      const daysDiff = Math.floor((new Date('2026-03-23') - d) / 86400000);
       const bucketIdx = period === 'week'
-        ? 6 - daysAgo  // reversed: most recent at index 6 (rightmost)
-        : 29 - daysAgo; // reversed: most recent at index 29
+        ? 6 - daysDiff
+        : 29 - daysDiff;
       if (bucketIdx >= 0 && bucketIdx < bucketCount) {
         buckets[bucketIdx].push(row);
       }
     });
 
-    // Count filtered rows per bucket
-    const matched = rawData.map((d, i) => {
+    const filtered = rawData.map((d, i) => {
       const bucket = buckets[i] || [];
-      const filtered = bucket.filter((row) => {
-        if (!crossFilter) return true;
-        const fieldValue = row[crossFilter.field];
-        if (typeof crossFilter.value === 'boolean') return fieldValue === crossFilter.value;
-        return String(fieldValue) === String(crossFilter.value);
-      });
+      const scale = bucket.length === 0
+        ? 0
+        : bucket.filter((row) => {
+            const fv = row[crossFilter.field];
+            if (typeof crossFilter.value === 'boolean') return fv === crossFilter.value;
+            return String(fv) === String(crossFilter.value);
+          }).length / bucket.length;
 
-      // Scale each metric by the proportion of filtered rows
-      const scale = bucket.length === 0 ? 0 : filtered.length / bucket.length;
       const entry = { ...d };
-      trend.metrics.forEach((m) => {
-        entry[m.key] = Math.round(d[m.key] * scale);
+      metrics.forEach((m) => {
+        entry[m.key] = Math.round((d[m.key] || 0) * scale);
       });
       return entry;
     });
 
-    return matched;
-  }, [crossFilter, conversations, rawData, period, trend.metrics]);
+    return filtered;
+  }, [rawData, crossFilter, conversations, period, metrics]);
 
-  // ── Y-axis auto-scale ─────────────────────────────────────────────────────
-  const allValues = data.flatMap((d) => trend.metrics.map((m) => d[m.key] || 0));
-  const maxVal = Math.max(...allValues);
+  // ── Y-axis ─────────────────────────────────────────────────────────────────
+  const allValues = data.flatMap((d) => metrics.map((m) => d[m.key] || 0));
+  const maxVal = allValues.length > 0 ? Math.max(...allValues) : 0;
   const yMax = Math.ceil(maxVal * 1.2 / 10) * 10 || 100;
 
-  const metricsWithColor = trend.metrics.map((m, i) => ({
+  const metricsWithColor = metrics.map((m, i) => ({
     ...m,
     palette: PALETTE[i % PALETTE.length],
   }));
 
-  const hasFilter = !!crossFilter;
+  const chartLabel = isStatic
+    ? (staticTrend?.label || 'Xu hướng')
+    : 'Xu hướng Hội thoại';
+
+  if (rawData.length === 0) {
+    return (
+      <Card className="p-4">
+        <div className="flex items-center gap-1.5 mb-2">
+          <TrendingUp size={13} className="text-primary" />
+          <h3 className="font-display font-bold text-xs text-on-surface">{chartLabel}</h3>
+        </div>
+        <div className="flex items-center justify-center h-44 text-xs text-on-surface-variant">
+          Chưa có dữ liệu xu hướng
+        </div>
+      </Card>
+    );
+  }
 
   return (
     <Card className="p-4">
@@ -109,9 +175,7 @@ export function InsightTrendChart({ insightId, crossFilter, conversations }) {
         <div>
           <div className="flex items-center gap-1.5 mb-0.5">
             <TrendingUp size={13} className="text-primary" />
-            <h3 className="font-display font-bold text-xs text-on-surface">
-              Xu hướng: {trend.label}
-            </h3>
+            <h3 className="font-display font-bold text-xs text-on-surface">{chartLabel}</h3>
           </div>
           <p className="text-[10px] text-on-surface-variant ml-5">
             Biến động theo thời gian
@@ -120,13 +184,13 @@ export function InsightTrendChart({ insightId, crossFilter, conversations }) {
 
         {/* Period toggle */}
         <div className="flex items-center gap-2">
-          {hasFilter && (
+          {crossFilter && (
             <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/8 border border-primary/20">
               <span className="text-[10px] font-medium text-primary">
                 Đang lọc: {crossFilter.label}
               </span>
               <button
-                onClick={() => setChartFilter(null)}
+                onClick={() => {}}
                 className="text-primary hover:text-primary/70 transition-colors"
                 title="Xóa lọc chart"
               >
@@ -177,7 +241,7 @@ export function InsightTrendChart({ insightId, crossFilter, conversations }) {
               vertical={false}
             />
             <XAxis
-              dataKey="label"
+              dataKey={labelKey}
               tick={{ fontSize: 11, fill: '#5a6368', fontFamily: 'Inter', fontWeight: 500 }}
               axisLine={false}
               tickLine={false}

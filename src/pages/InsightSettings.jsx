@@ -10,6 +10,10 @@ import { InsightDetail } from '../components/insight/InsightDetail';
 import { CreateInsightFromScratchModal } from '../components/insight/CreateInsightFromScratchModal';
 import { mockUserInsights } from '../data/mockTemplates';
 import { useToast } from '../components/ui/Toast';
+import {
+  generateConversations,
+  registerInsightData,
+} from '../lib/mockDataService';
 
 const STORAGE_KEY = 'aiinsight_user_insights';
 
@@ -52,15 +56,29 @@ export default function InsightSettings() {
 
   // ─── Template save ────────────────────────────────────────────────────────
   const handleSaveTemplate = (template, selectedCols) => {
+    const insightId = `ins-${Date.now()}`;
+    // Map template columns → generator format { name, field, dataType, dataOptions }
+    const genCols = selectedCols.map((col) => ({
+      name:       col.name,
+      field:      col.name,         // dùng col.name làm field key (nhất quán với AI flow)
+      dataType:   col.dataType || col.type || 'short_text',
+      dataOptions: col.dataOptions || null,
+    }));
+
+    // Generate 20 mock conversations + register
+    const convData = generateConversations(insightId, genCols, template.industry || 'fashion', 20);
+    registerInsightData(insightId, convData);
+
     const newInsight = {
-      id: `ins-${Date.now()}`,
+      id: insightId,
       name: template.name,
       templateId: template.id,
+      industry: template.industry || 'fashion',
       platform: template.platform || 'all',
       columnCount: selectedCols.length,
       status: 'active',
       createdAt: new Date().toISOString(),
-      conversationsCount: 0,
+      conversationsCount: convData.rows.length,
     };
     setInsights((prev) => [newInsight, ...prev]);
     addToast(
@@ -72,9 +90,29 @@ export default function InsightSettings() {
   // ─── AI-generated insights save ──────────────────────────────────────────
   const handleSaveAIScratch = ({ masterInsight, insights: newInsights }) => {
     if (!newInsights || newInsights.length === 0) return;
+
+    // Generate mock data cho từng insight
+    const insightsWithData = newInsights.map((ins) => {
+      // Build column mapping: AI-generated insight lưu columns với id/cName/dataType/dataOptions
+      const genCols = (ins.columns || []).map((col) => ({
+        name:       col.name,
+        field:      col.name,            // dùng col.name làm field key (deriveFieldKey sẽ normalize)
+        dataType:   col.dataType || col.type || 'short_text',
+        dataOptions: col.dataOptions || null,
+      }));
+
+      const convData = generateConversations(ins.id, genCols, ins.industry || 'fashion', 20);
+      registerInsightData(ins.id, convData);
+
+      return {
+        ...ins,
+        conversationsCount: convData.rows.length,
+      };
+    });
+
     // Prepend new insights so the first one is selected
     setInsights((prev) => {
-      const updated = [...newInsights, ...prev];
+      const updated = [...insightsWithData, ...prev];
       return updated;
     });
     if (newInsights.length === 1) {

@@ -10,9 +10,8 @@ import { Tabs } from '../ui/Tabs';
 import { Button } from '../ui/Button';
 import { InsightTrendChart } from './InsightTrendChart';
 import { mockTemplates } from '../../data/mockTemplates';
-import { mockAnalysisResults } from '../../data/mockAnalysisResults';
-import { mockConversations } from '../../data/mockConversations';
 import { cn, formatNumber, timeAgo } from '../../lib/utils';
+import { getConversations, getAnalysis, getTrendData, hasMockData } from '../../lib/mockDataService';
 
 // ─── Mini chart components (reused from modal) ─────────────────────────────
 
@@ -472,9 +471,21 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
   const clearCrossFilter = useCallback(() => setCrossFilter(null), []);
 
   const selectedInsight = insights.find((i) => i.id === selectedInsightId) || null;
-  const template = selectedInsight ? mockTemplates.find((t) => t.id === selectedInsight.templateId) : null;
-  const analysis = selectedInsight ? (mockAnalysisResults[selectedInsight.templateId] || null) : null;
-  const conversations = selectedInsight ? (mockConversations[selectedInsight.templateId] || null) : null;
+  // Template: ưu tiên AI-generated columns (inline), fallback static mockTemplates
+  const template = selectedInsight
+    ? (selectedInsight.columns?.length > 0
+        ? { ...selectedInsight, columns: selectedInsight.columns }
+        : mockTemplates.find((t) => t.id === selectedInsight.templateId))
+    : null;
+  const insightId   = selectedInsight?.id;
+  const templateId  = selectedInsight?.templateId;
+
+  // conversations/analysis: ưu tiên runtime (AI flow hoặc template mới chưa có static)
+  const conversations = insightId ? getConversations(insightId) : null;
+  const analysis      = insightId ? getAnalysis(insightId) : null;
+  // trend: template-based → dùng templateId (lookup static), AI-generated → dùng insightId
+  const trendKey     = (templateId && templateId !== 'ai-generated') ? templateId : insightId;
+  const trendData    = trendKey ? getTrendData(trendKey) : [];
 
   const filteredRows = conversations
     ? conversations.rows.filter((row) => {
@@ -618,7 +629,8 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
 
                 {/* Row 2: Xu hướng Line Chart */}
                 <InsightTrendChart
-                  insightId={selectedInsight.templateId || selectedInsight.id}
+                  insightId={trendKey}
+                  trendData={trendData}
                   crossFilter={crossFilter}
                   conversations={conversations}
                 />
