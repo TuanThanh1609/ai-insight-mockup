@@ -228,11 +228,43 @@ export function generateConversations(insightId, columns, industry, rowCount = 2
  */
 export function computeAnalysisFromConversations(conversations, crossFilter) {
   let rows = conversations?.rows || [];
+  const columns = conversations?.columns || [];
   if (rows.length === 0) return null;
+
+  const fieldSet = new Set(columns.map(c => c.field));
+
+  const hasAnyField = (names) => names.some((n) => fieldSet.has(n) || rows.some((r) => r[n] !== undefined));
+
+  const pickBestField = (names) => {
+    const scored = names
+      .map((name) => ({
+        name,
+        score: rows.filter((r) => r[name] !== undefined && r[name] !== null && String(r[name]).trim() !== '').length,
+      }))
+      .sort((a, b) => b.score - a.score);
+
+    return scored[0]?.score > 0 ? scored[0].name : null;
+  };
+
+  const topByField = (fieldName, limit = 5) => {
+    if (!fieldName) return [];
+    const map = {};
+    rows.forEach((r) => {
+      const v = r[fieldName];
+      if (v !== undefined && v !== null && String(v).trim() !== '') {
+        const key = String(v);
+        map[key] = (map[key] || 0) + 1;
+      }
+    });
+    return Object.entries(map)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, limit)
+      .map(([text, count]) => ({ text, count }));
+  };
 
   // Apply cross-filter BEFORE computing stats
   if (crossFilter) {
-    rows = rows.filter(row => {
+    rows = rows.filter((row) => {
       const fv = row[crossFilter.field];
       if (typeof crossFilter.value === 'boolean') return fv === crossFilter.value;
       return String(fv) === String(crossFilter.value);
@@ -244,7 +276,7 @@ export function computeAnalysisFromConversations(conversations, crossFilter) {
     return {
       summary: { totalConversations: 0, analyzedAt: new Date().toISOString() },
       temperature: { hot: 0, warm: 0, cold: 0 },
-      productInterest: [], topPainPoints: [], topObjections: [],
+      productInterest: [], topPainPoints: [], topObjections: [], topMistakes: [],
       junkRate: 0, qualityRate: 100,
       phoneCollection: { collected: 0, refused: 0, notAsked: 0 },
       attitude: { good: 0, average: 0, poor: 0 },
@@ -254,97 +286,100 @@ export function computeAnalysisFromConversations(conversations, crossFilter) {
     };
   }
 
-  // Temperature
+  // Temperature (chỉ tính khi dataset có field nhiệt độ)
+  const hasTemperature = hasAnyField(['temperature', 'mucDoQuanTam']);
   const tempCount = { hot: 0, warm: 0, cold: 0 };
-  rows.forEach(row => {
-    const t = row.temperature || row.mucDoQuanTam || '';
-    if (t === 'Nóng' || t === 'Hot') tempCount.hot++;
-    else if (t === 'Ấm' || t === 'Warm') tempCount.warm++;
-    else tempCount.cold++;
-  });
+  if (hasTemperature) {
+    rows.forEach((row) => {
+      const t = row.temperature || row.mucDoQuanTam || '';
+      if (t === 'Nóng' || t === 'Hot') tempCount.hot++;
+      else if (t === 'Ấm' || t === 'Warm') tempCount.warm++;
+      else if (t === 'Lạnh' || t === 'Cold') tempCount.cold++;
+    });
+  }
 
   // Gender
   const genderCount = {
-    female: rows.filter(r => String(r.gender) === 'Nữ').length,
-    male:   rows.filter(r => String(r.gender) === 'Nam').length,
-    unknown: rows.filter(r => !r.gender || r.gender === 'Không rõ').length,
+    female: rows.filter((r) => String(r.gender) === 'Nữ').length,
+    male: rows.filter((r) => String(r.gender) === 'Nam').length,
+    unknown: rows.filter((r) => !r.gender || r.gender === 'Không rõ').length,
   };
 
   // Top Locations
-  const locations = {};
-  rows.forEach(r => { if (r.location) locations[r.location] = (locations[r.location] || 0) + 1; });
-  const topLocations = Object.entries(locations)
-    .sort((a, b) => b[1] - a[1]).slice(0, 5)
-    .map(([text, count]) => ({ text, count }));
+  const topLocations = topByField('location', 5);
 
-  // Products
-  const products = {};
-  rows.forEach(r => { if (r.product) products[r.product] = (products[r.product] || 0) + 1; });
-  const topProducts = Object.entries(products)
-    .sort((a, b) => b[1] - a[1]).slice(0, 5)
-    .map(([text, count]) => ({ text, count }));
+  // Dynamic interest/pain/objection/mistake fields theo template
+  const interestField = pickBestField(['product', 'food', 'service', 'destination', 'propertyType']);
+  const painField = pickBestField(['painPoint', 'issue']);
+  const objectionField = pickBestField(['objection', 'criteria']);
+  const mistakeField = pickBestField(['mistake']);
 
-  // Pain Points
-  const painPoints = {};
-  rows.forEach(r => { if (r.painPoint) painPoints[r.painPoint] = (painPoints[r.painPoint] || 0) + 1; });
-  const topPain = Object.entries(painPoints)
-    .sort((a, b) => b[1] - a[1]).slice(0, 5)
-    .map(([text, count]) => ({ text, count }));
-
-  // Objections
-  const objections = {};
-  rows.forEach(r => { if (r.objection) objections[r.objection] = (objections[r.objection] || 0) + 1; });
-  const topObj = Object.entries(objections)
-    .sort((a, b) => b[1] - a[1]).slice(0, 5)
-    .map(([text, count]) => ({ text, count }));
+  const topProducts = topByField(interestField, 5);
+  const topPain = topByField(painField, 5);
+  const topObj = topByField(objectionField, 5);
+  const topMistakes = topByField(mistakeField, 5);
 
   // Competitors
+  const hasCompetitorFields = hasAnyField(['competitorName', 'competitor', 'hasCompetitor']);
   const competitors = {};
-  rows.forEach(r => {
-    const c = r.competitorName || r.competitor;
-    if (c) competitors[c] = (competitors[c] || 0) + 1;
-  });
+  if (hasCompetitorFields) {
+    rows.forEach((r) => {
+      const c = r.competitorName || r.competitor;
+      if (c && c !== 'Không có') competitors[c] = (competitors[c] || 0) + 1;
+    });
+  }
   const topComp = Object.entries(competitors)
-    .sort((a, b) => b[1] - a[1]).slice(0, 5)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
     .map(([text, count]) => ({ text, count }));
 
   // Junk
-  const junkCount = rows.filter(r => r.isJunk === true || r.junkLead === true).length;
-  const junkRate = Math.round((junkCount / total) * 100);
+  const hasJunkField = hasAnyField(['isJunk', 'junkLead']);
+  const junkCount = hasJunkField ? rows.filter((r) => r.isJunk === true || r.junkLead === true).length : 0;
+  const junkRate = hasJunkField ? Math.round((junkCount / total) * 100) : 0;
 
-  // Sentiment
-  const negCount = rows.filter(r => r.isNegative === true || r.sentiment === 'Tiêu cực').length;
-  const posCount = rows.filter(r => r.sentiment === 'Tích cực').length;
-  const neuCount = total - negCount - posCount;
+  // Sentiment (chỉ tính khi có field sentiment/isNegative)
+  const hasSentiment = hasAnyField(['sentiment', 'isNegative']);
+  const negCount = hasSentiment ? rows.filter((r) => r.isNegative === true || r.sentiment === 'Tiêu cực').length : 0;
+  const posCount = hasSentiment ? rows.filter((r) => r.sentiment === 'Tích cực').length : 0;
+  const neuCount = hasSentiment ? Math.max(0, total - negCount - posCount) : 0;
 
-  // Phone collection
-  const phoneCollected = rows.filter(r => r.phoneStatus === 'Đã cho SĐT').length;
-  const phoneRefused    = rows.filter(r => r.phoneStatus === 'Từ chối').length;
-  const phoneNotAsked   = rows.filter(r => !r.phoneStatus || r.phoneStatus === 'Chưa cho').length;
+  // Phone collection (chỉ tính khi có phoneStatus)
+  const hasPhoneStatus = hasAnyField(['phoneStatus']);
+  const phoneCollected = hasPhoneStatus ? rows.filter((r) => r.phoneStatus === 'Đã cho SĐT').length : 0;
+  const phoneRefused = hasPhoneStatus ? rows.filter((r) => r.phoneStatus === 'Từ chối' || r.phoneStatus === 'Khách từ chối').length : 0;
+  const phoneNotAsked = hasPhoneStatus ? rows.filter((r) => !r.phoneStatus || r.phoneStatus === 'Chưa cho').length : 0;
 
-  // Attitude
-  const attGood = rows.filter(r => r.attitude === 'Tốt').length;
-  const attAvg  = rows.filter(r => r.attitude === 'Trung bình').length;
-  const attPoor = Math.max(0, total - attGood - attAvg);
+  // Attitude (không auto dồn toàn bộ vào Kém khi thiếu field)
+  const hasAttitude = hasAnyField(['attitude']);
+  const attGood = hasAttitude ? rows.filter((r) => r.attitude === 'Tốt').length : 0;
+  const attAvg = hasAttitude ? rows.filter((r) => r.attitude === 'Trung bình').length : 0;
+  const attPoor = hasAttitude ? rows.filter((r) => r.attitude === 'Kém').length : 0;
+
+  const competitorMentioned = hasCompetitorFields
+    ? rows.filter((r) => r.hasCompetitor === true || !!r.competitorName || !!r.competitor).length
+    : 0;
+  const competitorNotMentioned = hasCompetitorFields ? Math.max(0, total - competitorMentioned) : 0;
 
   return {
     summary: { totalConversations: total, analyzedAt: new Date().toISOString() },
-    temperature:      { hot: tempCount.hot, warm: tempCount.warm, cold: tempCount.cold },
-    productInterest:  topProducts,
-    topPainPoints:    topPain,
-    topObjections:    topObj,
+    temperature: { hot: tempCount.hot, warm: tempCount.warm, cold: tempCount.cold },
+    productInterest: topProducts,
+    topPainPoints: topPain,
+    topObjections: topObj,
+    topMistakes,
     junkRate,
-    qualityRate: Math.round(((total - junkCount) / total) * 100),
+    qualityRate: hasJunkField ? Math.round(((total - junkCount) / total) * 100) : 100,
     phoneCollection: { collected: phoneCollected, refused: phoneRefused, notAsked: phoneNotAsked },
-    attitude:         { good: attGood, average: attAvg, poor: attPoor },
-    gender:           genderCount,
+    attitude: { good: attGood, average: attAvg, poor: attPoor },
+    gender: genderCount,
     topLocations,
     competitorMentions: {
-      mentioned:    rows.filter(r => r.competitorName || r.competitor).length,
-      notMentioned: rows.filter(r => !r.competitorName && !r.competitor).length,
+      mentioned: competitorMentioned,
+      notMentioned: competitorNotMentioned,
     },
-    topCompetitors:     topComp,
-    negativeSentiment:  { negative: negCount, neutral: neuCount, positive: posCount },
+    topCompetitors: topComp,
+    negativeSentiment: { negative: negCount, neutral: neuCount, positive: posCount },
   };
 }
 
