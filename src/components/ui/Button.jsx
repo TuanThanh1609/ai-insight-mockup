@@ -3,7 +3,7 @@ import { cn } from '../../lib/utils';
 /**
  * Button — Editorial Precision Design System
  *
- * Primary:  Deep Rust (secondary) — The "Ultimate Action"
+ * Primary:  Coral (#fa6e5b) — The "Ultimate Action"
  * Tertiary: Vibrant Blue (tertiary) — Functional actions (Run Report)
  * Ghost:    No background, outline text — Secondary navigation
  * Primary-fixed: Dark navy on light bg — "Dark Mode" chip aesthetic
@@ -25,12 +25,11 @@ export function Button({
 
   const variants = {
     /**
-     * Primary: Deep Rust — The "Ultimate Action"
+     * Primary: Coral — The "Ultimate Action"
      * Reserved for the single most important CTA on screen.
-     * "Laser pointer, not a paint brush."
      */
     primary:
-      'bg-secondary text-on-secondary hover:brightness-110 active:brightness-95 rounded-[--radius-md] shadow-[--shadow-sm] hover:shadow-[--shadow-md]',
+      'bg-[#fa6e5b] text-white hover:brightness-110 active:brightness-95 rounded-[--radius-md] shadow-[--shadow-sm] hover:shadow-[--shadow-md]',
 
     /**
      * Tertiary: Vibrant Blue — Functional actions
