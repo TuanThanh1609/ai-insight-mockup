@@ -480,10 +480,16 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
   const insightId   = selectedInsight?.id;
   const templateId  = selectedInsight?.templateId;
 
-  // conversations/analysis: ưu tiên runtime (AI flow hoặc template mới chưa có static)
-  const conversations = insightId ? getConversations(insightId) : null;
+  // conversations/analysis:
+  // 1) ưu tiên runtime theo insightId (insight mới tạo)
+  // 2) fallback templateId (insight seed/mock có id khác templateId: ins-1 -> fsh-1)
+  const conversations = insightId
+    ? (getConversations(insightId) || (templateId ? getConversations(templateId) : null))
+    : null;
+
   // analysis: COMPUTED từ conversations + crossFilter → filter kích hoạt được ngay
   const analysis = conversations ? computeAnalysisFromConversations(conversations, crossFilter) : null;
+
   // trend: template-based → dùng templateId (lookup static), AI-generated → dùng insightId
   const trendKey  = (templateId && templateId !== 'ai-generated') ? templateId : insightId;
   const trendData = trendKey ? getTrendData(trendKey) : [];
