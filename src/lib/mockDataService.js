@@ -215,6 +215,33 @@ export function generateConversations(insightId, columns, industry, rowCount = 2
   return { columns: colMeta, rows };
 }
 
+// ─── Analysis helpers ───────────────────────────────────────────────────────
+
+const _norm = (str) => String(str || '')
+  .toLowerCase()
+  .normalize('NFD')
+  .replace(/[\u0300-\u036f]/g, '');
+
+function _findFieldByKeywords(columns, keywords, fallbackFields = []) {
+  const kwNorm = keywords.map(_norm);
+  const found = columns.find((c) => {
+    const cn = _norm(c.name);
+    const cf = _norm(c.field || '');
+    return kwNorm.some((k) => cn.includes(k) || cf.includes(k));
+  });
+  if (found?.field) return found.field;
+
+  // fallback: field có data trong rows nhiều nhất
+  const rows = columns._rows || [];
+  const scored = fallbackFields
+    .map((f) => ({
+      field: f,
+      score: rows.filter((r) => r[f] !== undefined && String(r[f]).trim() !== '').length,
+    }))
+    .sort((a, b) => b.score - a.score);
+  return scored[0]?.score > 0 ? scored[0].field : null;
+}
+
 // ─── Analysis computation ────────────────────────────────────────────────────
 
 /**
@@ -244,6 +271,12 @@ export function computeAnalysisFromConversations(conversations, crossFilter) {
       .sort((a, b) => b.score - a.score);
 
     return scored[0]?.score > 0 ? scored[0].name : null;
+  };
+
+  const findFieldByKeywords = (keywords, fallbackFields = []) => {
+    const colsWithRows = [...columns];
+    colsWithRows._rows = rows;
+    return _findFieldByKeywords(colsWithRows, keywords, fallbackFields);
   };
 
   const topByField = (fieldName, limit = 5) => {
