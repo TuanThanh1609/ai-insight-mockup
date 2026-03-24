@@ -10,10 +10,7 @@ import { InsightDetail } from '../components/insight/InsightDetail';
 import { CreateInsightFromScratchModal } from '../components/insight/CreateInsightFromScratchModal';
 import { mockUserInsights } from '../data/mockTemplates';
 import { useToast } from '../components/ui/Toast';
-import {
-  generateConversations,
-  registerInsightData,
-} from '../lib/mockDataService';
+import { generateConversations, registerInsightData } from '../lib/mockDataService';
 
 const STORAGE_KEY = 'aiinsight_user_insights';
 
@@ -56,21 +53,11 @@ export default function InsightSettings() {
 
   // ─── Template save ────────────────────────────────────────────────────────
   const handleSaveTemplate = (template, selectedCols) => {
-    const insightId = `ins-${Date.now()}`;
-    // Map template columns → generator format { name, field, dataType, dataOptions }
-    const genCols = selectedCols.map((col) => ({
-      name:       col.name,
-      field:      col.name,         // dùng col.name làm field key (nhất quán với AI flow)
-      dataType:   col.dataType || col.type || 'short_text',
-      dataOptions: col.dataOptions || null,
-    }));
-
-    // Generate 20 mock conversations + register
-    const convData = generateConversations(insightId, genCols, template.industry || 'fashion', 20);
-    registerInsightData(insightId, convData);
-
+    // Template-based insight: KHÔNG generate conversations ở đây.
+    // getConversations() sẽ tự động fallback về Supabase JSON
+    // theo template.id (e.g. "fsh-1") → 50 rows thực từ DB.
     const newInsight = {
-      id: insightId,
+      id: `ins-${Date.now()}`,
       name: template.name,
       templateId: template.id,
       industry: template.industry || 'fashion',
@@ -78,7 +65,7 @@ export default function InsightSettings() {
       columnCount: selectedCols.length,
       status: 'active',
       createdAt: new Date().toISOString(),
-      conversationsCount: convData.rows.length,
+      conversationsCount: 50,   // Supabase JSON luôn có 50 rows/template
     };
     setInsights((prev) => [newInsight, ...prev]);
     addToast(

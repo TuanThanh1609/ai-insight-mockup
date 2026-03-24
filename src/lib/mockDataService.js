@@ -17,10 +17,88 @@
  */
 
 import { mockConversations } from '../data/mockConversations';
+import supabaseConversationsRaw from '../data/supabase-conversations.json';
 
 // ─── Module-level registry cho runtime data (AI-generated insights) ───────────
 const runtimeConversations = {};   // { insightId: { columns, rows } }
 const runtimeTrend         = {};   // { insightId: [...daily points] }
+
+// ─── Supabase data: chuyển array → { columns, rows } ──────────────────────
+// supabaseConversationsRaw[templateId] = flat rows array (mỗi row có metadata + data fields)
+// Cần tạo columns metadata từ field names trong rows
+function buildColumnsFromRows(rows) {
+  if (!rows || rows.length === 0) return [];
+  const sample = rows[0];
+  const META_FIELDS = new Set(['id', 'customer', 'platform', 'converted_at', 'row']);
+
+  // Infer columns from data fields (bỏ meta fields)
+  const dataFields = Object.keys(sample).filter(k => !META_FIELDS.has(k));
+
+  return dataFields.map(field => {
+    // Map field name → display name (tiếng Việt)
+    const displayName = FIELD_DISPLAY_NAMES[field] || FIELD_DISPLAY_NAMES[field.toLowerCase()] || toDisplayName(field);
+    return {
+      id: `col-${field}`,
+      name: displayName,
+      field,
+    };
+  });
+}
+
+function toDisplayName(field) {
+  return field
+    .replace(/_/g, ' ')
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .split(' ')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+    .join(' ');
+}
+
+// Mapping field → tiếng Việt display name
+const FIELD_DISPLAY_NAMES = {
+  product: 'Sản phẩm',
+  size: 'Size',
+  temperature: 'Mức độ quan tâm',
+  pain_point: 'Nhu cầu cốt lõi',
+  is_junk: 'Khách hàng rác',
+  phone_status: 'Trạng thái thu thập SĐT',
+  objection: 'Rào cản chốt đơn',
+  ads_source: 'Nguồn Ads',
+  attitude: 'Thái độ tư vấn',
+  mistake: 'Lỗi mất khách',
+  gender: 'Giới tính',
+  location: 'Khu vực',
+  budget: 'Khoảng ngân sách',
+  segment: 'Phân loại khách hàng',
+  has_competitor: 'Có nhắc đến đối thủ',
+  competitor_name: 'Tên đối thủ',
+  criteria: 'Tiêu chí so sánh',
+  message_type: 'Phân loại mục đích tin nhắn',
+  satisfaction: 'Mức độ hài lòng',
+  can_refer: 'Khách có giới thiệu được',
+  baby_age: 'Độ tuổi bé',
+  parent_gender: 'Giới tính phụ huynh',
+  bulk_interest: 'Quan tâm mua sỉ',
+  frustration: 'Mức độ bức xúc',
+  skin_type: 'Loại da',
+  treatment: 'Dịch vụ quan tâm',
+  legal_status: 'Tình trạng pháp lý',
+  destination: 'Điểm đến',
+  ota_competitor: 'Đối thủ OTA',
+  urgency: 'Mức độ khẩn cấp',
+  // Add customer + platform as first/last columns
+};
+
+// Supabase conversations cache: { templateId: { columns, rows } }
+const supabaseConversations = {};
+function getSupabaseConversations(templateId) {
+  if (supabaseConversations[templateId]) return supabaseConversations[templateId];
+  const rows = supabaseConversationsRaw[templateId];
+  if (!rows || rows.length === 0) return null;
+  const columns = buildColumnsFromRows(rows);
+  supabaseConversations[templateId] = { columns, rows };
+  return supabaseConversations[templateId];
+}
 
 // ─── Seed pools ──────────────────────────────────────────────────────────────
 
@@ -505,19 +583,26 @@ export function registerInsightData(insightId, conversationsData) {
 }
 
 export function getConversations(insightId) {
+  // Priority: runtime > Supabase JSON > mockConversations (static JS)
   if (runtimeConversations[insightId]) return runtimeConversations[insightId];
+  const supa = getSupabaseConversations(insightId);
+  if (supa) return supa;
   if (mockConversations[insightId]) return mockConversations[insightId];
   return null;
 }
 
 export function getTrendData(insightId) {
   if (runtimeTrend[insightId]) return runtimeTrend[insightId];
+  // Try Supabase data first
+  const supaData = getSupabaseConversations(insightId);
+  if (supaData) return generateTrendData(supaData, 7);
   if (mockConversations[insightId]) return generateTrendData(mockConversations[insightId], 7);
   return [];
 }
 
 export function hasMockData(insightId) {
   if (runtimeConversations[insightId]) return true;
+  if (getSupabaseConversations(insightId)) return true;
   if (mockConversations[insightId]) return true;
   return false;
 }
