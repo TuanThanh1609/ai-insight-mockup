@@ -464,6 +464,13 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
     { key: 'dropdown', label: 'Dropdown' },
   ];
 
+  const handleCrossFilter = useCallback((filter) => {
+    setCrossFilter(filter);
+    setActiveTab('detail');
+  }, []);
+
+  const clearCrossFilter = useCallback(() => setCrossFilter(null), []);
+
   const selectedInsight = insights.find((i) => i.id === selectedInsightId) || null;
   const template = selectedInsight ? mockTemplates.find((t) => t.id === selectedInsight.templateId) : null;
   const analysis = selectedInsight ? (mockAnalysisResults[selectedInsight.templateId] || null) : null;
