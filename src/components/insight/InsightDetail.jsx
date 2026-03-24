@@ -701,8 +701,8 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
                   {/* Col 4–12: Metrics — auto-fill grid, no empty rows */}
                   <div className="lg:col-span-9 grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 content-start">
 
-                    {/* Lead Temperature */}
-                    {analysis?.temperature && (
+                    {/* Lead Temperature — chỉ hiện khi template có field nhiệt độ */}
+                    {analysis?.temperature && (analysis.temperature.hot + analysis.temperature.warm + analysis.temperature.cold > 0) && (
                       <Card className="p-3">
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-1.5">
@@ -717,8 +717,56 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
                       </Card>
                     )}
 
+                    {/* Junk Lead — chỉ hiện khi template có field isJunk/junkLead */}
+                    {analysis?.junkNotJunk !== undefined && analysis.junkNotJunk > 0 && (
+                      <Card className="p-3">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-1.5">
+                            <AlertCircle size={13} className="text-error-container" />
+                            <h3 className="font-display font-bold text-[11px] text-on-surface">Khách hàng rác</h3>
+                          </div>
+                          <span className="text-[9px] text-on-surface-variant/50 flex items-center gap-0.5">
+                            <MousePointerClick size={9} />Lọc
+                          </span>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          {(() => {
+                            const total = analysis.junkNotJunk + (analysis.summary?.totalConversations - analysis.junkNotJunk);
+                            const junkCount = total - analysis.junkNotJunk;
+                            const goodPct = Math.round((analysis.junkNotJunk / total) * 100);
+                            const junkPct = 100 - goodPct;
+                            return [
+                              { label: 'Lead thật', value: analysis.junkNotJunk, pct: goodPct, color: '#10b981', filterKey: false },
+                              { label: 'Junk Lead', value: junkCount, pct: junkPct, color: '#ef4444', filterKey: true },
+                            ];
+                          })().map((item) => (
+                            <div key={item.label}>
+                              <div className="flex items-center justify-between mb-0.5">
+                                <span className="text-[11px] text-on-surface-variant">{item.label}</span>
+                                <button
+                                  onClick={() => item.value > 0 && handleCrossFilter({ field: 'isJunk', value: item.filterKey, label: item.label, count: item.value })}
+                                  className="text-[11px] font-bold text-on-surface hover:text-primary cursor-pointer transition-colors"
+                                >
+                                  {item.value} ({item.pct}%)
+                                </button>
+                              </div>
+                              <div
+                                className="w-full h-1.5 rounded-full overflow-hidden"
+                                style={{ background: 'var(--color-surface-container-low)' }}
+                              >
+                                <div
+                                  className="h-full rounded-full transition-all duration-700"
+                                  style={{ width: `${item.pct}%`, background: item.color }}
+                                />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </Card>
+                    )}
+
                     {/* Phone Collection */}
-                    {analysis?.phoneCollection && (
+                    {analysis?.phoneCollection && (analysis.phoneCollection.collected + analysis.phoneCollection.refused + analysis.phoneCollection.notAsked > 0) && (
                       <Card className="p-3">
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-1.5">
@@ -733,8 +781,24 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
                       </Card>
                     )}
 
-                    {/* Attitude */}
-                    {analysis?.attitude && (
+                    {/* Booking Intent — Spa/BDS/F&B */}
+                    {analysis?.topBookingIntents?.length > 0 && (
+                      <Card className="p-3">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-1.5">
+                            <BarChart3 size={13} className="text-tertiary-container" />
+                            <h3 className="font-display font-bold text-[11px] text-on-surface">Ý định đặt lịch</h3>
+                          </div>
+                          <span className="text-[9px] text-on-surface-variant/50 flex items-center gap-0.5">
+                            <MousePointerClick size={9} />Lọc
+                          </span>
+                        </div>
+                        <ListItems items={analysis.topBookingIntents} onItemClick={handleCrossFilter} clickableField="bookingIntent" />
+                      </Card>
+                    )}
+
+                    {/* Attitude — chỉ hiện khi template có field attitude */}
+                    {analysis?.attitude && (analysis.attitude.good + analysis.attitude.average + analysis.attitude.poor > 0) && (
                       <Card className="p-3">
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-1.5">

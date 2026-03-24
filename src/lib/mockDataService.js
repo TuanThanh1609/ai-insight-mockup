@@ -224,14 +224,24 @@ const _norm = (str) => String(str || '')
 
 function _findFieldByKeywords(columns, keywords, fallbackFields = []) {
   const kwNorm = keywords.map(_norm);
+
+  // Bước 1: Ưu tiên tìm theo `field` property (tiếng Anh như 'phoneStatus', 'isJunk'...)
+  // → đảm bảo mockConversations dùng field tiếng Anh luôn khớp
+  for (const col of columns) {
+    const cf = _norm(col.field || '');
+    if (cf && kwNorm.some((k) => cf.includes(k) || k.includes(cf))) {
+      return col.field;
+    }
+  }
+
+  // Bước 2: Tìm theo `name` (tiếng Việt như 'Trạng thái thu thập SĐT')
   const found = columns.find((c) => {
     const cn = _norm(c.name);
-    const cf = _norm(c.field || '');
-    return kwNorm.some((k) => cn.includes(k) || cf.includes(k));
+    return kwNorm.some((k) => cn.includes(k) || cn.startsWith(k));
   });
   if (found?.field) return found.field;
 
-  // fallback: field có data trong rows nhiều nhất
+  // Bước 3: fallback — field có data trong rows nhiều nhất
   const rows = columns._rows || [];
   const scored = fallbackFields
     .map((f) => ({
@@ -310,8 +320,9 @@ export function computeAnalysisFromConversations(conversations, crossFilter) {
       summary: { totalConversations: 0, analyzedAt: new Date().toISOString() },
       temperature: { hot: 0, warm: 0, cold: 0 },
       productInterest: [], topPainPoints: [], topObjections: [], topMistakes: [],
-      junkRate: 0, qualityRate: 100,
+      junkRate: 0, junkNotJunk: 0, qualityRate: 100,
       phoneCollection: { collected: 0, refused: 0, notAsked: 0 },
+      topBookingIntents: [],
       attitude: { good: 0, average: 0, poor: 0 },
       gender: { female: 0, male: 0, unknown: 0 },
       topLocations: [], competitorMentions: { mentioned: 0, notMentioned: 0 },
@@ -400,6 +411,7 @@ export function computeAnalysisFromConversations(conversations, crossFilter) {
   const hasJunkField = hasAnyField(['isJunk', 'junkLead']);
   const junkCount = hasJunkField ? rows.filter((r) => r.isJunk === true || r.junkLead === true).length : 0;
   const junkRate = hasJunkField ? Math.round((junkCount / total) * 100) : 0;
+  const junkNotJunk = hasJunkField ? Math.max(0, total - junkCount) : 0;
 
   // Sentiment (chỉ tính khi có field sentiment/isNegative)
   const sentimentField = findFieldByKeywords(['cam xuc', 'sentiment'], ['sentiment']);
@@ -420,6 +432,13 @@ export function computeAnalysisFromConversations(conversations, crossFilter) {
   const phoneRefused = hasPhoneStatus ? rows.filter((r) => r[phoneField] === 'Từ chối' || r[phoneField] === 'Khách từ chối').length : 0;
   const phoneNotAsked = hasPhoneStatus ? rows.filter((r) => !r[phoneField] || r[phoneField] === 'Chưa cho').length : 0;
 
+  // Booking Intent — đặc thù Spa/BDS/F&B (ý định đặt lịch/đặt bàn/đi thăm)
+  const bookingField = findFieldByKeywords(
+    ['y dinh dat lich', 'booking', 'dat lich', 'y dinh', 'di tham', 'site visit'],
+    ['bookingIntent', 'booking']
+  );
+  const topBookingIntents = topByField(bookingField, 4);
+
   // Attitude (không auto dồn toàn bộ vào Kém khi thiếu field)
   const attitudeField = findFieldByKeywords(['thai do tu van', 'thai do sale', 'attitude'], ['attitude']);
   const hasAttitude = !!attitudeField;
@@ -435,8 +454,10 @@ export function computeAnalysisFromConversations(conversations, crossFilter) {
     topObjections: topObj,
     topMistakes,
     junkRate,
+    junkNotJunk,
     qualityRate: hasJunkField ? Math.round(((total - junkCount) / total) * 100) : 100,
     phoneCollection: { collected: phoneCollected, refused: phoneRefused, notAsked: phoneNotAsked },
+    topBookingIntents,
     attitude: { good: attGood, average: attAvg, poor: attPoor },
     gender: genderCount,
     topLocations,
