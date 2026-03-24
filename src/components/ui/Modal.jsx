@@ -56,6 +56,10 @@ export function Modal({ isOpen, onClose, children, className, maxWidth = 'lg', g
           'relative w-full bg-surface-container-lowest/80 glass',
           // Border radius
           'rounded-[--radius-md]',
+          // Visible border
+          'border border-[var(--color-outline-variant)]',
+          // Shadow
+          'shadow-[--shadow-xl]',
           // Size
           'max-h-[90vh] flex flex-col',
           widths[maxWidth],
