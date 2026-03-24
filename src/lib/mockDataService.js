@@ -186,19 +186,19 @@ export function generateConversations(insightId, columns, industry, rowCount = 2
         return;
       }
 
-      if (f === 'temperature' || n.includes('quan tâm') || n.includes('nhiệt') || n.includes('mức độ')) {
+      if (f === 'temperature' || n.includes('quan tam') || n.includes('nhiet') || n.includes('muc do')) {
         row[field] = weighted(pool.temperatures, [3, 3, 2, 2, 1], s);
-      } else if (f === 'painpoint' || n.includes('nhu cầu') || n.includes('cốt lõi')) {
+      } else if (f === 'painpoint' || n.includes('pain point') || n.includes('nhu cau') || n.includes('cot loi')) {
         row[field] = pick(pool.painPoints, s);
-      } else if (f === 'objection' || n.includes('rào cản') || n.includes('băn khoăn')) {
+      } else if (f === 'objection' || n.includes('rao can') || n.includes('ban khoan')) {
         row[field] = pick(pool.objections, s);
-      } else if (f === 'product' || n.includes('sản phẩm') || n.includes('mẫu')) {
+      } else if (f === 'product' || n.includes('san pham') || n.includes('mau') || n.includes('diem den') || n.includes('loai hinh')) {
         row[field] = pick(pool.products, s);
-      } else if (f === 'competitor' || n.includes('đối thủ')) {
+      } else if (f === 'competitor' || n.includes('doi thu')) {
         row[field] = pick(pool.competitors, s);
-      } else if (n.includes('lỗi') || n.includes('mistake') || n.includes('sai')) {
+      } else if (n.includes('loi') || n.includes('mistake') || n.includes('sai')) {
         row[field] = pick(pool.mistakes, s);
-      } else if (n.includes('khu vực') || n.includes('location') || n.includes('tp')) {
+      } else if (n.includes('khu vuc') || n.includes('location') || n.includes('tp')) {
         row[field] = pick(LOCATIONS, s);
       } else if (n.includes('size')) {
         row[field] = pick(['S', 'M', 'L', 'XL', 'Freesize', '28', '29', '30', '31', '32'], s);
@@ -287,11 +287,12 @@ export function computeAnalysisFromConversations(conversations, crossFilter) {
   }
 
   // Temperature (chỉ tính khi dataset có field nhiệt độ)
-  const hasTemperature = hasAnyField(['temperature', 'mucDoQuanTam']);
+  const temperatureField = findFieldByKeywords(['muc do quan tam', 'lead temperature', 'nhiet do'], ['temperature', 'mucDoQuanTam']);
+  const hasTemperature = !!temperatureField;
   const tempCount = { hot: 0, warm: 0, cold: 0 };
   if (hasTemperature) {
     rows.forEach((row) => {
-      const t = row.temperature || row.mucDoQuanTam || '';
+      const t = row[temperatureField] || '';
       if (t === 'Nóng' || t === 'Hot') tempCount.hot++;
       else if (t === 'Ấm' || t === 'Warm') tempCount.warm++;
       else if (t === 'Lạnh' || t === 'Cold') tempCount.cold++;
@@ -309,29 +310,58 @@ export function computeAnalysisFromConversations(conversations, crossFilter) {
   const topLocations = topByField('location', 5);
 
   // Dynamic interest/pain/objection/mistake fields theo template
-  const interestField = pickBestField(['product', 'food', 'service', 'destination', 'propertyType']);
-  const painField = pickBestField(['painPoint', 'issue']);
-  const objectionField = pickBestField(['objection', 'criteria']);
-  const mistakeField = pickBestField(['mistake']);
+  const interestField = findFieldByKeywords(
+    ['san pham', 'diem den', 'dich vu', 'loai hinh', 'food', 'món', 'mon', 'property', 'bat dong san'],
+    ['product', 'food', 'service', 'destination', 'travelType', 'propertyType']
+  );
+  const painField = findFieldByKeywords(
+    ['pain point', 'nhu cau cot loi', 'van de can giai quyet', 'van de'],
+    ['painPoint', 'issue']
+  );
+  const objectionField = findFieldByKeywords(
+    ['rao can', 'objection', 'tieu chi so sanh', 'criteria'],
+    ['objection', 'criteria']
+  );
+  const mistakeField = findFieldByKeywords(
+    ['loi mat khach', 'mistake', 'loi'],
+    ['mistake']
+  );
 
-  const topProducts = topByField(interestField, 5);
+  // Guard: không cho phép card "Sản phẩm quan tâm" ăn nhầm field nhân khẩu học
+  const blockedInterestFields = new Set(['gender', 'location', 'platform', 'phoneStatus', 'attitude']);
+  const safeInterestField = blockedInterestFields.has(interestField) ? null : interestField;
+
+  const topProducts = topByField(safeInterestField, 5);
   const topPain = topByField(painField, 5);
   const topObj = topByField(objectionField, 5);
   const topMistakes = topByField(mistakeField, 5);
 
   // Competitors
-  const hasCompetitorFields = hasAnyField(['competitorName', 'competitor', 'hasCompetitor']);
+  const competitorNameField = findFieldByKeywords(['ten doi thu', 'doi thu', 'competitor'], ['competitorName', 'competitor']);
+  const competitorFlagField = findFieldByKeywords(['co nhac den doi thu', 'has competitor'], ['hasCompetitor']);
+  const hasCompetitorFields = !!competitorNameField || !!competitorFlagField;
+
   const competitors = {};
-  if (hasCompetitorFields) {
+  if (competitorNameField) {
     rows.forEach((r) => {
-      const c = r.competitorName || r.competitor;
+      const c = r[competitorNameField];
       if (c && c !== 'Không có') competitors[c] = (competitors[c] || 0) + 1;
     });
   }
+
   const topComp = Object.entries(competitors)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 5)
     .map(([text, count]) => ({ text, count }));
+
+  const competitorMentioned = hasCompetitorFields
+    ? rows.filter((r) => {
+        const byFlag = competitorFlagField ? r[competitorFlagField] === true : false;
+        const byName = competitorNameField ? !!r[competitorNameField] && r[competitorNameField] !== 'Không có' : false;
+        return byFlag || byName;
+      }).length
+    : 0;
+  const competitorNotMentioned = hasCompetitorFields ? Math.max(0, total - competitorMentioned) : 0;
 
   // Junk
   const hasJunkField = hasAnyField(['isJunk', 'junkLead']);
@@ -339,27 +369,30 @@ export function computeAnalysisFromConversations(conversations, crossFilter) {
   const junkRate = hasJunkField ? Math.round((junkCount / total) * 100) : 0;
 
   // Sentiment (chỉ tính khi có field sentiment/isNegative)
-  const hasSentiment = hasAnyField(['sentiment', 'isNegative']);
-  const negCount = hasSentiment ? rows.filter((r) => r.isNegative === true || r.sentiment === 'Tiêu cực').length : 0;
-  const posCount = hasSentiment ? rows.filter((r) => r.sentiment === 'Tích cực').length : 0;
+  const sentimentField = findFieldByKeywords(['cam xuc', 'sentiment'], ['sentiment']);
+  const negativeFlagField = findFieldByKeywords(['buc xuc', 'muc do buc xuc', 'is negative'], ['isNegative']);
+  const hasSentiment = !!sentimentField || !!negativeFlagField;
+  const negCount = hasSentiment
+    ? rows.filter((r) => (negativeFlagField && r[negativeFlagField] === true) || (sentimentField && r[sentimentField] === 'Tiêu cực')).length
+    : 0;
+  const posCount = hasSentiment && sentimentField
+    ? rows.filter((r) => r[sentimentField] === 'Tích cực').length
+    : 0;
   const neuCount = hasSentiment ? Math.max(0, total - negCount - posCount) : 0;
 
   // Phone collection (chỉ tính khi có phoneStatus)
-  const hasPhoneStatus = hasAnyField(['phoneStatus']);
-  const phoneCollected = hasPhoneStatus ? rows.filter((r) => r.phoneStatus === 'Đã cho SĐT').length : 0;
-  const phoneRefused = hasPhoneStatus ? rows.filter((r) => r.phoneStatus === 'Từ chối' || r.phoneStatus === 'Khách từ chối').length : 0;
-  const phoneNotAsked = hasPhoneStatus ? rows.filter((r) => !r.phoneStatus || r.phoneStatus === 'Chưa cho').length : 0;
+  const phoneField = findFieldByKeywords(['so dt', 'thu thap sdt', 'phone'], ['phoneStatus']);
+  const hasPhoneStatus = !!phoneField;
+  const phoneCollected = hasPhoneStatus ? rows.filter((r) => r[phoneField] === 'Đã cho SĐT').length : 0;
+  const phoneRefused = hasPhoneStatus ? rows.filter((r) => r[phoneField] === 'Từ chối' || r[phoneField] === 'Khách từ chối').length : 0;
+  const phoneNotAsked = hasPhoneStatus ? rows.filter((r) => !r[phoneField] || r[phoneField] === 'Chưa cho').length : 0;
 
   // Attitude (không auto dồn toàn bộ vào Kém khi thiếu field)
-  const hasAttitude = hasAnyField(['attitude']);
-  const attGood = hasAttitude ? rows.filter((r) => r.attitude === 'Tốt').length : 0;
-  const attAvg = hasAttitude ? rows.filter((r) => r.attitude === 'Trung bình').length : 0;
-  const attPoor = hasAttitude ? rows.filter((r) => r.attitude === 'Kém').length : 0;
-
-  const competitorMentioned = hasCompetitorFields
-    ? rows.filter((r) => r.hasCompetitor === true || !!r.competitorName || !!r.competitor).length
-    : 0;
-  const competitorNotMentioned = hasCompetitorFields ? Math.max(0, total - competitorMentioned) : 0;
+  const attitudeField = findFieldByKeywords(['thai do tu van', 'thai do sale', 'attitude'], ['attitude']);
+  const hasAttitude = !!attitudeField;
+  const attGood = hasAttitude ? rows.filter((r) => r[attitudeField] === 'Tốt').length : 0;
+  const attAvg = hasAttitude ? rows.filter((r) => r[attitudeField] === 'Trung bình').length : 0;
+  const attPoor = hasAttitude ? rows.filter((r) => r[attitudeField] === 'Kém').length : 0;
 
   return {
     summary: { totalConversations: total, analyzedAt: new Date().toISOString() },
