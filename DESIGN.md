@@ -1,92 +1,95 @@
-# Design System Document: The Intelligent Canvas
+# Design System Specification: Editorial Precision
 
-## 1. Overview & Creative North Star
-
-**Creative North Star: "The Digital Concierge"**
-In a world of cluttered B2B dashboards, this design system acts as a sophisticated, quiet partner. It moves away from the "industrial" feel of traditional SaaS and toward a high-end editorial experience. We achieve this through **Atmospheric Depth** and **Intentional Asymmetry**.
-
-Rather than boxing users into rigid, heavy-bordered grids, we use expansive whitespace and tonal shifts to guide the eye. The interface feels "smart" not because of complex animations, but because of its clarity, its use of high-contrast typography scales, and its ethereal, layered surfaces. It is professional, yet possesses a "soul" through subtle AI-themed glassmorphism and soft gradients.
+This document defines the visual language and structural principles for the design system. It is engineered to move beyond "standard" SaaS patterns, instead leveraging high-end editorial layouts, sophisticated tonal layering, and an authoritative typographic scale to create a high-trust, data-driven experience.
 
 ---
 
-## 2. Colors
+## 1. Creative North Star: "The Digital Curator"
 
-This palette is designed to feel crisp and authoritative. We prioritize the "on-surface" readability and use platform-specific blues (Facebook/Zalo) as contextual anchors rather than overpowering brand elements.
+The system is guided by the concept of **The Digital Curator**. In a world of cluttered data, our interface acts as a premium, quiet gallery. We eschew "default" UI patterns—like heavy borders and generic grids—in favor of:
+
+* **Intentional Asymmetry:** Using white space (from the 20 and 24 spacing tokens) to pull the eye toward key insights.
+* **Tonal Depth:** Replacing structural lines with shifting surface values.
+* **High-Contrast Energetics:** Using a deep, authoritative navy foundation punctuated by a "Deep Rust" secondary and a "Vibrant Blue" tertiary to signal momentum and action.
+
+---
+
+## 2. Color & Surface Architecture
+
+The palette is rooted in professional stability but energized by high-chroma accents.
+
+### The Palette
+* **Primary (#1A2138):** The anchor. Use `primary` and `primary_container` for high-authority surfaces and deep-background navigation.
+* **Secondary (#BF3003):** The "Human Element." This deep rust/orange is reserved for critical calls to action and "hot" data points.
+* **Tertiary (#0052FF):** The "Digital Pulse." This vibrant blue represents connectivity, active states, and energetic data flows.
 
 ### The "No-Line" Rule
-**Explicit Instruction:** Designers are prohibited from using 1px solid borders (`#acb3b7` or similar) for sectioning primary layout areas. Boundaries must be defined solely through background color shifts. Use `surface-container-low` for a sidebar and `surface` for the main content. The lack of hard lines creates a modern, "limitless" feel.
+**Explicit Instruction:** Designers are prohibited from using 1px solid borders for sectioning. Boundaries must be defined through background color shifts or subtle tonal transitions.
+* *Instead of a border:* Place a `surface_container_low` section against a `surface` background.
+* *Instead of a divider:* Use a 1px gap to let the `surface_dim` color peak through, or simply utilize vertical white space (Token 6 or 8).
 
-### Surface Hierarchy & Nesting
-Treat the UI as a series of physical layers.
-- **Layer 0 (Base):** `surface` (`#f7f9fb`)
-- **Layer 1 (Recessed):** `surface-container-low` (`#f0f4f7`) for secondary navigation or utility panels.
-- **Layer 2 (Elevated Card):** `surface-container-lowest` (`#ffffff`) for main data containers.
-- **Layer 3 (Active/Pop-over):** Use Glassmorphism (see below).
-
-### The "Glass & Gradient" Rule
-To elevate AI-driven features (like GenAI insights or automated triggers), apply a subtle gradient from `primary` (`#0048e2`) to `primary-container` (`#0052fe`). For floating AI "sparkle" panels, use a backdrop-blur (12px-20px) with `surface-container-lowest` at 80% opacity.
+### Glass & Gradient Strategy
+To move beyond a flat "template" feel, use **Glassmorphism** for floating elements (Modals, Popovers, Tooltips).
+* **Formula:** `surface_container_lowest` at 80% opacity + `backdrop-blur: 12px`.
+* **Signature Textures:** For Hero sections or primary CTAs, apply a subtle linear gradient from `primary` to `primary_container` at a 135-degree angle to provide "visual soul."
 
 ---
 
-## 3. Typography
+## 3. Typography: The Manrope Scale
 
-The system utilizes a dual-font approach to balance authority with utility.
+We use **Manrope** for its technical precision and modern geometric forms. It bridges the gap between a grotesque and a humanist typeface, ensuring readability in complex data environments.
 
-* **Display & Headlines (Manrope):** A geometric sans-serif that feels modern and "tech-forward." Use `display-md` for high-level dashboard summaries to create an editorial impact.
-* **Body & Titles (Inter):** The workhorse for data density. Inter provides exceptional legibility at small sizes (`body-sm`) for complex marketing tables.
-
-**The Hierarchy Logic:**
-- **Primary Data Points:** Use `headline-sm` in `on-surface` for critical metrics.
-- **Micro-Copy:** Use `label-md` in `on-surface-variant` for metadata. The high contrast between `Manrope` headers and `Inter` body text signals the difference between "Insight" and "Data."
+* **Display (lg/md/sm):** Reserved for high-impact data hero numbers or editorial headers. Use `display-lg` (3.5rem) sparingly to create a "Big Print" feel.
+* **Headlines & Titles:** Set in Bold or Semi-Bold. These are your anchors. They should sit atop `surface_container` tiers to establish immediate hierarchy.
+* **Body (lg/md/sm):** Use `body-md` (0.875rem) as the workhorse for all data descriptions.
+* **Labels (md/sm):** Use `label-sm` (0.6875rem) for overlines and category tags. Always set these in All-Caps with +5% letter spacing for a premium, architectural look.
 
 ---
 
-## 4. Elevation & Depth
+## 4. Elevation & Depth (Tonal Layering)
 
-We eschew traditional "drop shadows" in favor of **Tonal Layering**.
+Hierarchy is achieved through physical "stacking" of paper-like layers rather than traditional drop shadows.
 
-* **The Layering Principle:** Depth is achieved by "stacking." A card (`surface-container-lowest`) placed on a canvas (`surface`) provides a soft, natural lift.
-* **Ambient Shadows:** If a component must float (e.g., a dropdown or modal), use a highly diffused shadow:
-* *Blur:* 24px - 40px
-* *Opacity:* 4%-6%
-* *Color:* Use a tint of `on-surface` (`#2c3437`) to keep it grounded.
-* **The "Ghost Border" Fallback:** For input fields or high-density table cells where separation is required for accessibility, use a **Ghost Border**: `outline-variant` at **15% opacity**. Never use 100% opaque borders.
+### The Layering Principle
+* **Base:** `surface` (#fcf8fb)
+* **Sectioning:** `surface_container_low`
+* **Component Cards:** `surface_container_lowest` (This creates a soft, natural "lift" against the darker container).
+* **Active Overlays:** `surface_bright`
+
+### Ambient Shadows
+If a "floating" effect is required (e.g., a primary action menu), use **Ambient Shadows**:
+* **Shadow Blur:** 32px to 48px.
+* **Shadow Opacity:** 4% to 8%.
+* **Color:** Use a tinted version of `on_surface` rather than pure black to mimic natural light.
+
+### The "Ghost Border" Fallback
+If accessibility requirements demand a container boundary, use a **Ghost Border**: `outline_variant` at 15% opacity. Never use 100% opaque borders.
 
 ---
 
 ## 5. Components
 
-### Buttons
-- **Primary:** Gradient fill (`primary` to `primary-dim`) with `on-primary` text. Roundedness: `md` (0.75rem).
-- **Secondary:** Surface-tinted. No border. Use `surface-container-high` background with `primary` text.
-- **AI-Action:** A special variant featuring a small "sparkle" icon, utilizing a subtle glow effect (2px outer spread of `primary_fixed`).
+All components follow a **8px (0.5rem) base roundness** (`DEFAULT`) to balance modern friendliness with B2B professional rigor.
 
-### Cards & Lists
-- **Forbid Dividers:** Do not use horizontal lines between list items. Use the **Spacing Scale** (`spacing-4`) to create enough breathing room that the eye naturally groups the information.
-- **Interactive States:** On hover, a card should shift from `surface-container-lowest` to `surface-container-low` rather than "lifting" with a shadow.
-
-### Status Chips
-- **Success:** `tertiary-container` background with `on-tertiary-container` text (Emerald palette).
-- **Warning:** `error-container` background with `on-error-container` text (Rose palette).
-- **Shape:** Always `full` (9999px) to contrast against the `md` roundedness of cards.
-
-### Input Fields
-- **Default:** `surface-container-lowest` background with a Ghost Border.
-- **Focus:** Transition the border to `primary` at 100% and add a 2px "aura" using `primary_fixed_dim` at 30% opacity.
+* **Buttons:**
+* *Primary:* `secondary` background (Deep Rust) with `on_secondary` text. Rounded 8px. Use for the "Ultimate Action."
+* *Tertiary:* `tertiary` background (Vibrant Blue) for functional actions (e.g., "Run Report").
+* *Ghost:* No background, `outline` text. Used for secondary navigation.
+* **Cards:** No borders. Use `surface_container_lowest` on top of `surface_container`. Padding should follow the `6` (1.5rem) or `8` (2rem) spacing tokens.
+* **Input Fields:** Use `surface_container_high` for the input track. On focus, transition the background to `surface_container_highest` and add a 2px `tertiary` (Vibrant Blue) bottom-border only.
+* **Chips:** Use `primary_fixed` for a "Dark Mode" aesthetic within a light layout. Labels should be `on_primary_fixed`.
+* **Data Lists:** Forbid divider lines. Separate rows using a subtle background hover state shift to `surface_container_highest`.
 
 ---
 
-## 6. Do's and Don'ts
+## 6. Do’s and Don’ts
 
 ### Do
-- **Do** use `spacing-8` or `spacing-10` for page margins to create a "premium" sense of space.
-- **Do** use the **Glassmorphism** effect for AI-generated insight panels to separate them from static data.
-- **Do** align items to a "Soft Grid"—ensure vertical rhythm follows the spacing scale, but allow for asymmetrical horizontal layouts (e.g., a wide table next to a narrow "AI Insight" sidebar).
+* **Do** use extreme vertical spacing (Token 16, 20) to separate major content groups.
+* **Do** mix font weights—use `Manrope Bold` for titles and `Manrope Regular` for body text to create high-contrast hierarchy.
+* **Do** use `secondary` (Rust) sparingly. It is a "laser pointer," not a "paint brush."
 
-### Don't
-- **Don't** use pure black `#000000`. Always use `on-surface` for text to maintain a professional, soft-contrast look.
-- **Don't** use 1px dividers. If you feel the need for a divider, increase the whitespace (`spacing-5`) or change the background color of the container instead.
-- **Don't** use sharp corners. Everything must adhere to the **Roundedness Scale** (8px-12px) to maintain the "smart and approachable" vibe.
-
-### Accessibility Note
-While we prioritize "Ghost Borders" and tonal shifts, always ensure that interactive elements (Inputs, Buttons) maintain a contrast ratio of at least 4.5:1 against their immediate background. The use of `on-surface-variant` for labels ensures the hierarchy is clear without sacrificing legibility.
+### Don’t
+* **Don’t** use 1px solid dividers to separate list items. Use 8px to 12px of negative space instead.
+* **Don’t** use pure black (#000000) for text. Use `on_surface` (#1b1b1d) for a softer, high-end feel.
+* **Don’t** use the default 4px border radius. Stick strictly to the **8px (`DEFAULT`)** scale to maintain the system's "Curated" identity.

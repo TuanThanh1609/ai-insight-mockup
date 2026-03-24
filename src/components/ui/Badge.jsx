@@ -1,5 +1,13 @@
 import { cn } from '../../lib/utils';
 
+/**
+ * Badge — Editorial Precision Design System
+ *
+ * primary-fixed variant: "Dark Mode" chip within a light layout.
+ * Labels should be on_primary_fixed.
+ *
+ * Border radius: full (pill) — Premium, architectural look
+ */
 export function Badge({
   children,
   variant = 'default',
@@ -16,11 +24,22 @@ export function Badge({
   };
 
   const statusColors = {
-    success: 'bg-tertiary-container text-on-tertiary-container',
+    /** Good — scale được */
+    success: 'bg-success-container text-on-success-container',
+    /** Cải thiện — theo dõi */
     warning: 'bg-warning-container text-on-warning-container',
+    /** Thấp — cần xem xét */
     danger: 'bg-error-container text-on-error-container',
-    info: 'bg-primary/10 text-primary',
+    /** Info / Vibrant Blue — Digital Pulse */
+    info: 'bg-tertiary-container text-on-tertiary-container',
+    /** Vibrant Blue accent */
+    tertiary: 'bg-tertiary-container text-on-tertiary-container',
+    /** Deep Rust — Human Element (sparingly) */
+    secondary: 'bg-secondary-container text-on-secondary-container',
+    /** Default neutral */
     default: 'bg-surface-container-high text-on-surface-variant',
+    /** Dark Mode chip within light layout */
+    'primary-fixed': 'bg-primary-fixed text-on-primary-fixed',
   };
 
   const colors = platform ? platformColors[platform] : statusColors[variant];

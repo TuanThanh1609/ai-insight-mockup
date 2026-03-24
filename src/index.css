@@ -1,29 +1,62 @@
 @import "tailwindcss";
 
 @theme {
-  /* Colors - The Intelligent Canvas */
-  --color-surface: #f7f9fb;
-  --color-surface-container-low: #f0f4f7;
-  --color-surface-container-lowest: #ffffff;
-  --color-surface-container-high: #e8ecf0;
-  --color-on-surface: #2c3437;
-  --color-on-surface-variant: #5a6368;
-  --color-outline-variant: rgba(42, 52, 55, 0.15);
+  /* ─────────────────────────────────────────────
+     Design System: Editorial Precision
+     The Digital Curator — Premium, Quiet, Authoritative
+  ───────────────────────────────────────────── */
 
-  --color-primary: #0048e2;
-  --color-primary-dim: #0038b8;
-  --color-primary-container: #0052fe;
+  /* Surface Architecture (No-Line UI) */
+  --color-surface: #fcf8fb;
+  --color-surface-dim: rgba(28, 27, 29, 0.04);          /* 1px gap peek-through */
+  --color-surface-container-lowest: #ffffff;            /* Card lift layer */
+  --color-surface-container-low: #f5f1f5;                /* Section divider */
+  --color-surface-container: #ede9ee;                    /* Mid-weight panel */
+  --color-surface-container-high: #e4dfe5;              /* Active / hover */
+  --color-surface-container-highest: #d9d4dc;           /* Data list hover */
+  --color-surface-bright: #ffffff;                       /* Active overlay */
+
+  /* On-Surface (soft, not pure black) */
+  --color-on-surface: #1b1b1d;
+  --color-on-surface-variant: #49454f;
+  --color-outline-variant: rgba(28, 27, 29, 0.15);     /* Ghost border fallback */
+
+  /* Primary — Deep Navy: Authoritative + Professional */
+  --color-primary: #1a2138;
+  --color-primary-container: #2b3354;
   --color-on-primary: #ffffff;
-  --color-primary-fixed: #0048e2;
-  --color-primary-fixed-dim: #0038b8;
+  --color-on-primary-container: #e3e5f0;
+  --color-primary-fixed: #1a2138;
+  --color-primary-fixed-dim: #2b3354;
+  --color-on-primary-fixed: #ffffff;
 
-  --color-tertiary-container: #d1fae5;
-  --color-on-tertiary-container: #065f46;
-  --color-error-container: #fee2e2;
-  --color-on-error-container: #991b1b;
-  --color-warning-container: #fef3c7;
-  --color-on-warning-container: #92400e;
+  /* Secondary — Deep Rust: The Human Element */
+  --color-secondary: #bf3003;
+  --color-secondary-container: #f4e0d8;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #5c1c00;
 
+  /* Tertiary — Vibrant Blue: The Digital Pulse */
+  --color-tertiary: #0052ff;
+  --color-tertiary-container: #dbe4ff;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #002d8a;
+
+  /* Semantic Colors */
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #410002;
+  --color-warning: #7d5700;
+  --color-warning-container: #ffdf9e;
+  --color-on-warning: #ffffff;
+  --color-on-warning-container: #2a1700;
+  --color-success: #059669;
+  --color-success-container: #d1fae5;
+  --color-on-success: #ffffff;
+  --color-on-success-container: #064e3b;
+
+  /* Platform Colors */
   --color-facebook: #1877f2;
   --color-zalo: #0068ff;
 
@@ -31,17 +64,28 @@
   --font-display: 'Manrope', sans-serif;
   --font-body: 'Inter', sans-serif;
 
-  /* Roundedness */
-  --radius-sm: 0.5rem;
-  --radius-md: 0.75rem;
+  /* Border Radius — 8px DEFAULT (Curated Identity) */
+  --radius-none: 0;
+  --radius-sm: 0.375rem;   /* 6px */
+  --radius-md: 0.5rem;     /* 8px — DEFAULT */
+  --radius-lg: 0.75rem;    /* 12px */
+  --radius-xl: 1rem;       /* 16px */
   --radius-full: 9999px;
 
-  /* Shadows */
-  --shadow-diffused: 0 8px 32px rgba(44, 52, 55, 0.06);
-  --shadow-modal: 0 20px 60px rgba(44, 52, 55, 0.12);
+  /* Ambient Shadows — Tinted, not black */
+  --shadow-sm:   0 1px 4px rgba(27, 27, 29, 0.04);
+  --shadow-md:   0 4px 16px rgba(27, 27, 29, 0.06);
+  --shadow-lg:   0 8px 32px rgba(27, 27, 29, 0.08);
+  --shadow-xl:   0 16px 48px rgba(27, 27, 29, 0.10);
+
+  /* Glassmorphism — Floating elements (Modals, Popovers, Tooltips) */
+  /* Formula: surface_container_lowest at 80% + backdrop-blur: 12px */
+  --shadow-glass: 0 8px 32px rgba(27, 27, 29, 0.12);
 }
 
-/* Base styles */
+/* ─────────────────────────────────────────────
+   Base Styles
+───────────────────────────────────────────── */
 html {
   font-family: var(--font-body);
   color: var(--color-on-surface);
@@ -57,36 +101,242 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom scrollbar */
+/* ─────────────────────────────────────────────
+   Typography Utilities
+   Manrope: Display / Headlines (Bold, SemiBold)
+   Inter: Body / Labels
+───────────────────────────────────────────── */
+
+/* Display — Big Print Feel (3.5rem, sparingly) */
+.text-display-lg {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 3.5rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.text-display-md {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2.5rem;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.text-display-sm {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.875rem;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+/* Headline — Bold anchors atop surface containers */
+.text-headline-lg {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.text-headline-md {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+.text-headline-sm {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+/* Title — SemiBold anchors */
+.text-title-lg {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.125rem;
+  line-height: 1.35;
+}
+
+.text-title-md {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+.text-title-sm {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+/* Body — Regular workhorse */
+.text-body-lg {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.text-body-md {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.text-body-sm {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+}
+
+/* Label — Premium architectural look (All-Caps, +5% letter-spacing) */
+.text-label-lg {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.text-label-md {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.text-label-sm {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ─────────────────────────────────────────────
+   Glassmorphism Utility
+   Floating elements: Modals, Popovers, Tooltips
+───────────────────────────────────────────── */
+.glass {
+  background: rgba(255, 255, 255, 0.80);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Dark glass variant for primary overlays */
+.glass-dark {
+  background: rgba(26, 33, 56, 0.80);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ─────────────────────────────────────────────
+   Gradient Utilities
+───────────────────────────────────────────── */
+
+/* Signature texture: Hero sections + Primary CTAs
+   Gradient from primary to primary_container at 135° */
+.gradient-signature {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    var(--color-primary-container) 100%
+  );
+}
+
+/* Secondary accent gradient (Deep Rust) */
+.gradient-rust {
+  background: linear-gradient(
+    135deg,
+    var(--color-secondary) 0%,
+    #d63804 100%
+  );
+}
+
+/* ─────────────────────────────────────────────
+   Custom Scrollbar — Subtle, Editorial
+───────────────────────────────────────────── */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-surface-container-low);
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
   background: var(--color-outline-variant);
-  border-radius: 9999px;
+  border-radius: var(--radius-full);
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-on-surface-variant);
 }
 
-/* Focus styles */
+/* ─────────────────────────────────────────────
+   Focus Styles
+───────────────────────────────────────────── */
 *:focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--color-tertiary);
   outline-offset: 2px;
 }
 
-/* Selection */
+/* ─────────────────────────────────────────────
+   Selection — Tinted, not primary
+───────────────────────────────────────────── */
 ::selection {
-  background: rgba(0, 72, 226, 0.15);
+  background: rgba(0, 82, 255, 0.12);
   color: var(--color-on-surface);
 }
 
-/* Glassmorphism utility */
-.glass {
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+/* ─────────────────────────────────────────────
+   Ghost Border Fallback
+   Use when accessibility demands a container boundary
+   Never use 100% opaque borders
+───────────────────────────────────────────── */
+.ghost-border {
+  border: 1px solid var(--color-outline-variant);
 }
+
+/* ─────────────────────────────────────────────
+   No-Line Sectioning Utilities
+   Boundaries via background shifts, not borders
+───────────────────────────────────────────── */
+
+/* Tonal depth: container-low against surface */
+.section-tone {
+  background-color: var(--color-surface-container-low);
+}
+
+/* Vertical rhythm: use 20px or 24px tokens between major groups */
+.gap-editorial {
+  gap: 1.25rem;  /* Token 5 = 20px */
+}
+
+.gap-editorial-lg {
+  gap: 1.5rem;   /* Token 6 = 24px */
+}
+
+/* ─────────────────────────────────────────────
+   ROAS Color System (Dashboard Ads)
+   Consistency: #059669 / #d97706 / #dc2626
+───────────────────────────────────────────── */
+.roas-good     { color: #059669; }
+.roas-improve { color: #d97706; }
+.roas-low     { color: #dc2626; }
+
+.bg-roas-good     { background-color: #059669; }
+.bg-roas-improve { background-color: #d97706; }
+.bg-roas-low     { background-color: #dc2626; }

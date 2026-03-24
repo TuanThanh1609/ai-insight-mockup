@@ -1,5 +1,15 @@
 import { cn } from '../../lib/utils';
 
+/**
+ * Button — Editorial Precision Design System
+ *
+ * Primary:  Deep Rust (secondary) — The "Ultimate Action"
+ * Tertiary: Vibrant Blue (tertiary) — Functional actions (Run Report)
+ * Ghost:    No background, outline text — Secondary navigation
+ * Primary-fixed: Dark navy on light bg — "Dark Mode" chip aesthetic
+ *
+ * Border radius: 8px (DEFAULT) — Curated identity
+ */
 export function Button({
   children,
   variant = 'primary',
@@ -14,16 +24,53 @@ export function Button({
     'inline-flex items-center justify-center font-body font-medium transition-all duration-150 cursor-pointer select-none disabled:opacity-50 disabled:cursor-not-allowed';
 
   const variants = {
+    /**
+     * Primary: Deep Rust — The "Ultimate Action"
+     * Reserved for the single most important CTA on screen.
+     * "Laser pointer, not a paint brush."
+     */
     primary:
-      'bg-gradient-to-r from-primary to-primary-dim text-on-primary hover:brightness-110 active:brightness-95 rounded-[--radius-md] shadow-[0_2px_8px_rgba(0,72,226,0.25)] hover:shadow-[0_4px_16px_rgba(0,72,226,0.35)]',
+      'bg-secondary text-on-secondary hover:brightness-110 active:brightness-95 rounded-[--radius-md] shadow-[--shadow-sm] hover:shadow-[--shadow-md]',
+
+    /**
+     * Tertiary: Vibrant Blue — Functional actions
+     * Run Report, Apply Filters, Export Data
+     */
+    tertiary:
+      'bg-tertiary text-on-tertiary hover:brightness-110 active:brightness-95 rounded-[--radius-md] shadow-[--shadow-sm] hover:shadow-[--shadow-md]',
+
+    /**
+     * Secondary: Deep Navy — High-authority navigation
+     * Used for primary navigation elements and persistent CTAs.
+     */
     secondary:
-      'bg-surface-container-high text-primary hover:bg-surface-container-low active:bg-surface-container-low rounded-[--radius-md]',
+      'bg-primary text-on-primary hover:brightness-110 active:brightness-95 rounded-[--radius-md] shadow-[--shadow-sm] hover:shadow-[--shadow-md]',
+
+    /**
+     * Ghost: No background, outline text
+     * Secondary navigation, dismissible actions.
+     */
     ghost:
-      'text-on-surface-variant hover:bg-surface-container-low active:bg-surface-container-lowest rounded-[--radius-md]',
+      'bg-transparent text-on-surface-variant hover:bg-surface-container-low active:bg-surface-container-lowest rounded-[--radius-md] border border-transparent',
+
+    /**
+     * Ghost-Outline: Ghost with ghost-border (accessibility)
+     * Use when a container boundary is needed.
+     */
+    'ghost-outline':
+      'bg-transparent text-on-surface-variant hover:bg-surface-container-low active:bg-surface-container-lowest rounded-[--radius-md] border border-[var(--color-outline-variant)]',
+
+    /**
+     * Danger: Error container for destructive actions
+     */
     danger:
       'bg-error-container text-on-error-container hover:brightness-95 active:brightness-90 rounded-[--radius-md]',
+
+    /**
+     * AI Action: Vibrant Blue gradient — AI-powered recommendations
+     */
     'ai-action':
-      'bg-gradient-to-r from-primary to-primary-container text-on-primary hover:brightness-110 active:brightness-95 rounded-[--radius-md] shadow-[0_2px_8px_rgba(0,72,226,0.25)] hover:shadow-[0_4px_16px_rgba(0,72,226,0.35)] gap-1.5',
+      'bg-tertiary text-on-tertiary hover:brightness-110 active:brightness-95 rounded-[--radius-md] shadow-[--shadow-sm] hover:shadow-[--shadow-md] gap-1.5',
   };
 
   const sizes = {
