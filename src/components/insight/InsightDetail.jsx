@@ -422,7 +422,7 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
       })
     : [];
 
-  const ROWS_PER_PAGE = 5;
+  const ROWS_PER_PAGE = 10;
   const totalPages = Math.max(1, Math.ceil(filteredRows.length / ROWS_PER_PAGE));
   const paginatedRows = filteredRows.slice(
     (currentPage - 1) * ROWS_PER_PAGE,
