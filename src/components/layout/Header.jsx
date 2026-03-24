@@ -17,7 +17,7 @@ export function Header({ userName = 'Tuấn', title, subtitle, actions }) {
         <Button variant="ghost" size="icon" aria-label="Thông báo">
           <Bell size={18} />
         </Button>
-        <button className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-primary-dim flex items-center justify-center text-white text-sm font-bold shadow-[0_2px_8px_rgba(0,72,226,0.25)]">
+        <button className="w-9 h-9 rounded-full bg-[#fa6e5b] flex items-center justify-center text-white text-sm font-bold shadow-[--shadow-sm]">
           {userName[0]}
         </button>
       </div>

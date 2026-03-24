@@ -80,7 +80,7 @@ function ConfirmModal({ campaign, action, onConfirm, onCancel }) {
         </p>
         <div className="flex gap-3">
           <Button
-            variant="secondary"
+            variant="primary"
             className="flex-1 justify-center"
             onClick={onCancel}
           >

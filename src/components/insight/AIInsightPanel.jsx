@@ -115,7 +115,7 @@ export function AIInsightPanel({ campaign, insight, isOpen, onClose }) {
                 <ExternalLink size={15} />
                 Mở Ads Manager
               </Button>
-              <Button variant="secondary" className="w-full justify-center" onClick={onClose}>
+              <Button variant="primary" className="w-full justify-center" onClick={onClose}>
                 Đóng
               </Button>
             </div>

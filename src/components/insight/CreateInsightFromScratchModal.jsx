@@ -467,7 +467,7 @@ function InsightEditModal({ insight, onSave, onClose }) {
         <div className="flex items-center justify-end gap-3 p-5 border-t border-[var(--color-outline-variant)]">
           <Button variant="ghost" size="sm" onClick={onClose}>Hủy</Button>
           <Button
-            variant="ai-action"
+            variant="primary"
             size="sm"
             onClick={() => { onSave(data); onClose(); }}
             disabled={!data.name.trim() || !data.columns?.length}
@@ -799,12 +799,12 @@ export function CreateInsightFromScratchModal({ isOpen, onClose, onSave }) {
           </Button>
         )}
         <div className="flex-1" />
-        <Button variant="secondary" onClick={handleClose}>Hủy</Button>
+        <Button variant="ghost" onClick={handleClose}>Hủy</Button>
 
         {/* Step 0: Generate */}
         {step === 0 && (
           <Button
-            variant="ai-action"
+            variant="primary"
             onClick={handleGenerate}
             disabled={!canNext0 || generating}
           >
@@ -819,7 +819,7 @@ export function CreateInsightFromScratchModal({ isOpen, onClose, onSave }) {
         {/* Step 1: Next to confirm */}
         {step === 1 && !generating && !aiError && (
           <Button
-            variant="ai-action"
+            variant="primary"
             onClick={() => setStep(2)}
             disabled={selectedInsightIds.length === 0}
           >
@@ -830,7 +830,7 @@ export function CreateInsightFromScratchModal({ isOpen, onClose, onSave }) {
 
         {/* Step 2: Save */}
         {step === 2 && (
-          <Button variant="ai-action" onClick={handleSave}>
+          <Button variant="primary" onClick={handleSave}>
             <Sparkles size={14} />
             Tạo {selectedInsightIds.length} Insight
           </Button>
@@ -913,7 +913,7 @@ function MasterInsightEdit({ data, onChange, onClose }) {
       </div>
       <div className="flex justify-end gap-2 pt-2">
         <Button variant="ghost" size="sm" onClick={onClose}>Hủy</Button>
-        <Button variant="ai-action" size="sm" onClick={() => { onChange(local); onClose(); }}>
+        <Button variant="primary" size="sm" onClick={() => { onChange(local); onClose(); }}>
           <Sparkles size={12} /> Lưu
         </Button>
       </div>

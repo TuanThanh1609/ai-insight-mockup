@@ -951,7 +951,7 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
                   </div>
                   {editingInsightId !== selectedInsightId ? (
                     <Button
-                      variant="secondary"
+                      variant="primary"
                       size="sm"
                       onClick={() => handleStartEdit(selectedInsightId, template)}
                       className="shrink-0 gap-1.5"
@@ -961,10 +961,10 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
                     </Button>
                   ) : (
                     <div className="flex items-center gap-2 shrink-0">
-                      <Button variant="secondary" size="sm" onClick={handleCancelEdit}>
+                      <Button variant="ghost" size="sm" onClick={handleCancelEdit}>
                         Hủy
                       </Button>
-                      <Button variant="ai-action" size="sm" onClick={handleSaveEdit}>
+                      <Button variant="primary" size="sm" onClick={handleSaveEdit}>
                         Lưu
                       </Button>
                     </div>

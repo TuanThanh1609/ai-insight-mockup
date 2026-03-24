@@ -99,7 +99,7 @@ export default function InsightSettings() {
             actions={
               <>
                 <Button
-                  variant="ai-action"
+                  variant="primary"
                   size="sm"
                   onClick={() => setIsTemplateModalOpen(true)}
                 >
@@ -139,13 +139,13 @@ export default function InsightSettings() {
               </h2>
               <div className="flex flex-wrap gap-3">
                 <Button
-                  variant="ai-action"
+                  variant="primary"
                   onClick={() => setIsTemplateModalOpen(true)}
                 >
                   <Sparkles size={16} />
                   Tạo Insight mới từ Template
                 </Button>
-                <Button variant="secondary" onClick={() => setIsScratchModalOpen(true)}>
+                <Button variant="ghost" onClick={() => setIsScratchModalOpen(true)}>
                   <Sparkles size={15} />
                   Tạo Insight bằng AI
                 </Button>
@@ -166,7 +166,7 @@ export default function InsightSettings() {
                   <p className="text-sm text-on-surface-variant mb-6 max-w-sm mx-auto">
                     Tạo Insight đầu tiên để bắt đầu phân tích hội thoại khách hàng bằng AI.
                   </p>
-                  <Button variant="ai-action" onClick={() => setIsTemplateModalOpen(true)}>
+                  <Button variant="primary" onClick={() => setIsTemplateModalOpen(true)}>
                     <Sparkles size={16} />
                     Tạo Insight đầu tiên
                   </Button>

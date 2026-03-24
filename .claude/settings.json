@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"const fs=require\\(''fs''\\);const c=fs.readFileSync\\(r''d:\\\\vibe-coding\\\\Nâng cấp AI Insight\\\\src\\\\data\\\\mockConversations.js'',''utf8''\\);const l=c.split\\(''\\\\n''\\);l.slice\\(-6\\).forEach\\(\\(x,i\\)=>console.log\\(l.length-5+i+'': ''+JSON.stringify\\(x\\)\\)\\)\")",
+      "Bash(curl -s http://localhost:5173)"
+    ]
+  }
+}

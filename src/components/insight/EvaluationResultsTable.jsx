@@ -120,15 +120,15 @@ export function EvaluationResultsTable({ results, runHistory }) {
           </div>
 
           {/* Export buttons */}
-          <Button variant="secondary" size="sm" className="gap-1.5">
+          <Button variant="primary" size="sm" className="gap-1.5">
             <Download size={13} />
             CSV
           </Button>
-          <Button variant="secondary" size="sm" className="gap-1.5">
+          <Button variant="primary" size="sm" className="gap-1.5">
             <Download size={13} />
             Excel
           </Button>
-          <Button variant="secondary" size="sm" className="gap-1.5">
+          <Button variant="primary" size="sm" className="gap-1.5">
             <Trash2 size={13} />
           </Button>
         </div>

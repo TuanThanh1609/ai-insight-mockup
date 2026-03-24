@@ -78,7 +78,7 @@ export function TemplateCard({ template, onSelect }) {
 
       {/* Action */}
       <Button
-        variant="secondary"
+        variant="primary"
         size="sm"
         className="w-full mt-auto"
         onClick={(e) => {
