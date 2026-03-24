@@ -1,46 +1,43 @@
 /**
  * mockDataService.js
- * Runtime mock data generator — tạo conversations + analysis results
- * cho mọi insight mới (Template flow lẫn AI flow).
  *
- * Kiến trúc:
- *   insights[] → stored in localStorage (user's insight list)
- *   Mỗi insight có thể có:
- *     - conversations: chỉ lookup từ mockConversations[key] (static 42 templates)
- *     - HOẶC runtimeConversations[key]: injected vào InsightDetail
+ * Kiến trúc dữ liệu:
+ *   conversations = SINGLE SOURCE OF TRUTH (đọc từ mockConversations hoặc runtime registry)
+ *   analysis     = COMPUTED FROM conversations (computeAnalysisFromConversations)
+ *
+ * Luồng:
+ *   1. getConversations(insightId) → { columns, rows }
+ *   2. computeAnalysisFromConversations(conversations, crossFilter)
+ *      → crossFilter filter rows trước khi tính → filter kích hoạt được
+ *   3. InsightDetail: conversations + crossFilter thay đổi → analysis tự recompute
  *
  * Key convention:
- *   Template flow:    key = template.id (e.g. 'fsh-1')
- *   AI flow:         key = insight.id (e.g. 'ai-ins-174...-0')
- *
- * Với AI flow, ta lưu runtime data vào module-level Map (không cần localStorage).
- * Với Template flow, ta tạo data cho template mới chưa có trong mockConversations.
+ *   Template flow:    insightId = templateId = 'fsh-1'
+ *   AI flow:         insightId = 'ai-ins-...'
  */
 
 import { mockConversations } from '../data/mockConversations';
-import { mockAnalysisResults } from '../data/mockAnalysisResults';
 
 // ─── Module-level registry cho runtime data (AI-generated insights) ───────────
 const runtimeConversations = {};   // { insightId: { columns, rows } }
-const runtimeAnalysis      = {};   // { insightId: { summary, temperature, ... } }
-const runtimeTrend         = {};   // { insightId: [...daily points...] }
+const runtimeTrend         = {};   // { insightId: [...daily points] }
 
 // ─── Seed pools ──────────────────────────────────────────────────────────────
 
 const FIRST_NAMES_MALE   = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Hoàng', 'Vũ', 'Đặng', 'Bùi', 'Đỗ', 'Hồ', 'Ngô', 'Dương', 'Lý'];
 const FIRST_NAMES_FEMALE = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Hoàng', 'Vũ', 'Đặng', 'Bùi', 'Trương', 'Hà', 'Phan', 'Đỗ', 'Lê'];
-const LAST_NAMES_MALE    = ['Anh', ' Khoa', 'Minh', 'Tuấn', 'Hùng', 'Đức', 'Phong', 'Long', 'Thắng', 'Dũng', 'Nam', 'Quang', 'Việt', 'Tài', 'Trung'];
+const LAST_NAMES_MALE    = ['Anh', 'Khoa', 'Minh', 'Tuấn', 'Hùng', 'Đức', 'Phong', 'Long', 'Thắng', 'Dũng', 'Nam', 'Quang', 'Việt', 'Tài', 'Trung'];
 const LAST_NAMES_FEMALE  = ['Lan', 'Hương', 'Mai', 'Ngọc', 'Linh', 'Hà', 'Phương', 'Trang', 'Thảo', 'Yến', 'Anh', 'Chi', 'Vy', 'Lâm', 'Hoa'];
 const LOCATIONS          = ['TP.HCM', 'Hà Nội', 'Đà Nẵng', 'Cần Thơ', 'Hải Phòng', 'Biên Hòa', 'Nha Trang', 'Hạ Long', 'Vũng Tàu', 'Cà Mau', 'Quy Nhơn', 'Thanh Hóa'];
 const PLATFORMS          = ['facebook', 'zalo'];
 
-// ─── Smart pool selectors per industry ───────────────────────────────────────
+// ─── Smart pool selectors per industry ─────────────────────────────────────
 
 const POOLS = {
   fashion: {
     products:     ['Áo thun oversize', 'Đầm công sở', 'Quần jeans', 'Túi xách', 'Giày sneaker', 'Áo sơ mi', 'Chân váy', 'Cardigan', 'Áo khoác', 'Váy maxi', 'Set bộ', 'Áo hai dây'],
     painPoints:   ['Tìm đầm đi tiệc', 'Cần đồ mùa hè', 'Chất liệu thoáng mát', 'Size chuẩn', 'Giá hợp lý', 'Phong cách tối giản', 'Đồ đi chơi', 'Công sở hàng ngày'],
-    temperatures: ['Nóng', 'Nóng', 'Nóng', 'Ấm', 'Ấm', 'Lạnh'], // weighted toward hot
+    temperatures: ['Nóng', 'Nóng', 'Nóng', 'Ấm', 'Ấm', 'Lạnh'],
     objections:   ['Giá đắt', 'Phí ship', 'Không có size', 'Hàng có hàng không', 'Chờ sale', 'Xem thêm'],
     mistakes:     ['Không tư vấn size', 'Không hỏi mục đích mua', 'Rep trễ', 'Không gửi ảnh thật', 'Chat hời hợt'],
     competitors:  ['Zara', 'H&M', 'Uniqlo', 'Shein', 'Coolmate', 'YODY', 'Mayori'],
@@ -111,15 +108,16 @@ function weighted(arr, weights, seed) {
   return arr[arr.length - 1];
 }
 
-function generateCustomerName(seed, gender) {
+function generateCustomerName(seed) {
+  const genderVal = seed % 3;
   const firstMale   = pick(FIRST_NAMES_MALE, seed * 3 + 1);
   const firstFemale = pick(FIRST_NAMES_FEMALE, seed * 3 + 2);
   const lastMale    = pick(LAST_NAMES_MALE, seed * 7 + 3);
-  const lastFemale  = pick(LAST_NAMES_FEMALE, seed * 7 + 4);
-  const genderVal  = seed % 3 === 0 ? 'male' : seed % 3 === 1 ? 'female' : 'unknown';
-  const first = genderVal === 'male' ? firstMale : firstFemale;
-  const last  = genderVal === 'male' ? lastMale  : lastFemale;
-  return { name: `${first} ${last}`, gender: genderVal };
+  const lastFemale = pick(LAST_NAMES_FEMALE, seed * 7 + 4);
+  const first = genderVal === 0 ? firstMale : firstFemale;
+  const last  = genderVal === 0 ? lastMale  : lastFemale;
+  const gender = genderVal === 0 ? 'Nam' : genderVal === 1 ? 'Nữ' : 'Không rõ';
+  return { name: `${first} ${last}`, gender };
 }
 
 function seededRandom(seed, min, max) {
@@ -129,17 +127,12 @@ function seededRandom(seed, min, max) {
 
 // ─── Core generators ───────────────────────────────────────────────────────────
 
-/**
- * Derive a camelCase field key from a column name or explicit field property.
- * Falls back to 'field_0', 'field_1', ... if no name is available.
- */
 function deriveFieldKey(col, ci) {
   if (col.field) return col.field;
   if (col.name) {
-    // Normalize: lowercase, remove accents, spaces/hyphens → camelCase
     const normalized = col.name
       .toLowerCase()
-      .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // strip diacritics
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
       .replace(/[^a-z0-9]+/g, ' ')
       .trim()
       .split(' ')
@@ -153,25 +146,17 @@ function deriveFieldKey(col, ci) {
 /**
  * generateConversations(insightId, columns, industry, rowCount = 20)
  *
- * Tạo mockup conversation rows + columns metadata
+ * Tạo mockup conversations rows + columns metadata
  * cho một insight mới (Template flow hoặc AI flow).
- *
- * columns: array of { name, field?, dataType?, dataOptions? }
  */
 export function generateConversations(insightId, columns, industry, rowCount = 20) {
   const pool = POOLS[industry] || POOLS.fashion;
 
-  // Build columns metadata with stable field keys
   const colMeta = (columns || []).map((col, ci) => {
     const field = deriveFieldKey(col, ci);
-    return {
-      id:    `${insightId}-${field}`,
-      name:  col.name,
-      field,
-    };
+    return { id: `${insightId}-${field}`, name: col.name, field };
   });
 
-  // Always include customer + platform columns
   if (!colMeta.find(c => c.field === 'customer')) {
     colMeta.unshift({ id: `${insightId}-customer`, name: 'Khách hàng', field: 'customer' });
   }
@@ -179,46 +164,43 @@ export function generateConversations(insightId, columns, industry, rowCount = 2
     colMeta.push({ id: `${insightId}-platform`, name: 'Kênh', field: 'platform' });
   }
 
-  // Generate rows
   const rows = Array.from({ length: rowCount }, (_, i) => {
     const seed = Date.now() + i * 137 + (insightId.charCodeAt(insightId.length - 1) || 0) * 31;
-    const { name, gender } = generateCustomerName(seed, null);
+    const { name, gender } = generateCustomerName(seed);
     const row = {
       id:       `${insightId}-row-${i + 1}`,
       customer: name,
-      gender:   gender === 'male' ? 'Nam' : gender === 'female' ? 'Nữ' : 'Không rõ',
+      gender,
       platform: pick(PLATFORMS, seed + 9),
       location: pick(LOCATIONS, seed + 5),
     };
 
-    // Fill data per column
     (columns || []).forEach((col, ci) => {
       const field = deriveFieldKey(col, ci);
       const s = seed + ci * 53;
-      const n = col.name?.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') || '';
+      const n = (col.name || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
       const f = col.field || field;
 
       if (col.dataType === 'true_false' || col.dataType === 'boolean') {
-        row[field] = seededRandom(s, 0, 10) < 3; // ~30% true
+        row[field] = seededRandom(s, 0, 10) < 3;
         return;
       }
 
-      // Smart value selection based on field name
       if (f === 'temperature' || n.includes('quan tâm') || n.includes('nhiệt') || n.includes('mức độ')) {
         row[field] = weighted(pool.temperatures, [3, 3, 2, 2, 1], s);
-      } else if (f === 'painpoint' || n.includes('nhu cầu') || n.includes('pain') || n.includes('cốt lõi')) {
+      } else if (f === 'painpoint' || n.includes('nhu cầu') || n.includes('cốt lõi')) {
         row[field] = pick(pool.painPoints, s);
-      } else if (f === 'objection' || n.includes('rào cản') || n.includes('objection') || n.includes('băn khoăn')) {
+      } else if (f === 'objection' || n.includes('rào cản') || n.includes('băn khoăn')) {
         row[field] = pick(pool.objections, s);
       } else if (f === 'product' || n.includes('sản phẩm') || n.includes('mẫu')) {
         row[field] = pick(pool.products, s);
-      } else if (f === 'competitor' || f === 'competitorname' || n.includes('đối thủ') || n.includes('competitor')) {
+      } else if (f === 'competitor' || n.includes('đối thủ')) {
         row[field] = pick(pool.competitors, s);
       } else if (n.includes('lỗi') || n.includes('mistake') || n.includes('sai')) {
         row[field] = pick(pool.mistakes, s);
-      } else if (n.includes('khu vực') || n.includes('location') || n.includes('tp') || n.includes('tỉnh')) {
+      } else if (n.includes('khu vực') || n.includes('location') || n.includes('tp')) {
         row[field] = pick(LOCATIONS, s);
-      } else if (n.includes('size') || n.includes('size')) {
+      } else if (n.includes('size')) {
         row[field] = pick(['S', 'M', 'L', 'XL', 'Freesize', '28', '29', '30', '31', '32'], s);
       } else if (col.dataOptions?.length > 0) {
         row[field] = pick(col.dataOptions, s);
@@ -233,18 +215,44 @@ export function generateConversations(insightId, columns, industry, rowCount = 2
   return { columns: colMeta, rows };
 }
 
+// ─── Analysis computation ────────────────────────────────────────────────────
+
 /**
- * generateAnalysis(conversationsData)
+ * computeAnalysisFromConversations(conversations, crossFilter)
  *
- * Tạo analysis results từ conversations data.
- * Chỉ cần conversations.rows để tính toán summary + metric cards.
+ * SINGLE SOURCE OF TRUTH — analysis được tính từ conversations.rows.
+ * crossFilter lọc rows trước khi tính → filter kích hoạt ngay.
+ *
+ * conversations: { columns, rows } — từ getConversations()
+ * crossFilter:  { field, value } hoặc null
  */
-export function generateAnalysis(conversationsData) {
-  const rows = conversationsData?.rows || [];
+export function computeAnalysisFromConversations(conversations, crossFilter) {
+  let rows = conversations?.rows || [];
   if (rows.length === 0) return null;
 
-  const seed = Date.now();
+  // Apply cross-filter BEFORE computing stats
+  if (crossFilter) {
+    rows = rows.filter(row => {
+      const fv = row[crossFilter.field];
+      if (typeof crossFilter.value === 'boolean') return fv === crossFilter.value;
+      return String(fv) === String(crossFilter.value);
+    });
+  }
+
   const total = rows.length;
+  if (total === 0) {
+    return {
+      summary: { totalConversations: 0, analyzedAt: new Date().toISOString() },
+      temperature: { hot: 0, warm: 0, cold: 0 },
+      productInterest: [], topPainPoints: [], topObjections: [],
+      junkRate: 0, qualityRate: 100,
+      phoneCollection: { collected: 0, refused: 0, notAsked: 0 },
+      attitude: { good: 0, average: 0, poor: 0 },
+      gender: { female: 0, male: 0, unknown: 0 },
+      topLocations: [], competitorMentions: { mentioned: 0, notMentioned: 0 },
+      topCompetitors: [], negativeSentiment: { negative: 0, neutral: 0, positive: 0 },
+    };
+  }
 
   // Temperature
   const tempCount = { hot: 0, warm: 0, cold: 0 };
@@ -255,86 +263,93 @@ export function generateAnalysis(conversationsData) {
     else tempCount.cold++;
   });
 
-  // Smart counts
-  const getCount = (field, val) => rows.filter(r => String(r[field]) === String(val)).length;
+  // Gender
   const genderCount = {
-    female: getCount('gender', 'Nữ'),
-    male:   getCount('gender', 'Nam'),
-    unknown: getCount('gender', 'Không rõ') + getCount('gender', null) + getCount('gender', ''),
+    female: rows.filter(r => String(r.gender) === 'Nữ').length,
+    male:   rows.filter(r => String(r.gender) === 'Nam').length,
+    unknown: rows.filter(r => !r.gender || r.gender === 'Không rõ').length,
   };
+
+  // Top Locations
   const locations = {};
   rows.forEach(r => { if (r.location) locations[r.location] = (locations[r.location] || 0) + 1; });
-  const topLocations = Object.entries(locations).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([text, count]) => ({ text, count }));
+  const topLocations = Object.entries(locations)
+    .sort((a, b) => b[1] - a[1]).slice(0, 5)
+    .map(([text, count]) => ({ text, count }));
 
+  // Products
   const products = {};
   rows.forEach(r => { if (r.product) products[r.product] = (products[r.product] || 0) + 1; });
-  const topProducts = Object.entries(products).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([name, count]) => ({ text: name, count }));
+  const topProducts = Object.entries(products)
+    .sort((a, b) => b[1] - a[1]).slice(0, 5)
+    .map(([text, count]) => ({ text, count }));
 
-  // Pain points
+  // Pain Points
   const painPoints = {};
   rows.forEach(r => { if (r.painPoint) painPoints[r.painPoint] = (painPoints[r.painPoint] || 0) + 1; });
-  const topPain = Object.entries(painPoints).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([text, count]) => ({ text, count }));
+  const topPain = Object.entries(painPoints)
+    .sort((a, b) => b[1] - a[1]).slice(0, 5)
+    .map(([text, count]) => ({ text, count }));
 
   // Objections
   const objections = {};
   rows.forEach(r => { if (r.objection) objections[r.objection] = (objections[r.objection] || 0) + 1; });
-  const topObj = Object.entries(objections).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([text, count]) => ({ text, count }));
+  const topObj = Object.entries(objections)
+    .sort((a, b) => b[1] - a[1]).slice(0, 5)
+    .map(([text, count]) => ({ text, count }));
 
   // Competitors
   const competitors = {};
-  rows.forEach(r => { if (r.competitorName || r.competitor) { const c = r.competitorName || r.competitor; competitors[c] = (competitors[c] || 0) + 1; } });
-  const topComp = Object.entries(competitors).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([name, count]) => ({ text: name, count }));
+  rows.forEach(r => {
+    const c = r.competitorName || r.competitor;
+    if (c) competitors[c] = (competitors[c] || 0) + 1;
+  });
+  const topComp = Object.entries(competitors)
+    .sort((a, b) => b[1] - a[1]).slice(0, 5)
+    .map(([text, count]) => ({ text, count }));
 
   // Junk
   const junkCount = rows.filter(r => r.isJunk === true || r.junkLead === true).length;
-  const junkRate  = Math.round((junkCount / total) * 100);
+  const junkRate = Math.round((junkCount / total) * 100);
 
   // Sentiment
-  const negCount  = rows.filter(r => r.isNegative === true || r.sentiment === 'Tiêu cực' || r.sentiment === 'negative').length;
-  const posCount  = rows.filter(r => r.sentiment === 'Tích cực' || r.sentiment === 'positive').length;
-  const neuCount  = total - negCount - posCount;
+  const negCount = rows.filter(r => r.isNegative === true || r.sentiment === 'Tiêu cực').length;
+  const posCount = rows.filter(r => r.sentiment === 'Tích cực').length;
+  const neuCount = total - negCount - posCount;
 
   // Phone collection
   const phoneCollected = rows.filter(r => r.phoneStatus === 'Đã cho SĐT').length;
-  const phoneRefused   = rows.filter(r => r.phoneStatus === 'Từ chối').length;
-  const phoneNotAsked  = rows.filter(r => !r.phoneStatus || r.phoneStatus === 'Chưa cho').length;
+  const phoneRefused    = rows.filter(r => r.phoneStatus === 'Từ chối').length;
+  const phoneNotAsked   = rows.filter(r => !r.phoneStatus || r.phoneStatus === 'Chưa cho').length;
 
   // Attitude
-  const attGood  = seededRandom(seed + 1, Math.round(total * 0.4), Math.round(total * 0.7));
-  const attAvg   = seededRandom(seed + 2, Math.round(total * 0.15), Math.round(total * 0.35));
-  const attPoor  = total - attGood - attAvg;
-
-  const analyzedAt = new Date(Date.now() - seededRandom(seed, 5, 180) * 60 * 1000).toISOString();
+  const attGood = rows.filter(r => r.attitude === 'Tốt').length;
+  const attAvg  = rows.filter(r => r.attitude === 'Trung bình').length;
+  const attPoor = Math.max(0, total - attGood - attAvg);
 
   return {
-    summary: {
-      totalConversations: total,
-      analyzedAt,
-    },
-    temperature:       { hot: tempCount.hot, warm: tempCount.warm, cold: tempCount.cold },
+    summary: { totalConversations: total, analyzedAt: new Date().toISOString() },
+    temperature:      { hot: tempCount.hot, warm: tempCount.warm, cold: tempCount.cold },
     productInterest:  topProducts,
-    topPainPoints:    topPain.length > 0 ? topPain : [{ text: 'Chưa có đủ dữ liệu', count: 1 }],
-    topObjections:    topObj.length > 0 ? topObj : [{ text: 'Không có rào cản nổi bật', count: 1 }],
+    topPainPoints:    topPain,
+    topObjections:    topObj,
     junkRate,
     qualityRate: Math.round(((total - junkCount) / total) * 100),
     phoneCollection: { collected: phoneCollected, refused: phoneRefused, notAsked: phoneNotAsked },
-    attitude:        { good: attGood, average: attAvg, poor: Math.max(0, attPoor) },
-    gender:          genderCount,
-    topLocations:    topLocations.length > 0 ? topLocations : [{ text: 'TP.HCM', count: Math.round(total * 0.3) }],
+    attitude:         { good: attGood, average: attAvg, poor: attPoor },
+    gender:           genderCount,
+    topLocations,
     competitorMentions: {
-      mentioned: rows.filter(r => r.competitorName || r.competitor).length,
+      mentioned:    rows.filter(r => r.competitorName || r.competitor).length,
       notMentioned: rows.filter(r => !r.competitorName && !r.competitor).length,
     },
-    topCompetitors: topComp.length > 0 ? topComp : [{ text: 'Chưa nhắc đến đối thủ', count: 1 }],
-    negativeSentiment: { negative: negCount, neutral: neuCount, positive: posCount },
+    topCompetitors:     topComp,
+    negativeSentiment:  { negative: negCount, neutral: neuCount, positive: posCount },
   };
 }
 
-/**
- * generateTrendData(conversationsData, days = 7)
- *
- * Tạo daily trend points (phù hợp InsightTrendChart).
- */
+// ─── Trend data ────────────────────────────────────────────────────────────────
+
 export function generateTrendData(conversationsData, days = 7) {
   const rows = conversationsData?.rows || [];
   const total = rows.length;
@@ -343,120 +358,44 @@ export function generateTrendData(conversationsData, days = 7) {
   return Array.from({ length: days }, (_, i) => {
     const d = new Date(now);
     d.setDate(d.getDate() - (days - 1 - i));
-    const dayStr  = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}`;
-    // Simulate organic daily counts
+    const dayStr = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}`;
     const baseCount = Math.round(total / days);
     const variance = Math.round((Math.sin(i * 1.7 + total * 0.1) + 1) * baseCount * 0.3);
     const count = Math.max(0, baseCount + variance + (i === days - 1 ? Math.round(total * 0.1) : 0));
-
     const hotPct  = 0.3 + Math.sin(i * 0.8) * 0.15;
     const warmPct = 0.35 + Math.cos(i * 0.6) * 0.1;
 
     return {
-      date:         dayStr,
-      Hội_thoại:    count,
-      'Nóng (%)':   Math.round((hotPct + Math.sin(i * 1.2) * 0.05) * 100),
-      'Ấm (%)':     Math.round((warmPct + Math.cos(i * 0.9) * 0.05) * 100),
-      'Lạnh (%)':   Math.round(Math.max(0, 100 - (hotPct + warmPct + Math.sin(i) * 0.05) * 100)),
+      date:       dayStr,
+      Hội_thoại: count,
+      'Nóng (%)':  Math.round((hotPct + Math.sin(i * 1.2) * 0.05) * 100),
+      'Ấm (%)':   Math.round((warmPct + Math.cos(i * 0.9) * 0.05) * 100),
+      'Lạnh (%)': Math.round(Math.max(0, 100 - (hotPct + warmPct + Math.sin(i) * 0.05) * 100)),
     };
   });
 }
 
-// ─── Public API ───────────────────────────────────────────────────────────────
+// ─── Public API ─────────────────────────────────────────────────────────────
 
-/**
- * registerInsightData(insightId, conversationsData)
- *
- * Đăng ký mock data vào registry.
- * Gọi ngay sau khi tạo insight mới (Template flow hoặc AI flow).
- */
 export function registerInsightData(insightId, conversationsData) {
   runtimeConversations[insightId] = conversationsData;
-  runtimeAnalysis[insightId]      = generateAnalysis(conversationsData);
-  runtimeTrend[insightId]         = generateTrendData(conversationsData, 7);
+  runtimeTrend[insightId] = generateTrendData(conversationsData, 7);
 }
 
-/**
- * getInsightData(insightId)
- *
- * Trả về { conversations, analysis, trend }
- * Thứ tự ưu tiên:
- *   1. runtimeConversations[key]  (AI flow / template mới)
- *   2. mockConversations[key]    (static template)
- *
- * Với Template flow:
- *   - Nếu insight có templateId đã có trong mockConversations → dùng mock
- *   - Nếu chưa có → generate runtime + register
- */
-export function getInsightData(insightId, templateId) {
-  // Ưu tiên 1: runtime data đã đăng ký
-  if (runtimeConversations[insightId]) {
-    return {
-      conversations: runtimeConversations[insightId],
-      analysis:      runtimeAnalysis[insightId] || null,
-      trend:         runtimeTrend[insightId] || [],
-    };
-  }
-
-  // Ưu tiên 2: static mock data (chỉ cho Template flow với known templateId)
-  const staticKey = templateId || insightId;
-  if (mockConversations[staticKey]) {
-    return {
-      conversations: mockConversations[staticKey],
-      analysis:      mockAnalysisResults[staticKey] || null,
-      trend:         runtimeTrend[staticKey] || generateTrendData(mockConversations[staticKey], 7),
-    };
-  }
-
-  // Ưu tiên 3: fallback — không có data
-  return { conversations: null, analysis: null, trend: [] };
-}
-
-/**
- * getTrendData(insightId)
- *
- * Lấy trend data cho InsightTrendChart.
- * Fallback: generate từ conversations nếu chưa có.
- */
-export function getTrendData(insightId) {
-  if (runtimeTrend[insightId]) return runtimeTrend[insightId];
-
-  // Thử lookup static
-  if (mockConversations[insightId]) {
-    return generateTrendData(mockConversations[insightId], 7);
-  }
-
-  return [];
-}
-
-/**
- * hasMockData(insightId, templateId)
- *
- * Kiểm tra xem insight có data để hiển thị hay không.
- */
-export function hasMockData(insightId, templateId) {
-  if (runtimeConversations[insightId]) return true;
-  const key = templateId || insightId;
-  if (mockConversations[key]) return true;
-  return false;
-}
-
-/**
- * getConversations(insightId)
- * Tiện ích: lấy nhanh conversations cho InsightDetail
- */
 export function getConversations(insightId) {
   if (runtimeConversations[insightId]) return runtimeConversations[insightId];
   if (mockConversations[insightId]) return mockConversations[insightId];
   return null;
 }
 
-/**
- * getAnalysis(insightId)
- * Tiện ích: lấy nhanh analysis cho InsightDetail
- */
-export function getAnalysis(insightId) {
-  if (runtimeAnalysis[insightId]) return runtimeAnalysis[insightId];
-  if (mockAnalysisResults[insightId]) return mockAnalysisResults[insightId];
-  return null;
+export function getTrendData(insightId) {
+  if (runtimeTrend[insightId]) return runtimeTrend[insightId];
+  if (mockConversations[insightId]) return generateTrendData(mockConversations[insightId], 7);
+  return [];
+}
+
+export function hasMockData(insightId) {
+  if (runtimeConversations[insightId]) return true;
+  if (mockConversations[insightId]) return true;
+  return false;
 }

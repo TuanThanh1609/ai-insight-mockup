@@ -11,7 +11,7 @@ import { Button } from '../ui/Button';
 import { InsightTrendChart } from './InsightTrendChart';
 import { mockTemplates } from '../../data/mockTemplates';
 import { cn, formatNumber, timeAgo } from '../../lib/utils';
-import { getConversations, getAnalysis, getTrendData, hasMockData } from '../../lib/mockDataService';
+import { getConversations, getTrendData, computeAnalysisFromConversations } from '../../lib/mockDataService';
 
 // ─── Mini chart components (reused from modal) ─────────────────────────────
 
@@ -482,10 +482,11 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
 
   // conversations/analysis: ưu tiên runtime (AI flow hoặc template mới chưa có static)
   const conversations = insightId ? getConversations(insightId) : null;
-  const analysis      = insightId ? getAnalysis(insightId) : null;
+  // analysis: COMPUTED từ conversations + crossFilter → filter kích hoạt được ngay
+  const analysis = conversations ? computeAnalysisFromConversations(conversations, crossFilter) : null;
   // trend: template-based → dùng templateId (lookup static), AI-generated → dùng insightId
-  const trendKey     = (templateId && templateId !== 'ai-generated') ? templateId : insightId;
-  const trendData    = trendKey ? getTrendData(trendKey) : [];
+  const trendKey  = (templateId && templateId !== 'ai-generated') ? templateId : insightId;
+  const trendData = trendKey ? getTrendData(trendKey) : [];
 
   const filteredRows = conversations
     ? conversations.rows.filter((row) => {
