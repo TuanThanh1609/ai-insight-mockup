@@ -393,20 +393,76 @@ const detailTabs = [
 ];
 
 // ─── Main Full-Page Component ───────────────────────────────────────────────
-export function InsightDetail({ insights, selectedInsightId, onSelectInsight, onBack }) {
+export function InsightDetail({ insights, selectedInsightId, onSelectInsight, onBack, setInsights }) {
   const [activeTab, setActiveTab] = useState('overview');
   const [currentPage, setCurrentPage] = useState(1);
   const [crossFilter, setCrossFilter] = useState(null);
+  const [editingInsightId, setEditingInsightId] = useState(null); // which insight is being edited
+  const [editColumns, setEditColumns] = useState(null);             // working copy of columns
+  const [savedNotice, setSavedNotice] = useState(false);             // "Đã lưu" toast
 
   useEffect(() => { setCurrentPage(1); }, [activeTab, crossFilter]);
-  useEffect(() => { setActiveTab('overview'); setCrossFilter(null); setCurrentPage(1); }, [selectedInsightId]);
+  useEffect(() => {
+    setActiveTab('overview');
+    setCrossFilter(null);
+    setCurrentPage(1);
+    setEditingInsightId(null);
+    setEditColumns(null);
+  }, [selectedInsightId]);
 
-  const handleCrossFilter = useCallback((filter) => {
-    setCrossFilter(filter);
-    setActiveTab('detail');
-  }, []);
+  // ── Column editing ───────────────────────────────────────────────────
+  const handleStartEdit = (insightId, template) => {
+    setEditingInsightId(insightId);
+    setEditColumns(JSON.parse(JSON.stringify(template?.columns || [])));
+  };
 
-  const clearCrossFilter = useCallback(() => setCrossFilter(null), []);
+  const handleCancelEdit = () => {
+    setEditingInsightId(null);
+    setEditColumns(null);
+  };
+
+  const handleSaveEdit = () => {
+    // Persist to localStorage
+    try {
+      const raw = localStorage.getItem('aiinsight_user_insights');
+      const parsed = JSON.parse(raw || '[]');
+      const updated = parsed.map((ins) =>
+        ins.id === editingInsightId
+          ? { ...ins, columnCount: editColumns.length }
+          : ins
+      );
+      localStorage.setItem('aiinsight_user_insights', JSON.stringify(updated));
+    } catch (_) {}
+
+    // Also update in-memory insights
+    setInsights((prev) =>
+      prev.map((ins) =>
+        ins.id === editingInsightId
+          ? { ...ins, columnCount: editColumns.length }
+          : ins
+      )
+    );
+
+    setEditingInsightId(null);
+    setEditColumns(null);
+    setSavedNotice(true);
+    setTimeout(() => setSavedNotice(false), 2500);
+  };
+
+  const updateColumn = (idx, field, value) => {
+    setEditColumns((prev) => {
+      const next = [...prev];
+      next[idx] = { ...next[idx], [field]: value };
+      return next;
+    });
+  };
+
+  const DATA_TYPE_OPTIONS = [
+    { key: 'short_text', label: 'Text' },
+    { key: 'true_false', label: 'True / False' },
+    { key: 'single_select', label: 'Lựa chọn' },
+    { key: 'dropdown', label: 'Dropdown' },
+  ];
 
   const selectedInsight = insights.find((i) => i.id === selectedInsightId) || null;
   const template = selectedInsight ? mockTemplates.find((t) => t.id === selectedInsight.templateId) : null;
@@ -506,11 +562,11 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
 
               {/* Actions */}
               <div className="flex items-center gap-2 shrink-0">
-                <Button variant="secondary" size="sm" className="gap-1.5">
+                <Button variant="primary" size="sm" className="gap-1.5">
                   <Settings2 size={14} />
                   <span className="hidden sm:inline">Cấu hình AI</span>
                 </Button>
-                <Button variant="ai-action" size="sm" className="gap-1.5">
+                <Button variant="primary" size="sm" className="gap-1.5">
                   <Download size={14} />
                   <span className="hidden sm:inline">Xuất dữ liệu</span>
                 </Button>
@@ -886,42 +942,198 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
             {/* ── TAB 2: Cấu hình ── */}
             {activeTab === 'template' && (
               <div className="flex flex-col gap-5 max-w-3xl">
+                {/* Header card */}
                 <div className="flex items-start gap-3 p-4 bg-primary/5 rounded-[--radius-md] border border-primary/20">
                   <span className="text-2xl mt-0.5">{template?.icon}</span>
-                  <div>
+                  <div className="flex-1 min-w-0">
                     <h3 className="font-display font-bold text-base text-on-surface mb-0.5">{template?.name}</h3>
                     <p className="text-xs text-on-surface-variant leading-relaxed">{template?.description}</p>
                   </div>
+                  {editingInsightId !== selectedInsightId ? (
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => handleStartEdit(selectedInsightId, template)}
+                      className="shrink-0 gap-1.5"
+                    >
+                      <Settings2 size={13} />
+                      Chỉnh sửa
+                    </Button>
+                  ) : (
+                    <div className="flex items-center gap-2 shrink-0">
+                      <Button variant="secondary" size="sm" onClick={handleCancelEdit}>
+                        Hủy
+                      </Button>
+                      <Button variant="ai-action" size="sm" onClick={handleSaveEdit}>
+                        Lưu
+                      </Button>
+                    </div>
+                  )}
                 </div>
 
-                <div>
-                  <h3 className="font-display font-bold text-sm text-on-surface mb-3">Các cột AI đã cài đặt</h3>
-                  <div className="flex flex-col gap-3">
-                    {template?.columns.map((col) => (
-                      <div
-                        key={col.id}
-                        className="flex items-start gap-3 p-4 bg-surface-container-low rounded-[--radius-md]"
-                      >
-                        <span className="text-lg mt-0.5">{col.icon}</span>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="text-sm font-semibold text-on-surface">{col.name}</span>
-                            <span className={cn(
-                              'text-[10px] font-bold px-1.5 py-0.5 rounded-full',
-                              col.type === 'boolean' ? 'bg-blue-100 text-blue-700' :
-                              col.type === 'enum' ? 'bg-amber-100 text-amber-700' :
-                              'bg-slate-100 text-slate-600'
-                            )}>
-                              {col.dataType === 'true_false' ? 'True/False' :
-                               col.dataType === 'single_select' ? 'Lựa chọn' :
-                               col.dataType === 'dropdown' ? 'Dropdown' : 'Text'}
-                            </span>
-                          </div>
-                          <p className="text-xs text-on-surface-variant leading-relaxed">{col.prompt}</p>
-                        </div>
-                      </div>
-                    ))}
+                {/* Saved notice */}
+                {savedNotice && (
+                  <div className="flex items-center gap-2 px-4 py-2.5 rounded-[--radius-md] bg-tertiary-container text-xs font-medium text-on-tertiary-container">
+                    <CheckCircle2 size={14} />
+                    Đã lưu thay đổi — AI sẽ phân tích lại với cấu hình mới
                   </div>
+                )}
+
+                {/* Column list */}
+                <div>
+                  <h3 className="font-display font-bold text-sm text-on-surface mb-3">Các cột AI</h3>
+                  <div className="flex flex-col gap-3">
+                    {(editColumns || template?.columns || []).map((col, idx) => {
+                      const isEditing = editingInsightId === selectedInsightId;
+                      return (
+                        <div
+                          key={isEditing ? `edit-${idx}` : col.id}
+                          className={cn(
+                            'flex items-start gap-3 p-4 rounded-[--radius-md] transition-colors',
+                            isEditing ? 'bg-surface-container-low border border-[var(--color-outline-variant)]' : 'bg-surface-container-low'
+                          )}
+                        >
+                          {/* Icon picker */}
+                          <div className="flex flex-col items-center gap-1 shrink-0">
+                            {isEditing ? (
+                              <input
+                                type="text"
+                                value={col.icon || ''}
+                                maxLength={2}
+                                onChange={(e) => updateColumn(idx, 'icon', e.target.value)}
+                                className="w-10 h-10 text-center text-lg border border-[var(--color-outline-variant)] rounded-[--radius-sm] bg-surface-container-lowest focus:outline-none focus:border-primary"
+                              />
+                            ) : (
+                              <span className="text-lg">{col.icon}</span>
+                            )}
+                          </div>
+
+                          {/* Fields */}
+                          <div className="flex-1 min-w-0 flex flex-col gap-2.5">
+                            {/* Name row */}
+                            <div className="flex items-start gap-2">
+                              <div className="flex-1 min-w-0">
+                                <label className="text-[10px] font-semibold text-on-surface-variant mb-1 block">Tên cột</label>
+                                {isEditing ? (
+                                  <input
+                                    type="text"
+                                    value={col.name || ''}
+                                    onChange={(e) => updateColumn(idx, 'name', e.target.value)}
+                                    className="w-full px-2.5 py-1.5 text-sm border border-[var(--color-outline-variant)] rounded-[--radius-sm] bg-surface-container-lowest focus:outline-none focus:border-primary text-on-surface"
+                                  />
+                                ) : (
+                                  <p className="text-sm font-semibold text-on-surface">{col.name}</p>
+                                )}
+                              </div>
+
+                              {/* Data type */}
+                              <div className="shrink-0">
+                                <label className="text-[10px] font-semibold text-on-surface-variant mb-1 block">Kiểu dữ liệu</label>
+                                {isEditing ? (
+                                  <select
+                                    value={col.dataType || 'short_text'}
+                                    onChange={(e) => updateColumn(idx, 'dataType', e.target.value)}
+                                    className="px-2.5 py-1.5 text-xs border border-[var(--color-outline-variant)] rounded-[--radius-sm] bg-surface-container-lowest focus:outline-none focus:border-primary text-on-surface"
+                                  >
+                                    {DATA_TYPE_OPTIONS.map((opt) => (
+                                      <option key={opt.key} value={opt.key}>{opt.label}</option>
+                                    ))}
+                                  </select>
+                                ) : (
+                                  <span className={cn(
+                                    'inline-block text-[10px] font-bold px-1.5 py-0.5 rounded-full mt-0.5',
+                                    col.dataType === 'true_false' ? 'bg-blue-100 text-blue-700' :
+                                    col.dataType === 'single_select' ? 'bg-amber-100 text-amber-700' :
+                                    col.dataType === 'dropdown' ? 'bg-violet-100 text-violet-700' :
+                                    'bg-slate-100 text-slate-600'
+                                  )}>
+                                    {DATA_TYPE_OPTIONS.find(o => o.key === col.dataType)?.label || 'Text'}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Prompt */}
+                            <div>
+                              <label className="text-[10px] font-semibold text-on-surface-variant mb-1 block">Prompt AI</label>
+                              {isEditing ? (
+                                <textarea
+                                  value={col.prompt || ''}
+                                  onChange={(e) => updateColumn(idx, 'prompt', e.target.value)}
+                                  rows={2}
+                                  className="w-full px-2.5 py-1.5 text-xs border border-[var(--color-outline-variant)] rounded-[--radius-sm] bg-surface-container-lowest focus:outline-none focus:border-primary text-on-surface resize-y leading-relaxed"
+                                />
+                              ) : (
+                                <p className="text-xs text-on-surface-variant leading-relaxed">{col.prompt}</p>
+                              )}
+                            </div>
+
+                            {/* Options (for single_select / dropdown) */}
+                            {(col.dataType === 'single_select' || col.dataType === 'dropdown') && (
+                              <div>
+                                <label className="text-[10px] font-semibold text-on-surface-variant mb-1 block">Tùy chọn</label>
+                                <div className="flex flex-wrap gap-1.5">
+                                  {(isEditing ? (col.dataOptions || []) : (col.dataOptions || [])).map((opt, oi) => (
+                                    <span
+                                      key={oi}
+                                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-medium"
+                                    >
+                                      {opt}
+                                      {isEditing && (
+                                        <button
+                                          onClick={() => {
+                                            const opts = [...(editColumns[idx].dataOptions || [])];
+                                            opts.splice(oi, 1);
+                                            updateColumn(idx, 'dataOptions', opts);
+                                          }}
+                                          className="text-primary/50 hover:text-primary transition-colors ml-0.5"
+                                        >
+                                          ×
+                                        </button>
+                                      )}
+                                    </span>
+                                  ))}
+                                  {isEditing && (
+                                    <button
+                                      onClick={() => {
+                                        const opts = [...(editColumns[idx].dataOptions || [])];
+                                        opts.push('Tùy chọn mới');
+                                        updateColumn(idx, 'dataOptions', opts);
+                                      }}
+                                      className="px-2 py-0.5 rounded-full border border-dashed border-[var(--color-outline-variant)] text-[10px] text-on-surface-variant hover:border-primary hover:text-primary transition-colors"
+                                    >
+                                      + Thêm
+                                    </button>
+                                  )}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Add column */}
+                  {editingInsightId === selectedInsightId && (
+                    <button
+                      onClick={() => {
+                        const newCol = {
+                          id: `custom-${Date.now()}`,
+                          icon: '📊',
+                          name: 'Cột mới',
+                          prompt: 'Mô tả cột này làm gì...',
+                          type: 'text',
+                          dataType: 'short_text',
+                          dataOptions: null,
+                        };
+                        setEditColumns((prev) => [...prev, newCol]);
+                      }}
+                      className="mt-3 w-full py-2.5 border border-dashed border-[var(--color-outline-variant)] rounded-[--radius-md] text-xs text-on-surface-variant hover:border-primary hover:text-primary transition-colors"
+                    >
+                      + Thêm cột mới
+                    </button>
+                  )}
                 </div>
               </div>
             )}

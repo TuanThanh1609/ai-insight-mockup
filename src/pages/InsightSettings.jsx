@@ -191,6 +191,7 @@ export default function InsightSettings() {
             selectedInsightId={selectedInsightId}
             onSelectInsight={handleSelectInsight}
             onBack={handleBackToList}
+            setInsights={setInsights}
           />
         </div>
       )}
