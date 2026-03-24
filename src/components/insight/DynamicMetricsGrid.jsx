@@ -141,7 +141,7 @@ function topByField(rows, fieldName, limit = 5) {
 
 // ─── Mini chart components ────────────────────────────────────────────────────
 
-function TemperatureMiniChart({ data, onClick }) {
+function TemperatureMiniChart({ data, field, onClick }) {
   const total = (data.hot || 0) + (data.warm || 0) + (data.cold || 0);
   if (total === 0) return null;
   const bars = [
@@ -156,7 +156,7 @@ function TemperatureMiniChart({ data, onClick }) {
           <div className="flex justify-between mb-0.5">
             <span className="text-[10px] text-on-surface-variant">{bar.label}</span>
             <button
-              onClick={() => bar.value > 0 && onClick?.({ field: null, value: null, label: bar.label, count: bar.value })}
+              onClick={() => bar.value > 0 && onClick?.({ field, value: bar.filterKey, label: bar.label, count: bar.value })}
               className={cn("text-[10px] font-semibold", bar.value > 0 ? "text-on-surface hover:text-primary cursor-pointer" : "text-on-surface-variant/40")}
             >
               {bar.value} ({bar.pct}%)
@@ -164,7 +164,7 @@ function TemperatureMiniChart({ data, onClick }) {
           </div>
           <div className="w-full h-1.5 rounded-full bg-surface-container-low overflow-hidden">
             <button
-              onClick={() => bar.value > 0 && onClick?.({ field: null, value: null, label: bar.label, count: bar.value })}
+              onClick={() => bar.value > 0 && onClick?.({ field, value: bar.filterKey, label: bar.label, count: bar.value })}
               className="h-full rounded-full transition-all duration-700 hover:brightness-110"
               style={{ width: `${bar.pct}%`, background: bar.color }}
             />
@@ -175,7 +175,7 @@ function TemperatureMiniChart({ data, onClick }) {
   );
 }
 
-function TopListCard({ items, onClick, highlight, accentColor }) {
+function TopListCard({ items, field, onClick, highlight, accentColor }) {
   if (!items || items.length === 0) return <p className="text-[10px] text-on-surface-variant">Chưa có dữ liệu</p>;
   const total = items.reduce((s, i) => s + (i.count || 0), 0);
   return (
@@ -188,7 +188,7 @@ function TopListCard({ items, onClick, highlight, accentColor }) {
               <span className="text-[10px] font-semibold text-warning-container shrink-0">{i + 1}</span>
             ) : null}
             <button
-              onClick={() => onClick?.({ field: null, value: item.text, label: item.text, count: item.count })}
+              onClick={() => onClick?.({ field, value: item.text, label: item.text, count: item.count })}
               className={cn(
                 "text-[10px] text-on-surface hover:text-primary cursor-pointer text-left truncate flex-1 min-w-0",
                 highlight ? "text-warning-container hover:text-primary" : ""
@@ -324,6 +324,7 @@ function ColumnCard({ col, rows, onCrossFilter, config }) {
         </div>
         <TemperatureMiniChart
           data={tempData}
+          field={field}
           onClick={onCrossFilter}
         />
       </Card>
@@ -384,7 +385,7 @@ function ColumnCard({ col, rows, onCrossFilter, config }) {
           <MousePointerClick size={9} />Filter
         </span>
       </div>
-      <TopListCard items={items} onClick={onCrossFilter} highlight={config.highlight} accentColor={config.color} />
+      <TopListCard items={items} field={field} onClick={onCrossFilter} highlight={config.highlight} accentColor={config.color} />
     </Card>
   );
 }
@@ -400,16 +401,7 @@ export function DynamicMetricsGrid({ conversations, crossFilter, onCrossFilter }
   const rows = conversations?.rows || [];
   const columns = conversations?.columns || [];
 
-  // Apply cross-filter first
-  const filteredRows = crossFilter
-    ? rows.filter(row => {
-        const fv = row[crossFilter.field];
-        if (typeof crossFilter.value === 'boolean') return fv === crossFilter.value;
-        return String(fv) === String(crossFilter.value);
-      })
-    : rows;
-
-  // Detect card config for each column
+  // Card configs are derived from column metadata (stable per template)
   const cardConfigs = useMemo(() => {
     return columns
       .map(col => detectCardConfig(col, rows))
@@ -431,7 +423,7 @@ export function DynamicMetricsGrid({ conversations, crossFilter, onCrossFilter }
         <ColumnCard
           key={`${config.field}-${i}`}
           col={{ field: config.field }}
-          rows={filteredRows}
+          rows={rows}
           onCrossFilter={onCrossFilter}
           config={config}
         />
