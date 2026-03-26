@@ -224,19 +224,11 @@ export function InsightTrendChart({ insightId, trendData, crossFilter, conversat
   const dropdownOptions = useMemo(() => {
     const opts = [];
 
-    // Default group
-    opts.push({ group: 'Mặc định', items: defaultMetrics.map((m, i) => ({
-      key: m.key,
-      label: m.label,
-      color: PALETTE[i % PALETTE.length],
-    })) });
-
-    // Per-column group
+    // When columnSeries exist, only show per-column groups
+    // (defaultMetrics keys like "Nóng (%)" would NOT match bucket data keys)
     if (columnSeries && columnSeries.length > 0) {
-      // Group by field (block name)
       const byField = {};
       columnSeries.forEach(s => {
-        // label format: "Block Name — Sub-label"
         const base = s.label.replace(/ — .*$/, '');
         if (!byField[base]) byField[base] = [];
         byField[base].push(s);
@@ -244,6 +236,13 @@ export function InsightTrendChart({ insightId, trendData, crossFilter, conversat
       Object.entries(byField).forEach(([block, items]) => {
         opts.push({ group: block, items });
       });
+    } else {
+      // Fallback: show default metrics
+      opts.push({ group: 'Mặc định', items: defaultMetrics.map((m, i) => ({
+        key: m.key,
+        label: m.label,
+        color: PALETTE[i % PALETTE.length],
+      })) });
     }
 
     return opts;
@@ -280,15 +279,21 @@ export function InsightTrendChart({ insightId, trendData, crossFilter, conversat
       }));
     }
 
-    // Single series selected
+    // Single series selected — always resolve through columnSeries when available
+    // so the key matches what computeAllSeriesBuckets wrote into the data.
     const found = dropdownOptions
       .flatMap(o => o.items)
       .find(i => i.key === selectedSeries);
     if (!found) return [];
+
+    // Prefer the full columnSeries config (has field/tempLevel/etc.) over the
+    // lightweight dropdown item, so the key + metadata are consistent.
+    const colConfig = columnSeries?.find(s => s.key === selectedSeries);
+    const metric = colConfig || found;
     return [{
-      key: found.key,
-      label: found.label,
-      palette: { stroke: found.color, fill: found.color },
+      key: metric.key,
+      label: metric.label,
+      palette: { stroke: metric.color || found.color, fill: metric.color || found.color },
     }];
   }, [selectedSeries, columnSeries, defaultMetrics, dropdownOptions]);
 
