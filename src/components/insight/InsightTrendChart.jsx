@@ -117,40 +117,31 @@ function buildMetricsFromColumns(columns, rows) {
   return series;
 }
 
-// ─── Build time-series data for selected metric ──────────────────────────────
+// ─── Build time-series data ─────────────────────────────────────────────────
 
 /**
- * Build time-series data for column-derived series.
- * When a column series is selected (top-list, gauge, temperature, donut),
- * we derive the trend by counting occurrences of the target value per day
- * from the conversations.rows.
- *
- * For default mode (selectedSeries = null), return rawData as-is.
+ * Compute per-bucket counts for ALL active series at once.
+ * Always called when columnSeries exist — both for "Mặc định" and for
+ * a specific dropdown selection.
  */
-function buildTimeSeriesData(rawData, selectedSeries, period, rows, columnSeries, isStatic) {
-  // For static trend with no column selection, use raw data
-  if (!selectedSeries || !rows || rows.length === 0) {
-    return rawData;
-  }
-
-  // Find the selected series config
-  const seriesConfig = columnSeries?.find(s => s.key === selectedSeries);
-  if (!seriesConfig) return rawData;
+function computeAllSeriesBuckets(rawData, period, rows, columnSeries) {
+  if (!rows || rows.length === 0) return rawData;
 
   const bucketCount = period === 'week' ? 7 : 30;
   const baseDate = new Date('2026-03-23');
 
-  // Build bucket labels matching rawData format (oldest → newest)
+  // Build bucket labels
   const buckets = Array.from({ length: bucketCount }, (_, i) => {
     const d = new Date(baseDate);
     d.setDate(d.getDate() - (bucketCount - 1 - i));
     const label = `${d.getDate()}/${d.getMonth() + 1}`;
-    return { label, [selectedSeries]: 0 };
+    const entry = { label };
+    columnSeries.forEach(s => { entry[s.key] = 0; });
+    return entry;
   });
 
-  // Group rows into buckets by date + value matching
+  // Count occurrences per bucket for each series
   rows.forEach(row => {
-    // Support both 'timestamp' and 'converted_at' (Supabase format)
     const ts = row.timestamp || row.converted_at || row.date;
     if (!ts) return;
     const d = new Date(ts);
@@ -159,63 +150,42 @@ function buildTimeSeriesData(rawData, selectedSeries, period, rows, columnSeries
       ? 6 - daysSinceBase
       : 29 - daysSinceBase;
 
-    // Resolve target bucket: clamp to valid range
-    let targetBucket = bucketIdx;
-    if (bucketIdx < 0) {
-      // Data is older than window — put in bucket 0
-      targetBucket = 0;
-    } else if (bucketIdx >= bucketCount) {
-      // Data is newer than window — put in last bucket
-      targetBucket = bucketCount - 1;
-    }
+    if (bucketIdx < 0 || bucketIdx >= bucketCount) return;
 
-    const val = row[seriesConfig.field];
-    const strVal = String(val || '').trim();
+    columnSeries.forEach(s => {
+      const val = row[s.field];
+      const strVal = String(val || '').trim();
+      let matched = false;
 
-    let matched = false;
-
-    if (seriesConfig.tempLevel) {
-      const level = seriesConfig.tempLevel;
-      if (level === 'Nóng' && (strVal.includes('Nóng') || strVal.includes('Hot') || strVal.includes('nóng') ||
-        strVal.includes('giá') || strVal.includes('mua') || strVal.includes('chốt'))) matched = true;
-      if (level === 'Ấm' && (strVal.includes('Ấm') || strVal.includes('Warm') || strVal.includes('ấm') ||
-        strVal.includes('tư vấn') || strVal.includes('hỏi thêm'))) matched = true;
-      if (level === 'Lạnh' && (strVal.includes('Lạnh') || strVal.includes('Cold') || strVal.includes('lạnh'))) matched = true;
-    } else if (seriesConfig.isBoolean !== undefined) {
-      const targetVal = seriesConfig.targetVal;
-      if (targetVal === true) {
-        matched = !!(val === true || val === 'true' || val === 1 || val === 'Có' || val === 'Đã cho SĐT' || val === 'Có ý định' || val === 'Có nhắc đến');
-      } else {
-        matched = !!(val === false || val === 'false' || val === 0 || val === 'Không' || strVal === '');
+      if (s.tempLevel) {
+        const level = s.tempLevel;
+        if (level === 'Nóng' && (strVal.includes('Nóng') || strVal.includes('Hot') ||
+          strVal.includes('giá') || strVal.includes('mua') || strVal.includes('chốt'))) matched = true;
+        if (level === 'Ấm' && (strVal.includes('Ấm') || strVal.includes('Warm') ||
+          strVal.includes('tư vấn') || strVal.includes('hỏi thêm'))) matched = true;
+        if (level === 'Lạnh' && (strVal.includes('Lạnh') || strVal.includes('Cold'))) matched = true;
+      } else if (s.isBoolean !== undefined) {
+        matched = s.targetVal
+          ? !!(val === true || val === 'true' || val === 1 || val === 'Có' || val === 'Đã cho SĐT' || val === 'Có ý định')
+          : !!(val === false || val === 'false' || val === 0 || val === 'Không' || strVal === '');
+      } else if (s.targetVal !== undefined) {
+        matched = strVal === s.targetVal;
+      } else if (strVal) {
+        matched = true;
       }
-    } else if (seriesConfig.targetVal !== undefined) {
-      matched = strVal === seriesConfig.targetVal;
-    } else if (strVal) {
-      // Generic: any non-empty value counts
-      matched = true;
-    }
 
-    if (matched) {
-      buckets[targetBucket][selectedSeries]++;
-    }
+      if (matched) buckets[bucketIdx][s.key]++;
+    });
   });
 
-  // Ensure minimum value of 1 for visual interest (avoid flat zero lines)
-  return buckets.map(b => ({
-    ...b,
-    [selectedSeries]: Math.max(1, b[selectedSeries]),
-  }));
+  return buckets.map(b => {
+    const entry = { ...b };
+    columnSeries.forEach(s => { entry[s.key] = Math.max(1, entry[s.key]); });
+    return entry;
+  });
 }
 
-/**
- * InsightTrendChart
- *
- * Props:
- *  - insightId: lookup key for static mockInsightTrend
- *  - trendData: runtime trend array (from getTrendData) — overrides static if present
- *  - conversations: rows for cross-filtering AND for building column-derived series
- *  - crossFilter: active filter
- */
+// ── Component ──────────────────────────────────────────────────────────────────
 export function InsightTrendChart({ insightId, trendData, crossFilter, conversations }) {
   const [period, setPeriod] = useState('week');
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -322,56 +292,42 @@ export function InsightTrendChart({ insightId, trendData, crossFilter, conversat
     }];
   }, [selectedSeries, columnSeries, defaultMetrics, dropdownOptions]);
 
-  // ── Cross-filter data ────────────────────────────────────────────────────
+  // ── Final chart data ────────────────────────────────────────────────────
   const data = useMemo(() => {
-    // Step 1: Resolve base data
-    let baseData = rawData;
+    let result;
 
-    // Always compute from rows when column-derived series exist.
-    // Without this, the chart renders dots with no connecting lines
-    // because rawData doesn't contain the per-metric keys.
     if (columnSeries && columnSeries.length > 0 && rows && rows.length > 0) {
-      baseData = buildTimeSeriesData(rawData, selectedSeries, period, rows, columnSeries, isStatic);
-    }
+      // Compute time-series from conversations.rows for all active series
+      result = computeAllSeriesBuckets(rawData, period, rows, columnSeries);
 
-    // Step 2: Apply cross-filter on top
-    if (!crossFilter || !conversations) return baseData;
-
-    const bucketCount = period === 'week' ? 7 : 30;
-    const buckets = Array.from({ length: bucketCount }, () => []);
-
-    rows.forEach(row => {
-      const ts = row.timestamp || row.converted_at || row.date;
-      if (!ts) return;
-      const d = new Date(ts);
-      const daysDiff = Math.floor((new Date('2026-03-23') - d) / 86400000);
-      const bucketIdx = period === 'week'
-        ? 6 - daysDiff
-        : 29 - daysDiff;
-      if (bucketIdx >= 0 && bucketIdx < bucketCount) {
-        buckets[bucketIdx].push(row);
-      }
-    });
-
-    const filtered = baseData.map((b, i) => {
-      const bucket = buckets[i] || [];
-      const scale = bucket.length === 0
-        ? 0
-        : bucket.filter(row => {
+      // Apply cross-filter on top: scale each bucket's counts
+      if (crossFilter) {
+        const bucketCount = period === 'week' ? 7 : 30;
+        result = result.map((entry, i) => {
+          // crossFilter applies to conversations.rows
+          // We approximate by scaling down based on how many rows match the filter
+          // in each bucket. Since we don't keep per-bucket filter ratios,
+          // we apply the filter ratio from the full dataset as a uniform scale.
+          const totalRows = rows.length;
+          const matchingRows = rows.filter(row => {
             const fv = row[crossFilter.field];
             if (typeof crossFilter.value === 'boolean') return fv === crossFilter.value;
             return String(fv) === String(crossFilter.value);
-          }).length / bucket.length;
+          });
+          const ratio = totalRows > 0 ? matchingRows.length / totalRows : 1;
+          const scaled = { ...entry };
+          columnSeries.forEach(s => {
+            scaled[s.key] = Math.round((entry[s.key] || 0) * ratio);
+          });
+          return scaled;
+        });
+      }
+    } else {
+      result = rawData;
+    }
 
-      const entry = { ...b };
-      activeMetrics.forEach(m => {
-        entry[m.key] = Math.round((b[m.key] || 0) * scale);
-      });
-      return entry;
-    });
-
-    return filtered;
-  }, [rawData, crossFilter, conversations, period, activeMetrics, selectedSeries, columnSeries, rows, isStatic]);
+    return result;
+  }, [rawData, columnSeries, rows, period, crossFilter]);
 
   // ── Y-axis ──────────────────────────────────────────────────────────────
   const allValues = data.flatMap(d => activeMetrics.map(m => d[m.key] || 0));
