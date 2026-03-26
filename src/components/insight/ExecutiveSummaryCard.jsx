@@ -176,10 +176,10 @@ export function ExecutiveSummaryCard({ summary }) {
       {/* Budget Recommendation */}
       {summary.budgetRecommendation && (
         <div className="rounded-[--radius-md] p-3 bg-surface-container-low border border-surface-container-high">
-          <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wide mb-2">
+          <p className="text-xs font-bold text-on-surface-variant uppercase tracking-wide mb-2">
             📊 Gợi ý phân bổ ngân sách tuần tới
           </p>
-          <div className="grid grid-cols-4 gap-2 text-[10px]">
+          <div className="grid grid-cols-4 gap-2 text-xs">
             {summary.budgetRecommendation.scaleUp?.length > 0 && (
               <div>
                 <p className="font-semibold text-[#059669] mb-1">↑ Tăng</p>
