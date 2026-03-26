@@ -1,11 +1,12 @@
 import { useState, useMemo } from 'react';
 import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
+  LineChart, Line,
+  AreaChart, Area,
+  BarChart, Bar,
+  XAxis, YAxis,
   CartesianGrid,
   Tooltip,
+  Legend,
   ResponsiveContainer,
 } from 'recharts';
 import { TrendingUp, FilterX, ChevronDown } from 'lucide-react';
@@ -188,6 +189,7 @@ function computeAllSeriesBuckets(rawData, period, rows, columnSeries) {
 // ── Component ──────────────────────────────────────────────────────────────────
 export function InsightTrendChart({ insightId, trendData, crossFilter, conversations }) {
   const [period, setPeriod] = useState('week');
+  const [chartType, setChartType] = useState('area'); // 'line' | 'area' | 'bar'
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedSeries, setSelectedSeries] = useState(null); // null = default (all metrics)
 
@@ -484,6 +486,28 @@ export function InsightTrendChart({ insightId, trendData, crossFilter, conversat
               </button>
             ))}
           </div>
+
+          {/* Chart type toggle */}
+          <div className="flex items-center bg-surface-container-low rounded-full p-0.5 gap-0.5 shrink-0">
+            {[
+              { key: 'line', label: 'Đường' },
+              { key: 'area', label: 'Vùng' },
+              { key: 'bar',  label: 'Cột' },
+            ].map(t => (
+              <button
+                key={t.key}
+                onClick={() => setChartType(t.key)}
+                className={cn(
+                  'px-3 py-1 rounded-full text-[11px] font-semibold transition-all duration-200',
+                  chartType === t.key
+                    ? 'bg-primary text-on-primary shadow-sm'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-lowest'
+                )}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -500,57 +524,105 @@ export function InsightTrendChart({ insightId, trendData, crossFilter, conversat
       {/* Chart area */}
       <div style={{ background: 'var(--color-surface-container-low)', borderRadius: 10, padding: '12px 8px 8px 0' }}>
         <ResponsiveContainer width="100%" height={220}>
-          <LineChart data={data} margin={{ top: 4, right: 12, left: -16, bottom: 0 }}>
-            <CartesianGrid
-              strokeDasharray="3 3"
-              stroke="rgba(42,52,55,0.14)"
-              vertical={false}
-            />
+          {chartType === 'bar' ? (
+            <BarChart data={data} margin={{ top: 4, right: 12, left: -16, bottom: 0 }} barGap={2}>
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(42,52,55,0.14)" vertical={false} />
+              <XAxis
+                dataKey={labelKey}
+                tick={{ fontSize: 11, fill: '#5a6368', fontFamily: 'Inter', fontWeight: 500 }}
+                axisLine={false} tickLine={false} interval="preserveStartEnd"
+              />
+              <YAxis
+                tick={{ fontSize: 11, fill: '#5a6368', fontFamily: 'Inter', fontWeight: 500 }}
+                axisLine={false} tickLine={false} domain={[0, yMax]} tickCount={5} width={36}
+              />
+              <Tooltip
+                contentStyle={{
+                  background: '#ffffff', border: '1px solid rgba(42,52,55,0.12)',
+                  borderRadius: 10, boxShadow: '0 4px 16px rgba(44,52,55,0.14)',
+                  fontFamily: 'Inter', fontSize: 12, padding: '8px 12px', minWidth: 120,
+                }}
+                itemStyle={{ fontWeight: 700, paddingBottom: 2 }}
+                labelStyle={{ color: '#2c3437', marginBottom: 6, fontSize: 11, fontWeight: 600 }}
+              />
+              {activeMetrics.map((m) => (
+                <Bar
+                  key={m.key}
+                  dataKey={m.key}
+                  name={m.label}
+                  fill={m.palette.fill}
+                  radius={[3, 3, 0, 0]}
+                  maxBarSize={28}
+                />
+              ))}
+            </BarChart>
+          ) : (() => {
+            const ChartComp = chartType === 'area' ? AreaChart : LineChart;
+            return (
+            <ChartComp
+              data={data}
+              margin={{ top: 4, right: 12, left: -16, bottom: 0 }}
+            >
+            <defs>
+              {activeMetrics.map((m) => (
+                <linearGradient key={m.key} id={`grad-${m.key}`} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={m.palette.fill} stopOpacity={0.25} />
+                  <stop offset="95%" stopColor={m.palette.fill} stopOpacity={0.02} />
+                </linearGradient>
+              ))}
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(42,52,55,0.14)" vertical={false} />
             <XAxis
               dataKey={labelKey}
               tick={{ fontSize: 11, fill: '#5a6368', fontFamily: 'Inter', fontWeight: 500 }}
-              axisLine={false}
-              tickLine={false}
-              interval="preserveStartEnd"
+              axisLine={false} tickLine={false} interval="preserveStartEnd"
             />
             <YAxis
               tick={{ fontSize: 11, fill: '#5a6368', fontFamily: 'Inter', fontWeight: 500 }}
-              axisLine={false}
-              tickLine={false}
-              domain={[0, yMax]}
-              tickCount={5}
-              width={36}
+              axisLine={false} tickLine={false} domain={[0, yMax]} tickCount={5} width={36}
             />
             <Tooltip
               contentStyle={{
-                background: '#ffffff',
-                border: '1px solid rgba(42,52,55,0.12)',
-                borderRadius: 10,
-                boxShadow: '0 4px 16px rgba(44,52,55,0.14)',
-                fontFamily: 'Inter',
-                fontSize: 12,
-                padding: '8px 12px',
-                minWidth: 120,
+                background: '#ffffff', border: '1px solid rgba(42,52,55,0.12)',
+                borderRadius: 10, boxShadow: '0 4px 16px rgba(44,52,55,0.14)',
+                fontFamily: 'Inter', fontSize: 12, padding: '8px 12px', minWidth: 120,
               }}
               itemStyle={{ fontWeight: 700, paddingBottom: 2 }}
               labelStyle={{ color: '#2c3437', marginBottom: 6, fontSize: 11, fontWeight: 600 }}
               cursor={{ stroke: 'rgba(42,52,55,0.15)', strokeWidth: 1, strokeDasharray: '4 4' }}
             />
-
-            {activeMetrics.map((m) => (
-              <Line
-                key={m.key}
-                type="monotone"
-                dataKey={m.key}
-                name={m.label}
-                stroke={m.palette.stroke}
-                strokeWidth={3}
-                dot={{ r: 4, fill: m.palette.fill, strokeWidth: 0 }}
-                activeDot={{ r: 6, fill: m.palette.fill, strokeWidth: 0 }}
-                connectNulls={true}
-              />
-            ))}
-          </LineChart>
+            {chartType === 'area'
+              ? activeMetrics.map((m) => (
+                  <Area
+                    key={m.key}
+                    type="monotone"
+                    dataKey={m.key}
+                    name={m.label}
+                    stroke={m.palette.stroke}
+                    strokeWidth={2.5}
+                    fill={`url(#grad-${m.key})`}
+                    dot={{ r: 3, fill: m.palette.fill, strokeWidth: 0 }}
+                    activeDot={{ r: 5, fill: m.palette.fill, strokeWidth: 0 }}
+                    connectNulls={true}
+                  />
+                ))
+              : activeMetrics.map((m) => (
+                  <Line
+                    key={m.key}
+                    type="monotone"
+                    dataKey={m.key}
+                    name={m.label}
+                    stroke={m.palette.stroke}
+                    strokeWidth={3}
+                    dot={{ r: 4, fill: m.palette.fill, strokeWidth: 0 }}
+                    activeDot={{ r: 6, fill: m.palette.fill, strokeWidth: 0 }}
+                    connectNulls={true}
+                  />
+                ))
+            }
+            </ChartComp>
+            );
+          })()}
         </ResponsiveContainer>
       </div>
     </Card>
