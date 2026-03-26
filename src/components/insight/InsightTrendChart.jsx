@@ -488,7 +488,7 @@ export function InsightTrendChart({ insightId, trendData, crossFilter, conversat
           {/* Chart type toggle */}
           <div className="flex items-center bg-surface-container-low rounded-full p-0.5 gap-0.5 shrink-0">
             {[
-              { key: 'bar',  label: 'Cột 100%' },
+              { key: 'bar',  label: 'Cột' },
               { key: 'area', label: 'Vùng' },
             ].map(t => (
               <button
@@ -522,8 +522,8 @@ export function InsightTrendChart({ insightId, trendData, crossFilter, conversat
       <div style={{ background: 'var(--color-surface-container-low)', borderRadius: 10, padding: '12px 8px 8px 0' }}>
         <ResponsiveContainer width="100%" height={220}>
           {chartType === 'bar' ? (
-            // 100% Stacked Bar — all bars sum to 100% per x-axis bucket
-            <BarChart data={data} margin={{ top: 4, right: 12, left: -16, bottom: 0 }} stackOffset="expand">
+            // Stacked Bar — absolute counts stacked, bar height varies per day
+            <BarChart data={data} margin={{ top: 4, right: 12, left: -16, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(42,52,55,0.14)" vertical={false} />
               <XAxis
                 dataKey={labelKey}
@@ -532,8 +532,7 @@ export function InsightTrendChart({ insightId, trendData, crossFilter, conversat
               />
               <YAxis
                 tick={{ fontSize: 11, fill: '#5a6368', fontFamily: 'Inter', fontWeight: 500 }}
-                axisLine={false} tickLine={false} domain={[0, 1]} tickCount={5} width={36}
-                tickFormatter={v => `${Math.round(v * 100)}%`}
+                axisLine={false} tickLine={false} domain={[0, yMax]} tickCount={5} width={36}
               />
               <Tooltip
                 contentStyle={{
@@ -543,7 +542,6 @@ export function InsightTrendChart({ insightId, trendData, crossFilter, conversat
                 }}
                 itemStyle={{ fontWeight: 700, paddingBottom: 2 }}
                 labelStyle={{ color: '#2c3437', marginBottom: 6, fontSize: 11, fontWeight: 600 }}
-                formatter={(value, name) => [`${Math.round(value * 100)}%`, name]}
               />
               {activeMetrics.map((m) => (
                 <Bar
@@ -552,7 +550,6 @@ export function InsightTrendChart({ insightId, trendData, crossFilter, conversat
                   name={m.label}
                   fill={m.palette.fill}
                   stackId="stack"
-                  isAnimationActive={false}
                 />
               ))}
             </BarChart>
