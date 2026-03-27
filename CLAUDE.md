@@ -181,11 +181,10 @@ Dashboard Ads được tách thành **2 route riêng** qua Sidebar:
 ```
 1. Junk alert banner          ← aiAction = 'decrease' / 'pause'
 2. OverviewCards (4 cards)   ← Tổng hội thoại / Từ Ads / Chuyển đổi / Chi tiêu
-3. ExecutiveSummaryCard       ← CEO 3-second scan (urgent / watch / highlight)
-4. RevenueCards + PlatformROASCard + CostPerQualityLeadCard
-5. ContributionChart         ← Horizontal bar: Doanh thu vs Chi tiêu theo chiến dịch
-6. RevenueSpendTrendChart + SourceChart
-7. CampaignSummaryTable (8 cột)
+3. RevenueCards + PlatformROASCard + CostPerQualityLeadCard
+4. ContributionChart         ← Horizontal bar: Doanh thu vs Chi tiêu theo chiến dịch
+5. RevenueSpendTrendChart + SourceChart
+6. CampaignSummaryTable (8 cột)
    └─ DailyDetailChart         ← Slide in khi click dòng → 7 ngày Revenue/Orders/ROAS
 ```
 
@@ -566,6 +565,115 @@ Sau khi hoàn thành 1 session, AI **bắt buộc** cập nhật phần này v�
 
 ---
 
+### 2026-03-26 — Track B: Remove duplicate ExecutiveSummaryCard từ Tổng quan Ads
+- **Trạng thái:** ✅ Xong
+- **File đã sửa:** `src/pages/AdsDashboard.jsx`
+- **Bug đã fix:** `ExecutiveSummaryCard` (Tóm tắt tuần + 3 cột Urgent/Watch/Highlight + Budget Recommendation) bị trùng ở cả 2 page — chỉ nên nằm ở **Gợi ý tối ưu Ads**. Đã bỏ khỏi `AdsDashboard.jsx` và giữ nguyên ở `AdsOptimization.jsx`.
+
+---
+
+### 2026-03-26 — Track A: Đa dạng hóa dữ liệu Supabase (42 templates × 50 rows)
+- **Trạng thái:** ✅ Xong + Deploy OK
+- **URL:** https://ai-insight-mockup.vercel.app
+- **File đã sửa:** `scripts/seed-conversations.js`
+- **Bug đã fix:** Seed generator dùng chung `rng` cho tất cả fields → tất cả rows cùng template có cùng giá trị (ví dụ fsh-1 products = "Giày sneaker" cho 50 rows)
+- **Thay đổi:**
+  - Mỗi field giờ có seed riêng: `sr(rowSeed + fieldOffset * 7919)` (large prime)
+  - Field offset khác nhau cho mỗi field đảm bảo picks khác nhau
+  - fsh-1 giờ có: 20 products, 11 sizes, 3 temps, 10 pain_points
+  - Chạy lại seed 2100 rows → export JSON mới → deploy
+
+---
+
+### 2026-03-26 — Track A: Random row count 50–100/template + đa dạng chart types + deploy
+- **Trạng thái:** ✅ Xong + Deploy OK
+- **URL:** https://ai-insight-mockup.vercel.app
+- **File đã sửa:**
+  - `scripts/seed-conversations.js` — `getRowCount(templateId)` deterministic random 50–100/template
+  - `scripts/export-conversations.js` — bỏ hardcode total=2100, dùng MAX_TOTAL=6000 + stop on empty
+- **Thay đổi:**
+  - 3462 records mới: mbb=75, cos=90, spa=89, fsh=87, fb=83, rls=98, trv=55 rows/template
+  - Export → `src/data/supabase-conversations.json` (3462 rows × 42 templates)
+  - Tái deploy Vercel với data mới
+- **Bug đã fix:** `total is not defined` trong export script
+
+---
+
+### 2026-03-27 — Landing Page: Truyền thông sản phẩm + Lead Capture → Supabase ✅ COMPLETE
+- **Trạng thái:** ✅ Xong + Build OK (2320 modules) + Supabase live test ✅
+- **File đã tạo:**
+  - `src/pages/LandingPage.jsx` — Assembles all sections
+  - `src/components/landing/HeroSection.jsx` — Gradient Deep Navy, CTA, stats strip, mockup preview
+  - `src/components/landing/ProblemSection.jsx` — 3 pain points cards
+  - `src/components/landing/SolutionSection.jsx` — 3 features (zigzag layout, glass cards)
+  - `src/components/landing/HowItWorksSection.jsx` — 3-step flow với numbered circles
+  - `src/components/landing/TestimonialsSection.jsx` — Auto-play carousel, 5 testimonials
+  - `src/components/landing/TemplateGallerySection.jsx` — 7 ngành cards grid
+  - `src/components/landing/LeadCaptureSection.jsx` — 3-field form → Supabase (Họ tên, Email, 5-star rating)
+  - `src/components/landing/Footer.jsx` — Dark footer, trust badges
+  - `src/lib/supabaseLanding.js` — Supabase REST API integration (native fetch)
+  - `scripts/create-landing-table-mcp.js` — Tạo bảng `landing_leads` qua MCP endpoint
+  - `src/data/landingTestimonials.js` — 5 testimonials + stats
+  - `src/data/landingTemplates.js` — 7 ngành preview data
+  - `.env` — Supabase credentials (đã có trong `.gitignore`)
+- **File đã sửa:** `src/App.jsx` — Root route `/` → `<LandingPage />` (standalone, no sidebar); `/insight/*` → AppShell (with sidebar)
+- **Supabase Setup:**
+  - Bảng `landing_leads` tạo qua MCP (`https://db.cdp.vn/mcp`) bằng `@modelcontextprotocol/sdk`
+  - 6 columns: `id (UUID)`, `name (TEXT NOT NULL)`, `email (TEXT NOT NULL)`, `experience_rating (INTEGER 1-5)`, `consent_privacy (BOOLEAN)`, `created_at (TIMESTAMPTZ)`
+  - RLS: insert = anon (bypass via service role key), select = authenticated
+  - `.env` có `VITE_SUPABASE_URL=https://db.cdp.vn` + `VITE_SUPABASE_SERVICE_KEY`
+  - Live test: INSERT → ✅ verified → DELETE cleanup ✅
+- **Design System:** Editorial Precision (Deep Navy / Deep Rust / Vibrant Blue / 8px radius / glassmorphism / scroll-reveal animations)
+- **Route Architecture:**
+  - `/` → LandingPage (full-screen, no sidebar)
+  - `/insight/settings` → InsightSettings (with sidebar)
+  - `/insight/dashboard` → AdsDashboard (with sidebar)
+  - `/insight/ads-optimization` → AdsOptimization (with sidebar)
+  - `/insight/insight-dashboard` → InsightDashboard (with sidebar)
+- **⚠️ Lưu ý:** `.env` chứa Service Role Key (bypass RLS) — đã có trong `.gitignore`, không push key lên git
+
+---
+
+### 2026-03-26 — Track A: Đa dạng hóa chart types trong Tab Tổng quan + 3 block/hàng
+- **Trạng thái:** ✅ Xong + Deploy OK
+- **URL:** https://ai-insight-mockup.vercel.app
+- **File đã sửa:**
+  - `src/components/insight/DynamicMetricsGrid.jsx` — viết lại hoàn toàn
+  - `src/components/insight/InsightDetail.jsx` — bỏ sidebar, full-width grid
+  - `vercel.json` — thêm `"name": "ai-insight-mockup"` để ghép đúng project Vercel
+- **Thay đổi:**
+  - Layout: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3` — **3 block/hàng** thay vì 4, cards lớn hơn gấp rưỡi
+  - Bỏ sidebar (Cột dữ liệu thông minh + Luồng trực tiếp) → toàn bộ diện tích dành cho metrics grid
+  - **6 loại chart types mới:**
+    1. **Score Card** — KPI lớn với progress bar + 3 stats row (Đạt / Chưa / Tỉ lệ)
+    2. **Donut Chart** — Tỉ lệ True/False với SVG arc + legend buttons clickable
+    3. **Gauge Chart** — Mức độ với arc path + mini bar per category (Attitude/Priority/Sentiment)
+    4. **Temperature Chart** — 3-bar visualization Nóng/Ấm/Lạnh với summary chips row
+    5. **Top List Card** — Horizontal ranked bar với rank badge + fill bar
+    6. **Demographics Card** — Chip grid với stacked bar (Gender/Location)
+  - Card type detection: dynamic từ `column.dataType` + tên field
+- **Bug đã fix:** `as const` TypeScript syntax trong JSX; `Record<string,string>` → plain object
+- **Verified:** Build OK (2308 modules) · Deploy OK → `ai-insight-mockup.vercel.app`
+
+---
+
+### 2026-03-27 — Track A: InsightTrendChart — Area/Stacked Bar thay Line chart
+- **Trạng thái:** ✅ Xong + Deploy OK
+- **URL:** https://ai-insight-mockup.vercel.app
+- **File đã sửa:** `src/components/insight/InsightTrendChart.jsx`
+- **Thay đổi:**
+  - Bỏ **Line chart** (flat y=1 do data count nhỏ mỗi bucket → đường trùng gridline)
+  - Thêm **Stacked Bar** làm chart mặc định — chiều cao cột thay đổi theo tổng count mỗi ngày (`stackOffset` không dùng → absolute counts)
+  - Giữ **Area Chart** làm lựa chọn thay thế (gradient fill 30%→3% opacity)
+  - Toggle: **Cột** (mặc định) | **Vùng**
+- **Root cause Line không hiện:** `computeAllSeriesBuckets` cho BĐS (rls-*) — mỗi category ~1-2 rows/day → tất cả bucket values = 1 (minimum) → Recharts Line y=1 trùng gridline đáy → nhìn như flat
+- **Bug đã fix:**
+  - `dropdownOptions`: chỉ hiện per-column groups khi có `columnSeries` (tránh key mismatch với defaultMetrics)
+  - `activeMetrics`: resolve selectedSeries qua `columnSeries` trước để key khớp với bucket data
+  - `buildTimeSeriesData` → `computeAllSeriesBuckets`: rewrite hoàn toàn, count ALL series mọi bucket (trước bỏ qua khi `selectedSeries = null`)
+
+---
+
 # ═══════════════════════════════════════
 # THƯ MỤC DỰ ÁN (Tổng Hợp)
 # ═══════════════════════════════════════
@@ -584,21 +692,27 @@ d:\vibe-coding\Nâng cấp AI Insight\
     ├── main.jsx
     ├── index.css
     ├── lib/
-    │   └── utils.js
+    │   ├── utils.js
+    │   └── supabaseLanding.js   ← Landing page → Supabase (native fetch, service role key)
     ├── data/
     │   ├── mockTemplates.js         ← 42 template (Track A)
     │   ├── mockConversations.js      ← Chat mẫu (Track A)
     │   ├── mockAnalysisResults.js    ← Kết quả AI mẫu (Track A)
     │   ├── mockCampaigns.js         ← 8 campaigns + daily breakdown (Track B)
     │   ├── mockAIInsights.js         ← AI recommendations (Track B)
-    │   └── mockInsightTrend.js       ← Trend data 7d/30d cho Insight Trend Chart
+    │   ├── mockInsightTrend.js       ← Trend data 7d/30d cho Insight Trend Chart
+    │   ├── landingTestimonials.js    ← Landing page: 5 testimonials + stats
+    │   └── landingTemplates.js       ← Landing page: 7 ngành preview
     ├── pages/
+    │   ├── LandingPage.jsx          ← Landing page (route: /)
     │   ├── InsightSettings.jsx      ← Track A: Cài đặt Insight
     │   ├── AdsDashboard.jsx         ← Track B: Tổng quan Ads
-    │   └── AdsOptimization.jsx      ← Track B: Gợi ý tối ưu Ads
+    │   ├── AdsOptimization.jsx      ← Track B: Gợi ý tối ưu Ads
+    │   └── InsightDashboard.jsx
     └── components/
         ├── layout/                   ← Sidebar, Header, PageContainer
         ├── ui/                      ← Button, Badge, Card, Modal, Input, Toast, Tabs
+        └── landing/                  ← Hero, Problem, Solution, HowItWorks, Testimonials, TemplateGallery, LeadCapture, Footer
         └── insight/
             ├── TemplateLibrary.jsx          ← Track A
             ├── TemplateCard.jsx             ← Track A
@@ -608,7 +722,7 @@ d:\vibe-coding\Nâng cấp AI Insight\
             ├── InsightDetail.jsx            ← Track A (full-page detail view)
             ├── InsightDetailModal.jsx       ← Track A (legacy modal, not used)
             ├── AIInsightPanel.jsx          ← Track A
-            ├── InsightTrendChart.jsx       ← Track A: Line chart Tuần/Tháng
+            ├── InsightTrendChart.jsx       ← Track A: Stacked Bar / Area chart (bỏ Line)
             ├── OverviewCards.jsx           ← Track B
             ├── RevenueCards.jsx            ← Track B
             ├── ContributionChart.jsx       ← Track B
