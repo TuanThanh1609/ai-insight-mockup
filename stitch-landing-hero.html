@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-background": "#191c1d",
+              "on-error": "#ffffff",
+              "on-tertiary-fixed-variant": "#0038b6",
+              "tertiary-fixed-dim": "#b7c4ff",
+              "error": "#ba1a1a",
+              "on-secondary-fixed": "#3c0800",
+              "primary": "#040a21",
+              "on-primary-fixed": "#131b31",
+              "tertiary-container": "#001a61",
+              "secondary": "#b32b00",
+              "surface-container-lowest": "#ffffff",
+              "on-surface-variant": "#46464d",
+              "secondary-fixed-dim": "#ffb4a1",
+              "inverse-surface": "#2e3132",
+              "on-surface": "#191c1d",
+              "inverse-primary": "#bfc5e4",
+              "surface-variant": "#e1e3e4",
+              "primary-fixed": "#dbe1ff",
+              "surface": "#f8f9fa",
+              "outline": "#76767e",
+              "on-tertiary": "#ffffff",
+              "tertiary-fixed": "#dde1ff",
+              "on-secondary-fixed-variant": "#891e00",
+              "error-container": "#ffdad6",
+              "surface-dim": "#d9dadb",
+              "on-secondary-container": "#591100",
+              "on-error-container": "#93000a",
+              "outline-variant": "#c6c6ce",
+              "surface-container-high": "#e7e8e9",
+              "inverse-on-surface": "#f0f1f2",
+              "surface-tint": "#575d78",
+              "surface-container-highest": "#e1e3e4",
+              "on-tertiary-container": "#5e80ff",
+              "on-tertiary-fixed": "#001452",
+              "on-secondary": "#ffffff",
+              "on-primary-container": "#8288a4",
+              "surface-container": "#edeeef",
+              "secondary-fixed": "#ffdbd2",
+              "tertiary": "#00082e",
+              "primary-fixed-dim": "#bfc5e4",
+              "on-primary-fixed-variant": "#3f465f",
+              "primary-container": "#1a2138",
+              "surface-container-low": "#f3f4f5",
+              "surface-bright": "#f8f9fa",
+              "secondary-container": "#ff5d32",
+              "background": "#f8f9fa",
+              "on-primary": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
+        .font-headline { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .hero-gradient { background: radial-gradient(circle at top right, #1a2138, #040a21); }
+    </style>
+</head>
+<body class="text-on-background antialiased overflow-x-hidden">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-[#1a2138]/70 backdrop-blur-xl shadow-[0_12px_32px_rgba(25,28,29,0.04)]">
+<div class="flex justify-between items-center w-full px-8 py-4 max-w-7xl mx-auto">
+<div class="text-2xl font-bold tracking-tighter text-white font-headline">Smax AI</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="font-manrope font-bold tracking-tight text-sm uppercase text-white border-b-2 border-[#bf3003] pb-1 transition-all duration-300" href="#">Product</a>
+<a class="font-manrope font-bold tracking-tight text-sm uppercase text-slate-300 hover:text-white transition-colors" href="#">Templates</a>
+<a class="font-manrope font-bold tracking-tight text-sm uppercase text-slate-300 hover:text-white transition-colors" href="#">Pricing</a>
+<a class="font-manrope font-bold tracking-tight text-sm uppercase text-slate-300 hover:text-white transition-colors" href="#">Resources</a>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-white text-sm font-semibold hover:text-on-primary-container transition-colors">Login</button>
+<button class="bg-secondary hover:bg-secondary-container text-white px-6 py-2.5 rounded-lg text-sm font-bold transition-all active:scale-95 duration-200">
+                    Bắt đầu ngay
+                </button>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="hero-gradient pt-40 pb-20 relative overflow-hidden min-h-screen flex flex-col items-center">
+<!-- Decorative subtle aura -->
+<div class="absolute top-0 right-0 w-[600px] h-[600px] bg-tertiary-container/20 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
+<div class="max-w-7xl mx-auto px-8 text-center relative z-10">
+<div class="inline-flex items-center px-4 py-1.5 mb-8 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
+<span class="text-secondary font-bold text-xs tracking-widest uppercase mr-3">New</span>
+<span class="text-slate-300 text-xs font-medium">AI-Powered Predictive Analysis v2.0</span>
+</div>
+<h1 class="text-5xl md:text-7xl lg:text-8xl font-headline font-extrabold text-white tracking-tighter mb-8 leading-[1.05]">
+                Biết Khách Hàng Muốn Gì <br class="hidden md:block"/> — Trước Khi Họ Nói
+            </h1>
+<p class="max-w-2xl mx-auto text-slate-400 text-lg md:text-xl font-body mb-12 leading-relaxed">
+                Biến dữ liệu thô thành những thấu hiểu mang tính hành động. Smax AI giúp doanh nghiệp nắm bắt tâm lý khách hàng và dự đoán nhu cầu trong thời gian thực.
+            </p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
+<button class="w-full sm:w-auto px-10 py-4 bg-on-tertiary-fixed-variant text-white font-bold rounded-lg shadow-xl hover:shadow-on-tertiary-fixed-variant/20 transition-all active:scale-95">
+                    Bắt đầu trải nghiệm
+                </button>
+<button class="w-full sm:w-auto px-10 py-4 bg-white/5 hover:bg-white/10 text-white font-bold rounded-lg backdrop-blur-sm transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">play_circle</span>
+                    Xem Demo
+                </button>
+</div>
+<!-- Stats Strip -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-5xl mx-auto mb-20">
+<div class="glass-card p-6 rounded-2xl border border-white/5 text-center">
+<div class="text-white text-3xl font-headline font-bold mb-1 tracking-tight">3,462+</div>
+<div class="text-slate-500 text-xs uppercase tracking-widest font-bold">Conversations</div>
+</div>
+<div class="glass-card p-6 rounded-2xl border border-white/5 text-center">
+<div class="text-white text-3xl font-headline font-bold mb-1 tracking-tight">42</div>
+<div class="text-slate-500 text-xs uppercase tracking-widest font-bold">Templates</div>
+</div>
+<div class="glass-card p-6 rounded-2xl border border-white/5 text-center">
+<div class="text-white text-3xl font-headline font-bold mb-1 tracking-tight">7</div>
+<div class="text-slate-500 text-xs uppercase tracking-widest font-bold">Industries</div>
+</div>
+<div class="glass-card p-6 rounded-2xl border border-white/5 text-center">
+<div class="text-white text-3xl font-headline font-bold mb-1 tracking-tight">&lt;3s</div>
+<div class="text-slate-500 text-xs uppercase tracking-widest font-bold">Scan Speed</div>
+</div>
+</div>
+<!-- Dashboard Mockup Preview -->
+<div class="relative max-w-6xl mx-auto mt-10 rounded-t-3xl overflow-hidden shadow-2xl shadow-black/50 border-x border-t border-white/10 bg-primary-container">
+<img alt="Smax AI Dashboard" class="w-full opacity-90 transition-opacity hover:opacity-100 duration-700" data-alt="Modern dark mode software dashboard with abstract colorful data visualization charts and AI neural network connections" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmZyzsbCZlqn5DYgb2rkSZQy7BOiEH1CXhGY9VDZhjzxWOzpTXQAPIk3CMIRq2v2G1t8V4YKHMp0A3SxJOJEoORYF50_A-OVsYGBcZwpvQjStHkG1WlnAC5RGYmVyE9L_i7_hH4LSFuqAtEJphkwzFY_o897ecKqOKSzeXiB9esWlRFdHEPuL4qQL6gI6wp7vrLA8v2hEwUjozOgl9uVrPHDZAdRNmhfI36jFqNr_yROV6mWmwqWxqX9nss-2Iem5LAwPc-GgbA-4"/>
+<!-- Floating UI Elements for AI vibe -->
+<div class="absolute top-12 left-12 glass-card p-4 rounded-xl border border-white/10 hidden md:block animate-bounce shadow-2xl">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-white">psychology</span>
+</div>
+<div class="text-left">
+<div class="text-white text-sm font-bold">AI Insight</div>
+<div class="text-slate-400 text-xs">Customer intent: High</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Trust Section -->
+<section class="bg-white py-24">
+<div class="max-w-7xl mx-auto px-8">
+<div class="text-center mb-16">
+<p class="text-secondary font-bold text-sm uppercase tracking-[0.2em] mb-4">Trusted by Market Leaders</p>
+<div class="flex flex-wrap justify-center items-center gap-12 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+<span class="text-3xl font-headline font-extrabold text-primary">NEXUS</span>
+<span class="text-3xl font-headline font-extrabold text-primary">VERTEX</span>
+<span class="text-3xl font-headline font-extrabold text-primary">QUANTUM</span>
+<span class="text-3xl font-headline font-extrabold text-primary">AETHER</span>
+</div>
+</div>
+<!-- Bento Testimonial -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+<div class="lg:col-span-8 bg-surface-container-low p-12 rounded-3xl flex flex-col justify-between">
+<div>
+<span class="material-symbols-outlined text-secondary text-5xl mb-6" style="font-variation-settings: 'FILL' 1;">format_quote</span>
+<h3 class="text-3xl font-headline font-bold text-primary mb-8 leading-tight">
+                            "Smax AI không chỉ là một công cụ phân tích. Nó giống như có một đội ngũ nhà tâm lý học dữ liệu làm việc 24/7 để tối ưu hóa mọi điểm chạm khách hàng."
+                        </h3>
+</div>
+<div class="flex items-center gap-4">
+<img alt="Executive profile" class="w-14 h-14 rounded-full object-cover" data-alt="Professional business executive portrait in a modern office with soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvErag-ffplNmNM-guWcRs5XgRzhYCcBkbbvKEHXnrdwTcgX6lzwa7KKE0a4P9XyhJj1-1w71kpZJjGvnPTJDpYo8J6SXjpBFkjkJnAT5K3_Jfwn5h1pLaaE8kREiaO2sNl9zFG-XLy01YD-AP7BuIkdDl2FaaCYAMQ-AHQznxS4rcLaxTZGyeM7s3qiaW7RS5q_bzS_LI5z6eqnZwvfELpnpGJwv22vk4dfF5du-9LEkrn1ewFtHvH3Bx6NWsHuA_qMt9Stu8XkA"/>
+<div>
+<p class="text-primary font-bold">Lê Minh Quân</p>
+<p class="text-on-primary-container text-sm">Director of Growth, FinTech Solutions</p>
+</div>
+</div>
+</div>
+<div class="lg:col-span-4 bg-primary text-white p-12 rounded-3xl flex flex-col justify-center">
+<div class="text-5xl font-headline font-extrabold mb-4 text-secondary-fixed-dim">98%</div>
+<p class="text-slate-400 text-lg leading-relaxed">
+                        Khách hàng báo cáo sự cải thiện rõ rệt trong độ chính xác của dự báo doanh thu ngay tháng đầu tiên.
+                    </p>
+<div class="mt-8 pt-8 border-t border-white/10">
+<a class="text-white font-bold flex items-center gap-2 hover:gap-4 transition-all" href="#">
+                            Xem tất cả case study
+                            <span class="material-symbols-outlined">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-[#040a21] w-full py-16 px-8">
+<div class="max-w-7xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+<div>
+<span class="text-2xl font-bold text-white mb-6 block font-headline">Smax AI</span>
+<p class="text-slate-500 font-inter text-sm leading-relaxed max-w-xs">
+                        Nền tảng AI tiên phong giúp doanh nghiệp thấu hiểu khách hàng qua dữ liệu đa kênh.
+                    </p>
+</div>
+<div>
+<h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Platform</h4>
+<ul class="space-y-4">
+<li><a class="text-slate-500 hover:text-blue-400 transition-colors text-sm" href="#">Chăm sóc khách hàng</a></li>
+<li><a class="text-slate-500 hover:text-blue-400 transition-colors text-sm" href="#">Phân tích hành vi</a></li>
+<li><a class="text-slate-500 hover:text-blue-400 transition-colors text-sm" href="#">Tự động hóa Marketing</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Resources</h4>
+<ul class="space-y-4">
+<li><a class="text-slate-500 hover:text-blue-400 transition-colors text-sm" href="#">Học viện AI</a></li>
+<li><a class="text-slate-500 hover:text-blue-400 transition-colors text-sm" href="#">Tài liệu API</a></li>
+<li><a class="text-slate-500 hover:text-blue-400 transition-colors text-sm" href="#">Blog &amp; News</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Company</h4>
+<ul class="space-y-4">
+<li><a class="text-slate-500 hover:text-blue-400 transition-colors text-sm" href="#">Về chúng tôi</a></li>
+<li><a class="text-slate-500 hover:text-blue-400 transition-colors text-sm" href="#">Tuyển dụng</a></li>
+<li><a class="text-slate-500 hover:text-blue-400 transition-colors text-sm" href="#">Liên hệ</a></li>
+</ul>
+</div>
+</div>
+<div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+<p class="text-slate-500 font-inter text-sm">© 2024 Smax AI. All rights reserved.</p>
+<div class="flex gap-8">
+<a class="text-slate-500 hover:text-white text-xs uppercase tracking-widest font-bold" href="#">Privacy Policy</a>
+<a class="text-slate-500 hover:text-white text-xs uppercase tracking-widest font-bold" href="#">Terms of Service</a>
+<a class="text-slate-500 hover:text-white text-xs uppercase tracking-widest font-bold" href="#">Security</a>
+</div>
+</div>
+</div>
+</footer>
+</body></html>
