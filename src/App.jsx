@@ -9,14 +9,18 @@ import InsightDashboard from './pages/InsightDashboard';
 import MedicalCheckup from './pages/MedicalCheckup';
 import LandingPage from './pages/LandingPage';
 
-// ── Layout wrapper: sidebar + content ────────────────────────────────────────
+// ── Layout: TopNavBar full-width + Sidebar left + Content right ───────────────
+// TopNavBar: sticky at top (z-50)
+// Below: Sidebar (left, h-auto) + main content (scrollable)
 function AppLayout({ children }) {
   return (
-    <div className="flex min-h-screen bg-surface">
-      <Sidebar />
-      <div className="flex-1 flex flex-col min-w-0">
-        <TopNavBar />
-        {children}
+    <div className="min-h-screen bg-surface flex flex-col">
+      <TopNavBar />
+      <div className="flex flex-1">
+        <Sidebar />
+        <main className="flex-1 min-w-0 flex flex-col">
+          {children}
+        </main>
       </div>
     </div>
   );
