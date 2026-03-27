@@ -30,7 +30,7 @@ function toDisplayName(field) {
  * Detect card type + config từ column metadata + data sample.
  * Trả về null nếu column không phù hợp để render thành card.
  */
-export function detectCardConfig(col, rows) {
+function detectCardConfig(col, rows) {
   const field = col.field || '';
   const dataType = col.dataType || col.type || '';
   const name = col.name || '';
