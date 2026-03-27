@@ -499,7 +499,7 @@ export function HeroSection() {
   ];
 
   return (
-    <section ref={heroRef} id="hero" style={{ background: 'linear-gradient(148deg, #0a0f1e 0%, #1a2138 35%, #0d1530 65%, #1a2138 100%)', minHeight: '100vh', position: 'relative', overflow: 'hidden' }}>
+    <section ref={heroRef} style={{ background: 'linear-gradient(148deg, #0a0f1e 0%, #1a2138 35%, #0d1530 65%, #1a2138 100%)', minHeight: '100vh', position: 'relative', overflow: 'hidden' }}>
       {/* Glows + grid */}
       <div aria-hidden="true" style={{ position: 'absolute', top: '-10%', right: '-5%', width: '55%', height: '70%', background: 'radial-gradient(ellipse at center, rgba(0,82,255,0.12) 0%, transparent 70%)', pointerEvents: 'none' }} />
       <div aria-hidden="true" style={{ position: 'absolute', bottom: '0%', left: '-10%', width: '50%', height: '60%', background: 'radial-gradient(ellipse at center, rgba(191,48,3,0.10) 0%, transparent 65%)', pointerEvents: 'none' }} />

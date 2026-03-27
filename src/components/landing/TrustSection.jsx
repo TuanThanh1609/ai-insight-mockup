@@ -1,7 +1,6 @@
 export function TrustSection() {
   return (
     <section
-      id="trusted"
       style={{
         background: '#ffffff',
         padding: 'clamp(56px, 9vw, 96px) clamp(24px, 5vw, 64px)',

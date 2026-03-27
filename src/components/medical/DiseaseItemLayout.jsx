@@ -19,7 +19,7 @@ export function DiseaseItemLayout({
   savedActionIds,
 }) {
   return (
-    <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 items-start">
+    <div id={`disease-${disease.id}`} className="grid grid-cols-1 xl:grid-cols-3 gap-4 items-start">
       {/* Left 2/3 */}
       <div className="xl:col-span-2 min-w-0">
         <DiseaseCard

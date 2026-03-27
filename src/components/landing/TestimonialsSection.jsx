@@ -62,7 +62,6 @@ export function TestimonialsSection() {
 
   return (
     <section
-      id="testimonials"
       style={{
         background: '#f7f9fc',
         padding: 'clamp(64px, 10vw, 100px) clamp(24px, 5vw, 64px)',

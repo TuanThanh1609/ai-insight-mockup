@@ -176,7 +176,7 @@ export function ProblemSection() {
   }, []);
 
   return (
-    <section id="product" style={{ background: '#f7f9fc', padding: 'clamp(64px, 10vw, 100px) clamp(24px, 5vw, 64px)' }}>
+    <section style={{ background: '#f7f9fc', padding: 'clamp(64px, 10vw, 100px) clamp(24px, 5vw, 64px)' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
 
         {/* Section header */}

@@ -1,7 +1,6 @@
 export function Footer() {
   return (
     <footer
-      id="footer"
       style={{
         background: '#080d1a',
         borderTop: '1px solid rgba(255,255,255,0.05)',

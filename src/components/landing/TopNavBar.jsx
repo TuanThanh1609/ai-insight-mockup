@@ -46,14 +46,14 @@ export function TopNavBar() {
           className="hidden md:flex"
         >
           {[
-            { label: 'Sản phẩm', id: 'product', active: true },
-            { label: 'Template', id: 'templates' },
-            { label: 'Cách hoạt động', id: 'how-it-works' },
-            { label: 'Đánh giá', id: 'testimonials' },
+            { label: 'Product', active: true },
+            { label: 'Templates' },
+            { label: 'Pricing' },
+            { label: 'Resources' },
           ].map((item) => (
             <a
-              key={item.id}
-              href={`#${item.id}`}
+              key={item.label}
+              href="#"
               onClick={(e) => e.preventDefault()}
               style={{
                 fontFamily: 'var(--font-display)',

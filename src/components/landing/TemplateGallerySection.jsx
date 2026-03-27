@@ -376,7 +376,7 @@ export function TemplateGallerySection() {
 
   return (
     <>
-      <section id="templates" style={{ background: C.surface, padding: 'clamp(64px, 10vw, 100px) clamp(24px, 5vw, 64px)' }}>
+      <section style={{ background: C.surface, padding: 'clamp(64px, 10vw, 100px) clamp(24px, 5vw, 64px)' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           {/* Section title */}
           <div
