@@ -4,3 +4,8 @@ export { AdsConnectStep } from './AdsConnectStep';
 export { AdsCampaignSelectStep } from './AdsCampaignSelectStep';
 export { AdsDateRangeStep } from './AdsDateRangeStep';
 export { AdsCrawlProgressStep } from './AdsCrawlProgressStep';
+
+// Dashboard Components
+export { AdsHealthScoreHeader } from './AdsHealthScoreHeader';
+export { AttributionFunnel } from './AttributionFunnel';
+export { AdsRoasBreakdown } from './AdsRoasBreakdown';
