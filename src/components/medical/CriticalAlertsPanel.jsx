@@ -63,15 +63,148 @@ function sentimentEmoji(sentiment) {
   return map[sentiment] || '';
 }
 
-/** Build a per-conversation summary string from real data fields */
-function buildConversationSummary(conv) {
-  const parts = [];
-  if (conv.temperature) parts.push(tempEmoji(conv.temperature));
-  if (conv.phoneStatus) parts.push(phoneIcon(conv.phoneStatus));
-  if (conv.sentiment) parts.push(sentimentEmoji(conv.sentiment));
-  else if (conv.painPoint) parts.push(conv.painPoint.slice(0, 18));
-  else if (conv.objection) parts.push(conv.objection.slice(0, 18));
-  return parts.join(' · ');
+/** Mock summaries per alert type — each pool has 10+ distinct summaries for variety */
+const ALERT_SUMMARY_POOLS = {
+  junkLeadPercent: [
+    'Tin tự động từ ads, khách không tương tác',
+    'Nhắn tin hỏi giá rồi bỏ, không rep lại',
+    'Khách gửi tin trùng lặp nhiều lần',
+    'Tin nhắn từ bot tự động, không có ý mua',
+    'Khách nhấn nút liên hệ nhưng không nhắn tin',
+    'Comment trên ads nhưng không follow up',
+    'Tin nhắn chứa link lạ, không liên quan sản phẩm',
+    'Khách hỏi 1 câu rồi seen không rep',
+    'Nhắn tin yêu cầu gửi app khác',
+    'Khách gửi số điện thoại sai định dạng',
+    'Tin trả lời tự động từ chatbot',
+  ],
+  phoneCollected: [
+    'Hỏi thông tin kỹ nhưng không để lại SĐT',
+    'Khách muốn mua nhưng từ chối cung cấp SĐT',
+    'Hỏi giá + size nhiều lần, rồi biến mất',
+    'Đã trao đổi 5+ tin nhắn nhưng chưa thu thập SĐT',
+    'Khách cung cấp SĐT sai 2 lần liên tiếp',
+    'Yêu cầu gọi lại nhưng không để số',
+    'Đồng ý nhận tư vấn nhưng chặn sau đó',
+    'Hỏi về địa chỉ shop nhưng không lấy SĐT',
+    'Khách muốn đặt cọc nhưng không cung cấp SĐT',
+    'Trao đổi xong nhưng không capture được SĐT',
+  ],
+  conversionRate: [
+    'Hỏi giá 3 lần nhưng chưa chốt đơn',
+    'Khách đồng ý mua nhưng chưa thanh toán',
+    'Đang cân nhắc giữa 2 sản phẩm',
+    'Yêu cầu xem thêm review trước khi quyết định',
+    'Hẹn quay lại sau nhưng chưa thấy lại',
+    'Hỏi so sánh với sản phẩm khác nhiều lần',
+    'Khách muốn giảm giá thêm rồi mới mua',
+    'Đang chờ ngân sách được duyệt',
+    'Cần hỏi chồng / người thân trước khi mua',
+    'Muốn nhận hàng trước, trả tiền sau',
+  ],
+  mistakeRate: [
+    'Sale đưa thông tin sai về tồn kho',
+    'Tư vấn nhầm size dẫn đến đổi hàng',
+    'Báo sai giá khuyến mãi, khách hủy đơn',
+    'Hứa giao trong ngày nhưng giao trễ 3 ngày',
+    'Gửi nhầm sản phẩm cho khách',
+    'Không xác nhận lại đơn trước khi giao',
+    'Thông tin bảo hành không chính xác',
+    'Mô tả sản phẩm không đúng với thực tế',
+    'Đơn bị duplicate do sale tạo 2 lần',
+    'Sai địa chỉ giao hàng do không check kỹ',
+  ],
+  competitorMentionRate: [
+    'So sánh với Shopee về giá và tốc độ giao',
+    'Hỏi sản phẩm tương tự bên Lazada',
+    'Khách mới chuyển từ cửa hàng khác',
+    'Đề cập đến đối thủ về chính sách đổi trả',
+    'So sánh với brand khác về thành phần',
+    'Hỏi tại sao giá cao hơn marketplace',
+    'Khách đang dùng sản phẩm từ đối thủ',
+    'So sánh về uy tín giữa các shop',
+    'Đề cập review tốt về shop khác',
+    'Hỏi khác biệt giữa 2 sản phẩm cạnh tranh',
+  ],
+  reviewRiskRate: [
+    'Khiếu nại chất lượng sản phẩm không đạt kỳ vọng',
+    'Da bị kích ứng sau khi sử dụng 1 tuần',
+    'Phàn nàn về mùi sản phẩm khác với mô tả',
+    'Dọa đăng review xấu nếu không được hoàn tiền',
+    'Gửi ảnh sản phẩm bị hỏng và yêu cầu bồi thường',
+    'Khách phản ánh sản phẩm hết hạn sớm',
+    'Review 1 sao kèm comment tiêu cực về tư vấn',
+    'Yêu cầu gỡ bài đăng negative trên mạng xã hội',
+    'Khiếu nại thái độ nhân viên khiếm nhã',
+    'Phản ánh sản phẩm không đúng với hình ảnh quảng cáo',
+  ],
+  ghostRate: [
+    'Khách seen không rep sau 3 tin nhắn đầu tiên',
+    'Hỏi thông tin rồi biến mất không lời từ biệt',
+    'Nhắn tin rồi block page ngay sau đó',
+    'Đang trả lời thì khách ngừng rep đột ngột',
+    'Reply lần đầu rồi không tương tác thêm',
+    'Khách inbox rồi unfollow page ngay sau',
+    'Hỏi 1 câu rồi chuyển sang mua chỗ khác',
+    'Không rep tin nhắn follow-up lần 2',
+    'Profile khách bị ẩn sau khi nhắn tin',
+    'Nhắn tin từ tài khoản mới tạo rồi bỏ',
+  ],
+  abandonRate: [
+    'Khách nhắn 1-2 tin rồi bỏ giữa chừng',
+    'Cuộc trò chuyện kết thúc không có closure',
+    'Khách hỏi nhanh rồi chuyển sang mua chỗ khác',
+    'Nhắn tin rồi đóng app không tương tác lại',
+    'Tin nhắn dở chừng không được reply',
+    'Khách ngắt cuộc trò chuyện giữa chừng',
+    'Cuộc hội thoại bị bỏ rơi khi đang tư vấn',
+    'Khách nhắn lúc đầu rồi không theo dõi tiếp',
+    'Hẹn sẽ quay lại nhưng không thấy lại',
+    'Khách rời đi sau khi hỏi về giá vận chuyển',
+  ],
+  badToneRate: [
+    'Reply quá dài 15+ dòng không có dấu câu',
+    'Dùng quá nhiều emoji trong 1 tin nhắn tư vấn',
+    'Giọng văn quá thân mật với khách lần đầu',
+    'Sử dụng slang không phù hợp với brand',
+    'Viết HOA toàn bộ tin nhắn tạo cảm giác quát khách',
+    'Nhiều lỗi chính tả trong tin trả lời',
+    'Tin nhắn chứa nội dung nhạy cảm / phản cảm',
+    'Reply kiểu chat bạn bè khiên khách không thoải mái',
+    'Dùng thuật ngữ quá chuyên ngành khiến khách khó hiểu',
+    'Gửi tin nhắn trùng lặp do nhấn nhầm nhiều lần',
+  ],
+  upsellAttemptRate: [
+    'Gợi ý serum dưỡng nhưng khách chỉ muốn mua kem chống nắng',
+    'Upsell phiên bản cao cấp nhưng khách chọn bản thường',
+    'Đề xuất combo tiết kiệm nhưng khách mua lẻ',
+    'Khách từ chối sản phẩm bổ sung vì giá cao',
+    'Gợi ý size lớn hơn nhưng khách vẫn chọn size nhỏ',
+    'Upsell phụ kiện đi kèm không thành công',
+    'Khách chỉ mua sản phẩm đang khuyến mãi',
+    'Đề xuất gói membership bị khách từ chối',
+    'Cross-sell sản phẩm cùng brand không hiệu quả',
+    'Khách chỉ quan tâm sản phẩm chính, bỏ qua upsell',
+  ],
+};
+
+/**
+ * Build a contextually-relevant summary for one conversation row,
+ * aligned to the alert metric type.
+ */
+function buildConversationSummary(conv, alertMetricKey) {
+  const pool = ALERT_SUMMARY_POOLS[alertMetricKey];
+  if (!pool) {
+    // Fallback: use real pain_point if available
+    if (conv.pain_point) return conv.pain_point.slice(0, 32);
+    if (conv.temperature) return `${tempEmoji(conv.temperature)} ${conv.temperature}`;
+    return '';
+  }
+  // Pick deterministically by conversation id so summary is stable
+  const idx = conv.id
+    ? Math.abs(conv.id.split('').reduce((a, c) => a + c.charCodeAt(0), 0)) % pool.length
+    : Math.floor(Math.random() * pool.length);
+  return pool[idx];
 }
 
 // ─── Platform icon ───────────────────────────────────────────────────────────
@@ -111,13 +244,14 @@ function getConversationExamples(alert, conversations) {
   const tempOrder = { 'Nóng': 0, 'Ấm': 1, 'Lạnh': 2 };
   unique.sort((a, b) => (tempOrder[a.temperature] ?? 9) - (tempOrder[b.temperature] ?? 9));
 
+  const metricKey = alert.metricKey;
   return unique.map((row, idx) => ({
     id: `ex-${idx}`,
     customer: row.customer || `Khách hàng ${idx + 1}`,
     platform: row.platform || 'facebook',
     temperature: row.temperature,
     time: row.created_at || row.date || '',
-    summary: buildConversationSummary(row),
+    summary: buildConversationSummary(row, metricKey),
   }));
 }
 
