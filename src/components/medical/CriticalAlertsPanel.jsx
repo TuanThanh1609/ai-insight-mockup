@@ -186,6 +186,30 @@ const ALERT_SUMMARY_POOLS = {
     'Cross-sell sản phẩm cùng brand không hiệu quả',
     'Khách chỉ quan tâm sản phẩm chính, bỏ qua upsell',
   ],
+  ignoredRecRate: [
+    'Khách hỏi về kem chống nắng nhưng không được đề xuất sản phẩm',
+    'Tư vấn chung chung không gợi ý sản phẩm phù hợp',
+    'Khách cần sữa rửa mặt nhưng chỉ được tư vấn serum',
+    'Không follow-up sau khi khách hỏi về sản phẩm mới',
+    'Gợi ý sản phẩm không đúng với loại da khách nêu ra',
+    'Khách muốn mua toner nhưng không ai đề xuất kèm serum',
+    'Tư vấn xong mà không gửi link sản phẩm cho khách',
+    'Khách hỏi về combo nhưng không được đề xuất mua bundle',
+    'Bỏ qua sản phẩm best-seller phù hợp với nhu cầu khách',
+    'Không chốt đơn sau khi khách hỏi về sản phẩm bổ sung',
+  ],
+  goodAttitudePercent: [
+    'Tư vấn nhiệt tình, gửi thêm hướng dẫn sử dụng sản phẩm',
+    'Chủ động hỏi về loại da và đề xuất sản phẩm phù hợp',
+    'Reply nhanh trong vòng 5 phút, gửi thêm review từ khách khác',
+    'Tặng kèm sample size cho khách lần đầu mua',
+    'Giải đáp kỹ về thành phần và cách dùng cho khách mới',
+    'Chủ động gợi ý sản phẩm dưỡng kèm theo đơn mua chính',
+    'Tư vấn chu đáo, gửi thêm video hướng dẫn sử dụng',
+    'Chăm sóc khách sau mua, hỏi thăm tình trạng da sau 3 ngày',
+    'Nhiệt tình so sánh các sản phẩm để khách dễ chọn',
+    'Gửi thêm mã giảm giá cho đơn tiếp theo của khách',
+  ],
 };
 
 /**
