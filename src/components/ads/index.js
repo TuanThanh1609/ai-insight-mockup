@@ -9,3 +9,7 @@ export { AdsCrawlProgressStep } from './AdsCrawlProgressStep';
 export { AdsHealthScoreHeader } from './AdsHealthScoreHeader';
 export { AttributionFunnel } from './AttributionFunnel';
 export { AdsRoasBreakdown } from './AdsRoasBreakdown';
+
+// Attribution Detail Components
+export { AdsOrderTable } from './AdsOrderTable';
+export { AdsConversationDetailPanel } from './AdsConversationDetailPanel';
