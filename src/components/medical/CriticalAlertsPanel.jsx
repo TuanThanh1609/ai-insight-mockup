@@ -33,7 +33,49 @@ function getVietnameseMetricLabel(alert) {
   return map[key] || alert.metricLabel;
 }
 
-/** Platform icon — Facebook or Zalo */
+// ─── Emoji / label helpers ───────────────────────────────────────────────────
+
+function tempEmoji(temp) {
+  const map = { 'Nóng': '🔥', 'Ấm': '🌡️', 'Lạnh': '❄️' };
+  return map[temp] || '';
+}
+
+function phoneIcon(phoneStatus) {
+  const map = {
+    'Đã thu thập': '📞',
+    'Đã thu thập SĐT': '📞',
+    'Chưa thu thập': '❌',
+    'Chưa thu thập SĐT': '❌',
+    'Từ chối': '🚫',
+    'Từ chối cung cấp': '🚫',
+  };
+  return map[phoneStatus] || '📱';
+}
+
+function sentimentEmoji(sentiment) {
+  const map = {
+    'Bức xúc': '😤',
+    'Tiêu cực': '😞',
+    'Băn khoăn': '😑',
+    'Trung lập': '😐',
+    'Tích cực': '😊',
+  };
+  return map[sentiment] || '';
+}
+
+/** Build a per-conversation summary string from real data fields */
+function buildConversationSummary(conv) {
+  const parts = [];
+  if (conv.temperature) parts.push(tempEmoji(conv.temperature));
+  if (conv.phoneStatus) parts.push(phoneIcon(conv.phoneStatus));
+  if (conv.sentiment) parts.push(sentimentEmoji(conv.sentiment));
+  else if (conv.painPoint) parts.push(conv.painPoint.slice(0, 18));
+  else if (conv.objection) parts.push(conv.objection.slice(0, 18));
+  return parts.join(' · ');
+}
+
+// ─── Platform icon ───────────────────────────────────────────────────────────
+
 function PlatformIcon({ platform }) {
   if (platform === 'zalo') {
     return (
@@ -50,47 +92,32 @@ function PlatformIcon({ platform }) {
   );
 }
 
-/** Mock examples for each alert type — picks real customer names from conversations */
+/** Pick up to 10 unique conversations, sort Nóng→Ấm→Lạnh, build per-conv summary */
 function getConversationExamples(alert, conversations) {
-  // Pick up to 10 random customer names from conversations
-  const pool = conversations.length > 0
-    ? [...conversations].sort(() => Math.random() - 0.5).slice(0, 10)
-    : [];
+  // Pick 10 unique rows (no duplicate names), then sort by temperature priority
+  const seenNames = new Set();
+  const unique = [];
+  const shuffled = [...conversations].sort(() => Math.random() - 0.5);
+  for (const row of shuffled) {
+    const name = row.customer || `Khách hàng ${unique.length + 1}`;
+    if (!seenNames.has(name)) {
+      seenNames.add(name);
+      unique.push(row);
+    }
+    if (unique.length >= 10) break;
+  }
 
-  const summaries = {
-    junkLeadPercent: 'Tin tự động từ ads, khách không tương tác thêm',
-    phoneCollected: 'Khách hỏi nhưng không để lại SĐT, rời đi ngay',
-    conversionRate: 'Hỏi giá nhiều lần nhưng chưa chốt, đang cân nhắc',
-    avgResponseMinutes: 'Phản hồi chậm > 30 phút, khách đã chuyển sang shop khác',
-    remindRate: 'Khách có signal mua nhưng không được nhắc lại sau đó',
-    personalOfferRate: 'Tư vấn chung chung, không đề xuất ưu đãi cá nhân hóa',
-    mistakeRate: 'Sale đưa thông tin sai về size/sản phẩm, khách hủy đơn',
-    goodAttitudePercent: 'Thái độ tích cực, nhiệt tình hỗ trợ — cần nhân rộng',
-    competitorMentionRate: 'Khách so sánh với shop khác về giá và chất lượng',
-    priceComparisonRate: 'Hỏi giá 3 shop trước khi quyết định mua',
-    reviewRiskRate: 'Khách phàn nàn về chất lượng, dọa đăng review xấu',
-    urgencyRate: 'Khách hỏi gấp nhưng nhận được phản hồi chậm trễ',
-    objectionRate: 'Đặt câu hỏi về giá/chất lượng nhưng không được giải đáp rõ',
-    ghostRate: 'Khách seen không rep sau tin đầu, nhân viên không follow-up',
-    ignoredRecRate: 'Gợi ý sản phẩm bổ sung nhưng bị khách phớt lờ',
-    upsellAttemptRate: 'Cố upsell sản phẩm cao cấp nhưng khách chọn bản rẻ hơn',
-    overpromiseRate: 'Cam kết "đảm bảo 100%" nhưng không nêu điều kiện kèm theo',
-    guaranteeRate: 'Nói "đổi trả thoải mái" nhưng không có chính sách cụ thể',
-    abandonRate: 'Khách nhắn 1-2 tin rồi bỏ giữa chừng, không có closure',
-    noClosureRate: 'Hội thoại kết thúc đột ngột, không có tin nhắn cuối',
-    noFinalMsgRate: 'Khách không nhận được tin nhắn kết thúc từ nhân viên',
-    badToneRate: 'Reply quá dài 15+ dòng, toàn emoji, không chuyên nghiệp',
-    emojiOveruseRate: 'Dùng emoji liên tục trong tin nhắn tư vấn, gây nghiệp',
-    longMsgRate: 'Tin nhắn > 5 dòng không có dấu, khách khó đọc',
-  };
+  // Sort: Nóng first → Ấm → Lạnh → unknown
+  const tempOrder = { 'Nóng': 0, 'Ấm': 1, 'Lạnh': 2 };
+  unique.sort((a, b) => (tempOrder[a.temperature] ?? 9) - (tempOrder[b.temperature] ?? 9));
 
-  const summary = summaries[alert.metricKey] || 'Hội thoại có vấn đề cần xem xét';
-
-  return pool.map((row, idx) => ({
+  return unique.map((row, idx) => ({
     id: `ex-${idx}`,
     customer: row.customer || `Khách hàng ${idx + 1}`,
     platform: row.platform || 'facebook',
-    summary,
+    temperature: row.temperature,
+    time: row.created_at || row.date || '',
+    summary: buildConversationSummary(row),
   }));
 }
 
@@ -140,21 +167,48 @@ function AlertRow({ alert, conversations, isExpanded, onToggle }) {
         </div>
       </div>
 
-      {/* Expanded: conversation examples */}
+      {/* Expanded: conversation examples — per-conv summary, no truncation */}
       {isExpanded && (
         <div className="flex flex-col gap-0.5 px-3 pb-2 mt-0.5">
           {examples.map(ex => (
             <div
               key={ex.id}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-[--radius-sm] bg-surface-container-lowest"
+              className="flex items-start gap-3 px-3 py-1.5 rounded-[--radius-sm] bg-surface-container-lowest border-b border-surface-secondary last:border-0"
             >
-              <PlatformIcon platform={ex.platform} />
-              <span className="text-body-xs font-medium text-on-surface truncate flex-1 min-w-0">
-                {ex.customer}
-              </span>
-              <span className="text-body-xs text-on-surface-variant truncate shrink-1" style={{ maxWidth: '180px' }}>
-                {ex.summary}
-              </span>
+              {/* Platform icon */}
+              <div className="shrink-0 mt-0.5">
+                <PlatformIcon platform={ex.platform} />
+              </div>
+
+              {/* Customer name + 2-line summary */}
+              <div className="flex-1 min-w-0">
+                <p className="text-[11px] font-semibold text-on-surface leading-tight">
+                  {ex.customer}
+                </p>
+                <p className="text-[11px] text-on-surface-variant leading-snug line-clamp-2 mt-0.5">
+                  {ex.summary}
+                </p>
+              </div>
+
+              {/* Temp dot + time */}
+              <div className="shrink-0 flex flex-col items-end gap-1 mt-0.5">
+                {ex.temperature && (
+                  <div
+                    className="w-2 h-2 rounded-full mt-0.5"
+                    style={{
+                      backgroundColor:
+                        ex.temperature === 'Nóng' ? '#dc2626'
+                        : ex.temperature === 'Ấm' ? '#d97706'
+                        : '#6b7280',
+                    }}
+                  />
+                )}
+                {ex.time && (
+                  <span className="text-[10px] text-on-surface-variant/60 leading-none">
+                    {String(ex.time).slice(0, 10)}
+                  </span>
+                )}
+              </div>
             </div>
           ))}
         </div>
