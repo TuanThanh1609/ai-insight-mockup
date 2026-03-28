@@ -46,15 +46,15 @@ export function TopNavBar() {
           className="hidden md:flex"
         >
           {[
-            { label: 'Product', active: true },
-            { label: 'Templates' },
-            { label: 'Pricing' },
-            { label: 'Resources' },
+            { label: 'Product', active: false },
+            { label: 'Khám Bệnh', href: '/kham-benh', active: false, badge: 'NEW' },
+            { label: 'Templates', active: false },
+            { label: 'Pricing', active: false },
           ].map((item) => (
             <a
               key={item.label}
-              href="#"
-              onClick={(e) => e.preventDefault()}
+              href={item.href || '#'}
+              onClick={item.href ? undefined : (e) => e.preventDefault()}
               style={{
                 fontFamily: 'var(--font-display)',
                 fontWeight: '700',
@@ -66,9 +66,15 @@ export function TopNavBar() {
                 borderBottom: item.active ? '2px solid #BF3003' : '2px solid transparent',
                 textDecoration: 'none',
                 transition: 'color 0.15s ease',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
               }}
             >
               {item.label}
+              {item.badge && (
+                <span style={{ fontSize: '0.5rem', fontWeight: 700, color: '#BF3003', background: 'rgba(191,48,3,0.15)', padding: '1px 5px', borderRadius: 100, letterSpacing: '0.04em' }}>{item.badge}</span>
+              )}
             </a>
           ))}
         </div>

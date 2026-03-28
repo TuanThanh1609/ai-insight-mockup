@@ -7,6 +7,7 @@ import AdsDashboard from './pages/AdsDashboard';
 import AdsOptimization from './pages/AdsOptimization';
 import InsightDashboard from './pages/InsightDashboard';
 import MedicalCheckup from './pages/MedicalCheckup';
+import MedicalCheckupLanding from './pages/MedicalCheckupLanding';
 import LandingPage from './pages/LandingPage';
 
 // ── Layout: TopNavBar full-width + Sidebar left + Content right ───────────────
@@ -36,6 +37,7 @@ export default function App() {
         <Routes>
           {/* Standalone — no sidebar */}
           <Route path="/" element={<LandingPage />} />
+          <Route path="/kham-benh" element={<MedicalCheckupLanding />} />
 
           {/* App shell — with sidebar */}
           <Route path="/insight/settings" element={

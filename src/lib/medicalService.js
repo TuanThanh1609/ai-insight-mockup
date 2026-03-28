@@ -127,17 +127,6 @@ export const DISEASE_GROUPS = [
       { key: 'ignoredRecRate',       label: 'KH bỏ qua gợi ý',  format: 'percent' },
     ],
   },
-  {
-    id: 'legal-risk',
-    code: 'PL',
-    label: 'Rủi Ro Pháp Lý',
-    icon: '⚠️',
-    industryAgnostic: false, // mock
-    metrics: [
-      { key: 'overpromiseRate',   label: 'Overpromising',    format: 'percent' },
-      { key: 'guaranteeRate',     label: 'Cam kết không rõ', format: 'percent' },
-    ],
-  },
 ];
 
 // ─── Chuyên gia Smax — Rule-based Recommendations ────────────────────────
@@ -294,22 +283,6 @@ const SMAX_RECOMMENDATIONS = {
       description: 'Tạo 2-3 combo bundle có discount rõ ràng. Khi upsell lên gói cao hơn, khách thấy giá trị tăng rõ ràng.',
     },
   ],
-  'legal-risk': [
-    {
-      id: 'rq-pl-1',
-      priority: 'HIGH',
-      title: 'Loại bỏ các cụm từ "cam kết 100%", "đảm bảo hoàn tiền"',
-      impact: '↓ legal risk',
-      description: 'Thay bằng: "Shop cam kết hỗ trợ tối đa", "đổi trả theo chính sách trong 7 ngày". Giảm rủi ro pháp lý đáng kể.',
-    },
-    {
-      id: 'rq-pl-2',
-      priority: 'MEDIUM',
-      title: 'Review tất cả script tư vấn — loại bỏ superlative',
-      impact: '↓ complaint 30%',
-      description: '"Tốt nhất", "số 1", "hoàn hảo" → thay bằng "shop được khách đánh giá cao", "phù hợp với...". Tránh overpromise.',
-    },
-  ],
 };
 
 // ─── Seeded PRNG — deterministic mock data ────────────────────────────────
@@ -425,14 +398,6 @@ function computeDiseaseMetrics(conversations, groupId, industry) {
       };
     }
 
-    case 'legal-risk': {
-      const seed = total * 73;
-      return {
-        overpromiseRate: Math.round(3  + sr(seed) * 15),
-        guaranteeRate:   Math.round(2  + sr(seed + 7) * 12),
-      };
-    }
-
     default:
       return {};
   }
@@ -491,11 +456,6 @@ function computeScore(groupId, metrics) {
     case 'tone-language':
       return Math.max(0, Math.min(10,
         10 - metrics.badToneRate * 0.15 - metrics.emojiOveruseRate * 0.04 - metrics.longMsgRate * 0.05
-      ));
-
-    case 'legal-risk':
-      return Math.max(0, Math.min(10,
-        10 - metrics.overpromiseRate * 0.3 - metrics.guaranteeRate * 0.25
       ));
 
     default:

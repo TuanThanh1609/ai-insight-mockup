@@ -462,6 +462,167 @@ Fanpage   Ngành hàng  lượng    Progress   (Dashboard real-time)
 
 ---
 
-## 9. Còn cần làm
+## 9. Wireframe Options — Health Score Header (2026-03-28)
+
+> 3 phương án bố cục để cải thiện phần "Điểm Sức Khỏe Tổng Quan"
+> Vấn đề hiện tại: 10 nhóm bệnh viết tắt (US, NV, KH...) khiến user không hiểu
+
+---
+
+### Option A — Bố cục NGANG (Giữ nguyên), bỏ tắt
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│  ĐIỂM SỨC KHỎE TỔNG QUAN                     28/03/2026  01:02  │
+│                                                                       │
+│  6.8 / 10   [CẦN CẢI THIỆN]          ⚠️ Upsell / Cross-sell (4.6) │
+│               ▲ 0.1 (so với lần khám trước)                          │
+│  ────────────────────────────────────────────────────────────────     │
+│  [██████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   │
+│  Nghiêm trọng                                                     Tốt │
+│                                                                       │
+│  ĐÓNG GÓP THEO NHÓM BỆNH                                          │
+│  ────────────────────────────────────────────────────────────────     │
+│  Chất Lượng Nguồn Lead │ Nhân Viên Tư Vấn │ CSKH & Hậu Mua │ ...  │
+│  ████████████ 10.0  │ ████████░░ 4.8⚠️  │ ██████████░░ 6.4  │      │
+│  (xanh)            │ (đỏ)              │ (trung bình)    │        │
+│                                                                       │
+│  ● Cần cải thiện (< 5)  ● Tốt (≥ 7.5)  ● Trung bình             │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+**Ưu điểm:** Giữ layout hiện tại, chỉ thay label tắt → tên đầy đủ
+**Nhược điểm:** 10 label dài, chiếm nhiều chỗ → có thể phải wrap thành 2 dòng
+
+---
+
+### Option B — CHIA 2 CỘT (Score | Nhóm bệnh)
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│  ĐIỂM SỨC KHỎE TỔNG QUAN                     28/03/2026  01:02  │
+│                                                                       │
+│  ┌─────────────────────────┐  ┌──────────────────────────────────┐  │
+│  │                         │  │  ĐÓNG GÓP THEO NHÓM BỆNH       │  │
+│  │    6.8 / 10            │  │                                  │  │
+│  │    [CẦN CẢI THIỆN]    │  │  ████████████ Chất Lượng Lead   │  │
+│  │    ▲ 0.1               │  │  10.0 ████████████████████ (xanh)│  │
+│  │                         │  │                                  │  │
+│  │  [████████████░░░░░░]   │  │  ████████░░░░ Nhân Viên Tư Vấn │  │
+│  │  Nghiêm trọng    Tốt   │  │  4.8 ████████████░░░░░ (đỏ) ⚠️ │  │
+│  │                         │  │                                  │  │
+│  │  ⚠️ Upsell/Cross-sell  │  │  ██████████░░░░ CSKH & Hậu Mua │  │
+│  │     điểm thấp nhất     │  │  6.4 ██████████████░░░░░░        │  │
+│  └─────────────────────────┘  │  ... (7 nhóm còn lại, yếu→tốt)  │  │
+│       (cột trái ~35%)         │  ● Cần cải thiện  ● Tốt  ● TB   │  │
+│                                └──────────────────────────────────┘  │
+│                                    (cột phải ~63%)                      │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+**Ưu điểm:** Score nổi bật bên trái, nhóm bệnh có không gian rộng hiển thị tên đầy đủ
+**Nhược điểm:** Chiếm nhiều chiều cao hơn (2 cột thay vì 1 hàng bars)
+
+---
+
+### Option C — HYBRID (Score + Chip nhóm yếu + Mini bars)
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│  ĐIỂM SỨC KHỎE TỔNG QUAN                     28/03/2026  01:02  │
+│                                                                       │
+│  6.8 / 10   [CẦN CẢI THIỆN]          ⚠️ Upsell/Cross-sell (4.6)   │
+│               ▲ 0.1                                                      │
+│  [██████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   │
+│  Nghiêm trọng                                                     Tốt │
+│                                                                       │
+│  ĐÓNG GÓP THEO NHÓM BỆNH                                            │
+│                                                                       │
+│  ⚠️ Cần cải thiện:                                                   │
+│  ┌──────────────────────┐  ┌──────────────────────┐                  │
+│  │ Upsell/Cross-sell    │  │ Nhân Viên Tư Vấn    │                  │
+│  │ ██████████░░░░ 4.6  │  │ ██████████░░░░ 4.8  │                  │
+│  │ [Xem chi tiết →]     │  │ [Xem chi tiết →]     │                  │
+│  └──────────────────────┘  └──────────────────────┘                  │
+│                                                                       │
+│  ✅ Tốt nhất:                                                            │
+│  Chất Lượng Lead ████████████████████ 10.0 (xanh)                   │
+│                                                                       │
+│  📊 Tất cả nhóm (click → scroll đến bệnh):                          │
+│  [LQ 10.0] [NV 4.8⚠️] [KH 6.4] [BD 6.4] [NN 7.1] [PL 7.2]        │
+│  [KB 7.4]   [RS 7.4]   [ĐT 8.6]  [US 4.6⚠️]                       │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+**Ưu điểm:** Ưu tiên hiển thị nhóm YẾU trước (card nhỏ), nhóm TỐT gọn, click card → scroll đến disease card
+**Nhược điểm:** Layout phức tạp hơn, nhiều vùng
+
+---
+
+### Option D — Radar Chart (10 nhóm bệnh)
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│  ĐIỂM SỨC KHỎE TỔNG QUAN                     28/03/2026  01:02  │
+│                                                                       │
+│  ┌─────────────────────────────────┐  ┌────────────────────────────┐ │
+│  │                                 │  │   ĐIỂM SỐ & TRẠNG THÁI  │ │
+│  │        ĐT ─── LQ               │  │                            │ │
+│  │        /\    /\               │  │     6.8 / 10              │ │
+│  │      RS/  \  /  \ĐT          │  │     [CẦN CẢI THIỆN]      │ │
+│  │      (7.4)\/    \(8.6)       │  │     ▲ 0.1                  │ │
+│  │            \   NV/            │  │                            │ │
+│  │      KB ──\/── PL            │  │  [██████████████░░░░░░░] │ │
+│  │     (7.2) /\  (7.1)          │  │  Nghiêm trọng        Tốt │ │
+│  │         /  \                  │  │                            │ │
+│  │    NN(7.1)  US(4.6)⚠️        │  │  ⚠️ YẾU NHẤT:             │ │
+│  │         \  /                  │  │  • Upsell/Cross-sell (4.6) │ │
+│  │      KH(5.4)                  │  │  • Nhân Viên Tư Vấn (4.8) │ │
+│  │                                 │  │  [Xem chi tiết →]         │ │
+│  │  ● Đỏ < 5  ● Vàng 5-7  ● Xanh ≥ 7.5 │  └────────────────────────────┘ │
+│  └─────────────────────────────────┘                                │
+│          (Radar chart ~40%)              (Score + Actions ~60%)     │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+**Ưu điểm:** Radar cho cái nhìn TỔNG QUAN một lượt — hình polygon cho biết ngay nhóm nào lõm (yếu) vs nhô ra (tốt). Score + action list bên cạnh cho chi tiết.
+**Nhược điểm:** Radar khó đọc giá trị chính xác. Cần Recharts RadarChart.
+
+---
+
+### Option E — 3 CỘT (Score | Nhóm yếu | Nhóm tốt)
+
+```
+┌──────────────────────────────────────────────────────────────────────────┐
+│  ĐIỂM SỨC KHỎE TỔNG QUAN                          28/03/2026  01:02  │
+│                                                                          │
+│  ┌──────────────┐  ┌─────────────────────────────────┐  ┌────────────┐  │
+│  │              │  │  ⚠️  CẦN CẢI THIỆN (2 nhóm)    │  │  ✅ TỐT   │  │
+│  │   6.8 / 10  │  │                                   │  │  (1 nhóm) │  │
+│  │              │  │  Upsell / Cross-sell   ████░ 4.6│  │            │  │
+│  │  [CẦN CẢI  │  │  Nhân Viên Tư Vấn     ████░ 4.8│  │ ████████  │  │
+│  │   THIỆN]    │  │  [Xem chi tiết →]  [Xem →]     │  │ LQ  10.0  │  │
+│  │              │  │                                   │  │            │  │
+│  │  ▲ 0.1      │  │  ── Trung bình (7 nhóm) ──       │  │            │  │
+│  │              │  │  CSKH & Hậu Mua  ██████░ 6.4   │  │            │  │
+│  │  [██████░░░]│  │  Kịch Bản Tư Vấn  ██████░ 7.2  │  │            │  │
+│  │  Nghiêm Tốt │  │  ... (5 nhóm còn lại, thu gọn) │  │            │  │
+│  └──────────────┘  └─────────────────────────────────┘  └────────────┘  │
+│    (cột 1 ~25%)     (cột 2 ~50%)                          (cột 3 ~22%)  │
+└──────────────────────────────────────────────────────────────────────────┘
+```
+
+**Ưu điểm:** Phân tách rõ 3 nhóm: Cần cải thiện / Trung bình / Tốt. Scan 3 giây hiểu ngay: điểm tổng + nhóm nào kéo tụt + nhóm nào tốt.
+**Nhược điểm:** Chiếm nhiều chiều rộng, cột phải hẹp nếu screen nhỏ.
+
+---
+
+### Đề xuất: ~~Option B~~ → **Option E** ✅ ĐÃ CHỌN
+
+- **E ✅** — 3 cột: Score | Cần cải thiện + Trung bình | Tốt. Phân tách rõ yếu/tốt, dễ prioritize hành động.
+
+**Lý do:** Cột trái tập trung vào **điểm số tổng** (scan nhanh), cột phải hiển thị đầy đủ **tên nhóm bệnh** (đọc hiểu được), scrollbar nếu vượt viewport.
+
+## 10. Còn cần làm
 
 - [ ] **PDF Export** — implement `window.print()` hoặc `html2pdf.js` để xuất báo cáo đầy đủ (metrics + actions + ví dụ hội thoại)

@@ -1,12 +1,12 @@
-# Health Score Header — Diagnostic at a Glance
+# Health Score Header — Option E: 3-Column Diagnostic Layout
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Nâng cấp HealthScoreHeader từ card đơn giản → diagnostic dashboard: score + breakdown bars 10 nhóm bệnh + critical alert chip + scroll-to-disease.
+**Goal:** Nâng cấp HealthScoreHeader thành 3 cột: [Score] | [Cần cải thiện] | [Tốt] — scan 3 giây biết ngay nhóm nào kéo tụt, nhóm nào tốt.
 
-**Architecture:** Single component rewrite + 1 id-attribute fix trong DiseaseItemLayout. Logic data lấy từ `diseases` prop (đã computed bên ngoài). Không thay đổi medicalService.
+**Architecture:** Single component rewrite. Data từ `diseases` prop. Phân loại nhóm theo score: yếu (<5) / trung bình (5-7.4) / tốt (≥7.5). Click item → scrollIntoView đến disease card. Không thay đổi medicalService.
 
-**Tech Stack:** React 19, Tailwind CSS v4 (CSS variables), Lucide React icons, Recharts (không dùng — pure CSS bars)
+**Tech Stack:** React 19, Tailwind CSS v4 (CSS variables), Lucide React icons
 
 ---
 
@@ -15,8 +15,32 @@
 | File | Change |
 |------|--------|
 | `src/components/medical/DiseaseItemLayout.jsx` | Thêm `id={`disease-${disease.id}`}` vào root `<div>` |
-| `src/components/medical/HealthScoreHeader.jsx` | Rewrite hoàn toàn theo 4-zone spec |
-| `src/components/medical/MedicalResultStep.jsx` | Truyền `diseases` (đã có), không cần thay đổi logic khác |
+| `src/components/medical/HealthScoreHeader.jsx` | Rewrite hoàn toàn theo Option E |
+| `src/components/medical/MedicalResultStep.jsx` | Không đổi — `diseases` prop đã được truyền |
+
+---
+
+## Layout Wireframe (Option E)
+
+```
+┌──────────────────────────────────────────────────────────────────────────┐
+│  ĐIỂM SỨC KHỎE TỔNG QUAN                          28/03/2026  01:02  │
+│                                                                          │
+│  ┌──────────────┐  ┌─────────────────────────────────┐  ┌────────────┐  │
+│  │              │  │  ⚠️  CẦN CẢI THIỆN (2 nhóm)    │  │  ✅ TỐT   │  │
+│  │   6.8 / 10  │  │                                   │  │  (1 nhóm) │  │
+│  │              │  │  Upsell / Cross-sell   ████░ 4.6│  │            │  │
+│  │  [CẦN CẢI  │  │  Nhân Viên Tư Vấn     ████░ 4.8│  │ ████████  │  │
+│  │   THIỆN]    │  │  [Xem chi tiết →]  [Xem →]     │  │ LQ  10.0  │  │
+│  │              │  │                                   │  │            │  │
+│  │  ▲ 0.1      │  │  ── Trung bình (7 nhóm) ──       │  │            │  │
+│  │              │  │  CSKH & Hậu Mua  ██████░ 6.4   │  │            │  │
+│  │  [██████░░░]│  │  Kịch Bản Tư Vấn  ██████░ 7.2  │  │            │  │
+│  │  Nghiêm Tốt │  │  ... (5 nhóm còn lại, thu gọn) │  │            │  │
+│  └──────────────┘  └─────────────────────────────────┘  └────────────┘  │
+│    (cột 1 ~25%)     (cột 2 ~50%)                          (cột 3 ~22%)  │
+└──────────────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
@@ -27,11 +51,11 @@
 
 - [ ] **Step 1: Read DiseaseItemLayout.jsx**
 
-Read the full file. Find the root `<div>` that wraps the disease item. It should have `className` containing `bg-surface-container-low rounded-[--radius-xl]`.
+Read the full file. Find the root `<div>` that wraps the disease item (className contains `bg-surface-container-low`).
 
 - [ ] **Step 2: Add id attribute**
 
-In the root `<div>` of `DiseaseItemLayout`, add:
+In the root `<div>` of `DiseaseItemLayout`, add `id={`disease-${disease.id}`}`. Keep everything else identical.
 
 ```jsx
 <div
@@ -41,38 +65,36 @@ In the root `<div>` of `DiseaseItemLayout`, add:
 >
 ```
 
-Keep everything else identical. The `id` prop allows `scrollIntoView` từ HealthScoreHeader bars.
-
 - [ ] **Step 3: Commit**
 
 ```bash
-cd "d:\vibe-coding\Nâng cấp AI Insight"
+cd "d:\vibe-coding\Nâng cấp AI Insight\.worktrees\feat\health-score-header"
 git add src/components/medical/DiseaseItemLayout.jsx
 git commit -m "feat(medical): add scroll anchor id to DiseaseItemLayout"
 ```
 
 ---
 
-## Task 2: Rewrite HealthScoreHeader.jsx
+## Task 2: Rewrite HealthScoreHeader.jsx (Option E — 3 Columns)
 
 **Files:**
 - Modify: `d:\vibe-coding\Nâng cấp AI Insight\src\components\medical\HealthScoreHeader.jsx`
-- Read (first): `d:\vibe-coding\Nâng cấp AI Insight\src\lib\medicalService.js` — function signatures only (`getMedicalHistory`, `getHealthScore`, `getHealthLabel`, `getHealthColor`)
+- Read (first): `d:\vibe-coding\Nâng cấp AI Insight\src\lib\medicalService.js` — focus on `getHealthScore`, `getHealthLabel`, `getHealthColor`, `getMedicalHistory`
 
 - [ ] **Step 1: Read current HealthScoreHeader.jsx and medicalService.js**
 
 Focus on:
-- `getMedicalHistory()` → returns `[{ score, date, ... }]`
 - `getHealthScore(diseases)` → returns number 0-10
 - `getHealthLabel(score)` → returns string like "Cần cải thiện"
 - `getHealthColor(score)` → returns hex color string
+- `getMedicalHistory()` → returns `[{ score, date }]`
 
 - [ ] **Step 2: Write the full rewrite**
 
-Replace the entire content of `HealthScoreHeader.jsx` with this complete implementation:
+Replace the entire content of `HealthScoreHeader.jsx` with:
 
 ```jsx
-import { useState, useCallback, useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 import { AlertTriangle, TrendingUp, TrendingDown } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import {
@@ -83,40 +105,10 @@ import {
 } from '../../lib/medicalService';
 
 /**
- * Disease code labels (2-char abbreviations)
- */
-const CODE_LABELS = {
-  'lead-quality':    'LQ',
-  'response-speed':  'RS',
-  'staff-performance': 'NV',
-  'competitor':      'ĐT',
-  'post-purchase':   'KH',
-  'objection-handling': 'KB',
-  'abandoned-chat':  'BD',
-  'tone-language':   'NN',
-  'upsell':          'US',
-  'legal-risk':      'PL',
-};
-
-/**
- * Disease full-name labels
- */
-const LABEL_MAP = {
-  'lead-quality':    'Chất Lượng Nguồn Lead',
-  'response-speed':  'Phản Hồi & Chăm Sóc',
-  'staff-performance': 'Nhân Viên Tư Vấn',
-  'competitor':      'Đối Thủ Cạnh Tranh',
-  'post-purchase':   'CSKH & Hậu Mua',
-  'objection-handling': 'Kịch Bản Tư Vấn',
-  'abandoned-chat':  'Cuộc Trò Chuyện Bỏ Dở',
-  'tone-language':   'Ngôn Ngữ & Cách Giao Tiếp',
-  'upsell':          'Upsell / Cross-sell',
-  'legal-risk':      'Rủi Ro Pháp Lý',
-};
-
-/**
- * HealthScoreHeader — Diagnostic at a Glance
- * 4 zones: Score block | Progress bar | Breakdown bars | Critical chip
+ * HealthScoreHeader — Option E: 3-Column Diagnostic Layout
+ * Col 1: Score tổng + progress bar
+ * Col 2: Nhóm Cần cải thiện (score < 5) + Trung bình (5 ≤ score < 7.5) thu gọn
+ * Col 3: Nhóm Tốt (score ≥ 7.5)
  */
 export function HealthScoreHeader({ diseases, recordDate }) {
   const score = getHealthScore(diseases);
@@ -132,47 +124,52 @@ export function HealthScoreHeader({ diseases, recordDate }) {
   // ── Date/time ──
   const dt = recordDate ? new Date(recordDate) : new Date();
   const formattedDate = dt.toLocaleDateString('vi-VN', {
-    day: '2-digit', month: '2-digit', year: 'numeric'
+    day: '2-digit', month: '2-digit', year: 'numeric',
   });
   const formattedTime = dt.toLocaleTimeString('vi-VN', {
-    hour: '2-digit', minute: '2-digit'
+    hour: '2-digit', minute: '2-digit',
   });
 
-  // ── Progress ──
   const progressPct = Math.round((score / 10) * 100);
 
-  // ── Breakdown bars data ──
-  const barData = useMemo(() => {
+  // ── Disease group classification ──
+  const { weak, medium, strong } = useMemo(() => {
     const all = diseases.map(d => ({
       id: d.id,
-      code: CODE_LABELS[d.id] || d.code || d.id.slice(0, 2).toUpperCase(),
-      fullName: LABEL_MAP[d.id] || d.label || d.id,
+      label: d.label || d.id,
       score: d.score ?? 5,
-      isWeak: (d.score ?? 10) < 5,
-      isStrong: (d.score ?? 0) >= 7.5,
-      hasData: !d.industryAgnostic || (d.metrics && d.metrics.some(m => (m.value ?? 0) > 0)),
       topRecommendation: d.recommendations?.[0]?.title ?? null,
-    })).filter(d => d.hasData);
+    }));
 
-    return all.sort((a, b) => a.score - b.score); // yếu nhất lên đầu
+    return {
+      weak:   all.filter(d => d.score < 5).sort((a, b) => a.score - b.score),
+      medium: all.filter(d => d.score >= 5 && d.score < 7.5).sort((a, b) => a.score - b.score),
+      strong: all.filter(d => d.score >= 7.5).sort((a, b) => b.score - a.score),
+    };
   }, [diseases]);
 
-  const topWeak = barData.filter(d => d.isWeak).slice(0, 3);
-  const critical = topWeak[0] ?? null;
-
-  const maxBarScore = 10;
-  const barHeightPx = 8;
-
   // ── Scroll to disease ──
-  const handleBarClick = useCallback((diseaseId) => {
+  const handleScrollTo = useCallback((diseaseId) => {
     document.getElementById(`disease-${diseaseId}`)?.scrollIntoView({
       behavior: 'smooth',
       block: 'start',
     });
   }, []);
 
-  // ── Score < 3 → emergency ──
   const isEmergency = score < 3;
+
+  // ── Render progress bar for a single item ──
+  const ProgressBarMini = ({ value, color: barColor }) => (
+    <div className="h-2 bg-surface-container-high rounded-full overflow-hidden">
+      <div
+        className="h-full rounded-full transition-all"
+        style={{
+          width: `${(value / 10) * 100}%`,
+          backgroundColor: barColor,
+        }}
+      />
+    </div>
+  );
 
   return (
     <div className="bg-surface-container-low rounded-[--radius-xl] p-6 mb-6">
@@ -186,168 +183,171 @@ export function HealthScoreHeader({ diseases, recordDate }) {
         </div>
       )}
 
-      {/* ── Top row: score + delta + meta ── */}
-      <div className="flex items-start justify-between gap-4 mb-4">
-        {/* Score block */}
-        <div className="flex items-end gap-4">
-          <div>
-            <div className="text-label-sm text-on-surface-variant mb-1">
-              ĐIỂM SỨC KHỎE TỔNG QUAN
-            </div>
-            <div className="flex items-end gap-2">
-              <span
-                className="text-display-lg font-bold leading-none"
-                style={{ color }}
-              >
-                {score.toFixed(1)}
-              </span>
-              <span className="text-headline-sm text-on-surface-variant font-normal pb-1">
-                / 10
-              </span>
-            </div>
-            <div
-              className="inline-block mt-2 px-2.5 py-1 rounded-full text-label-sm font-bold"
-              style={{ backgroundColor: `${color}18`, color }}
-            >
-              {label}
-            </div>
-          </div>
-
-          {/* Delta — only show when history exists */}
-          {delta !== null && delta !== 0 && (
-            <div className={cn(
-              'flex items-center gap-1 pb-1',
-              delta > 0 ? 'text-success' : 'text-error'
-            )}>
-              {delta > 0
-                ? <TrendingUp size={14} />
-                : <TrendingDown size={14} />
-              }
-              <span className="text-body-sm font-semibold">
-                {Math.abs(delta).toFixed(1)}
-              </span>
-            </div>
-          )}
+      {/* ── Top meta row ── */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="text-label-sm text-on-surface-variant">
+          ĐIỂM SỨC KHỎE TỔNG QUAN
         </div>
-
-        {/* Critical chip — nhóm bệnh yếu nhất */}
-        {critical && !isEmergency && (
-          <button
-            onClick={() => handleBarClick(critical.id)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-label-sm font-semibold shrink-0
-                       bg-warning/10 text-warning border border-warning/20 cursor-pointer hover:bg-warning/20 transition-colors"
-          >
-            <AlertTriangle size={12} />
-            <span>
-              {critical.fullName} ({critical.score.toFixed(1)})
-            </span>
-          </button>
-        )}
-
-        {/* Meta — date/time */}
-        <div className="text-right shrink-0">
+        <div className="text-right">
           <div className="text-body-sm text-on-surface">{formattedDate}</div>
           <div className="text-body-sm text-on-surface-variant">{formattedTime}</div>
         </div>
       </div>
 
-      {/* ── Progress bar ── */}
-      <div className="mb-5">
-        <div className="h-3 bg-surface-container-high rounded-full overflow-hidden">
-          <div
-            className="h-full rounded-full transition-all duration-700"
-            style={{ width: `${progressPct}%`, backgroundColor: color }}
-          />
-        </div>
-        <div className="flex items-center justify-between text-body-sm text-on-surface-variant mt-1.5">
-          <span>Nghiêm trọng</span>
-          <span>Tốt</span>
-        </div>
-      </div>
+      {/* ── 3 COLUMN LAYOUT ── */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
 
-      {/* ── Breakdown bars — only if ≥ 1 disease ── */}
-      {barData.length > 0 && (
-        <div>
-          <div className="text-label-sm text-on-surface-variant mb-3">
-            ĐÓNG GÓP THEO NHÓM BỆNH
+        {/* ── COLUMN 1: Score tổng ── */}
+        <div className="flex flex-col gap-3">
+          <div className="flex items-end gap-2">
+            <span className="text-display-lg font-bold leading-none" style={{ color }}>
+              {score.toFixed(1)}
+            </span>
+            <span className="text-headline-sm text-on-surface-variant font-normal pb-1">/ 10</span>
           </div>
 
-          {/* Bar labels row */}
-          <div className="flex gap-3 mb-1 flex-wrap">
-            {barData.map(d => (
-              <div key={d.id} className="flex flex-col items-center min-w-[28px]">
-                <span className="text-label-sm text-on-surface-variant mb-0.5">
-                  {d.code}
+          <div
+            className="inline-block px-2.5 py-1 rounded-full text-label-sm font-bold self-start"
+            style={{ backgroundColor: `${color}18`, color }}
+          >
+            {label}
+          </div>
+
+          {delta !== null && delta !== 0 && (
+            <div className={cn('flex items-center gap-1', delta > 0 ? 'text-success' : 'text-error')}>
+              {delta > 0 ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
+              <span className="text-body-sm font-semibold">{Math.abs(delta).toFixed(1)}</span>
+              <span className="text-body-sm text-on-surface-variant">so với lần khám trước</span>
+            </div>
+          )}
+
+          {/* Progress bar lớn */}
+          <div>
+            <div className="h-3 bg-surface-container-high rounded-full overflow-hidden mb-1.5">
+              <div
+                className="h-full rounded-full transition-all duration-700"
+                style={{ width: `${progressPct}%`, backgroundColor: color }}
+              />
+            </div>
+            <div className="flex justify-between text-body-sm text-on-surface-variant">
+              <span>Nghiêm trọng</span>
+              <span>Tốt</span>
+            </div>
+          </div>
+        </div>
+
+        {/* ── COLUMN 2: Cần cải thiện + Trung bình ── */}
+        <div className="flex flex-col gap-3">
+          {/* Cần cải thiện */}
+          {weak.length > 0 && (
+            <div>
+              <div className="flex items-center gap-1.5 mb-2">
+                <AlertTriangle size={12} className="text-error shrink-0" />
+                <span className="text-label-sm font-bold text-error">
+                  CẦN CẢI THIỆN ({weak.length} nhóm)
                 </span>
               </div>
-            ))}
-          </div>
+              <div className="flex flex-col gap-2">
+                {weak.map(d => (
+                  <div key={d.id}>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-body-sm text-on-surface font-medium truncate max-w-[160px]">
+                        {d.label}
+                      </span>
+                      <button
+                        onClick={() => handleScrollTo(d.id)}
+                        className="text-label-sm text-tertiary hover:text-tertiary/80 shrink-0 ml-2 cursor-pointer"
+                      >
+                        Xem →
+                      </button>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <ProgressBarMini value={d.score} color="var(--color-error)" />
+                      <span className="text-label-sm font-semibold text-error shrink-0 w-7 text-right">
+                        {d.score.toFixed(1)}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
-          {/* Bars */}
-          <div className="flex gap-3 items-end flex-wrap">
-            {barData.map(d => {
-              const barWidthPct = (d.score / maxBarScore) * 100;
-              const isHighlighted = d.isWeak || d.isStrong;
-
-              return (
-                <div
-                  key={d.id}
-                  className="flex flex-col items-center gap-1 flex-1 min-w-[28px] max-w-[80px]"
-                >
-                  {/* Bar track */}
+          {/* Trung bình */}
+          {medium.length > 0 && (
+            <div>
+              <div className="text-label-sm font-semibold text-on-surface-variant mb-2 uppercase tracking-wide">
+                Trung bình ({medium.length} nhóm)
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {medium.map(d => (
                   <button
-                    onClick={() => handleBarClick(d.id)}
-                    title={`${d.fullName}: ${d.score.toFixed(1)}/10 — Click để xem chi tiết`}
-                    className={cn(
-                      'w-full rounded-sm transition-all cursor-pointer',
-                      isHighlighted ? 'h-3' : 'h-2'
-                    )}
-                    style={{
-                      backgroundColor: d.isWeak
-                        ? 'var(--color-error)'
-                        : d.isStrong
-                          ? 'var(--color-success)'
-                          : 'var(--color-tertiary)',
-                      opacity: isHighlighted ? 1 : 0.45,
-                      height: `${barHeightPx + (isHighlighted ? 4 : 0)}px`,
-                      width: `${barWidthPct}%`,
-                      maxWidth: '100%',
-                      minWidth: '4px',
-                    }}
-                  />
-                  {/* Score value */}
-                  <span className={cn(
-                    'text-label-sm font-semibold',
-                    d.isWeak ? 'text-error' : d.isStrong ? 'text-success' : 'text-on-surface-variant'
-                  )}>
-                    {d.score.toFixed(1)}
-                  </span>
-                  {/* Weak indicator */}
-                  {d.isWeak && (
-                    <AlertTriangle size={8} className="text-error" />
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Legend */}
-          <div className="flex items-center gap-4 mt-3 text-label-sm text-on-surface-variant">
-            <div className="flex items-center gap-1.5">
-              <div className="w-3 h-2 rounded-sm bg-error opacity-100" />
-              <span>Cần cải thiện (&lt; 5)</span>
+                    key={d.id}
+                    onClick={() => handleScrollTo(d.id)}
+                    className="flex items-center gap-1 px-2 py-1 rounded-[--radius-sm] bg-surface-container-high text-body-sm
+                               hover:bg-surface-container-low cursor-pointer transition-colors"
+                    title={`${d.label}: ${d.score.toFixed(1)}`}
+                  >
+                    <span className="text-label-sm text-on-surface-variant">{d.label}</span>
+                    <span className="text-label-sm font-semibold text-tertiary">{d.score.toFixed(1)}</span>
+                  </button>
+                ))}
+              </div>
             </div>
-            <div className="flex items-center gap-1.5">
-              <div className="w-3 h-2 rounded-sm bg-success opacity-100" />
-              <span>Tốt (≥ 7.5)</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <div className="w-3 h-2 rounded-sm bg-tertiary opacity-45" />
-              <span>Trung bình</span>
-            </div>
-          </div>
+          )}
         </div>
-      )}
+
+        {/* ── COLUMN 3: Tốt ── */}
+        <div className="flex flex-col gap-3">
+          {strong.length > 0 ? (
+            <>
+              <div className="flex items-center gap-1.5 mb-2">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="10" fill="var(--color-success)" opacity="0.2" />
+                  <path d="M8 12l3 3 5-5" stroke="var(--color-success)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <span className="text-label-sm font-bold text-success">
+                  TỐT ({strong.length} nhóm)
+                </span>
+              </div>
+              <div className="flex flex-col gap-2">
+                {strong.map(d => (
+                  <div key={d.id}>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-body-sm text-on-surface font-medium truncate max-w-[120px]">
+                        {d.label}
+                      </span>
+                      <button
+                        onClick={() => handleScrollTo(d.id)}
+                        className="text-label-sm text-success hover:text-success/80 shrink-0 ml-2 cursor-pointer"
+                      >
+                        Xem →
+                      </button>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <ProgressBarMini value={d.score} color="var(--color-success)" />
+                      <span className="text-label-sm font-semibold text-success shrink-0 w-7 text-right">
+                        {d.score.toFixed(1)}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-full py-6 text-center">
+              <div className="text-3xl mb-2">🎯</div>
+              <div className="text-body-sm text-on-surface-variant">
+                Chưa có nhóm nào đạt mức Tốt
+              </div>
+              <div className="text-label-sm text-on-surface-variant mt-1">
+                Cải thiện các nhóm Cần cải thiện để nâng điểm
+              </div>
+            </div>
+          )}
+        </div>
+
+      </div>
     </div>
   );
 }
@@ -355,30 +355,29 @@ export function HealthScoreHeader({ diseases, recordDate }) {
 
 - [ ] **Step 3: Build verification**
 
-Run:
 ```bash
-cd "d:\vibe-coding\Nâng cấp AI Insight"
-npm run build 2>&1 | tail -30
+cd "d:\vibe-coding\Nâng cấp AI Insight\.worktrees\feat\health-score-header"
+npm run build 2>&1 | tail -10
 ```
 Expected: Build successful (0 errors)
 
 - [ ] **Step 4: Test in browser**
 
-Open `http://localhost:5173/insight/medical-checkup`, complete the wizard (Step 5), verify:
-- Score hiển thị đúng màu (theo getHealthColor)
-- Breakdown bars hiển thị đúng thứ tự yếu → mạnh
-- Top 3 yếu nhất: màu đỏ, hiện icon ⚠️
-- Top 2 tốt nhất: màu xanh
-- Click thanh → cuộn xuống disease card tương ứng
-- Nếu score < 3: emergency banner hiện
-- Nếu score ≥ 7: critical chip ẩn
+Open `http://localhost:5174/insight/medical-checkup`, complete wizard (Step 5), verify:
+- 3 cột hiển thị đúng: Score | Cần cải thiện + Trung bình | Tốt
+- Nhóm yếu (< 5): thanh đỏ, nút "Xem →" hoạt động
+- Nhóm TB (5-7.4): chip nhỏ thu gọn
+- Nhóm tốt (≥ 7.5): thanh xanh, nút "Xem →" hoạt động
+- Click "Xem →" → cuộn đến disease card tương ứng
+- Score < 3 → emergency banner hiện
+- Score ≥ 7 → cột 3 hiện badge xanh
 
 - [ ] **Step 5: Commit**
 
 ```bash
-cd "d:\vibe-coding\Nâng cấp AI Insight"
+cd "d:\vibe-coding\Nâng cấp AI Insight\.worktrees\feat\health-score-header"
 git add src/components/medical/HealthScoreHeader.jsx
-git commit -m "feat(medical): rewrite HealthScoreHeader to Diagnostic at a Glance"
+git commit -m "feat(medical): HealthScoreHeader Option E — 3-column diagnostic layout"
 ```
 
 ---
@@ -386,11 +385,11 @@ git commit -m "feat(medical): rewrite HealthScoreHeader to Diagnostic at a Glanc
 ## Verification Checklist
 
 - [ ] Build: `npm run build` → 0 error
-- [ ] Score block: màu đúng theo score zone (green/yellow/red)
-- [ ] Delta: hiện khi ≥ 2 lần khám, ẩn khi lần đầu
-- [ ] Breakdown bars: đúng thứ tự yếu → mạnh, highlight đỏ/xanh theo rule
-- [ ] Click bar: scrollIntoView đến disease card
-- [ ] Critical chip: hiện với nhóm yếu nhất, click → scroll
-- [ ] Emergency: banner hiện khi score < 3
-- [ ] Medical history: `getMedicalHistory()` được gọi, không crash
-- [ ] Console: 0 errors khi render HealthScoreHeader
+- [ ] 3 cột: Score | Cần cải thiện + TB | Tốt
+- [ ] Nhóm yếu (<5): thanh đỏ, list chi tiết với progress bar mini
+- [ ] Nhóm TB (5-7.4): chip nhỏ thu gọn (không chi tiết)
+- [ ] Nhóm tốt (≥7.5): thanh xanh, list chi tiết
+- [ ] "Xem →": scroll đến disease card
+- [ ] Emergency: banner khi score < 3
+- [ ] Delta: hiện khi ≥ 2 lần khám
+- [ ] Console: 0 errors

@@ -155,23 +155,21 @@ export function HealthScoreHeader({ diseases, recordDate }) {
               </div>
               <div className="flex flex-col gap-2.5">
                 {weak.map(d => (
-                  <div key={d.id}>
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-body-sm text-on-surface font-medium truncate max-w-[160px]" title={d.label}>
+                  <div key={d.id} className="flex items-start gap-2">
+                    <div className="flex-1 min-w-0">
+                      <div className="text-body-sm text-on-surface font-medium mb-1">
                         {d.label}
-                      </span>
+                      </div>
+                      <MiniBar value={d.score} color="var(--color-error)" />
+                    </div>
+                    <div className="flex flex-col items-end shrink-0 gap-1">
                       <button
                         onClick={() => handleScrollTo(d.id)}
-                        className="text-label-sm text-tertiary hover:text-tertiary/80 shrink-0 ml-2 cursor-pointer transition-colors"
+                        className="text-label-sm text-tertiary hover:text-tertiary/80 cursor-pointer transition-colors"
                       >
                         Xem →
                       </button>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="flex-1">
-                        <MiniBar value={d.score} color="var(--color-error)" />
-                      </div>
-                      <span className="text-label-sm font-semibold text-error shrink-0 w-7 text-right">
+                      <span className="text-label-sm font-semibold text-error">
                         {d.score.toFixed(1)}
                       </span>
                     </div>
@@ -227,23 +225,21 @@ export function HealthScoreHeader({ diseases, recordDate }) {
               </div>
               <div className="flex flex-col gap-2.5">
                 {strong.map(d => (
-                  <div key={d.id}>
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-body-sm text-on-surface font-medium truncate max-w-[120px]" title={d.label}>
+                  <div key={d.id} className="flex items-start gap-2">
+                    <div className="flex-1 min-w-0">
+                      <div className="text-body-sm text-on-surface font-medium mb-1">
                         {d.label}
-                      </span>
+                      </div>
+                      <MiniBar value={d.score} color="var(--color-success)" />
+                    </div>
+                    <div className="flex flex-col items-end shrink-0 gap-1">
                       <button
                         onClick={() => handleScrollTo(d.id)}
-                        className="text-label-sm text-success hover:text-success/80 shrink-0 ml-2 cursor-pointer transition-colors"
+                        className="text-label-sm text-success hover:text-success/80 cursor-pointer transition-colors"
                       >
                         Xem →
                       </button>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="flex-1">
-                        <MiniBar value={d.score} color="var(--color-success)" />
-                      </div>
-                      <span className="text-label-sm font-semibold text-success shrink-0 w-7 text-right">
+                      <span className="text-label-sm font-semibold text-success">
                         {d.score.toFixed(1)}
                       </span>
                     </div>
