@@ -1,4 +1,4 @@
-// Ads Wizard Components — re-export all
+// Ads Components — re-export all
 export { AdsWizardSteps } from './AdsWizardSteps';
 export { AdsConnectStep } from './AdsConnectStep';
 export { AdsCampaignSelectStep } from './AdsCampaignSelectStep';
@@ -6,6 +6,10 @@ export { AdsDateRangeStep } from './AdsDateRangeStep';
 export { AdsCrawlProgressStep } from './AdsCrawlProgressStep';
 
 // Dashboard Components
+export { AdsMedicalDashboard } from './AdsMedicalDashboard';
+export { AdsFilterTabs } from './AdsFilterTabs';
+export { AdsSmaxRecommendationsPanel } from './AdsSmaxRecommendationsPanel';
+export { AdsDiseaseItemLayout } from './AdsDiseaseItemLayout';
 export { AdsHealthScoreHeader } from './AdsHealthScoreHeader';
 export { AttributionFunnel } from './AttributionFunnel';
 export { AdsRoasBreakdown } from './AdsRoasBreakdown';
