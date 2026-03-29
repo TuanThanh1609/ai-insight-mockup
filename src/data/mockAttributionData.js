@@ -7,7 +7,7 @@
  * Deterministic: seeded by row index using sr() from medicalService.js
  */
 
-import { mockCampaigns } from './mockCampaigns';
+import { mockCampaigns } from './mockCampaigns.js';
 
 // ─── Campaign Reference Map ────────────────────────────────────────────────
 
@@ -81,7 +81,8 @@ function makeDaysToConversion(rowIndex) {
   return 15 + Math.floor(sr(rowIndex * 43 + 19) * 16);                // 15–30
 }
 
-/** Make a campaign reference (first-touch or last-touch). */
+/** Make a campaign reference (first-touch or last-touch).
+ *  adId is picked deterministically from the campaign's adIds[] pool. */
 function makeTouch(rowIndex, touchSeed, isFirst) {
   const campIds = ['camp-1', 'camp-2', 'camp-3', 'camp-4', 'camp-5', 'camp-6'];
   const campIdx = Math.floor(sr(rowIndex * touchSeed + 7) * campIds.length);
@@ -89,9 +90,11 @@ function makeTouch(rowIndex, touchSeed, isFirst) {
   const camp = CAMP[campId];
 
   const platform = camp.platform;
-  const adPrefix = platform === 'facebook' ? 'FB' : 'ZL';
-  const adIdx = Math.floor(sr(rowIndex * touchSeed + 13) * 10) + 1;
-  const adId = `${adPrefix}-AD-${String(adIdx).padStart(3, '0')}`;
+
+  // Pick from campaign's adIds[] pool (deterministic via seed)
+  const adIds = camp.adIds;
+  const adPickIdx = Math.floor(sr(rowIndex * touchSeed + 13) * adIds.length);
+  const adId = adIds[adPickIdx];
 
   const adNames = {
     'camp-1': 'Spring Sale - Carousel - 1',
@@ -107,7 +110,7 @@ function makeTouch(rowIndex, touchSeed, isFirst) {
     campaignName: camp.name,
     platform,
     adId,
-    adName: adNames[campId] || `${camp.name} - Ad ${adIdx}`,
+    adName: adNames[campId] || `${camp.name} - Ad ${adPickIdx + 1}`,
   };
 }
 
@@ -132,9 +135,11 @@ function makeTouches(rowIndex) {
     const campId = campIds[campIdx];
     const camp = CAMP[campId];
     const platform = camp.platform;
-    const adPrefix = platform === 'facebook' ? 'FB' : 'ZL';
-    const adIdx = Math.floor(sr(rowIndex * 83 + i * 19 + 11) * 10) + 1;
-    const adId = `${adPrefix}-AD-${String(adIdx).padStart(3, '0')}`;
+
+    // Pick adId from campaign's adIds[] pool (deterministic via seed)
+    const adIds = camp.adIds;
+    const adPickIdx = Math.floor(sr(rowIndex * 83 + i * 19 + 11) * adIds.length);
+    const adId = adIds[adPickIdx];
 
     const adNames = {
       'camp-1': 'Spring Sale - Carousel',
@@ -150,7 +155,7 @@ function makeTouches(rowIndex) {
       campaignName: camp.name,
       platform,
       adId,
-      adName: adNames[campId] || `${camp.name} - Ad ${adIdx}`,
+      adName: adNames[campId] || `${camp.name} - Ad ${adPickIdx + 1}`,
       touchDate: null,
       type: i === count - 1 ? 'click' : (sr(rowIndex * 97 + i * 23 + 7) < 0.5 ? 'click' : 'impression'),
     });
@@ -246,8 +251,9 @@ function buildRow(rowIndex) {
   const campaign = CAMP[campaignId] || CAMP['camp-1'];
 
   // Attributed ROAS = campaign ROAS × (0.6–1.0)
+  const campaignRoas = parseFloat((campaign.revenue / campaign.spend).toFixed(2));
   const attributedRoasMultiplier = 0.6 + sr(rowIndex * 127 + 61) * 0.4;
-  const attributedRoas = parseFloat((campaign.roas * attributedRoasMultiplier).toFixed(2));
+  const attributedRoas = parseFloat((campaignRoas * attributedRoasMultiplier).toFixed(2));
 
   // Matched conversation
   const matched = makeMatchedConversation(rowIndex, platform);
@@ -287,7 +293,7 @@ function buildRow(rowIndex) {
     campaignPlatform: campaign.platform,
     campaignBudget: campaign.budget,
     campaignSpend: campaign.spend,
-    campaignRoas: campaign.roas,
+    campaignRoas,
     attributedRoas,
   };
 }
@@ -296,7 +302,7 @@ function buildRow(rowIndex) {
 
 const TOTAL = getRowCount();
 
-const mockAttributionData = Array.from({ length: TOTAL }, (_, i) => buildRow(i));
+export const mockAttributionData = Array.from({ length: TOTAL }, (_, i) => buildRow(i));
 
 // ─── Filter Function ──────────────────────────────────────────────────────
 
@@ -338,6 +344,7 @@ function runTests() {
     } else {
       failed++;
       console.error(`  ❌ FAIL: ${msg}`);
+      throw new Error(`inline-test-failed: ${msg}`);
     }
   }
 
@@ -359,9 +366,9 @@ function runTests() {
     }
   }
 
-  // Test 3: Phone is masked correctly (3 digits + *** + 3 digits)
+  // Test 3: Phone is masked correctly (4 digits + *** + 3 digits)
   for (const row of mockAttributionData) {
-    assert(/^\d{3}\*\*\*\d{3}$/.test(row.phone), `Row ${row.id} phone "${row.phone}" is masked correctly`);
+    assert(/^\d{4}\*\*\*\d{3}$/.test(row.phone), `Row ${row.id} phone "${row.phone}" is masked correctly`);
   }
 
   // Test 4: Platform is facebook or zalo

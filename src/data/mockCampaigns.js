@@ -1,3 +1,24 @@
+// ─── Seeded PRNG (sine-based, deterministic) ────────────────────────────────
+
+function sr(seed) {
+  let s = Math.sin(seed * 9301 + 49297) * 233280;
+  return s - Math.floor(s);
+}
+
+// ─── Deterministic AdIds per Campaign ────────────────────────────────────────
+// adIds[] is used by mockAttributionData.js to distribute attribution across
+// multiple ads within the same campaign (needed for "Chi Tiết" ad-level tab).
+
+const LETTERS = ['', 'a', 'b', 'c'];
+
+function buildAdIds(campIdx, platform) {
+  const prefix = platform === 'facebook' ? 'FB' : 'ZL';
+  const baseNum = String(campIdx + 1).padStart(2, '0');
+  // 2–4 ads deterministically: 2 + floor(sr(campIdx * 7) * 3)
+  const count = 2 + Math.floor(sr(campIdx * 7) * 3);
+  return Array.from({ length: count }, (_, i) => `${prefix}-Ads-${baseNum}${LETTERS[i]}`);
+}
+
 export const mockCampaigns = [
   {
     id: 'camp-1',
@@ -5,6 +26,7 @@ export const mockCampaigns = [
     platform: 'facebook',
     status: 'active',
     adId: 'FB-AD-001',
+    adIds: buildAdIds(0, 'facebook'),   // [FB-Ads-01, FB-Ads-01a, FB-Ads-01b]
     budget: 15000000,
     spend: 8200000,
     impressions: 245000,
@@ -24,6 +46,7 @@ export const mockCampaigns = [
     platform: 'zalo',
     status: 'active',
     adId: 'ZL-AD-001',
+    adIds: buildAdIds(1, 'zalo'),       // [ZL-Ads-02, ZL-Ads-02a]
     budget: 5000000,
     spend: 3100000,
     impressions: 182000,
@@ -43,6 +66,7 @@ export const mockCampaigns = [
     platform: 'facebook',
     status: 'active',
     adId: 'FB-AD-002',
+    adIds: buildAdIds(2, 'facebook'),   // [FB-Ads-03, FB-Ads-03a, FB-Ads-03b, FB-Ads-03c]
     budget: 20000000,
     spend: 12500000,
     impressions: 312000,
@@ -62,6 +86,7 @@ export const mockCampaigns = [
     platform: 'zalo',
     status: 'paused',
     adId: 'ZL-AD-002',
+    adIds: buildAdIds(3, 'zalo'),       // [ZL-Ads-04, ZL-Ads-04a]
     budget: 8000000,
     spend: 6400000,
     impressions: 410000,
@@ -81,6 +106,7 @@ export const mockCampaigns = [
     platform: 'facebook',
     status: 'active',
     adId: 'FB-AD-003',
+    adIds: buildAdIds(4, 'facebook'),   // [FB-Ads-05, FB-Ads-05a, FB-Ads-05b]
     budget: 12000000,
     spend: 5900000,
     impressions: 198000,
@@ -100,6 +126,7 @@ export const mockCampaigns = [
     platform: 'zalo',
     status: 'active',
     adId: 'ZL-AD-003',
+    adIds: buildAdIds(5, 'zalo'),       // [ZL-Ads-06, ZL-Ads-06a]
     budget: 6000000,
     spend: 2200000,
     impressions: 95000,
@@ -119,6 +146,7 @@ export const mockCampaigns = [
     platform: 'facebook',
     status: 'paused',
     adId: 'FB-AD-004',
+    adIds: buildAdIds(6, 'facebook'),   // [FB-Ads-07, FB-Ads-07a, FB-Ads-07b]
     budget: 10000000,
     spend: 9800000,
     impressions: 275000,
@@ -138,6 +166,7 @@ export const mockCampaigns = [
     platform: 'zalo',
     status: 'active',
     adId: 'ZL-AD-004',
+    adIds: buildAdIds(7, 'zalo'),       // [ZL-Ads-08, ZL-Ads-08a]
     budget: 3000000,
     spend: 1400000,
     impressions: 62000,
