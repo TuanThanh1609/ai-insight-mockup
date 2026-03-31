@@ -5,7 +5,8 @@ import { IndustryFormStep } from '../components/medical/IndustryFormStep';
 import { QuantitySelectStep } from '../components/medical/QuantitySelectStep';
 import { CrawlProgressStep } from '../components/medical/CrawlProgressStep';
 import { MedicalResultStep } from '../components/medical/MedicalResultStep';
-import { crawlConversations, loadConversations, computeDiagnosis, saveMedicalRecord, getHealthScore, INDUSTRIES } from '../lib/medicalService';
+import { DiseaseMenuSelectStep } from '../components/medical/DiseaseMenuSelectStep';
+import { crawlConversations, loadConversations, computeDiagnosis, saveMedicalRecord, getHealthScore, getMedicalHistory, INDUSTRIES } from '../lib/medicalService';
 import {
   AdsWizardSteps,
   AdsConnectStep,
@@ -13,6 +14,7 @@ import {
   AdsDateRangeStep,
   AdsCrawlProgressStep,
   AdsMedicalDashboard,
+  AdsDiseaseMenuSelectStep,
 } from '../components/ads';
 import {
   loadAttributionData,
@@ -26,6 +28,7 @@ const STEPS = [
   { id: 'fanpage',    label: 'Kết nối Fanpage' },
   { id: 'industry',   label: 'Ngành hàng' },
   { id: 'quantity',   label: 'Số lượng' },
+  { id: 'menu',       label: 'Chọn hạng mục' },
   { id: 'crawl',      label: 'Thu thập dữ liệu' },
   { id: 'result',     label: 'Kết quả' },
 ];
@@ -41,6 +44,7 @@ export default function MedicalCheckup() {
   const [crawlProgress, setCrawlProgress] = useState(null);
   const [diseases, setDiseases] = useState([]);
   const [conversations, setConversations] = useState([]);
+  const [selectedDiseases, setSelectedDiseases] = useState([]);
 
   // ── Ads tab state ──
   const [activeTab, setActiveTab] = useState('conversation');
@@ -51,9 +55,10 @@ export default function MedicalCheckup() {
     days: 7,
   });
   const [adsResult, setAdsResult] = useState(null);
+  const [adsSelectedDiseases, setAdsSelectedDiseases] = useState([]);
 
   // Unlock condition: must have at least one conversation medical history record
-  const hasMedicalHistory = getAdsMedicalHistory().length > 0;
+  const hasMedicalHistory = getMedicalHistory().length > 0;
 
   const goTo = useCallback((step) => setCurrentStep(step), []);
   const next  = useCallback(() => setCurrentStep(s => Math.min(s + 1, STEPS.length - 1)), []);
@@ -71,31 +76,10 @@ export default function MedicalCheckup() {
     setConfig(c => ({ ...c, quantity: qty }));
   };
 
-  const handleStartCrawl = async () => {
-    setCurrentStep(3); // go to crawl step
-
-    await crawlConversations({ quantity: config.quantity, industry: config.industry }, (progress) => {
-      setCrawlProgress(progress);
-    });
-
-    // Compute diagnosis after crawl
-    const convos = loadConversations(config.industry, config.quantity);
-    const diag = computeDiagnosis(convos, config.industry, []);
-    const record = {
-      id: Date.now().toString(),
-      date: new Date().toISOString(),
-      industry: config.industry,
-      industryLabel: INDUSTRIES.find(i => i.value === config.industry)?.label || config.industry,
-      customerGroup: config.customerGroup,
-      quantity: config.quantity,
-      healthScore: getHealthScore(diag),
-      diseases: diag,
-    };
-    saveMedicalRecord(record);
-
-    setConversations(convos);
-    setDiseases(diag);
-    setCurrentStep(4); // go to result
+  const handleStartCrawl = () => {
+    // 1. Show step 3 (menu) immediately — user chooses disease groups first
+    setCurrentStep(3);
+    // 2. Actual crawl is triggered after menu completes via handleMenuContinue
   };
 
   const handleRestart = () => {
@@ -104,6 +88,42 @@ export default function MedicalCheckup() {
     setCrawlProgress(null);
     setDiseases([]);
     setConversations([]);
+    setSelectedDiseases([]);
+  };
+
+  const handleMenuContinue = (selectedIds) => {
+    setSelectedDiseases(selectedIds);
+    // 3. Now start actual crawl — show step 4 (crawl progress)
+    setCurrentStep(4);
+    setTimeout(() => {
+      crawlConversations(
+        { quantity: config.quantity, industry: config.industry },
+        (progress) => {
+          setCrawlProgress(progress);
+        },
+      ).then(() => {
+        setTimeout(() => {
+          const convos = loadConversations(config.industry, config.quantity);
+          setTimeout(() => {
+            const diag = computeDiagnosis(convos, config.industry, []);
+            const record = {
+              id: Date.now().toString(),
+              date: new Date().toISOString(),
+              industry: config.industry,
+              industryLabel: INDUSTRIES.find(i => i.value === config.industry)?.label || config.industry,
+              customerGroup: config.customerGroup,
+              quantity: config.quantity,
+              healthScore: getHealthScore(diag),
+              diseases: diag,
+            };
+            saveMedicalRecord(record);
+            setConversations(convos);
+            setDiseases(diag);
+            setCurrentStep(5); // go to result
+          }, 0);
+        }, 0);
+      });
+    }, 0);
   };
 
   // ── Ads helpers ──
@@ -123,6 +143,7 @@ export default function MedicalCheckup() {
     setAdsStep(1);
     setAdsConfig({ connected: false, selectedCampaignIds: [], days: 7 });
     setAdsResult(null);
+    setAdsSelectedDiseases([]);
   };
 
   const handleAdsCrawlComplete = () => {
@@ -138,6 +159,8 @@ export default function MedicalCheckup() {
     }));
     const diagnosed = computeAdsDiagnosis(attrData, campaigns, savedActionIds);
     setAdsResult(diagnosed);
+    // Advance to dashboard (step 6) — user will select disease groups in menu (step 4) before crawl
+    setAdsStep(6);
   };
 
   const handleAdsTabSwitch = () => {
@@ -194,7 +217,7 @@ export default function MedicalCheckup() {
 
       {/* ── ADS TAB ── */}
       {activeTab === 'ads' ? (
-        <div className="flex-1 min-h-0 overflow-y-auto px-8 pb-8 flex flex-col">
+        <div className="flex-1 min-h-0 px-8 pb-8 flex flex-col">
           {/* Not yet unlocked */}
           {!hasMedicalHistory ? (
             <div className="flex-1 flex items-center justify-center">
@@ -233,61 +256,76 @@ export default function MedicalCheckup() {
             </div>
           ) : (
             <>
-              {/* Ads wizard step indicator */}
-              <div className="mb-6">
-                <AdsWizardSteps
-                  currentStep={adsStep}
-                  onStepClick={(s) => {
-                    if (s < adsStep) setAdsStep(s);
-                  }}
-                />
-              </div>
+              {/* Ads wizard — only show BEFORE dashboard (adsStep 1–5) */}
+              {adsStep < 6 && (
+                <>
+                  <div className="mb-6">
+                    <AdsWizardSteps
+                      currentStep={adsStep}
+                      onStepClick={(s) => {
+                        if (s < adsStep) setAdsStep(s);
+                      }}
+                    />
+                  </div>
 
-              {/* Ads wizard steps */}
-              <div className="flex-1 min-h-0">
-                {adsStep === 1 && (
-                  <AdsConnectStep
-                    onNext={() => {
-                      setAdsConfig(c => ({ ...c, connected: true }));
-                      setAdsStep(2);
-                    }}
-                  />
-                )}
-                {adsStep === 2 && (
-                  <AdsCampaignSelectStep
-                    selectedIds={adsConfig.selectedCampaignIds}
-                    onChange={(ids) => setAdsConfig(c => ({ ...c, selectedCampaignIds: ids }))}
-                    onNext={() => setAdsStep(3)}
-                    onBack={() => setAdsStep(1)}
-                  />
-                )}
-                {adsStep === 3 && (
-                  <AdsDateRangeStep
-                    selectedDays={adsConfig.days}
-                    onSelect={(d) => setAdsConfig(c => ({ ...c, days: d }))}
-                    onStartCrawl={() => setAdsStep(4)}
-                    onBack={() => setAdsStep(2)}
-                    campaignCount={adsConfig.selectedCampaignIds.length}
-                  />
-                )}
-                {adsStep === 4 && (
-                  <AdsCrawlProgressStep
-                    onComplete={() => {
-                      handleAdsCrawlComplete();
-                    }}
-                  />
-                )}
-              </div>
+                  <div className="flex-1 min-h-0">
+                    {adsStep === 1 && (
+                      <AdsConnectStep
+                        onNext={() => {
+                          setAdsConfig(c => ({ ...c, connected: true }));
+                          setAdsStep(2);
+                        }}
+                      />
+                    )}
+                    {adsStep === 2 && (
+                      <AdsCampaignSelectStep
+                        selectedIds={adsConfig.selectedCampaignIds}
+                        campaigns={mockCampaigns}
+                        onChange={(ids) => setAdsConfig(c => ({ ...c, selectedCampaignIds: ids }))}
+                        onNext={() => setAdsStep(3)}
+                        onBack={() => setAdsStep(1)}
+                      />
+                    )}
+                    {adsStep === 3 && (
+                      <AdsDateRangeStep
+                        selectedDays={adsConfig.days}
+                        onSelect={(d) => setAdsConfig(c => ({ ...c, days: d }))}
+                        onStartCrawl={() => setAdsStep(4)}
+                        onBack={() => setAdsStep(2)}
+                        campaignCount={adsConfig.selectedCampaignIds.length}
+                      />
+                    )}
+                    {adsStep === 4 && (
+                      <AdsDiseaseMenuSelectStep
+                        diseases={adsResult || []}
+                        onContinue={(selectedIds) => {
+                          setAdsSelectedDiseases(selectedIds);
+                          setAdsStep(5); // go to crawl
+                        }}
+                        onBack={() => setAdsStep(3)}
+                      />
+                    )}
+                    {adsStep === 5 && (
+                      <AdsCrawlProgressStep
+                        onComplete={() => {
+                          handleAdsCrawlComplete();
+                        }}
+                      />
+                    )}
+                  </div>
+                </>
+              )}
 
-              {/* Ads medical dashboard — shown once crawl is done */}
-              {adsResult && adsStep === 4 && (
-                <div className="mt-6">
+              {/* Ads medical dashboard — shown when menu is done (adsStep >= 6) */}
+              {adsResult && adsStep >= 6 && (
+                <div>
                   <AdsMedicalDashboard
                     config={{
                       campaignIds: adsConfig.selectedCampaignIds,
                       days: adsConfig.days,
                       dateRange: computeDateRange(adsConfig.days),
                     }}
+                    selectedDiseaseIds={adsSelectedDiseases}
                     onRestart={handleAdsRestart}
                   />
                 </div>
@@ -339,7 +377,7 @@ export default function MedicalCheckup() {
           )}
 
           {/* Step Content */}
-          <div className="flex-1 min-h-0 overflow-y-auto px-8 pb-8">
+          <div className="flex-1 min-h-0 px-8 pb-8">
             {currentStep === 0 && (
               <FanpageConnectStep onNext={next} />
             )}
@@ -361,11 +399,19 @@ export default function MedicalCheckup() {
               />
             )}
             {currentStep === 3 && (
-              <CrawlProgressStep progress={crawlProgress} />
+              <DiseaseMenuSelectStep
+                diseases={diseases}
+                onContinue={handleMenuContinue}
+                onBack={back}
+              />
             )}
             {currentStep === 4 && (
+              <CrawlProgressStep progress={crawlProgress} />
+            )}
+            {currentStep === 5 && (
               <MedicalResultStep
                 diseases={diseases}
+                selectedDiseaseIds={selectedDiseases}
                 conversations={conversations}
                 config={config}
                 onRestart={handleRestart}
