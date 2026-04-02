@@ -63,9 +63,7 @@ export default function ChartsSection({ conversations = [] }) {
     .slice(0, 6);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      {/* Revenue vs Spend bar chart */}
-      <Card className="p-5">
+    <Card className="p-5">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h3 className="font-display font-bold text-base text-primary">Doanh thu vs Chi tiêu</h3>
@@ -133,6 +131,5 @@ export default function ChartsSection({ conversations = [] }) {
           </div>
         </div>
       </Card>
-    </div>
   );
 }
