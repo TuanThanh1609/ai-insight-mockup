@@ -133,36 +133,6 @@ export default function ChartsSection({ conversations = [] }) {
           </div>
         </div>
       </Card>
-
-      {/* Temperature funnel */}
-      <Card className="p-5">
-        <div className="mb-3">
-          <h3 className="font-display font-bold text-base text-primary">Phễu Nhiệt Độ Lead</h3>
-          <p className="text-[11px] text-primary opacity-50 mt-0.5">
-            Tổng {total} hội thoại — 7 ngày gần nhất
-          </p>
-        </div>
-        <div className="flex flex-col gap-2">
-          {funnelData.map((item) => (
-            <div key={item.name} className="flex items-center gap-3">
-              <span className="text-[12px] font-medium text-primary w-8 shrink-0">{item.name}</span>
-              <div className="flex-1 bg-[rgba(26,33,56,0.06)] rounded-full h-6 overflow-hidden">
-                <div
-                  className="h-full rounded-full flex items-center px-2 transition-all duration-500"
-                  style={{ width: `${Math.max(Number(item.pct), 4)}%`, backgroundColor: item.color }}
-                >
-                  {Number(item.pct) >= 12 && (
-                    <span className="text-[11px] font-semibold text-white">{item.value}</span>
-                  )}
-                </div>
-              </div>
-              <span className="text-[12px] font-semibold text-primary w-10 text-right shrink-0">
-                {item.pct}%
-              </span>
-            </div>
-          ))}
-        </div>
-      </Card>
     </div>
   );
 }

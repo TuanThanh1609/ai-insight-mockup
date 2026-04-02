@@ -46,13 +46,13 @@ export default function OverviewDashboard() {
       {/* Hàng 1: KPI Strip */}
       <KpiStrip conversations={conversations} />
 
-      {/* Hàng 2: Charts (80%) + Alerts (20%) */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
-        <div className="lg:col-span-4">
-          <ChartsSection conversations={conversations} />
+      {/* Hàng 2: Alerts nổi bật (2/3) + Charts (1/3) */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="lg:col-span-2">
+          <AlertsPanel conversations={conversations} diseases={diseases} industry="thoi-trang" />
         </div>
         <div className="lg:col-span-1">
-          <AlertsPanel conversations={conversations} diseases={diseases} industry="thoi-trang" />
+          <ChartsSection conversations={conversations} />
         </div>
       </div>
 
