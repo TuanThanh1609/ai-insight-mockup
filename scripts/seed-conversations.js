@@ -1,6 +1,6 @@
 // =====================================================================
-// Script: Tạo bảng ai_insight_conversations + insert 2100 records
-// 42 templates × 50 conversations = 2100 rows
+// Script: Tạo bảng ai_insight_conversations + insert random records
+// 42 templates × 50–100 conversations (random per template)
 // Mỗi template có field pools riêng theo industry
 // =====================================================================
 
@@ -49,6 +49,10 @@ const POOLS = {
     customers: ['Pham Minh Yến','Nguyen Duc Hoang','Le Hoang Nam','Cao Thi Lan','Le Thu Ha','Pham Hoang Duc','Dang Hoang Anh','Pham Thi Huong','Dang Thi Mai','Tran Đức Anh','Trịnh Thi Lan','Bui Hoang Yến','Nguyen Thu Hà','Tran Văn Minh','Lê Thu Phương','Phạm Hoàng Đức','Trần Đức Minh','Vũ Minh Tuấn','Đặng Hoàng Anh','Nguyễn Thị Hương'],
     attitudes: ['Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Trung bình','Trung bình','Kém','Kém','Kém','Kém','Kém','Kém','Kém'],
     mistakes:  ['Không có lỗi','Không có lỗi','Bỏ quên khách','Không tư vấn màu','Không tư vấn size','Gây hoang mang','Sale gửi sai size','Sale không rep đúng giờ','Sale nói không đúng sp','Không chốt đơn được'],
+    scenarios: ['Tư vấn chi phí','Khai thác thông tin','Ưu đãi cá nhân hóa','Giải quyết vấn đề'],
+    chot_don:  [false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,true,false,false,false,false],
+    missed_conv:[false,false,true,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false],
+    silent_cust:[false,false,false,false,false,false,false,false,true,false,false,false,false,true,false,false,false,false,false,false],
     platforms: ['facebook','zalo'],
   },
 
@@ -101,6 +105,10 @@ const POOLS = {
     customers: ['Pham Thi Lan','Le Duc Tuan','Tran Thi Ha','Vu Thi Mai','Dang Hoang Minh','Trịnh Thu Ha','Cao Thi Yến','Nguyen Thi Hương','Tran Van Nam','Phạm Hoàng Yến','Lê Thu Phương','Dương Hoàng Nam','Trịnh Đức Minh','Vũ Thị Lan','Nguyễn Văn Hùng','Đặng Thu Lan','Phạm Hoàng Đức','Trần Đức Minh','Lê Hoàng Nam','Vũ Minh Tuấn'],
     attitudes: ['Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Trung bình','Kém','Kém','Kém','Kém','Kém','Kém','Kém','Kém','Kém'],
     mistakes:  ['Không có lỗi','Sale tư vấn sai độ tuổi sử dụng','Không giải đáp được lo ngại an toàn','Bỏ quên khách','Sale gửi sai sản phẩm','Không follow up sau 3 ngày','Tư vấn thiếu thông tin dinh dưỡng','Không xác nhận đơn'],
+    scenarios: ['Tư vấn chi phí','Khai thác thông tin','Ưu đãi cá nhân hóa','Giải quyết vấn đề'],
+    chot_don:  [false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,true,false,false,false,false],
+    missed_conv:[false,false,true,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false],
+    silent_cust:[false,false,false,false,false,false,false,false,true,false,false,false,false,true,false,false,false,false,false,false],
     platforms: ['facebook','zalo'],
   },
 
@@ -152,6 +160,10 @@ const POOLS = {
     customers: ['Tran Minh Anh','Le Thi Hoa','Nguyen Thi Yến','Pham Thu Huong','Vu Duc Manh','Dang Thi Lan','Cao Thi Mai','Trinh Thi Ha','Nguyen Van Nam','Lê Thu Hà','Phạm Hoàng Yến','Trần Đức Minh','Vũ Thị Lan','Dương Hoàng Nam','Trịnh Đức Minh','Lê Hoàng Nam','Đặng Thu Lan','Phạm Thi Lan','Vũ Minh Tuấn','Nguyễn Văn Hùng'],
     attitudes: ['Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Trung bình','Kém','Kém','Kém','Kém','Kém','Kém','Kém','Kém','Kém'],
     mistakes:  ['Không có lỗi','Sale khoe sp chưa được kiểm định','Bỏ qua da nhạy cảm của khách','Tư vấn sai sp cho loại da','Không cập nhật thông tin khuyến mãi','Sale không rep đúng giờ','Gợi ý sp giá cao không phù hợp'],
+    scenarios: ['Tư vấn chi phí','Khai thác thông tin','Ưu đãi cá nhân hóa','Giải quyết vấn đề'],
+    chot_don:  [false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,true,false,false,false,false],
+    missed_conv:[false,false,true,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false],
+    silent_cust:[false,false,false,false,false,false,false,false,true,false,false,false,false,true,false,false,false,false,false,false],
     platforms: ['facebook','zalo'],
   },
 
@@ -202,6 +214,10 @@ const POOLS = {
     customers: ['Pham Hoang Yến','Tran Thi Lan','Le Duc Tuan','Nguyen Thu Ha','Vu Thi Mai','Dang Duc Hoang','Trịnh Thu Lan','Cao Thi Yến','Phạm Thi Lan','Nguyễn Thi Hương','Trần Đức Minh','Lê Thu Phương','Vũ Hoàng Yến','Dương Hoàng Nam','Trịnh Đức Minh','Lê Hoàng Nam','Đặng Thu Lan','Phạm Hoàng Đức','Vũ Minh Tuấn','Nguyễn Văn Hùng'],
     attitudes: ['Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Trung bình','Kém','Kém','Kém','Kém','Kém','Kém','Kém','Kém','Kém'],
     mistakes:  ['Không có lỗi','Sale không xác nhận lịch hẹn KH đến không có người đón','Tư vấn sai liệu trình','Không báo trước thay đổi giờ hẹn','Sale không gửi hướng dẫn sau điều trị','Bỏ qua phản ứng bất lợi của khách'],
+    scenarios: ['Tư vấn chi phí','Khai thác thông tin','Ưu đãi cá nhân hóa','Giải quyết vấn đề'],
+    chot_don:  [false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,true,false,false,false,false],
+    missed_conv:[false,false,true,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false],
+    silent_cust:[false,false,false,false,false,false,false,false,true,false,false,false,false,true,false,false,false,false,false,false],
     platforms: ['facebook','zalo'],
   },
 
@@ -253,6 +269,10 @@ const POOLS = {
     customers: ['Pham Duc Hoang','Nguyen Thi Lan','Trịnh Văn Minh','Le Thu Phuong','Vu Hoang Minh','Tran Đức Anh','Dương Thu Ha','Lê Thu Hà','Phạm Hoàng Yến','Trần Đức Minh','Vũ Hoàng Yến','Dương Hoàng Nam','Trịnh Đức Minh','Lê Hoàng Nam','Đặng Thu Lan','Phạm Hoàng Đức','Vũ Minh Tuấn','Nguyễn Văn Hùng','Cao Thi Yến','Nguyen Van Nam'],
     attitudes: ['Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Trung bình','Kém','Kém','Kém','Kém','Kém','Kém','Kém','Kém','Kém'],
     mistakes:  ['Không có lỗi','Sale không gửi file brochure KH phải hỏi lại','Sale gọi liên tục gây phiền','Không cập nhật tiến độ pháp lý','Tư vấn sai quy hoạch khu vực','Sale hứa không giữ được giá'],
+    scenarios: ['Tư vấn chi phí','Khai thác thông tin','Ưu đãi cá nhân hóa','Giải quyết vấn đề'],
+    chot_don:  [false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,true,false,false,false,false],
+    missed_conv:[false,false,true,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false],
+    silent_cust:[false,false,false,false,false,false,false,false,true,false,false,false,false,true,false,false,false,false,false,false],
     platforms: ['facebook','zalo'],
   },
 
@@ -303,6 +323,10 @@ const POOLS = {
     customers: ['Le Minh Hoang','Tran Thi Huong','Nguyen Van Tung','Pham Thu Lan','Vu Duc Minh','Dang Thi Hoa','Cao Thi Mai','Trịnh Văn Minh','Lê Thu Hà','Phạm Hoàng Yến','Trần Đức Minh','Vũ Hoàng Yến','Dương Hoàng Nam','Trịnh Đức Minh','Lê Hoàng Nam','Đặng Thu Lan','Phạm Hoàng Đức','Vũ Minh Tuấn','Nguyễn Văn Hùng','Cao Thi Yến'],
     attitudes: ['Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Trung bình','Kém','Kém','Kém','Kém','Kém','Kém','Kém','Kém','Kém'],
     mistakes:  ['Không có lỗi','Sale không xác nhận đơn giao hàng','Không báo trước hết món','Order sai món','Không đối soát đơn khi giao','Sale không xử lý khiếu nại nhiệt độ đồ uống'],
+    scenarios: ['Tư vấn chi phí','Khai thác thông tin','Ưu đãi cá nhân hóa','Giải quyết vấn đề'],
+    chot_don:  [false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,true,false,false,false,false],
+    missed_conv:[false,false,true,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false],
+    silent_cust:[false,false,false,false,false,false,false,false,true,false,false,false,false,true,false,false,false,false,false,false],
     platforms: ['facebook','zalo'],
   },
 
@@ -354,6 +378,10 @@ const POOLS = {
     customers: ['Le Thu Ha','Nguyen Duc Hoang','Trịnh Thi Lan','Pham Hoang Minh','Vu Thi Lan','Tran Duc Tuan','Dang Thi Mai','Cao Van Nam','Lê Thu Phương','Phạm Hoàng Yến','Trần Đức Minh','Vũ Hoàng Yến','Dương Hoàng Nam','Trịnh Đức Minh','Lê Hoàng Nam','Đặng Thu Lan','Phạm Hoàng Đức','Vũ Minh Tuấn','Nguyễn Văn Hùng','Cao Thi Yến'],
     attitudes: ['Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Tốt','Trung bình','Kém','Kém','Kém','Kém','Kém','Kém','Kém','Kém','Kém'],
     mistakes:  ['Không có lỗi','Sale không cung cấp thông tin visa kịp thời','Không gửi itinerary đúng hẹn','Booking sai ngày khách','Không hỗ trợ đổi lịch bay','Sale không thông báo phí phụ thu'],
+    scenarios: ['Tư vấn chi phí','Khai thác thông tin','Ưu đãi cá nhân hóa','Giải quyết vấn đề'],
+    chot_don:  [false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,true,false,false,false,false],
+    missed_conv:[false,false,true,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false],
+    silent_cust:[false,false,false,false,false,false,false,false,true,false,false,false,false,true,false,false,false,false,false,false],
     platforms: ['facebook','zalo'],
   },
 
@@ -383,6 +411,79 @@ const POOLS = {
   },
 };
 
+// ─── Extended Field Pools (universal — available in all rows) ───────────────
+
+const SATISFACTION_POOL = [
+  'Hài lòng', 'Hài lòng', 'Hài lòng', 'Hài lòng',
+  'Trung bình', 'Trung bình',
+  'Không hài lòng',
+  'Rất hài lòng',
+];
+
+const COMPETITOR_POOL = [
+  null, null, null, null, null, null, null,
+  'Shein', 'Shopee', 'Lazada', 'Zara', 'H&M', 'Nike', 'Adidas',
+];
+const COMPETITOR_NAME_POOL = ['Shein', 'Shopee', 'Lazada', 'Zara', 'H&M', 'Nike', 'Adidas', 'Uniqlo', 'Maybelline', 'Innisfree'];
+const CRITERIA_POOL = ['Giá cả', 'Chất lượng', 'Mẫu mã', 'Uy tín', 'Phí ship', 'Giao hàng nhanh'];
+
+const PAIN_POINT_POOL = [
+  'Giá cao hơn kỳ vọng', 'Không có size', 'Sợ hàng không chất lượng',
+  'Hàng không giống ảnh', 'Lo ngại an toàn', 'Phí ship đắt',
+  'Không biết chọn size nào', 'Chất lượng không đồng đều', 'Mẫu mã cũ',
+];
+
+const OBJECTION_POOL = [
+  'Giá đắt', 'Hỏi chồng', 'Cần suy nghĩ thêm', 'So sánh với chỗ khác',
+  'Không có chi nhánh gần', 'Lo ngại hàng fake', 'Chưa cần ngay',
+  'Pháp lý chưa rõ', 'Ngân sách không xác nhận',
+];
+
+const ATTITUDE_POOL = [
+  'Tốt', 'Tốt', 'Tốt', 'Tốt',
+  'Trung bình', 'Trung bình',
+  'Kém',
+];
+
+const MISTAKE_POOL = [
+  null, null, null, null,
+  'Trả lời trễ', 'Tư vấn sai', 'Bỏ sót khách', 'Không follow-up',
+  'Không chốt đơn được', 'Thái độ chưa tốt',
+];
+
+const SCENARIO_POOL = [
+  'Tư vấn chi phí', 'Khai thác thông tin', 'Ưu đãi cá nhân hóa', 'Giải quyết vấn đề',
+];
+
+const DISSATISFACTION_REASON_POOL = [
+  'Sản phẩm không đúng mô tả', 'Giao hàng chậm', 'Chất lượng kém',
+  'Không được như ảnh', 'Nhân viên tư vấn không tốt', 'Không hỗ trợ đổi trả',
+];
+
+const BUDGET_POOL = [
+  'Dưới 500K', '500K - 1 triệu', '1 - 3 triệu', '3 - 5 triệu', 'Trên 5 triệu',
+];
+
+const LOCATION_POOL = [
+  'TP.HCM', 'Hà Nội', 'Đà Nẵng', 'Cần Thơ', 'Hải Phòng', 'Biên Hòa',
+  'Nha Trang', 'Huế', 'Quy Nhơn', 'Vũng Tàu',
+];
+
+const SEGMENT_POOL = [
+  'Nhóm tuổi 18-25', 'Nhóm tuổi 25-35', 'Nhóm tuổi 35-45', 'Nhóm tuổi 45+',
+  'Sinh viên', 'Nhân viên văn phòng', 'Mẹ bỉm', 'Người đi làm',
+];
+
+const RETURNING_POOL = [
+  false, false, false, false, false, false,
+  true, true,
+];
+
+const FRUSTRATION_POOL = [
+  null, null, null, null, null, null, null, null,
+  true,
+];
+
 // ── All 42 template IDs ──────────────────────────────────────────────────
 const TEMPLATE_IDS = [
   'fsh-1','fsh-2','fsh-3','fsh-4','fsh-5','fsh-6',
@@ -394,13 +495,20 @@ const TEMPLATE_IDS = [
   'trv-1','trv-2','trv-3','trv-4','trv-5','trv-6',
 ];
 
-// ── Generate 50 rows per template ────────────────────────────────────────
+// ── Random row count per template (50–100) ────────────────────────────────
+// Uses Math.random() so each run produces different counts
+function getRowCount(templateId) {
+  return 50 + Math.floor(Math.random() * 51); // 50–100 inclusive
+}
+
+// ── Generate N rows per template ─────────────────────────────────────────
 function generateRows(templateId) {
   const pool = POOLS[templateId];
   if (!pool) { console.warn(`No pool for ${templateId}`); return []; }
 
+  const rowCount = getRowCount(templateId);
   const rows = [];
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < rowCount; i++) {
     const seed = templateId.charCodeAt(0)*10000 + templateId.charCodeAt(2)*100 + i;
     const rng = sr(seed);
 
@@ -414,47 +522,81 @@ function generateRows(templateId) {
     switch (templateId) {
       case 'fsh-1': Object.assign(data, { product: pick(pool.products, rng), size: pick(pool.sizes, rng), temperature: pick(pool.temps, rng), pain_point: pick(pool.pains, rng) }); break;
       case 'fsh-2': Object.assign(data, { is_junk: pool.junkOpts[i % pool.junkOpts.length], phone_status: pick(pool.phoneOpts, rng), objection: pick(pool.objections, rng), ads_source: pick(pool.adsSrcs, rng) }); break;
-      case 'fsh-3': Object.assign(data, { attitude: pool.attitudes[i % pool.attitudes.length], mistake: pick(pool.mistakes, rng) }); break;
+      case 'fsh-3': Object.assign(data, { attitude: pool.attitudes[i % pool.attitudes.length], mistake: pick(pool.mistakes, rng), scenario: pick(pool.scenarios, rng), chot_don: pool.chot_don[i % pool.chot_don.length], missed_conv: pool.missed_conv[i % pool.missed_conv.length], silent_cust: pool.silent_cust[i % pool.silent_cust.length] }); break;
       case 'fsh-4': Object.assign(data, { gender: pool.genders[i % pool.genders.length], location: pick(pool.locations, rng), budget: pick(pool.budgets, rng), segment: pick(pool.segments, rng) }); break;
       case 'fsh-5': Object.assign(data, { has_competitor: pool.hasComp[i % pool.hasComp.length], competitor_name: pick(pool.compNames, rng), criteria: pick(pool.criteria, rng) }); break;
       case 'fsh-6': Object.assign(data, { message_type: pick(pool.msgTypes, rng), satisfaction: pick(pool.satisfactions, rng), can_refer: pool.canRefers[i % pool.canRefers.length] }); break;
       case 'mbb-1': Object.assign(data, { product: pick(pool.products, rng), baby_age: pick(pool.babyAges, rng), temperature: pick(pool.temps, rng), pain_point: pick(pool.pains, rng) }); break;
       case 'mbb-2': Object.assign(data, { is_junk: pool.junkOpts[i % pool.junkOpts.length], phone_status: pick(pool.phoneOpts, rng), objection: pick(pool.objections, rng), bulk_interest: pick(pool.bulkOpts, rng), ads_source: pick(pool.adsSrcs, rng) }); break;
-      case 'mbb-3': Object.assign(data, { attitude: pool.attitudes[i % pool.attitudes.length], mistake: pick(pool.mistakes, rng) }); break;
+      case 'mbb-3': Object.assign(data, { attitude: pool.attitudes[i % pool.attitudes.length], mistake: pick(pool.mistakes, rng), scenario: pick(pool.scenarios, rng), chot_don: pool.chot_don[i % pool.chot_don.length], missed_conv: pool.missed_conv[i % pool.missed_conv.length], silent_cust: pool.silent_cust[i % pool.silent_cust.length] }); break;
       case 'mbb-4': Object.assign(data, { parent_gender: pick(pool.parentGenders, rng), baby_age: pick(pool.babyAges, rng), location: pick(pool.locations, rng), budget: pick(pool.budgets, rng) }); break;
       case 'mbb-5': Object.assign(data, { has_competitor: pool.hasComp[i % pool.hasComp.length], competitor_name: pick(pool.compNames, rng), criteria: pick(pool.criteria, rng) }); break;
       case 'mbb-6': Object.assign(data, { message_type: pick(pool.msgTypes, rng), frustration: pool.frustrations[i % pool.frustrations.length], urgency: pick(pool.urgencies, rng) }); break;
       case 'cos-1': Object.assign(data, { product: pick(pool.products, rng), skin_type: pick(pool.skinTypes, rng), temperature: pick(pool.temps, rng), pain_point: pick(pool.pains, rng) }); break;
       case 'cos-2': Object.assign(data, { is_junk: pool.junkOpts[i % pool.junkOpts.length], phone_status: pick(pool.phoneOpts, rng), objection: pick(pool.objections, rng), ads_source: pick(pool.adsSrcs, rng) }); break;
-      case 'cos-3': Object.assign(data, { attitude: pool.attitudes[i % pool.attitudes.length], mistake: pick(pool.mistakes, rng) }); break;
+      case 'cos-3': Object.assign(data, { attitude: pool.attitudes[i % pool.attitudes.length], mistake: pick(pool.mistakes, rng), scenario: pick(pool.scenarios, rng), chot_don: pool.chot_don[i % pool.chot_don.length], missed_conv: pool.missed_conv[i % pool.missed_conv.length], silent_cust: pool.silent_cust[i % pool.silent_cust.length] }); break;
       case 'cos-4': Object.assign(data, { gender: pool.genders[i % pool.genders.length], location: pick(pool.locations, rng), budget: pick(pool.budgets, rng), segment: pick(pool.segments, rng) }); break;
       case 'cos-5': Object.assign(data, { has_competitor: pool.hasComp[i % pool.hasComp.length], competitor_name: pick(pool.compNames, rng), criteria: pick(pool.criteria, rng) }); break;
       case 'cos-6': Object.assign(data, { message_type: pick(pool.msgTypes, rng), satisfaction: pick(pool.satisfactions, rng), can_refer: pick(pool.canRefers, rng) }); break;
       case 'spa-1': Object.assign(data, { treatment: pick(pool.treatments, rng), temperature: pick(pool.temps, rng), pain_point: pick(pool.pains, rng) }); break;
       case 'spa-2': Object.assign(data, { is_junk: pool.junkOpts[i % pool.junkOpts.length], phone_status: pick(pool.phoneOpts, rng), objection: pick(pool.objections, rng), ads_source: pick(pool.adsSrcs, rng) }); break;
-      case 'spa-3': Object.assign(data, { attitude: pool.attitudes[i % pool.attitudes.length], mistake: pick(pool.mistakes, rng) }); break;
+      case 'spa-3': Object.assign(data, { attitude: pool.attitudes[i % pool.attitudes.length], mistake: pick(pool.mistakes, rng), scenario: pick(pool.scenarios, rng), chot_don: pool.chot_don[i % pool.chot_don.length], missed_conv: pool.missed_conv[i % pool.missed_conv.length], silent_cust: pool.silent_cust[i % pool.silent_cust.length] }); break;
       case 'spa-4': Object.assign(data, { gender: pool.genders[i % pool.genders.length], location: pick(pool.locations, rng), budget: pick(pool.budgets, rng), segment: pick(pool.segments, rng) }); break;
       case 'spa-5': Object.assign(data, { has_competitor: pool.hasComp[i % pool.hasComp.length], competitor_name: pick(pool.compNames, rng), criteria: pick(pool.criteria, rng) }); break;
       case 'spa-6': Object.assign(data, { message_type: pick(pool.msgTypes, rng), satisfaction: pick(pool.satisfactions, rng), can_refer: pick(pool.canRefers, rng) }); break;
       case 'rls-1': Object.assign(data, { product: pick(pool.products, rng), legal_status: pick(pool.legalStatuses, rng), temperature: pick(pool.temps, rng), pain_point: pick(pool.pains, rng) }); break;
       case 'rls-2': Object.assign(data, { is_junk: pool.junkOpts[i % pool.junkOpts.length], phone_status: pick(pool.phoneOpts, rng), objection: pick(pool.objections, rng), ads_source: pick(pool.adsSrcs, rng) }); break;
-      case 'rls-3': Object.assign(data, { attitude: pool.attitudes[i % pool.attitudes.length], mistake: pick(pool.mistakes, rng) }); break;
+      case 'rls-3': Object.assign(data, { attitude: pool.attitudes[i % pool.attitudes.length], mistake: pick(pool.mistakes, rng), scenario: pick(pool.scenarios, rng), chot_don: pool.chot_don[i % pool.chot_don.length], missed_conv: pool.missed_conv[i % pool.missed_conv.length], silent_cust: pool.silent_cust[i % pool.silent_cust.length] }); break;
       case 'rls-4': Object.assign(data, { gender: pool.genders[i % pool.genders.length], location: pick(pool.locations, rng), budget: pick(pool.budgets, rng), segment: pick(pool.segments, rng) }); break;
       case 'rls-5': Object.assign(data, { has_competitor: pool.hasComp[i % pool.hasComp.length], competitor_name: pick(pool.compNames, rng), criteria: pick(pool.criteria, rng) }); break;
       case 'rls-6': Object.assign(data, { message_type: pick(pool.msgTypes, rng), urgency: pick(pool.urgencies, rng), can_refer: pick(pool.canRefers, rng) }); break;
       case 'fb-1': Object.assign(data, { product: pick(pool.products, rng), temperature: pick(pool.temps, rng), pain_point: pick(pool.pains, rng) }); break;
       case 'fb-2': Object.assign(data, { is_junk: pool.junkOpts[i % pool.junkOpts.length], phone_status: pick(pool.phoneOpts, rng), objection: pick(pool.objections, rng), ads_source: pick(pool.adsSrcs, rng) }); break;
-      case 'fb-3': Object.assign(data, { attitude: pool.attitudes[i % pool.attitudes.length], mistake: pick(pool.mistakes, rng) }); break;
+      case 'fb-3': Object.assign(data, { attitude: pool.attitudes[i % pool.attitudes.length], mistake: pick(pool.mistakes, rng), scenario: pick(pool.scenarios, rng), chot_don: pool.chot_don[i % pool.chot_don.length], missed_conv: pool.missed_conv[i % pool.missed_conv.length], silent_cust: pool.silent_cust[i % pool.silent_cust.length] }); break;
       case 'fb-4': Object.assign(data, { gender: pool.genders[i % pool.genders.length], location: pick(pool.locations, rng), budget: pick(pool.budgets, rng), segment: pick(pool.segments, rng) }); break;
       case 'fb-5': Object.assign(data, { has_competitor: pool.hasComp[i % pool.hasComp.length], competitor_name: pick(pool.compNames, rng), criteria: pick(pool.criteria, rng) }); break;
       case 'fb-6': Object.assign(data, { message_type: pick(pool.msgTypes, rng), satisfaction: pick(pool.satisfactions, rng), can_refer: pick(pool.canRefers, rng) }); break;
       case 'trv-1': Object.assign(data, { destination: pick(pool.destinations, rng), ota_competitor: pick(pool.otaComps, rng), temperature: pick(pool.temps, rng), pain_point: pick(pool.pains, rng) }); break;
       case 'trv-2': Object.assign(data, { is_junk: pool.junkOpts[i % pool.junkOpts.length], phone_status: pick(pool.phoneOpts, rng), objection: pick(pool.objections, rng), ads_source: pick(pool.adsSrcs, rng) }); break;
-      case 'trv-3': Object.assign(data, { attitude: pool.attitudes[i % pool.attitudes.length], mistake: pick(pool.mistakes, rng) }); break;
+      case 'trv-3': Object.assign(data, { attitude: pool.attitudes[i % pool.attitudes.length], mistake: pick(pool.mistakes, rng), scenario: pick(pool.scenarios, rng), chot_don: pool.chot_don[i % pool.chot_don.length], missed_conv: pool.missed_conv[i % pool.missed_conv.length], silent_cust: pool.silent_cust[i % pool.silent_cust.length] }); break;
       case 'trv-4': Object.assign(data, { gender: pool.genders[i % pool.genders.length], location: pick(pool.locations, rng), budget: pick(pool.budgets, rng), segment: pick(pool.segments, rng) }); break;
       case 'trv-5': Object.assign(data, { has_competitor: pool.hasComp[i % pool.hasComp.length], competitor_name: pick(pool.compNames, rng), criteria: pick(pool.criteria, rng) }); break;
       case 'trv-6': Object.assign(data, { message_type: pick(pool.msgTypes, rng), urgency: pick(pool.urgencies, rng), can_refer: pick(pool.canRefers, rng) }); break;
     }
+
+    // ── Universal fields (added to ALL rows) — use rng() for per-row variation ──
+    Object.assign(data, {
+      satisfaction:          SATISFACTION_POOL[Math.floor(rng() * SATISFACTION_POOL.length)],
+      is_returning_customer: RETURNING_POOL[Math.floor(rng() * RETURNING_POOL.length)],
+      frustration:           FRUSTRATION_POOL[Math.floor(rng() * FRUSTRATION_POOL.length)],
+    });
+
+    // ── Segmentation fields ───────────────────────────────────────────
+    Object.assign(data, {
+      budget:   BUDGET_POOL[Math.floor(rng() * BUDGET_POOL.length)],
+      location: LOCATION_POOL[Math.floor(rng() * LOCATION_POOL.length)],
+      segment:  SEGMENT_POOL[Math.floor(rng() * SEGMENT_POOL.length)],
+    });
+
+    // ── Competitor fields ─────────────────────────────────────────────
+    const hasComp = COMPETITOR_POOL[Math.floor(rng() * COMPETITOR_POOL.length)] === null ? null : true;
+    Object.assign(data, {
+      competitor_name: hasComp === null ? null : COMPETITOR_NAME_POOL[Math.floor(rng() * COMPETITOR_NAME_POOL.length)],
+      criteria:        rng() < 0.3 ? CRITERIA_POOL[Math.floor(rng() * CRITERIA_POOL.length)] : null,
+    });
+
+    // ── Staff eval fields ──────────────────────────────────────────────
+    Object.assign(data, {
+      attitude: ATTITUDE_POOL[Math.floor(rng() * ATTITUDE_POOL.length)],
+      mistake:  MISTAKE_POOL[Math.floor(rng() * MISTAKE_POOL.length)],
+      scenario: SCENARIO_POOL[Math.floor(rng() * SCENARIO_POOL.length)],
+    });
+
+    // ── Pain point / Objection fields ─────────────────────────────────
+    Object.assign(data, {
+      pain_point: PAIN_POINT_POOL[Math.floor(rng() * PAIN_POINT_POOL.length)],
+      objection:  OBJECTION_POOL[Math.floor(rng() * OBJECTION_POOL.length)],
+    });
 
     // Deterministic date within last 30 days
     const daysAgo = (i % 30);
@@ -487,12 +629,12 @@ async function run() {
     process.exit(1);
   }
 
-  // ── 1. Create table ──────────────────────────────────────────────────
-  console.log("\n1. Creating table ai_insight_conversations...");
+  // ── 1. Create / reset table ──────────────────────────────────────────
+  console.log("\n1. Resetting table ai_insight_conversations...");
   const createSQL = `
-DROP TABLE IF EXISTS ai_insight_conversations;
-
-CREATE TABLE ai_insight_conversations (
+TRUNCATE TABLE ai_insight_conversations RESTART IDENTITY CASCADE;
+-- Create only if not exists (safe for re-runs)
+CREATE TABLE IF NOT EXISTS ai_insight_conversations (
   id            UUID        DEFAULT gen_random_uuid(),
   template_id   VARCHAR(50) NOT NULL,
   customer_name VARCHAR(100),
@@ -503,10 +645,10 @@ CREATE TABLE ai_insight_conversations (
   PRIMARY KEY (id)
 );
 
-CREATE INDEX idx_conversations_template_id ON ai_insight_conversations(template_id);
-CREATE INDEX idx_conversations_converted_at ON ai_insight_conversations(converted_at);
+CREATE INDEX IF NOT EXISTS idx_conversations_template_id ON ai_insight_conversations(template_id);
+CREATE INDEX IF NOT EXISTS idx_conversations_converted_at ON ai_insight_conversations(converted_at);
 
-COMMENT ON TABLE ai_insight_conversations IS 'Dữ liệu conversation — 42 templates × 50 rows = 2100 records cho AI Insight';
+COMMENT ON TABLE ai_insight_conversations IS 'Dữ liệu conversation — 42 templates × 50–100 rows (random per template) cho AI Insight';
 COMMENT ON COLUMN ai_insight_conversations.template_id IS 'Template ID: fsh-1..fsh-6, mbb-1..mbb-6, cos-1..cos-6, spa-1..spa-6, rls-1..rls-6, fb-1..fb-6, trv-1..trv-6';
 `;
   const cr = await client.callTool({ name: "execute_sql", arguments: { query: createSQL } });
@@ -514,11 +656,12 @@ COMMENT ON COLUMN ai_insight_conversations.template_id IS 'Template ID: fsh-1..f
   console.log(crOk ? "✅ Table created" : "⚠️  " + cr.content?.[0]?.text?.substring(0, 200));
 
   // ── 2. Insert per template ────────────────────────────────────────────
-  console.log("\n2. Inserting 2100 records (42 templates × 50 rows)...");
+  console.log("\n2. Inserting conversations (random 50–100 rows/template)...");
   let totalInserted = 0;
   let errors = [];
 
   for (const templateId of TEMPLATE_IDS) {
+    const rowCount = getRowCount(templateId);
     const rows = generateRows(templateId);
     const sql = buildInsertSQL(templateId, rows);
 
@@ -527,8 +670,8 @@ COMMENT ON COLUMN ai_insight_conversations.template_id IS 'Template ID: fsh-1..f
       const txt = r.content?.[0]?.text || '';
       const ok = !txt.includes('error') && !txt.includes('ERROR');
       if (ok) {
-        totalInserted += 50;
-        process.stdout.write(`  ✅ ${templateId} (50 rows)\n`);
+        totalInserted += rowCount;
+        process.stdout.write(`  ✅ ${templateId} (${rowCount} rows)\n`);
       } else {
         errors.push(templateId);
         process.stdout.write(`  ❌ ${templateId}: ${txt.substring(0, 100)}\n`);
