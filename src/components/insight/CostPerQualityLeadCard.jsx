@@ -56,7 +56,7 @@ export function CostPerQualityLeadCard({ campaigns, stats }) {
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 rounded-[--radius-sm] bg-primary/10">
+          <div className="p-1.5 rounded-sm bg-primary/10">
             <Target size={14} className="text-primary" />
           </div>
           <div>
@@ -118,7 +118,7 @@ export function CostPerQualityLeadCard({ campaigns, stats }) {
       </div>
 
       {/* CPL trước lọc */}
-      <div className="mt-2 flex items-center justify-between rounded-[--radius-sm] p-2 bg-surface-container-low">
+      <div className="mt-2 flex items-center justify-between rounded-sm p-2 bg-surface-container-low">
         <span className="text-[10px] text-on-surface-variant">CPL trước lọc junk:</span>
         <span className="text-[10px] font-semibold text-on-surface">{formatCurrency(cplRaw)}</span>
       </div>

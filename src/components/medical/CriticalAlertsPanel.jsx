@@ -288,7 +288,7 @@ function AlertRow({ alert, conversations, isExpanded, onToggle }) {
     <div className="flex flex-col">
       {/* Clickable header row */}
       <div
-        className="flex items-start gap-2.5 px-3 py-2.5 rounded-[--radius-sm] transition-colors hover:bg-surface-container-low cursor-pointer"
+        className="flex items-start gap-2.5 px-3 py-2.5 rounded-lg transition-all duration-150 hover:bg-[rgba(26,33,56,0.04)] cursor-pointer"
         onClick={onToggle}
       >
         {/* Alert icon */}
@@ -331,7 +331,7 @@ function AlertRow({ alert, conversations, isExpanded, onToggle }) {
           {examples.map(ex => (
             <div
               key={ex.id}
-              className="flex items-start gap-3 px-3 py-1.5 rounded-[--radius-sm] bg-surface-container-lowest border-b border-surface-secondary last:border-0"
+              className="flex items-start gap-3 px-3 py-1.5 rounded-md bg-gradient-to-br from-white via-[#faf7fc] to-[#f5f1f5] last:border-0"
             >
               {/* Platform icon */}
               <div className="shrink-0 mt-0.5">
@@ -394,7 +394,7 @@ export function CriticalAlertsPanel({ diseases, conversations = [] }) {
           <line x1="12" y1="17" x2="12.01" y2="17"/>
         </svg>
         <h3 className="text-label-md font-semibold text-on-surface-variant uppercase tracking-wide">
-          Cảnh báo khẩn
+          Cảnh Báo Khẩn
         </h3>
         {redAlerts.length > 0 && (
           <span className="ml-auto text-label-xs font-bold px-1.5 py-0.5 rounded-full"
@@ -406,7 +406,7 @@ export function CriticalAlertsPanel({ diseases, conversations = [] }) {
 
       {alerts.length === 0 ? (
         <div className="px-3 py-4 text-center">
-          <span className="text-body-sm text-on-surface-variant/60">Không có cảnh báo</span>
+          <span className="text-body-sm text-on-surface-variant/60">Không có gợi ý</span>
         </div>
       ) : (
         <div className="flex flex-col gap-0.5">

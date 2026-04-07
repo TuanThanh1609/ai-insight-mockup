@@ -1,14 +1,11 @@
 import { cn } from '../../lib/utils';
 
 /**
- * Button — Editorial Precision Design System
+ * Button — Ultra Soft Identity
  *
- * Primary:  Coral (#fa6e5b) — The "Ultimate Action"
- * Tertiary: Vibrant Blue (tertiary) — Functional actions (Run Report)
- * Ghost:    No background, outline text — Secondary navigation
- * Primary-fixed: Dark navy on light bg — "Dark Mode" chip aesthetic
- *
- * Border radius: 8px (DEFAULT) — Curated identity
+ * Border radius: 10px (--radius-md) — soft but not bubbly
+ * Hover: scale(1.02) + brightness(1.05) + shadow lift — alive feel
+ * Active: scale(0.97) — gentle press
  */
 export function Button({
   children,
@@ -21,62 +18,59 @@ export function Button({
   ...props
 }) {
   const base =
-    'inline-flex items-center justify-center font-body font-medium transition-all duration-150 cursor-pointer select-none disabled:opacity-50 disabled:cursor-not-allowed';
+    'inline-flex items-center justify-center font-body font-medium cursor-pointer select-none disabled:opacity-40 disabled:cursor-not-allowed hover-btn';
 
   const variants = {
     /**
-     * Primary: Coral — The "Ultimate Action"
-     * Reserved for the single most important CTA on screen.
+     * Primary: Deep Rust — The "Ultimate Action"
+     * Hover: soft glow (rust) + scale + brightness
      */
     primary:
-      'bg-[#fa6e5b] text-white hover:brightness-110 active:brightness-95 rounded-[--radius-md] shadow-[--shadow-sm] hover:shadow-[--shadow-md]',
+      'bg-[#BF3003] text-white rounded-md shadow-[--shadow-sm]',
 
     /**
      * Tertiary: Vibrant Blue — Functional actions
      * Run Report, Apply Filters, Export Data
      */
     tertiary:
-      'bg-tertiary text-on-tertiary hover:brightness-110 active:brightness-95 rounded-[--radius-md] shadow-[--shadow-sm] hover:shadow-[--shadow-md]',
+      'bg-[#0052FF] text-white rounded-md shadow-[--shadow-sm]',
 
     /**
      * Secondary: Deep Navy — High-authority navigation
-     * Used for primary navigation elements and persistent CTAs.
      */
     secondary:
-      'bg-primary text-on-primary hover:brightness-110 active:brightness-95 rounded-[--radius-md] shadow-[--shadow-sm] hover:shadow-[--shadow-md]',
+      'bg-[#1A2138] text-white rounded-md shadow-[--shadow-sm]',
 
     /**
      * Ghost: No background, outline text
-     * Secondary navigation, dismissible actions.
      */
     ghost:
-      'bg-transparent text-on-surface-variant hover:bg-surface-container-low active:bg-surface-container-lowest rounded-[--radius-md] border border-transparent',
+      'bg-transparent text-on-surface-variant hover:bg-surface-container-low rounded-md border border-transparent',
 
     /**
      * Ghost-Outline: Ghost with ghost-border (accessibility)
-     * Use when a container boundary is needed.
      */
     'ghost-outline':
-      'bg-transparent text-on-surface-variant hover:bg-surface-container-low active:bg-surface-container-lowest rounded-[--radius-md] border border-[var(--color-outline-variant)]',
+      'bg-transparent text-on-surface-variant hover:bg-surface-container-low rounded-md border border-[var(--color-outline-variant)]',
 
     /**
-     * Danger: Error container for destructive actions
+     * Danger: Error container
      */
     danger:
-      'bg-error-container text-on-error-container hover:brightness-95 active:brightness-90 rounded-[--radius-md]',
+      'bg-[#ffdad6] text-[#ba1a1a] rounded-md',
 
     /**
-     * AI Action: Vibrant Blue gradient — AI-powered recommendations
+     * AI Action: Vibrant Blue gradient
      */
     'ai-action':
-      'bg-tertiary text-on-tertiary hover:brightness-110 active:brightness-95 rounded-[--radius-md] shadow-[--shadow-sm] hover:shadow-[--shadow-md] gap-1.5',
+      'bg-[#0052FF] text-white rounded-md shadow-[--shadow-sm] gap-1.5',
   };
 
   const sizes = {
-    sm: 'text-xs px-3 py-1.5 gap-1',
-    md: 'text-sm px-4 py-2 gap-2',
-    lg: 'text-base px-6 py-3 gap-2',
-    icon: 'p-2 rounded-[--radius-md]',
+    sm: 'text-xs px-3.5 py-2 gap-1.5 rounded-md',
+    md: 'text-sm px-5 py-2.5 gap-2 rounded-md',
+    lg: 'text-base px-7 py-3.5 gap-2 rounded-md',
+    icon: 'p-2.5 rounded-md',
   };
 
   return (

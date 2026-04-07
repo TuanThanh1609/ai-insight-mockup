@@ -1,33 +1,82 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { getAdsHealthLabel, getAdsHealthColor } from '../../lib/adsMedicalService';
 
-/**
- * AdsHealthScoreHeader — "Hồ Sơ Bệnh Án Ads" style header
- * Left: Score SIÊU TO + progress bar + severity label
- * Right: Mini 4-segment funnel (Impressions → Clicks → Conv → Orders)
- * Top bar: Delta badge + Date range chips + Campaign count badge
- */
+function MiniSparkLine({ data, color }) {
+  if (!data || data.length < 2) return null;
+  const w = 58;
+  const h = 22;
+  const min = Math.min(...data);
+  const max = Math.max(...data);
+  const range = max - min || 1;
+  const pts = data.map((v, i) => {
+    const x = (i / (data.length - 1)) * w;
+    const y = h - ((v - min) / range) * h;
+    return `${x},${y}`;
+  });
+  const poly = pts.join(' ');
+  const last = pts[pts.length - 1].split(',');
+  const gradId = `ads-hsh-${color.replace('#', '')}-${Math.random().toString(36).slice(2, 6)}`;
+
+  return (
+    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} className="overflow-visible">
+      <defs>
+        <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={color} stopOpacity="0.15" />
+          <stop offset="100%" stopColor={color} stopOpacity="0.01" />
+        </linearGradient>
+      </defs>
+      <polygon points={`0,${h} ${poly} ${w},${h}`} fill={`url(#${gradId})`} />
+      <polyline points={poly} fill="none" stroke={color} strokeWidth="1.5" strokeLinejoin="round" strokeLinecap="round" />
+      <circle cx={last[0]} cy={last[1]} r="2" fill={color} />
+    </svg>
+  );
+}
+
+const ADS_DISEASE_META = {
+  'roas-health': {
+    desc: 'ROAS gốc · ROAS thực · Chênh lệch',
+    assess: (s) => s < 5 ? '→ Chênh lệch ROAS cao, cần chuẩn hóa attribution' : s >= 7.5 ? '→ ROAS ổn định, dữ liệu đáng tin' : '→ ROAS trung bình, cần theo dõi',
+  },
+  'attribution-quality': {
+    desc: 'Tỉ lệ match · Unmatched orders · Delay',
+    assess: (s) => s < 5 ? '→ Match thấp, dễ đo sai hiệu quả ads' : s >= 7.5 ? '→ Attribution tốt, có thể scale' : '→ Attribution trung bình',
+  },
+  'ad-creative': {
+    desc: 'CTR · Hook retention · Scroll stop',
+    assess: (s) => s < 5 ? '→ Creative yếu, cần A/B test ngay' : s >= 7.5 ? '→ Creative khỏe, giữ đà tối ưu' : '→ Creative ổn, cần cải thiện thêm',
+  },
+  'audience-targeting': {
+    desc: 'Overlap · Age match · Interest accuracy',
+    assess: (s) => s < 5 ? '→ Targeting lệch, lãng phí ngân sách' : s >= 7.5 ? '→ Targeting chuẩn, chất lượng tốt' : '→ Targeting trung bình',
+  },
+  'budget-allocation': {
+    desc: 'Utilization · Hour spread · Balance',
+    assess: (s) => s < 5 ? '→ Phân bổ ngân sách chưa hiệu quả' : s >= 7.5 ? '→ Ngân sách vận hành ổn định' : '→ Cần tối ưu thêm theo giờ cao điểm',
+  },
+  'platform-performance': {
+    desc: 'FB ROAS · Zalo ROAS · Revenue share',
+    assess: (s) => s < 5 ? '→ Nền tảng đang lệch hiệu suất' : s >= 7.5 ? '→ Phân bổ nền tảng hợp lý' : '→ Cần rà soát tỉ trọng nền tảng',
+  },
+  'lead-order-conversion': {
+    desc: 'Nóng→Đơn · Ấm→Đơn · Lạnh→Đơn',
+    assess: (s) => s < 5 ? '→ Tỉ lệ chốt thấp, cần retarget nhanh' : s >= 7.5 ? '→ Chuyển đổi lead tốt' : '→ Chuyển đổi trung bình',
+  },
+  'junk-campaigns': {
+    desc: 'Junk rate · Quality rate · Spam rate',
+    assess: (s) => s < 5 ? '→ Chiến dịch rác cao, cần lọc audience' : s >= 7.5 ? '→ Chất lượng chiến dịch tốt' : '→ Cần giảm junk thêm',
+  },
+};
+
 export function AdsHealthScoreHeader({
   healthScore = 5.8,
-  delta = null,
+  diseases = [],
   dateRange = { start: '07/03', end: '28/03/2026' },
   campaignCount = 3,
-  attributionMetrics = {
-    impressions: 1245000,
-    clicks: 18420,
-    conversations: 368,
-    orders: 89,
-    phoneCollected: 89,
-    matchedOrders: 67,
-    untrackedOrders: 22,
-    avgOrderValue: 580000,
-  },
   onDateRangeChange,
 }) {
   const label = getAdsHealthLabel(healthScore);
   const color = getAdsHealthColor(healthScore);
   const progressPct = Math.round((healthScore / 10) * 100);
-
   const [selectedRange, setSelectedRange] = useState('30');
 
   const ranges = [
@@ -36,28 +85,16 @@ export function AdsHealthScoreHeader({
     { value: '90', label: '90 ngày' },
   ];
 
-  // ── Funnel data ──────────────────────────────────────────────────────────
-  const { impressions, clicks, conversations, orders } = attributionMetrics;
-  const steps = [
-    { label: 'Impressions', count: impressions, color: 'var(--color-primary)' },
-    { label: 'Clicks',      count: clicks,      color: 'var(--color-tertiary)' },
-    { label: 'Hội thoại',  count: conversations, color: '#7C3AED' },
-    { label: 'Đơn hàng',   count: orders,       color: '#059669' },
-  ];
+  const sortedDiseases = useMemo(() => {
+    return [...diseases]
+      .map(d => ({ ...d, score: d.score ?? 5 }))
+      .sort((a, b) => a.score - b.score);
+  }, [diseases]);
 
-  // Normalize funnel widths to max = 100%
-  const maxCount = impressions;
-  const funnelPcts = steps.map(s => maxCount > 0 ? Math.max(4, (s.count / maxCount) * 100) : 0);
-
-  // Conversion rates between steps
-  const cvrImpressionsToClicks = impressions > 0 ? ((clicks / impressions) * 100).toFixed(2) : '0.00';
-  const cvrClicksToConv = clicks > 0 ? ((conversations / clicks) * 100).toFixed(1) : '0.0';
-  const cvrConvToOrders = conversations > 0 ? ((orders / conversations) * 100).toFixed(1) : '0.0';
-
-  const formatCount = (n) => {
-    if (n >= 1000000) return `${(n / 1000000).toFixed(1)}M`;
-    if (n >= 1000) return `${(n / 1000).toFixed(0)}K`;
-    return String(n);
+  const barColor = (s) => {
+    if (s < 5) return '#dc2626';
+    if (s < 7.5) return '#d97706';
+    return '#059669';
   };
 
   const getBadgeStyle = () => {
@@ -66,16 +103,21 @@ export function AdsHealthScoreHeader({
     if (healthScore <= 7) return { bg: 'rgba(0,82,255,0.08)', color: '#0052FF', border: 'rgba(0,82,255,0.2)' };
     return { bg: 'rgba(5,150,105,0.08)', color: '#059669', border: 'rgba(5,150,105,0.2)' };
   };
+
   const bs = getBadgeStyle();
 
   const handleRangeChange = (val) => {
     setSelectedRange(val);
-    if (onDateRangeChange) onDateRangeChange(val);
+    onDateRangeChange?.(val);
+  };
+
+  const handleScrollTo = (diseaseId) => {
+    document.getElementById(`ads-disease-${diseaseId}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
     <div>
-      {/* ── Top bar ── */}
+      {/* Top bar */}
       <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: `${color}18` }}>
@@ -92,27 +134,6 @@ export function AdsHealthScoreHeader({
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
-          {/* Delta badge */}
-          {delta !== null && (
-            <div className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-label-sm font-bold ${
-              delta >= 0
-                ? 'bg-emerald-50 text-emerald-600'
-                : 'bg-red-50 text-red-500'
-            }`}>
-              {delta >= 0 ? (
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 4l8 16H4z"/>
-                </svg>
-              ) : (
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 20L4 4h16z"/>
-                </svg>
-              )}
-              {delta >= 0 ? '+' : ''}{delta}
-            </div>
-          )}
-
-          {/* Date range chips */}
           <div className="flex items-center bg-surface-container-low rounded-full p-1 gap-0.5">
             {ranges.map(r => (
               <button
@@ -129,12 +150,10 @@ export function AdsHealthScoreHeader({
             ))}
           </div>
 
-          {/* Date range display */}
           <span className="text-label-xs text-on-surface-variant">
             {dateRange.start} – {dateRange.end}
           </span>
 
-          {/* Campaign count */}
           <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full"
             style={{ background: 'rgba(0,82,255,0.08)', color: '#0052FF' }}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -146,13 +165,11 @@ export function AdsHealthScoreHeader({
         </div>
       </div>
 
-      {/* ── Main card ── */}
-      <div className="bg-surface-container-low rounded-[--radius-xl] overflow-hidden">
+      {/* Main card */}
+      <div className="bg-surface-container-low rounded-xl overflow-hidden">
         <div className="flex flex-col lg:flex-row">
-
           {/* LEFT: Big Score */}
-          <div className="flex flex-col justify-between p-8 lg:w-56 lg:border-r"
-            style={{ borderColor: 'var(--color-outline-variant)' }}>
+          <div className="flex flex-col justify-between p-8 lg:w-56 lg:border-r border-[var(--color-outline-variant)]">
             <div>
               <div className="text-[4.5rem] font-bold leading-none" style={{ color, fontFamily: 'var(--font-display)' }}>
                 {healthScore.toFixed(1)}
@@ -177,98 +194,77 @@ export function AdsHealthScoreHeader({
             </div>
           </div>
 
-          {/* RIGHT: Mini Funnel */}
-          <div className="flex-1 p-8 flex flex-col justify-center gap-6">
-            <div className="text-label-sm font-semibold text-on-surface-variant uppercase tracking-wide">
-              Phễu Chuyển Đổi
+          {/* RIGHT: Disease contribution list */}
+          <div className="flex-1 p-6 lg:max-h-[480px] lg:overflow-y-auto">
+            <div className="text-label-sm font-semibold text-on-surface-variant uppercase tracking-wide mb-4">
+              Đóng Góp Theo Nhóm Bệnh
             </div>
 
-            {/* Funnel bar */}
-            <div>
-              <div className="flex items-stretch rounded-full overflow-hidden gap-0" style={{ height: 52 }}>
-                {steps.map((step, i) => (
-                  <div key={step.label} className="relative flex flex-col justify-center" style={{ width: `${funnelPcts[i]}%` }}>
-                    <div
-                      className="absolute inset-0 flex items-center justify-center"
-                      style={{ background: step.color, opacity: 0.9 }}
-                    >
-                      {i < steps.length - 1 && funnelPcts[i] > 8 && (
-                        <span className="text-label-xs font-bold text-white/90 whitespace-nowrap overflow-hidden text-ellipsis px-2">
-                          {formatCount(step.count)}
+            <div className="flex flex-col gap-5">
+              {sortedDiseases.map((disease) => {
+                const bc = barColor(disease.score);
+                const pct = (disease.score / 10) * 100;
+                const meta = ADS_DISEASE_META[disease.id] || { desc: '', assess: () => '' };
+                const assessment = meta.assess(disease.score);
+                const sparkData = [
+                  disease.score - 1,
+                  disease.score - 0.4,
+                  disease.score + 0.2,
+                  disease.score - 0.3,
+                  disease.score,
+                  disease.score + 0.4,
+                  disease.score,
+                ];
+
+                return (
+                  <div key={disease.id} className="group">
+                    <div className="flex items-center justify-between mb-1">
+                      <div className="flex-1 min-w-0">
+                        <div className="text-body-md font-semibold text-on-surface">{disease.label}</div>
+                        <div className="text-label-xs text-on-surface-variant">{meta.desc}</div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="h-2.5 rounded-full overflow-hidden" style={{ background: 'rgba(0,0,0,0.06)' }}>
+                          <div
+                            className="h-full rounded-full transition-all duration-500"
+                            style={{ width: `${pct}%`, background: bc }}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="shrink-0">
+                        <MiniSparkLine data={sparkData} color={bc} />
+                      </div>
+
+                      <div className="shrink-0 w-10 text-right">
+                        <span className="text-title-md font-bold" style={{ color: bc }}>
+                          {disease.score.toFixed(1)}
                         </span>
-                      )}
-                    </div>
-                    {/* Right connector arrow */}
-                    {i < steps.length - 1 && (
-                      <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-0 h-0"
-                        style={{
-                          borderTop: '8px solid transparent',
-                          borderBottom: '8px solid transparent',
-                          borderLeft: `8px solid ${steps[i + 1]?.color || '#fff'}`,
-                        }}
-                      />
-                    )}
-                  </div>
-                ))}
-              </div>
+                      </div>
 
-              {/* Labels + CVR below funnel */}
-              <div className="flex items-start mt-3 relative">
-                {steps.map((step, i) => (
-                  <div key={step.label} className="relative">
-                    <div style={{ width: `${funnelPcts[i]}%` }} className="flex flex-col items-center">
-                      <div className="text-label-xs font-semibold text-on-surface">{step.label}</div>
-                      <div className="text-[10px] text-on-surface-variant mt-0.5">{formatCount(step.count)}</div>
+                      <button
+                        onClick={() => handleScrollTo(disease.id)}
+                        title={`Xem chi tiết ${disease.label}`}
+                        className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 cursor-pointer transition-all hover:scale-110"
+                        style={{ border: `1.5px solid ${bc}50`, color: bc, background: `${bc}10` }}
+                      >
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="9 18 15 12 9 6" />
+                        </svg>
+                      </button>
                     </div>
-                    {/* CVR badge between segments */}
-                    {i === 0 && (
-                      <div className="absolute -top-7 left-1/2 -translate-x-1/2 bg-surface-container-low rounded-full px-1.5 py-0.5 shadow-sm"
-                        style={{ fontSize: '9px', color: 'var(--color-tertiary)', fontWeight: 700 }}>
-                        {cvrImpressionsToClicks}%
-                      </div>
-                    )}
-                    {i === 1 && (
-                      <div className="absolute -top-7 left-1/2 -translate-x-1/2 bg-surface-container-low rounded-full px-1.5 py-0.5 shadow-sm"
-                        style={{ fontSize: '9px', color: '#7C3AED', fontWeight: 700 }}>
-                        {cvrClicksToConv}%
-                      </div>
-                    )}
-                    {i === 2 && (
-                      <div className="absolute -top-7 left-1/2 -translate-x-1/2 bg-surface-container-low rounded-full px-1.5 py-0.5 shadow-sm"
-                        style={{ fontSize: '9px', color: '#059669', fontWeight: 700 }}>
-                        {cvrConvToOrders}%
+
+                    {assessment && (
+                      <div className="text-label-xs font-medium mt-1.5" style={{ color: bc }}>
+                        {assessment}
                       </div>
                     )}
                   </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Summary chips */}
-            <div className="flex items-center gap-3 flex-wrap">
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-label-xs font-semibold"
-                style={{ background: 'rgba(0,82,255,0.08)', color: '#0052FF' }}>
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8a19.79 19.79 0 01-3.07-8.68A2 2 0 012 0h3a2 2 0 012 1.72"/>
-                </svg>
-                SĐT: {formatCount(attributionMetrics.phoneCollected)}/{formatCount(attributionMetrics.conversations)}
-                ({attributionMetrics.conversations > 0 ? ((attributionMetrics.phoneCollected / attributionMetrics.conversations) * 100).toFixed(0) : 0}%)
-              </div>
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-label-xs font-semibold"
-                style={{ background: 'rgba(5,150,105,0.08)', color: '#059669' }}>
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polyline points="20 6 9 17 4 12"/>
-                </svg>
-                Matched: {formatCount(attributionMetrics.matchedOrders)}/{formatCount(attributionMetrics.orders)}
-                ({attributionMetrics.orders > 0 ? ((attributionMetrics.matchedOrders / attributionMetrics.orders) * 100).toFixed(0) : 0}%)
-              </div>
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-label-xs font-semibold"
-                style={{ background: 'rgba(191,48,3,0.06)', color: '#BF3003' }}>
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
-                </svg>
-                Untracked: {formatCount(attributionMetrics.untrackedOrders)}
-              </div>
+                );
+              })}
             </div>
           </div>
         </div>

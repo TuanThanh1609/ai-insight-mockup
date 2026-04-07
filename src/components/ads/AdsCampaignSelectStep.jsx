@@ -113,7 +113,7 @@ export function AdsCampaignSelectStep({ campaigns = [], selectedIds = [], onChan
             <div
               key={campaign.id}
               className={`
-                rounded-[--radius-md] p-4 flex items-center gap-4 cursor-pointer transition-all
+                rounded-md p-4 flex items-center gap-4 cursor-pointer transition-all
                 ${isChecked
                   ? 'bg-surface-container-low shadow-[--shadow-sm]'
                   : 'bg-surface-container-lowest hover:bg-surface-container-low'
@@ -177,7 +177,7 @@ export function AdsCampaignSelectStep({ campaigns = [], selectedIds = [], onChan
 
       {/* Summary Bar */}
       <div className="
-        bg-surface-container-low rounded-[--radius-lg] px-5 py-4 mb-6
+        bg-surface-container-low rounded-lg px-5 py-4 mb-6
         flex items-center justify-between flex-wrap gap-3
       ">
         <div className="flex items-center gap-3 text-body-sm text-on-surface">

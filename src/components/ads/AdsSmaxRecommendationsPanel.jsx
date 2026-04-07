@@ -22,7 +22,7 @@ function PriorityBadge({ priority }) {
 
 function ActionCard({ action, index, isExpanded, onToggle, isSaved, onSave }) {
   return (
-    <div className="rounded-[--radius-md] border border-[var(--color-outline-variant)]/30 overflow-hidden">
+    <div className="rounded-md border border-[var(--color-outline-variant)]/30 overflow-hidden">
       <button
         onClick={onToggle}
         className="w-full px-3 py-2.5 flex items-center gap-2 text-left hover:bg-surface-container-low transition-colors cursor-pointer"
@@ -186,7 +186,7 @@ function DiseaseAIRec({ disease, savedActionIds = [], onSaveAction, onRemoveActi
   };
 
   return (
-    <div className="rounded-[--radius-md] border border-[var(--color-outline-variant)]/30 overflow-hidden">
+    <div className="rounded-md border border-[var(--color-outline-variant)]/30 overflow-hidden">
       {/* Header row */}
       <button
         onClick={toggleOpen}
@@ -316,7 +316,7 @@ export function AdsSmaxRecommendationsPanel({
           {recommendations.map((rec, idx) => {
             const isSaved = savedActionIds.includes(rec.id);
             return (
-              <div key={rec.id} className="rounded-[--radius-md] border border-[var(--color-outline-variant)]/30 overflow-hidden">
+              <div key={rec.id} className="rounded-md border border-[var(--color-outline-variant)]/30 overflow-hidden">
                 <button
                   className="w-full px-3 py-2.5 flex items-center gap-2 text-left hover:bg-surface-container-low transition-colors cursor-pointer"
                   onClick={() => isSaved ? onRemoveAction(rec.id) : onSaveAction(rec)}

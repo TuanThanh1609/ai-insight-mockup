@@ -33,7 +33,7 @@ export function AIInsightPanel({ campaign, insight, isOpen, onClose }) {
               </div>
               <button
                 onClick={onClose}
-                className="p-1.5 rounded-[--radius-md] text-white/80 hover:bg-white/10 transition-colors cursor-pointer"
+                className="p-1.5 rounded-md text-white/80 hover:bg-white/10 transition-colors cursor-pointer"
               >
                 <X size={18} />
               </button>
@@ -54,7 +54,7 @@ export function AIInsightPanel({ campaign, insight, isOpen, onClose }) {
           {/* Content */}
           <div className="flex-1 px-6 py-6 flex flex-col gap-6">
             {/* Alert type */}
-            <div className={cn('rounded-[--radius-md] p-4 border-l-4', actionColorMap[insight.actionColor])}>
+            <div className={cn('rounded-md p-4 border-l-4', actionColorMap[insight.actionColor])}>
               <div className="text-2xl mb-2">{insight.icon}</div>
               <h3 className="font-display font-bold text-sm text-on-surface mb-2">{insight.title}</h3>
               <p className="text-xs text-on-surface-variant leading-relaxed">{insight.description}</p>

@@ -40,7 +40,7 @@ const aiActionConfig = {
   },
   pause: {
     label: 'Tắt',
-    color: 'bg-surface-container-high text-on-surface-variant',
+    color: 'bg-gradient-to-br from-[#f5f1f5] to-[#ede9ee] text-on-surface-variant',
     icon: AlertOctagon,
     iconColor: 'text-[#dc2626]',
     btnVariant: 'danger',
@@ -54,7 +54,7 @@ function ConfirmModal({ campaign, action, onConfirm, onCancel }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-on-surface/30" onClick={onCancel} />
-      <div className="relative bg-surface-container-lowest rounded-[--radius-lg] p-6 w-[340px] shadow-2xl">
+      <div className="relative bg-gradient-to-br from-white via-[#faf7fc] to-[#f5f1f5] rounded-xl p-6 w-[340px] shadow-[--shadow-sm]">
         <h3 className="font-display font-bold text-base text-on-surface mb-2">
           Xác nhận hành động
         </h3>
@@ -107,7 +107,7 @@ function ExpandableRow({ campaign, insight, aiConfig }) {
 
   return (
     <>
-      <div className="flex items-start gap-3 px-4 py-3 bg-surface-container-low rounded-b-[--radius-md] border-t border-surface-container-high transition-all duration-200">
+      <div className="flex items-start gap-3 px-4 py-3 bg-gradient-to-br from-[#f5f1f5] to-[#ede9ee] rounded-b-[--radius-lg] border-t border-[rgba(26,33,56,0.08)] transition-all duration-200">
         {/* AI icon */}
         <div className="mt-0.5">
           <ActionIcon size={14} className={aiConfig.iconColor} />
@@ -123,19 +123,19 @@ function ExpandableRow({ campaign, insight, aiConfig }) {
 
           {/* Metrics row */}
           <div className="grid grid-cols-3 gap-2">
-            <div className="bg-surface-container-lowest rounded-[--radius-sm] p-2 text-center">
+            <div className="bg-gradient-to-br from-[#f5f1f5] to-[#ede9ee] rounded-lg p-2 text-center">
               <p className="text-[10px] text-on-surface-variant">Junk rate</p>
               <p className="text-xs font-bold text-on-surface">
                 {insight?.metrics?.junkRate ?? '—'}%
               </p>
             </div>
-            <div className="bg-surface-container-lowest rounded-[--radius-sm] p-2 text-center">
+            <div className="bg-gradient-to-br from-[#f5f1f5] to-[#ede9ee] rounded-lg p-2 text-center">
               <p className="text-[10px] text-on-surface-variant">Quality rate</p>
               <p className="text-xs font-bold text-on-surface">
                 {insight?.metrics?.qualityRate ?? '—'}%
               </p>
             </div>
-            <div className="bg-surface-container-lowest rounded-[--radius-sm] p-2 text-center">
+            <div className="bg-gradient-to-br from-[#f5f1f5] to-[#ede9ee] rounded-lg p-2 text-center">
               <p className="text-[10px] text-on-surface-variant">Spam</p>
               <p className="text-xs font-bold text-on-surface">
                 {insight?.metrics?.spamRate ?? '—'}%
@@ -148,7 +148,7 @@ function ExpandableRow({ campaign, insight, aiConfig }) {
             {/* Confidence bar */}
             {insight?.confidence && (
               <div className="flex items-center gap-2 flex-1 min-w-0">
-                <div className="h-1.5 bg-surface-container-high rounded-full overflow-hidden flex-1 max-w-[100px]">
+                <div className="h-1.5 bg-gradient-to-br from-[#f5f1f5] to-[#ede9ee] rounded-full overflow-hidden flex-1 max-w-[100px]">
                   <div
                     className="h-full rounded-full transition-all duration-500"
                     style={{ width: `${insight.confidence}%`, background: aiConfig.confidenceColor }}
@@ -220,7 +220,7 @@ export function CampaignOptimizationTable({ campaigns, onSelectCampaign }) {
   return (
     <div className="flex flex-col gap-1">
       {/* Header */}
-      <div className="grid grid-cols-[1fr_120px_1fr_160px_44px] gap-3 px-4 py-3 bg-surface-container-low rounded-[--radius-md]">
+      <div className="grid grid-cols-[1fr_120px_1fr_160px_44px] gap-3 px-4 py-3 bg-gradient-to-br from-white via-[#faf7fc] to-[#f5f1f5] rounded-lg shadow-[--shadow-sm]">
         <span className="text-xs font-semibold text-on-surface-variant">Chiến dịch</span>
         <span className="text-xs font-semibold text-on-surface-variant">AI Gợi ý</span>
         <span className="text-xs font-semibold text-on-surface-variant">Phân tích</span>
@@ -235,12 +235,12 @@ export function CampaignOptimizationTable({ campaigns, onSelectCampaign }) {
         const isExpanded = expandedId === camp.id;
 
         return (
-          <div key={camp.id} className="flex flex-col rounded-[--radius-md] overflow-hidden">
+          <div key={camp.id} className="flex flex-col rounded-md overflow-hidden">
             {/* Main row */}
             <div
               className={cn(
                 'grid grid-cols-[1fr_120px_1fr_160px_44px] gap-3 px-4 py-3 items-center transition-colors duration-150',
-                'hover:bg-surface-container-low cursor-pointer',
+                'hover:bg-[rgba(26,33,56,0.04)] cursor-pointer',
                 isPaused && 'opacity-60'
               )}
             >

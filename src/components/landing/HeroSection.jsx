@@ -101,13 +101,13 @@ const STATS = (() => {
 // ─── Tab bar ──────────────────────────────────────────────────────────────────
 function TabBar({ tabs, active, onChange }) {
   return (
-    <div style={{ display: 'flex', gap: 4, marginBottom: 12, background: 'rgba(26,33,56,0.04)', borderRadius: 8, padding: 4 }}>
+    <div style={{ display: 'flex', gap: 4, marginBottom: 12, background: 'rgba(26,33,56,0.04)', borderRadius: 'var(--radius-md)', padding: 4 }}>
       {tabs.map((tab) => (
         <button
           key={tab.id}
           onClick={() => onChange(tab.id)}
           style={{
-            flex: 1, padding: '6px 12px', borderRadius: 6, border: 'none',
+            flex: 1, padding: '6px 12px', borderRadius: 'var(--radius-sm)', border: 'none',
             fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 600,
             cursor: 'pointer', transition: 'all 0.15s ease',
             background: active === tab.id ? '#fff' : 'transparent',
@@ -125,7 +125,7 @@ function TabBar({ tabs, active, onChange }) {
 // ─── Stat pill ────────────────────────────────────────────────────────────────
 function StatPill({ label, value, color, bg }) {
   return (
-    <div style={{ background: bg, borderRadius: 8, padding: '8px 10px', textAlign: 'center', flex: 1 }}>
+    <div style={{ background: bg, borderRadius: 'var(--radius-md)', padding: '8px 10px', textAlign: 'center', flex: 1 }}>
       <p style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.0625rem', color, margin: 0 }}>{value.toLocaleString('vi-VN')}</p>
       <p style={{ fontFamily: 'var(--font-body)', fontSize: 9, color: '#6b7280', margin: '1px 0 0' }}>{label}</p>
     </div>
@@ -272,7 +272,7 @@ function ConversationAnalysisTab() {
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 14 }}>
         {/* Temperature */}
-        <div style={{ background: '#fff', borderRadius: 10, padding: 14 }}>
+        <div style={{ background: 'rgba(250,247,252,0.80)', borderRadius: '14px', padding: 14, border: '1px solid rgba(26,33,56,0.08)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
             <Thermometer size={13} color="#ef4444" />
             <span style={{ fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 600, color: '#1a2138' }}>Mức độ quan tâm</span>
@@ -281,7 +281,7 @@ function ConversationAnalysisTab() {
         </div>
 
         {/* Sentiment */}
-        <div style={{ background: '#fff', borderRadius: 10, padding: 14 }}>
+        <div style={{ background: 'rgba(250,247,252,0.80)', borderRadius: '14px', padding: 14, border: '1px solid rgba(26,33,56,0.08)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
             <TrendingUp size={13} color="#0052FF" />
             <span style={{ fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 600, color: '#1a2138' }}>Cảm xúc khách hàng</span>
@@ -292,7 +292,7 @@ function ConversationAnalysisTab() {
         </div>
 
         {/* Top products */}
-        <div style={{ background: '#fff', borderRadius: 10, padding: 14 }}>
+        <div style={{ background: 'rgba(250,247,252,0.80)', borderRadius: '14px', padding: 14, border: '1px solid rgba(26,33,56,0.08)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
             <Target size={13} color="#0052FF" />
             <span style={{ fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 600, color: '#1a2138' }}>Sản phẩm quan tâm</span>
@@ -307,7 +307,7 @@ function ConversationAnalysisTab() {
         </div>
 
         {/* Pain points */}
-        <div style={{ background: '#fff', borderRadius: 10, padding: 14 }}>
+        <div style={{ background: 'rgba(250,247,252,0.80)', borderRadius: '14px', padding: 14, border: '1px solid rgba(26,33,56,0.08)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
             <AlertCircle size={13} color="#f59e0b" />
             <span style={{ fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 600, color: '#1a2138' }}>Pain Points nổi bật</span>
@@ -324,12 +324,12 @@ function ConversationAnalysisTab() {
 
       {/* Platform + Cities row */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
-        <div style={{ background: '#fff', borderRadius: 10, padding: 14 }}>
+        <div style={{ background: 'rgba(250,247,252,0.80)', borderRadius: '14px', padding: 14, border: '1px solid rgba(26,33,56,0.08)' }}>
           <p style={{ fontFamily: 'var(--font-body)', fontSize: 10, fontWeight: 600, color: '#6b7280', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Theo kênh</p>
           <MiniBar label="Facebook" value={fb} total={total} color="#1877F2" />
           <MiniBar label="Zalo OA" value={zalo} total={total} color="#0068FF" />
         </div>
-        <div style={{ background: '#fff', borderRadius: 10, padding: 14 }}>
+        <div style={{ background: 'rgba(250,247,252,0.80)', borderRadius: '14px', padding: 14, border: '1px solid rgba(26,33,56,0.08)' }}>
           <p style={{ fontFamily: 'var(--font-body)', fontSize: 10, fontWeight: 600, color: '#6b7280', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Top khu vực</p>
           {topCities.map(([c, n]) => (
             <div key={c} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
@@ -341,7 +341,7 @@ function ConversationAnalysisTab() {
       </div>
 
       {/* Conversation table */}
-      <div style={{ background: '#fff', borderRadius: 10, padding: 14, border: '1px solid rgba(26,33,56,0.06)' }}>
+      <div style={{ background: 'rgba(250,247,252,0.80)', borderRadius: '14px', padding: 14, border: '1px solid rgba(26,33,56,0.08)' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
           <p style={{ fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 600, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.06em', margin: 0 }}>Hội thoại gần đây</p>
           <span style={{ fontFamily: 'var(--font-body)', fontSize: 10, color: '#6b7280' }}>Top 50 / {total.toLocaleString('vi-VN')} hội thoại</span>
@@ -391,14 +391,14 @@ function QualityTab() {
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10, marginBottom: 12 }}>
         {/* Platform */}
-        <div style={{ background: '#fff', borderRadius: 10, padding: 14 }}>
+        <div style={{ background: '#fff', borderRadius: 'var(--radius-md)', padding: 14 }}>
           <p style={{ fontFamily: 'var(--font-body)', fontSize: 10, fontWeight: 600, color: '#6b7280', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Theo kênh</p>
           <MiniBar label="Facebook" value={fb} total={total} color="#1877F2" />
           <MiniBar label="Zalo OA" value={zalo} total={total} color="#0068FF" />
         </div>
 
         {/* Sentiment */}
-        <div style={{ background: '#fff', borderRadius: 10, padding: 14 }}>
+        <div style={{ background: 'rgba(250,247,252,0.80)', borderRadius: '14px', padding: 14, border: '1px solid rgba(26,33,56,0.08)' }}>
           <p style={{ fontFamily: 'var(--font-body)', fontSize: 10, fontWeight: 600, color: '#6b7280', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Cảm xúc</p>
           <div style={{ display: 'flex', gap: 6, alignItems: 'flex-end', height: 48 }}>
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
@@ -417,7 +417,7 @@ function QualityTab() {
         </div>
 
         {/* Returning */}
-        <div style={{ background: '#fff', borderRadius: 10, padding: 14 }}>
+        <div style={{ background: '#fff', borderRadius: 'var(--radius-md)', padding: 14 }}>
           <p style={{ fontFamily: 'var(--font-body)', fontSize: 10, fontWeight: 600, color: '#6b7280', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.06em' }}>KH quay lại</p>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <Star size={16} color="#f59e0b" />
@@ -434,7 +434,7 @@ function QualityTab() {
       </div>
 
       {/* AI recommendation */}
-      <div style={{ background: 'rgba(0,82,255,0.06)', border: '1px solid rgba(0,82,255,0.15)', borderRadius: 10, padding: '12px 14px' }}>
+      <div style={{ background: 'rgba(0,82,255,0.06)', border: '1px solid rgba(0,82,255,0.15)', borderRadius: 'var(--radius-md)', padding: '12px 14px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
           <Sparkles size={13} color="#0052FF" />
           <span style={{ fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 700, color: '#0052FF' }}>Gợi ý từ AI</span>
@@ -525,12 +525,12 @@ export function HeroSection() {
 
         {/* CTAs */}
         <div ref={ctaRef} style={{ opacity: 0, transform: 'translateY(12px)', transition: 'opacity 0.6s ease, transform 0.6s ease', display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center', marginBottom: 64 }}>
-          <a href="#lead-form" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 32px', borderRadius: 8, background: '#BF3003', color: '#fff', fontFamily: 'var(--font-body)', fontSize: '0.9375rem', fontWeight: 600, boxShadow: '0 8px 32px rgba(191,48,3,0.40)', cursor: 'pointer', transition: 'all 0.15s ease', textDecoration: 'none' }}
+          <a href="#lead-form" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 32px', borderRadius: 'var(--radius-md)', background: '#BF3003', color: '#fff', fontFamily: 'var(--font-body)', fontSize: '0.9375rem', fontWeight: 600, boxShadow: '0 8px 32px rgba(191,48,3,0.40)', cursor: 'pointer', transition: 'all 0.15s ease', textDecoration: 'none' }}
             onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 12px 40px rgba(191,48,3,0.50)'; }}
             onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 8px 32px rgba(191,48,3,0.40)'; }}>
             Trải nghiệm miễn phí <ArrowRight size={17} strokeWidth={2.2} />
           </a>
-          <a href="#how-it-works" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 28px', borderRadius: 8, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.14)', color: 'rgba(255,255,255,0.82)', fontFamily: 'var(--font-body)', fontSize: '0.9375rem', fontWeight: 500, cursor: 'pointer', transition: 'all 0.15s ease', textDecoration: 'none' }}
+          <a href="#how-it-works" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 28px', borderRadius: 'var(--radius-md)', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.14)', color: 'rgba(255,255,255,0.82)', fontFamily: 'var(--font-body)', fontSize: '0.9375rem', fontWeight: 500, cursor: 'pointer', transition: 'all 0.15s ease', textDecoration: 'none' }}
             onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.10)'; }}
             onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; }}>
             Xem cách hoạt động
@@ -538,16 +538,16 @@ export function HeroSection() {
         </div>
 
         {/* ── REAL AI INSIGHT DASHBOARD ── */}
-        <div ref={dashboardRef} style={{ opacity: 0, transform: 'translateY(16px)', transition: 'opacity 0.6s ease, transform 0.6s ease', width: '100%', maxWidth: 960, borderRadius: 12, overflow: 'hidden', boxShadow: '0 32px 80px rgba(0,0,0,0.50), 0 0 0 1px rgba(255,255,255,0.08)' }} role="img" aria-label="AI Insight Dashboard — Phân tích hội thoại">
+        <div ref={dashboardRef} style={{ opacity: 0, transform: 'translateY(16px)', transition: 'opacity 0.6s ease, transform 0.6s ease', width: '100%', maxWidth: 960, borderRadius: '18px', overflow: 'hidden', boxShadow: '0 32px 80px rgba(26,33,56,0.20), 0 0 0 1px rgba(26,33,56,0.08)', background: 'rgba(250,247,252,0.92)', backdropFilter: 'blur(12px)' }} role="img" aria-label="AI Insight Dashboard — Phân tích hội thoại">
 
           {/* Browser chrome */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '10px 16px', background: 'rgba(255,255,255,0.04)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
             {['#ff5f57', '#ffbd2e', '#28ca41'].map(c => <span key={c} style={{ width: 10, height: 10, borderRadius: '50%', background: c, display: 'block' }} />)}
-            <div style={{ marginLeft: 12, padding: '3px 10px', borderRadius: 6, background: 'rgba(255,255,255,0.06)', fontFamily: 'var(--font-body)', fontSize: 11, color: 'rgba(255,255,255,0.40)' }}>app.yoursaas.vn / insight / settings</div>
+            <div style={{ marginLeft: 12, padding: '3px 10px', borderRadius: 'var(--radius-sm)', background: 'rgba(255,255,255,0.06)', fontFamily: 'var(--font-body)', fontSize: 11, color: 'rgba(255,255,255,0.40)' }}>app.yoursaas.vn / insight / settings</div>
           </div>
 
           {/* Content */}
-          <div style={{ background: '#f0f2f5', padding: '14px 16px 16px' }}>
+          <div style={{ background: 'linear-gradient(to bottom, rgba(245,241,245,0.6), rgba(237,233,238,0.4))', padding: '14px 16px 16px' }}>
             {/* Header */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>

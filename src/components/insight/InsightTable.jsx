@@ -15,7 +15,7 @@ export function InsightTable({ insights, onView, onDelete }) {
   return (
     <div className="w-full flex flex-col">
       {/* Sticky header */}
-      <div className="grid grid-cols-[1fr_100px_80px_100px_100px_80px] gap-4 px-4 py-3 bg-surface-container-low rounded-[--radius-md] mb-2 shrink-0">
+      <div className="grid grid-cols-[1fr_100px_80px_100px_100px_80px] gap-4 px-4 py-3 bg-surface-container-low rounded-md mb-2 shrink-0">
         <span className="text-xs font-semibold text-on-surface-variant">Tên Insight</span>
         <span className="text-xs font-semibold text-on-surface-variant">Kênh</span>
         <span className="text-xs font-semibold text-on-surface-variant">Cột</span>
@@ -34,7 +34,7 @@ export function InsightTable({ insights, onView, onDelete }) {
             <div
               key={insight.id}
               onClick={() => onView && onView(insight.id)}
-              className="grid grid-cols-[1fr_100px_80px_100px_100px_80px] gap-4 px-4 py-3.5 items-center rounded-[--radius-md] hover:bg-surface-container-low cursor-pointer transition-colors duration-150 group"
+              className="grid grid-cols-[1fr_100px_80px_100px_100px_80px] gap-4 px-4 py-3.5 items-center rounded-md hover:bg-surface-container-low cursor-pointer transition-colors duration-150 group"
             >
               {/* Name */}
               <div>
@@ -69,13 +69,13 @@ export function InsightTable({ insights, onView, onDelete }) {
                 onClick={(e) => e.stopPropagation()}
               >
                 <button
-                  className="p-1.5 rounded-[--radius-sm] text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors cursor-pointer"
+                  className="p-1.5 rounded-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors cursor-pointer"
                   title="Sửa"
                 >
                   <Pencil size={14} />
                 </button>
                 <button
-                  className="p-1.5 rounded-[--radius-sm] text-on-surface-variant hover:bg-error-container hover:text-on-error-container transition-colors cursor-pointer"
+                  className="p-1.5 rounded-sm text-on-surface-variant hover:bg-error-container hover:text-on-error-container transition-colors cursor-pointer"
                   title="Xóa"
                   onClick={() => onDelete && onDelete(insight.id)}
                 >

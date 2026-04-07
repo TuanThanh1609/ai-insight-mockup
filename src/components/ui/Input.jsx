@@ -1,12 +1,11 @@
 import { cn } from '../../lib/utils';
 
 /**
- * Input — Editorial Precision Design System
+ * Input — Ultra Soft Identity
  *
- * Track: surface_container_high (no border)
- * Focus:  surface_container_highest + 2px tertiary bottom-border only
- *         (No outline ring — use bottom-border for editorial feel)
- * Ghost border fallback for accessibility needs.
+ * Track: gradient fill (warm white) — no border
+ * Focus:  soft blue glow border (no bottom-border-only)
+ * Radius: 10px (--radius-md)
  */
 export function Input({
   label,
@@ -24,20 +23,21 @@ export function Input({
       )}
       <input
         className={cn(
-          // Editorial: no borders, tonal track
-          'w-full px-4 py-2.5 text-sm bg-surface-container-high rounded-[--radius-md]',
-          // Ghost border fallback
-          'border border-transparent',
+          // Ultra soft: gradient track + soft border
+          'w-full px-4 py-2.5 text-sm',
+          'bg-gradient-to-br from-white via-[#faf7fc] to-[#f5f1f5]',
+          'rounded-md',
+          'border border-[rgba(26,33,56,0.08)]',
           // Text
-          'text-on-surface placeholder:text-on-surface-variant/50',
-          // Focus: bottom-border only (2px tertiary, no ring)
+          'text-on-surface placeholder:text-on-surface-variant/40',
+          // Focus: soft blue glow ring
           'focus:outline-none',
-          'focus:bg-surface-container-highest',
-          'focus:border-b-2 focus:border-tertiary',
+          'focus:border-[rgba(0,82,255,0.35)]',
+          'focus:shadow-[0_0_0_3px_rgba(0,82,255,0.12)]',
           // Transition
-          'transition-colors duration-150',
+          'transition-all duration-150',
           // Error
-          error && 'bg-error-container focus:bg-error-container focus:border-b-2 focus:border-error',
+          error && 'border-[rgba(186,26,26,0.35)] focus:border-[rgba(186,26,26,0.5)] focus:shadow-[0_0_0_3px_rgba(186,26,26,0.10)]',
           className
         )}
         {...props}
@@ -66,15 +66,18 @@ export function Select({
       )}
       <select
         className={cn(
-          'w-full px-4 py-2.5 text-sm bg-surface-container-high rounded-[--radius-md]',
-          'border border-transparent',
+          'w-full px-4 py-2.5 text-sm',
+          'bg-gradient-to-br from-white via-[#faf7fc] to-[#f5f1f5]',
+          'rounded-md',
+          'border border-[rgba(26,33,56,0.08)]',
           'text-on-surface',
-          // Focus: bottom-border only
+          // Focus: soft blue glow
           'focus:outline-none',
-          'focus:bg-surface-container-highest',
-          'focus:border-b-2 focus:border-tertiary',
-          'transition-colors duration-150 cursor-pointer',
-          error && 'bg-error-container focus:bg-error-container focus:border-b-2 focus:border-error',
+          'focus:border-[rgba(0,82,255,0.35)]',
+          'focus:shadow-[0_0_0_3px_rgba(0,82,255,0.12)]',
+          'transition-all duration-150',
+          'cursor-pointer',
+          error && 'border-[rgba(186,26,26,0.35)]',
           className
         )}
         {...props}
@@ -104,15 +107,17 @@ export function Textarea({
       )}
       <textarea
         className={cn(
-          'w-full px-4 py-3 text-sm bg-surface-container-high rounded-[--radius-md]',
-          'border border-transparent',
-          'text-on-surface placeholder:text-on-surface-variant/50',
+          'w-full px-4 py-3 text-sm',
+          'bg-gradient-to-br from-white via-[#faf7fc] to-[#f5f1f5]',
+          'rounded-md',
+          'border border-[rgba(26,33,56,0.08)]',
+          'text-on-surface placeholder:text-on-surface-variant/40',
           'focus:outline-none',
-          'focus:bg-surface-container-highest',
-          'focus:border-b-2 focus:border-tertiary',
-          'transition-colors duration-150 resize-none',
-          'min-h-[80px]',
-          error && 'bg-error-container focus:bg-error-container focus:border-b-2 focus:border-error',
+          'focus:border-[rgba(0,82,255,0.35)]',
+          'focus:shadow-[0_0_0_3px_rgba(0,82,255,0.12)]',
+          'transition-all duration-150',
+          'resize-none min-h-[80px]',
+          error && 'border-[rgba(186,26,26,0.35)]',
           className
         )}
         {...props}

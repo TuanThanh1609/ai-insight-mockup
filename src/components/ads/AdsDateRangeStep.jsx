@@ -74,7 +74,7 @@ export function AdsDateRangeStep({
               key={opt.value}
               onClick={() => onSelect?.(opt.value)}
               className={`
-                relative rounded-[--radius-lg] p-6 text-center transition-all duration-200 cursor-pointer
+                relative rounded-lg p-6 text-center transition-all duration-200 cursor-pointer
                 ${isSelected
                   ? 'bg-tertiary/5 border-2 border-tertiary shadow-[--shadow-md]'
                   : 'bg-surface-container-lowest border-2 border-transparent hover:border-[var(--color-outline-variant)] hover:shadow-[--shadow-sm]'
@@ -125,7 +125,7 @@ export function AdsDateRangeStep({
 
       {/* Estimate Summary */}
       <div className="
-        bg-surface-container-low rounded-[--radius-lg] px-5 py-4 mb-8
+        bg-surface-container-low rounded-lg px-5 py-4 mb-8
         flex items-center justify-between flex-wrap gap-3
       ">
         <div className="flex items-center gap-2 text-body-sm text-on-surface">

@@ -18,7 +18,7 @@ export function FanpageConnectStep({ onNext }) {
   return (
     <div className="max-w-xl mx-auto">
       {/* Glass Card — Mockup Fanpage Connect */}
-      <div className="glass rounded-[--radius-xl] shadow-[--shadow-glass] p-10 text-center">
+      <div className="glass rounded-lg shadow-[--shadow-glass] p-10 text-center">
         {/* FB Icon */}
         <div className="w-16 h-16 rounded-full bg-[#1877f2]/10 flex items-center justify-center mx-auto mb-6">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="#1877f2">

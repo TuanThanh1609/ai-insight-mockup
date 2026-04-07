@@ -11,7 +11,7 @@ import { Sparkles } from 'lucide-react';
  */
 export function ConversationFunnelSection({ conversations, totalCount }) {
   const { total, hotCount, phoneOkCount, junkCount, returningCount, warmCount } = useMemo(() => {
-    const total = conversations.length;
+    const total = (conversations && conversations.length > 0) ? conversations.length : 0;
     const hotCount = conversations.filter(r =>
       r.temperature === 'Nóng' || r.temperature === 'nóng'
     ).length;
@@ -52,7 +52,7 @@ export function ConversationFunnelSection({ conversations, totalCount }) {
         </div>
 
         {/* 4 funnel stages */}
-        <div className="bg-surface-container-low rounded-[--radius-lg] p-4 flex flex-col gap-3">
+        <div className="bg-gradient-to-br from-white via-[#faf7fc] to-[#f5f1f5] rounded-lg p-4 flex flex-col gap-3 shadow-[--shadow-sm]">
           <FunnelStageRow
             dotColor="#dc2626"
             label="Lead Nóng"
@@ -88,7 +88,7 @@ export function ConversationFunnelSection({ conversations, totalCount }) {
         </div>
 
         {/* KH Quay Lại */}
-        <div className="bg-surface-container-low rounded-[--radius-lg] p-4">
+        <div className="bg-gradient-to-br from-white via-[#faf7fc] to-[#f5f1f5] rounded-lg p-4 shadow-[--shadow-sm]">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="2">
@@ -121,7 +121,7 @@ export function ConversationFunnelSection({ conversations, totalCount }) {
         </div>
 
         {/* AI Suggestion panel */}
-        <div className="bg-white/80 backdrop-blur-12 rounded-[--radius-md] border border-[var(--color-outline-variant)] px-4 py-3">
+        <div className="bg-white/80 backdrop-blur-12 rounded-lg border border-[rgba(26,33,56,0.08)] px-4 py-3 shadow-[--shadow-sm]">
           <div className="flex items-center gap-1.5 mb-2">
             <Sparkles size={13} className="text-[#0052ff]" />
             <span className="text-label-xs font-semibold text-[#0052ff] uppercase tracking-wide">
@@ -207,7 +207,7 @@ function SentimentCard() {
   const maxPct = Math.max(...items.map(i => i.pct));
 
   return (
-    <div className="bg-surface-container-low rounded-[--radius-lg] p-4 h-full">
+    <div className="bg-gradient-to-br from-white via-[#faf7fc] to-[#f5f1f5] rounded-lg p-4 h-full shadow-[--shadow-sm]">
       <h3 className="text-label-sm uppercase tracking-wider text-on-surface-variant font-semibold mb-3 text-center">
         Cảm Xúc Khách Hàng
       </h3>

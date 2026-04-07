@@ -90,7 +90,7 @@ export function AdsConversationDetailPanel({
   };
 
   return (
-    <div className="flex flex-col xl:flex-row gap-0 rounded-[--radius-lg] overflow-hidden"
+    <div className="flex flex-col xl:flex-row gap-0 rounded-lg overflow-hidden"
       style={{ border: '1px solid var(--color-outline-variant)' }}>
 
       {/* ══════════════════════════════════════════ */}
@@ -135,7 +135,7 @@ export function AdsConversationDetailPanel({
             value={search}
             onChange={e => { setSearch(e.target.value); setPage(0); }}
             placeholder="Tìm SĐT hoặc Order ID..."
-            className="w-full px-2.5 py-1.5 rounded-[--radius-md] text-[12px] text-on-surface
+            className="w-full px-2.5 py-1.5 rounded-md text-[12px] text-on-surface
               bg-surface-container-high
               placeholder:text-on-surface-variant/50
               focus:outline-none focus:ring-0
@@ -491,7 +491,7 @@ function AdsMessagesTab({ conv }) {
       </div>
 
       {/* Attribution note */}
-      <div className="mt-4 pt-3 flex items-center gap-2 px-3 py-2 rounded-[--radius-md]"
+      <div className="mt-4 pt-3 flex items-center gap-2 px-3 py-2 rounded-md"
         style={{ background: 'var(--color-surface-container-low)', border: '1px solid var(--color-outline-variant)' }}>
         <span className="text-[11px] text-on-surface-variant">
           📌 Đơn hàng <span className="font-semibold text-tertiary">{conv.orderId}</span> được ghi nhận sau cuộc trò chuyện này.
@@ -570,7 +570,7 @@ function AdsEvaluationTab({ conv, campMap }) {
       </p>
 
       {items.map((item, idx) => (
-        <div key={idx} className="rounded-[--radius-md] px-3 py-2"
+        <div key={idx} className="rounded-md px-3 py-2"
           style={{ backgroundColor: item.bg, border: `1px solid ${item.color}20` }}>
           <div className="flex items-start gap-2">
             <div className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0"
@@ -631,7 +631,7 @@ function AdsActionsTab({ conv }) {
       {actions.map((action, idx) => {
         const cfg = severityConfig[action.severity] || severityConfig.neutral;
         return (
-          <div key={idx} className="rounded-[--radius-md] px-3 py-2.5"
+          <div key={idx} className="rounded-md px-3 py-2.5"
             style={{ backgroundColor: cfg.bg, border: `1px solid ${cfg.border}` }}>
             <div className="flex items-start gap-2 mb-2">
               <div className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] shrink-0 mt-0.5"
@@ -659,7 +659,7 @@ function AdsActionsTab({ conv }) {
       })}
 
       {/* Summary */}
-      <div className="rounded-[--radius-md] px-3 py-2.5 mt-2"
+      <div className="rounded-md px-3 py-2.5 mt-2"
         style={{ background: 'var(--color-surface-container-low)', border: '1px solid var(--color-outline-variant)' }}>
         <div className="flex items-center justify-between">
           <span className="text-[11px] text-on-surface-variant">Tổng hành động</span>
@@ -767,7 +767,7 @@ function AttributionChain({ conv, campMap }) {
       </div>
 
       {/* Order + Summary */}
-      <div className="rounded-[--radius-md] px-3 py-2.5 mt-2"
+      <div className="rounded-md px-3 py-2.5 mt-2"
         style={{ background: 'rgba(5,150,105,0.06)', border: '1px solid rgba(5,150,105,0.15)' }}>
         <div className="flex items-center justify-between mb-1.5">
           <span className="text-[11px] font-semibold text-[#059669]">
@@ -782,19 +782,19 @@ function AttributionChain({ conv, campMap }) {
 
       {/* Summary row */}
       <div className="grid grid-cols-3 gap-2 mt-2">
-        <div className="rounded-[--radius-sm] px-2 py-1.5"
+        <div className="rounded-sm px-2 py-1.5"
           style={{ background: 'var(--color-surface-container-low)', border: '1px solid var(--color-outline-variant)' }}>
           <div className="text-[9px] text-on-surface-variant uppercase tracking-wide">First touch</div>
           <div className="text-[11px] font-semibold text-tertiary truncate">{conv.firstTouch.campaignId}</div>
           <div className="text-[9px] text-on-surface-variant">{conv.firstTouch.daysToConversion} ngày trước</div>
         </div>
-        <div className="rounded-[--radius-sm] px-2 py-1.5"
+        <div className="rounded-sm px-2 py-1.5"
           style={{ background: 'var(--color-surface-container-low)', border: '1px solid var(--color-outline-variant)' }}>
           <div className="text-[9px] text-on-surface-variant uppercase tracking-wide">Last touch</div>
           <div className="text-[11px] font-semibold text-tertiary truncate">{conv.lastTouch.campaignId}</div>
           <div className="text-[9px] text-on-surface-variant">{conv.lastTouch.daysToConversion} ngày trước</div>
         </div>
-        <div className="rounded-[--radius-sm] px-2 py-1.5"
+        <div className="rounded-sm px-2 py-1.5"
           style={{ background: 'var(--color-surface-container-low)', border: '1px solid var(--color-outline-variant)' }}>
           <div className="text-[9px] text-on-surface-variant uppercase tracking-wide">Touches</div>
           <div className="text-[11px] font-semibold text-on-surface">{touches.length}</div>

@@ -34,7 +34,7 @@ function ConversationRow({ row }) {
 
   return (
     <div className={cn(
-      'rounded-[--radius-md] overflow-hidden border transition-colors',
+      'rounded-md overflow-hidden border transition-colors',
       'hover:border-[var(--color-outline-variant)]',
       isJunk ? 'border-red-200/50 bg-red-50/30' : 'border-[var(--color-outline-variant)]/50 bg-surface-container-lowest'
     )}>
@@ -243,7 +243,7 @@ export function ConversationList({ conversations, disease }) {
             placeholder="Tìm kiếm hội thoại..."
             value={search}
             onChange={e => handleSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 text-body-sm bg-surface-container-high rounded-[--radius-md]
+            className="w-full pl-9 pr-3 py-2 text-body-sm bg-surface-container-high rounded-md
                        border-none outline-none focus:ring-2 focus:ring-tertiary/30
                        placeholder:text-on-surface-variant/50 text-on-surface"
           />

@@ -94,7 +94,7 @@ export function AdsOrderTable({
   }
 
   return (
-    <div className="flex flex-col gap-0 rounded-[--radius-lg] overflow-hidden"
+    <div className="flex flex-col gap-0 rounded-lg overflow-hidden"
       style={{ border: '1px solid var(--color-outline-variant)' }}>
 
       {/* ─── Header ─── */}
@@ -112,7 +112,7 @@ export function AdsOrderTable({
         <select
           value={campaignFilter}
           onChange={e => { setCampaignFilter(e.target.value); setPage(0); }}
-          className="text-[12px] px-2 py-1 rounded-[--radius-md] bg-surface-container-high text-on-surface
+          className="text-[12px] px-2 py-1 rounded-md bg-surface-container-high text-on-surface
             focus:outline-none focus:ring-0 border-b-2 border-tertiary cursor-pointer"
         >
           <option value="all">Tất cả chiến dịch</option>
@@ -159,7 +159,7 @@ export function AdsOrderTable({
             value={search}
             onChange={e => { setSearch(e.target.value); setPage(0); }}
             placeholder="Tìm Order ID hoặc SĐT..."
-            className="pl-8 pr-3 py-1.5 rounded-[--radius-md] text-[12px] bg-surface-container-high text-on-surface
+            className="pl-8 pr-3 py-1.5 rounded-md text-[12px] bg-surface-container-high text-on-surface
               placeholder:text-on-surface-variant/50
               focus:outline-none focus:ring-0 border-b-2 border-tertiary w-48"
           />

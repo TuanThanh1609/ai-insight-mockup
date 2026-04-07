@@ -28,7 +28,7 @@ export function CampaignSummaryTable({ campaigns, onSelectCampaign }) {
   return (
     <div className="flex flex-col gap-1">
       {/* Header */}
-      <div className="grid grid-cols-[1fr_100px_90px_80px_110px_80px_70px_90px] gap-3 px-4 py-3 bg-surface-container-low rounded-[--radius-md]">
+      <div className="grid grid-cols-[1fr_100px_90px_80px_110px_80px_70px_90px] gap-3 px-4 py-3 bg-gradient-to-br from-white via-[#faf7fc] to-[#f5f1f5] rounded-lg shadow-[--shadow-sm]">
         <span className="text-xs font-semibold text-on-surface-variant">Chiến dịch</span>
         <span className="text-xs font-semibold text-on-surface-variant text-right">Chi tiêu</span>
         <span className="text-xs font-semibold text-on-surface-variant text-right">Hội thoại</span>
@@ -47,8 +47,8 @@ export function CampaignSummaryTable({ campaigns, onSelectCampaign }) {
           <div
             key={camp.id}
             className={cn(
-              'grid grid-cols-[1fr_100px_90px_80px_110px_80px_70px_90px] gap-3 px-4 py-3 items-center rounded-[--radius-md] transition-colors duration-150 cursor-pointer',
-              'hover:bg-surface-container-low',
+              'grid grid-cols-[1fr_100px_90px_80px_110px_80px_70px_90px] gap-3 px-4 py-3 items-center rounded-lg transition-colors duration-150 cursor-pointer',
+              'hover:bg-[rgba(26,33,56,0.04)]',
               isPaused && 'opacity-60'
             )}
             onClick={() => onSelectCampaign && onSelectCampaign(camp)}

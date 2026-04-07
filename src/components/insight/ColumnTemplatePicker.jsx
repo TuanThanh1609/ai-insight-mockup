@@ -31,7 +31,7 @@ export function ColumnTemplatePicker({ template, onBack, onSave }) {
       <div className="flex items-center gap-3">
         <button
           onClick={onBack}
-          className="p-2 rounded-[--radius-md] text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors cursor-pointer"
+          className="p-2 rounded-md text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors cursor-pointer"
         >
           <ArrowLeft size={18} />
         </button>
@@ -56,7 +56,7 @@ export function ColumnTemplatePicker({ template, onBack, onSave }) {
               key={col.id}
               onClick={() => !isLocked && toggleColumn(col.id)}
               className={cn(
-                'flex items-start gap-3 p-4 rounded-[--radius-md] cursor-pointer transition-all duration-150',
+                'flex items-start gap-3 p-4 rounded-md cursor-pointer transition-all duration-150',
                 isSelected
                   ? 'bg-primary/5 border border-primary/20'
                   : 'bg-surface-container-low hover:bg-surface-container-high',
@@ -66,7 +66,7 @@ export function ColumnTemplatePicker({ template, onBack, onSave }) {
               {/* Checkbox */}
               <div
                 className={cn(
-                  'w-5 h-5 rounded-[4px] border-2 mt-0.5 shrink-0 flex items-center justify-center transition-all duration-150',
+                  'w-5 h-5 rounded-sm border-2 mt-0.5 shrink-0 flex items-center justify-center transition-all duration-150',
                   isSelected
                     ? 'bg-primary border-primary'
                     : 'border-[var(--color-outline-variant)] bg-surface-container-lowest'

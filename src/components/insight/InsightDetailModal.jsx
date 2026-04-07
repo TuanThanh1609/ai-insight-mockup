@@ -128,7 +128,7 @@ function AttitudeChart({ data, onItemClick }) {
           key={item.label}
           onClick={() => item.value > 0 && onItemClick?.({ field: 'attitude', value: item.filterKey, label: item.label, count: item.value })}
           className={cn(
-            "flex-1 text-center rounded-[--radius-md] p-2 transition-all duration-200",
+            "flex-1 text-center rounded-md p-2 transition-all duration-200",
             item.value > 0
               ? "cursor-pointer hover:brightness-95 active:brightness-90 hover:scale-[1.02]"
               : "cursor-default opacity-50"
@@ -154,7 +154,7 @@ function ListItems({ items, highlight = false, onItemClick, clickableField, clic
         <div
           key={i}
           className={cn(
-            "flex items-center justify-between gap-2 rounded-[--radius-sm] transition-colors",
+            "flex items-center justify-between gap-2 rounded-sm transition-colors",
             onItemClick && item.count > 0
               ? "cursor-pointer hover:bg-surface-container-low active:bg-surface-container-low/70 px-1.5 -mx-1.5 py-0.5"
               : ""
@@ -353,7 +353,7 @@ function SentimentDonut({ data, onItemClick }) {
             key={item.label}
             onClick={() => item.value > 0 && onItemClick?.({ field: 'sentiment', value: item.filterKey, label: item.label, count: item.value })}
             className={cn(
-              "flex items-center gap-2 rounded-[--radius-sm] transition-colors px-1 -mx-1 py-0.5",
+              "flex items-center gap-2 rounded-sm transition-colors px-1 -mx-1 py-0.5",
               item.value > 0 ? "cursor-pointer hover:bg-surface-container-low active:bg-surface-container-low/70" : "cursor-default opacity-50"
             )}
             title={item.value > 0 ? `Lọc ${item.value} hội thoại "${item.label}"` : "Không có dữ liệu"}
@@ -748,7 +748,7 @@ export function InsightDetailModal({ insight, isOpen, onClose }) {
         {/* ── TAB 2: Cấu hình ── */}
         {activeTab === 'template' && (
           <div className="flex flex-col gap-5">
-            <div className="flex items-start gap-3 p-4 bg-primary/5 rounded-[--radius-md] border border-primary/20">
+            <div className="flex items-start gap-3 p-4 bg-primary/5 rounded-md border border-primary/20">
               <span className="text-2xl mt-0.5">{template?.icon}</span>
               <div>
                 <h3 className="font-display font-bold text-base text-on-surface mb-0.5">{template?.name}</h3>
@@ -762,7 +762,7 @@ export function InsightDetailModal({ insight, isOpen, onClose }) {
                 {template?.columns.map((col, i) => (
                   <div
                     key={col.id}
-                    className="flex items-start gap-3 p-4 bg-surface-container-low rounded-[--radius-md]"
+                    className="flex items-start gap-3 p-4 bg-surface-container-low rounded-md"
                   >
                     <span className="text-lg">{col.icon}</span>
                     <div className="flex-1 min-w-0">
@@ -934,7 +934,7 @@ export function InsightDetailModal({ insight, isOpen, onClose }) {
           <div className="flex flex-col gap-4">
             {/* Cross-filter active banner */}
             {crossFilter && (
-              <div className="flex items-center justify-between gap-3 px-4 py-3 rounded-[--radius-md] bg-primary/8 border border-primary/20">
+              <div className="flex items-center justify-between gap-3 px-4 py-3 rounded-md bg-primary/8 border border-primary/20">
                 <div className="flex items-center gap-2 min-w-0">
                   <MousePointerClick size={14} className="text-primary shrink-0" />
                   <span className="text-xs text-on-surface">
@@ -981,7 +981,7 @@ export function InsightDetailModal({ insight, isOpen, onClose }) {
                       placeholder="Tìm kiếm khách hàng..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-8 pr-3 py-1.5 text-xs bg-surface-container-lowest border border-[var(--color-outline-variant)] rounded-[--radius-sm] text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:border-primary"
+                      className="w-full pl-8 pr-3 py-1.5 text-xs bg-surface-container-lowest border border-[var(--color-outline-variant)] rounded-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:border-primary"
                     />
                   </div>
 
@@ -1003,7 +1003,7 @@ export function InsightDetailModal({ insight, isOpen, onClose }) {
                 </div>
 
                 {/* Table */}
-                <div className="overflow-x-auto rounded-[--radius-md] border border-[var(--color-outline-variant)]">
+                <div className="overflow-x-auto rounded-md border border-[var(--color-outline-variant)]">
                   <table className="w-full text-xs">
                     <thead>
                       <tr className="bg-surface-container-low">
@@ -1160,7 +1160,7 @@ export function InsightDetailModal({ insight, isOpen, onClose }) {
                       <button
                         onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                         disabled={currentPage === 1}
-                        className="p-1.5 rounded-[--radius-sm] text-on-surface-variant hover:bg-surface-container-low disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        className="p-1.5 rounded-sm text-on-surface-variant hover:bg-surface-container-low disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                       >
                         <ChevronLeft size={14} />
                       </button>
@@ -1169,7 +1169,7 @@ export function InsightDetailModal({ insight, isOpen, onClose }) {
                           key={page}
                           onClick={() => setCurrentPage(page)}
                           className={cn(
-                            'w-7 h-7 rounded-[--radius-sm] text-xs font-medium transition-colors',
+                            'w-7 h-7 rounded-sm text-xs font-medium transition-colors',
                             page === currentPage
                               ? 'bg-primary text-on-primary'
                               : 'text-on-surface-variant hover:bg-surface-container-low'
@@ -1181,7 +1181,7 @@ export function InsightDetailModal({ insight, isOpen, onClose }) {
                       <button
                         onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                         disabled={currentPage === totalPages}
-                        className="p-1.5 rounded-[--radius-sm] text-on-surface-variant hover:bg-surface-container-low disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        className="p-1.5 rounded-sm text-on-surface-variant hover:bg-surface-container-low disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                       >
                         <ChevronRight size={14} />
                       </button>

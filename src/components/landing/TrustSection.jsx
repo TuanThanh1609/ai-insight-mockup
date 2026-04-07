@@ -60,7 +60,7 @@ export function TrustSection() {
           <div
             style={{
               background: '#f3f4f6',
-              borderRadius: '16px',
+              borderRadius: 'var(--radius-xl)',
               padding: 'clamp(28px, 4vw, 48px)',
               display: 'flex',
               flexDirection: 'column',
@@ -119,7 +119,7 @@ export function TrustSection() {
           <div
             style={{
               background: '#1a2138',
-              borderRadius: '16px',
+              borderRadius: 'var(--radius-xl)',
               padding: 'clamp(24px, 3.2vw, 40px)',
               display: 'flex',
               flexDirection: 'column',

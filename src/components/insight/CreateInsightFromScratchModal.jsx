@@ -74,7 +74,7 @@ function AIGenerating({ message }) {
 // ─── Error banner ─────────────────────────────────────────────────────────────
 function ErrorBanner({ message, onRetry }) {
   return (
-    <div className="flex items-center gap-3 p-4 bg-error/10 border border-error/20 rounded-[--radius-md] mb-4">
+    <div className="flex items-center gap-3 p-4 bg-error/10 border border-error/20 rounded-md mb-4">
       <AlertCircle size={18} className="text-error shrink-0" />
       <p className="flex-1 text-xs text-error">{message}</p>
       {onRetry && (
@@ -100,7 +100,7 @@ function BusinessInfoForm({ data, onChange }) {
           value={data.businessName}
           onChange={(e) => onChange({ ...data, businessName: e.target.value })}
           placeholder="VD: Maison De Mode, Bibo Mart, Luxe Spa..."
-          className="w-full bg-surface-container-lowest border border-[var(--color-outline-variant)] rounded-[--radius-md] px-4 py-2.5 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
+          className="w-full bg-surface-container-lowest border border-[var(--color-outline-variant)] rounded-md px-4 py-2.5 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
         />
       </div>
 
@@ -115,7 +115,7 @@ function BusinessInfoForm({ data, onChange }) {
               key={ind.id}
               onClick={() => onChange({ ...data, industry: ind.id, industryLabel: ind.label })}
               className={cn(
-                'flex items-center gap-2 py-2.5 px-3 rounded-[--radius-md] text-xs font-medium transition-all border cursor-pointer text-left',
+                'flex items-center gap-2 py-2.5 px-3 rounded-md text-xs font-medium transition-all border cursor-pointer text-left',
                 data.industry === ind.id
                   ? 'bg-primary text-on-primary border-primary shadow-sm'
                   : 'bg-surface-container-lowest text-on-surface-variant border-[var(--color-outline-variant)] hover:border-primary/40'
@@ -161,7 +161,7 @@ function BusinessInfoForm({ data, onChange }) {
           onChange={(e) => onChange({ ...data, targetAudience: e.target.value })}
           placeholder="VD: Phụ nữ 25-40 tuổi, thu nhập trung bình-cao, quan tâm sản phẩm chăm sóc da..."
           rows={3}
-          className="w-full bg-surface-container-lowest border border-[var(--color-outline-variant)] rounded-[--radius-md] px-4 py-2.5 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors resize-none leading-relaxed"
+          className="w-full bg-surface-container-lowest border border-[var(--color-outline-variant)] rounded-md px-4 py-2.5 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors resize-none leading-relaxed"
         />
       </div>
 
@@ -175,12 +175,12 @@ function BusinessInfoForm({ data, onChange }) {
           onChange={(e) => onChange({ ...data, analysisGoals: e.target.value })}
           placeholder="VD: Muốn biết khách hàng thường hỏi về vấn đề gì, phát hiện khách có ý định mua hay chỉ thăm dò, đánh giá chất lượng tư vấn của nhân viên..."
           rows={3}
-          className="w-full bg-surface-container-lowest border border-[var(--color-outline-variant)] rounded-[--radius-md] px-4 py-2.5 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors resize-none leading-relaxed"
+          className="w-full bg-surface-container-lowest border border-[var(--color-outline-variant)] rounded-md px-4 py-2.5 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors resize-none leading-relaxed"
         />
       </div>
 
       {/* AI hint */}
-      <div className="flex items-start gap-2.5 p-3 bg-primary/5 border border-primary/15 rounded-[--radius-md]">
+      <div className="flex items-start gap-2.5 p-3 bg-primary/5 border border-primary/15 rounded-md">
         <Zap size={14} className="text-primary shrink-0 mt-0.5" />
         <p className="text-xs text-on-surface-variant leading-relaxed">
           <strong className="text-primary font-semibold">Custom AI</strong> sẽ phân tích thông tin bên trên và tự gen ra{' '}
@@ -199,7 +199,7 @@ function InsightPreviewCard({ insight, index, selected, onToggle, onEdit, editin
   return (
     <div
       className={cn(
-        'relative rounded-[--radius-lg] border transition-all',
+        'relative rounded-lg border transition-all',
         selected
           ? 'border-primary bg-primary/5 shadow-sm'
           : 'border-[var(--color-outline-variant)] bg-surface-container-lowest hover:border-primary/30'
@@ -222,7 +222,7 @@ function InsightPreviewCard({ insight, index, selected, onToggle, onEdit, editin
       <div className="p-4 pb-3">
         <div className="flex items-start gap-3 pr-8">
           <div
-            className="w-9 h-9 rounded-[--radius-md] bg-surface-container-low flex items-center justify-center shrink-0 text-lg"
+            className="w-9 h-9 rounded-md bg-surface-container-low flex items-center justify-center shrink-0 text-lg"
           >
             {insight.icon}
           </div>
@@ -330,14 +330,14 @@ function InsightEditModal({ insight, onSave, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-      <div className="bg-surface-container-lowest rounded-[--radius-xl] shadow-modal w-full max-w-2xl max-h-[85vh] overflow-y-auto">
+      <div className="bg-surface-container-lowest rounded-xl shadow-modal w-full max-w-2xl max-h-[85vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-[var(--color-outline-variant)]">
           <div>
             <h3 className="font-display font-bold text-base text-on-surface">Sửa Insight</h3>
             <p className="text-xs text-on-surface-variant mt-0.5">{data.name}</p>
           </div>
-          <button onClick={onClose} className="p-2 rounded-[--radius-md] hover:bg-surface-container-low transition-colors cursor-pointer text-on-surface-variant">
+          <button onClick={onClose} className="p-2 rounded-md hover:bg-surface-container-low transition-colors cursor-pointer text-on-surface-variant">
             <X size={18} />
           </button>
         </div>
@@ -351,12 +351,12 @@ function InsightEditModal({ insight, onSave, onClose }) {
                 type="text"
                 value={data.name}
                 onChange={(e) => setData({ ...data, name: e.target.value })}
-                className="w-full bg-surface-container-low border border-[var(--color-outline-variant)] rounded-[--radius-md] px-3 py-2 text-sm text-on-surface focus:outline-none focus:border-primary"
+                className="w-full bg-surface-container-low border border-[var(--color-outline-variant)] rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:border-primary"
               />
             </div>
             <div>
               <label className="block text-xs font-semibold text-on-surface-variant mb-1.5 uppercase">Icon</label>
-              <div className="flex flex-wrap gap-1 bg-surface-container-low border border-[var(--color-outline-variant)] rounded-[--radius-md] p-2 h-[42px] overflow-y-auto">
+              <div className="flex flex-wrap gap-1 bg-surface-container-low border border-[var(--color-outline-variant)] rounded-md p-2 h-[42px] overflow-y-auto">
                 {INSIGHT_ICONS.map((ic) => (
                   <button
                     key={ic}
@@ -380,7 +380,7 @@ function InsightEditModal({ insight, onSave, onClose }) {
               value={data.description}
               onChange={(e) => setData({ ...data, description: e.target.value })}
               rows={2}
-              className="w-full bg-surface-container-low border border-[var(--color-outline-variant)] rounded-[--radius-md] px-3 py-2 text-sm text-on-surface focus:outline-none focus:border-primary resize-none"
+              className="w-full bg-surface-container-low border border-[var(--color-outline-variant)] rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:border-primary resize-none"
             />
           </div>
 
@@ -421,14 +421,14 @@ function InsightEditModal({ insight, onSave, onClose }) {
                       value={col.name}
                       onChange={(e) => updateColumn(ci, { ...col, name: e.target.value })}
                       placeholder="Tên cột (VD: Lead Temperature)"
-                      className="w-full bg-surface-container-lowest border border-[var(--color-outline-variant)] rounded-[--radius-sm] px-3 py-2 text-xs text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary"
+                      className="w-full bg-surface-container-lowest border border-[var(--color-outline-variant)] rounded-sm px-3 py-2 text-xs text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary"
                     />
                     <textarea
                       value={col.prompt}
                       onChange={(e) => updateColumn(ci, { ...col, prompt: e.target.value })}
                       placeholder="Prompt cho AI trích xuất dữ liệu..."
                       rows={2}
-                      className="w-full bg-surface-container-lowest border border-[var(--color-outline-variant)] rounded-[--radius-sm] px-3 py-2 text-xs text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary resize-none leading-relaxed"
+                      className="w-full bg-surface-container-lowest border border-[var(--color-outline-variant)] rounded-sm px-3 py-2 text-xs text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary resize-none leading-relaxed"
                     />
 
                     {/* Options for select/dropdown */}
@@ -443,7 +443,7 @@ function InsightEditModal({ insight, onSave, onClose }) {
                                 value={opt}
                                 onChange={(e) => updateOption(ci, oi, e.target.value)}
                                 placeholder={`Lựa chọn ${oi + 1}`}
-                                className="flex-1 bg-surface-container-low border border-[var(--color-outline-variant)] rounded-[--radius-sm] px-2 py-1.5 text-xs text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary"
+                                className="flex-1 bg-surface-container-low border border-[var(--color-outline-variant)] rounded-sm px-2 py-1.5 text-xs text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary"
                               />
                               <button onClick={() => removeOption(ci, oi)} className="p-1 text-error/60 hover:text-error cursor-pointer">
                                 <X size={11} />
@@ -485,9 +485,9 @@ function InsightEditModal({ insight, onSave, onClose }) {
 function MasterInsightBanner({ master, onEdit }) {
   if (!master) return null;
   return (
-    <div className="mb-5 rounded-[--radius-lg] bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/20 p-4">
+    <div className="mb-5 rounded-lg bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/20 p-4">
       <div className="flex items-start gap-3">
-        <div className="w-10 h-10 rounded-[--radius-md] bg-primary/15 flex items-center justify-center shrink-0 text-xl">
+        <div className="w-10 h-10 rounded-md bg-primary/15 flex items-center justify-center shrink-0 text-xl">
           {master.icon || '🏢'}
         </div>
         <div className="flex-1 min-w-0">
@@ -721,7 +721,7 @@ export function CreateInsightFromScratchModal({ isOpen, onClose, onSave }) {
                 </div>
 
                 {/* Tip */}
-                <div className="flex items-start gap-2 mt-4 p-3 bg-primary/5 border border-primary/15 rounded-[--radius-md]">
+                <div className="flex items-start gap-2 mt-4 p-3 bg-primary/5 border border-primary/15 rounded-md">
                   <Sparkles size={12} className="text-primary shrink-0 mt-0.5" />
                   <p className="text-xs text-on-surface-variant leading-relaxed">
                     AI đã tạo 6 insight theo <strong className="text-primary">{businessData.industryLabel || businessData.industry}</strong>. Bạn có thể{' '}
@@ -739,7 +739,7 @@ export function CreateInsightFromScratchModal({ isOpen, onClose, onSave }) {
             {/* Master summary */}
             <Card className="p-5">
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-[--radius-md] bg-primary/10 flex items-center justify-center shrink-0 text-xl">
+                <div className="w-10 h-10 rounded-md bg-primary/10 flex items-center justify-center shrink-0 text-xl">
                   {masterInsight?.icon || '🏢'}
                 </div>
                 <div>
@@ -761,7 +761,7 @@ export function CreateInsightFromScratchModal({ isOpen, onClose, onSave }) {
                 {selectedInsightIds.map((idx) => {
                   const ins = generatedInsights[idx];
                   return (
-                    <div key={idx} className="flex items-center gap-3 p-3 rounded-[--radius-md] bg-surface-container-low">
+                    <div key={idx} className="flex items-center gap-3 p-3 rounded-md bg-surface-container-low">
                       <span className="text-lg">{ins.icon}</span>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-semibold text-on-surface">{ins.name}</p>
@@ -778,11 +778,11 @@ export function CreateInsightFromScratchModal({ isOpen, onClose, onSave }) {
 
             {/* Business summary */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 rounded-[--radius-md] bg-surface-container-low">
+              <div className="p-3 rounded-md bg-surface-container-low">
                 <p className="text-[10px] font-semibold text-on-surface-variant uppercase mb-1">Doanh nghiệp</p>
                 <p className="text-sm font-medium text-on-surface">{businessData.businessName}</p>
               </div>
-              <div className="p-3 rounded-[--radius-md] bg-surface-container-low">
+              <div className="p-3 rounded-md bg-surface-container-low">
                 <p className="text-[10px] font-semibold text-on-surface-variant uppercase mb-1">Ngành hàng</p>
                 <p className="text-sm font-medium text-on-surface">{businessData.industryLabel || businessData.industry}</p>
               </div>
@@ -840,7 +840,7 @@ export function CreateInsightFromScratchModal({ isOpen, onClose, onSave }) {
       {/* Master edit modal */}
       {editingMaster && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-          <div className="bg-surface-container-lowest rounded-[--radius-xl] shadow-modal w-full max-w-lg p-5">
+          <div className="bg-surface-container-lowest rounded-xl shadow-modal w-full max-w-lg p-5">
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-display font-bold text-base text-on-surface">Sửa Master Insight</h3>
               <button onClick={() => setEditingMaster(false)} className="p-2 rounded hover:bg-surface-container-low cursor-pointer text-on-surface-variant">
@@ -885,13 +885,13 @@ function MasterInsightEdit({ data, onChange, onClose }) {
       <div>
         <label className="block text-xs font-semibold text-on-surface-variant mb-1.5 uppercase">Tên Master Insight</label>
         <input type="text" value={local.name || ''} onChange={(e) => setLocal({ ...local, name: e.target.value })}
-          className="w-full bg-surface-container-low border border-[var(--color-outline-variant)] rounded-[--radius-md] px-3 py-2 text-sm text-on-surface focus:outline-none focus:border-primary" />
+          className="w-full bg-surface-container-low border border-[var(--color-outline-variant)] rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:border-primary" />
       </div>
       <div>
         <label className="block text-xs font-semibold text-on-surface-variant mb-1.5 uppercase">Mô tả</label>
         <textarea value={local.description || ''} onChange={(e) => setLocal({ ...local, description: e.target.value })}
           rows={3}
-          className="w-full bg-surface-container-low border border-[var(--color-outline-variant)] rounded-[--radius-md] px-3 py-2 text-sm text-on-surface focus:outline-none focus:border-primary resize-none leading-relaxed" />
+          className="w-full bg-surface-container-low border border-[var(--color-outline-variant)] rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:border-primary resize-none leading-relaxed" />
       </div>
       <div>
         <div className="flex items-center justify-between mb-1.5">
@@ -905,7 +905,7 @@ function MasterInsightEdit({ data, onChange, onClose }) {
             <div key={i} className="flex items-center gap-2">
               <input type="text" value={area} onChange={(e) => updateFocus(i, e.target.value)}
                 placeholder={`Focus area ${i + 1}`}
-                className="flex-1 bg-surface-container-low border border-[var(--color-outline-variant)] rounded-[--radius-sm] px-3 py-1.5 text-xs text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary" />
+                className="flex-1 bg-surface-container-low border border-[var(--color-outline-variant)] rounded-sm px-3 py-1.5 text-xs text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary" />
               <button onClick={() => removeFocus(i)} className="p-1 text-error/60 hover:text-error cursor-pointer"><X size={12} /></button>
             </div>
           ))}

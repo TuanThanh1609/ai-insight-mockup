@@ -4,6 +4,7 @@ export { AdsConnectStep } from './AdsConnectStep';
 export { AdsCampaignSelectStep } from './AdsCampaignSelectStep';
 export { AdsDateRangeStep } from './AdsDateRangeStep';
 export { AdsCrawlProgressStep } from './AdsCrawlProgressStep';
+export { AdsDiseaseMenuSelectStep } from './AdsDiseaseMenuSelectStep';
 
 // Dashboard Components
 export { AdsMedicalDashboard } from './AdsMedicalDashboard';

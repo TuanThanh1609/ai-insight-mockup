@@ -1,9 +1,9 @@
 export function Footer() {
   return (
     <footer
+      className="bg-gradient-to-br from-[#1a2138] via-[#0f1729] to-[#1a2138]"
       style={{
-        background: '#080d1a',
-        borderTop: '1px solid rgba(255,255,255,0.05)',
+        borderTop: '1px solid rgba(26,33,56,0.08)',
         padding: 'clamp(40px, 6vw, 64px) clamp(24px, 5vw, 64px)',
       }}
     >
@@ -23,7 +23,7 @@ export function Footer() {
                 style={{
                   width: '32px',
                   height: '32px',
-                  borderRadius: '8px',
+                  borderRadius: 'var(--radius-md)',
                   background: '#BF3003',
                   display: 'flex',
                   alignItems: 'center',
@@ -64,9 +64,9 @@ export function Footer() {
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {['Tổng quan Dashboard', 'Gợi ý tối ưu Ads', 'Template Insights', 'Cài đặt Insights'].map((item) => (
                 <li key={item}>
-                  <a href="#" style={{ fontFamily: 'var(--font-body)', fontSize: '0.875rem', color: 'rgba(255,255,255,0.50)', textDecoration: 'none', transition: 'color 0.15s ease' }}
-                    onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.color = 'rgba(255,255,255,0.50)'; }}
+                  <a href="#" style={{ fontFamily: 'var(--font-body)', fontSize: '0.875rem', color: 'rgba(26,33,56,0.60)', textDecoration: 'none', transition: 'color 0.15s ease' }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = '#1a2138'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = 'rgba(26,33,56,0.60)'; }}
                   >
                     {item}
                   </a>
@@ -81,9 +81,9 @@ export function Footer() {
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {['Giới thiệu', 'Blog', 'Liên hệ', 'Chính sách bảo mật'].map((item) => (
                 <li key={item}>
-                  <a href="#" style={{ fontFamily: 'var(--font-body)', fontSize: '0.875rem', color: 'rgba(255,255,255,0.50)', textDecoration: 'none', transition: 'color 0.15s ease' }}
-                    onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.color = 'rgba(255,255,255,0.50)'; }}
+                  <a href="#" style={{ fontFamily: 'var(--font-body)', fontSize: '0.875rem', color: 'rgba(26,33,56,0.60)', textDecoration: 'none', transition: 'color 0.15s ease' }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = '#1a2138'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = 'rgba(26,33,56,0.60)'; }}
                   >
                     {item}
                   </a>
@@ -94,11 +94,11 @@ export function Footer() {
         </div>
 
         {/* Bottom */}
-        <div style={{ borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
-          <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.8125rem', color: 'rgba(255,255,255,0.25)' }}>
+        <div style={{ borderTop: '1px solid rgba(26,33,56,0.08)', paddingTop: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.8125rem', color: 'rgba(26,33,56,0.40)' }}>
             © 2026 AI Insight. Tất cả quyền được bảo lưu.
           </p>
-          <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.8125rem', color: 'rgba(255,255,255,0.20)' }}>
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.8125rem', color: 'rgba(26,33,56,0.30)' }}>
             Made with care in Vietnam
           </p>
         </div>

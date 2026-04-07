@@ -119,11 +119,11 @@ export function IndustryFormStep({ config, onIndustrySelect, onCustomerGroup, on
               type="button"
               onClick={() => setSelectedIndustry(industry.value)}
               className={[
-                'relative flex flex-col items-center text-center gap-3 p-6 rounded-[8px] cursor-pointer transition-all',
-                'bg-surface-container-low hover:bg-surface-container hover:-translate-y-1',
+                'relative flex flex-col items-center text-center gap-3 p-6 rounded-lg cursor-pointer transition-all shadow-[--shadow-sm]',
+                'bg-gradient-to-br from-white via-[#faf7fc] to-[#f5f1f5] hover:bg-[rgba(255,255,255,0.70)] hover:-translate-y-1',
                 isSelected
-                  ? 'border-l-4 border-secondary shadow-md'
-                  : 'border border-transparent',
+                  ? 'border-l-4 border-secondary shadow-[--shadow-md]'
+                  : 'border border-[rgba(26,33,56,0.08)]',
               ].join(' ')}
             >
               {/* Icon circle */}
@@ -132,7 +132,7 @@ export function IndustryFormStep({ config, onIndustrySelect, onCustomerGroup, on
                   'w-16 h-16 rounded-full flex items-center justify-center transition-colors',
                   isSelected
                     ? 'bg-secondary-fixed text-secondary'
-                    : 'bg-surface-container text-on-surface-variant',
+                    : 'bg-gradient-to-br from-[#f5f1f5] to-[#ede9ee] text-on-surface-variant',
                 ].join(' ')}
               >
                 <Icon size={28} strokeWidth={1.5} />
@@ -160,7 +160,7 @@ export function IndustryFormStep({ config, onIndustrySelect, onCustomerGroup, on
       {/* Disease Preview Panel — shows only after industry selected */}
       {selectedIndustry && (
         <div
-          className="glass-panel p-8 rounded-[8px] mt-8 transition-all duration-300"
+          className="glass-panel p-8 rounded-xl mt-8 transition-all duration-300 shadow-[--shadow-sm]"
           style={{ boxShadow: AMBIENT_SHADOW }}
         >
           {/* Panel header */}
@@ -208,9 +208,8 @@ export function IndustryFormStep({ config, onIndustrySelect, onCustomerGroup, on
         <textarea
           value={customerGroup}
           onChange={(e) => setCustomerGroup(e.target.value)}
-          className="w-full bg-surface-container-highest border-none rounded-[8px] p-5 text-body-md text-on-surface
-            placeholder:text-on-surface-variant/50 resize-none focus:ring-0 transition-all
-            hover:bg-surface-container-lowest"
+          className="w-full bg-gradient-to-br from-[#f5f1f5] to-[#ede9ee] border-none rounded-xl p-5 text-body-md text-on-surface
+            placeholder:text-on-surface-variant/50 resize-none focus:ring-0 transition-all shadow-[--shadow-sm]"
           style={{ boxShadow: AMBIENT_SHADOW }}
           placeholder="VD: Shop bán đầm công sở, 25-35 tuổi, thu nhập khá, quan tâm đến thời trang bền vững..."
           rows={3}
@@ -218,7 +217,7 @@ export function IndustryFormStep({ config, onIndustrySelect, onCustomerGroup, on
       </div>
 
       {/* Navigation Footer */}
-      <div className="flex items-center justify-between pt-8 border-t border-surface-container">
+      <div className="flex items-center justify-between pt-8 border-t border-[rgba(26,33,56,0.08)]">
         <Button variant="ghost" onClick={onBack} className="gap-2">
           <ChevronLeft size={16} />
           Quay lại

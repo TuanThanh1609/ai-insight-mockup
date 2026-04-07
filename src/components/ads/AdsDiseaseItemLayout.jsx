@@ -36,7 +36,7 @@ export function AdsDiseaseItemLayout({
       {/* Right 1/3 */}
       <div className="xl:col-span-1 min-w-0 flex flex-col gap-3">
         {/* Critical Alerts */}
-        <div className="bg-surface-container-low rounded-[--radius-lg] p-4">
+        <div className="bg-surface-container-low rounded-lg p-4">
           <AdsCriticalAlertsPanel
             diseases={[disease]}
             attributionData={attributionData}
@@ -45,7 +45,7 @@ export function AdsDiseaseItemLayout({
         </div>
 
         {/* Smax Recommendations */}
-        <div className="bg-surface-container-low rounded-[--radius-lg] p-4">
+        <div className="bg-surface-container-low rounded-lg p-4">
           <AdsSmaxRecommendationsPanel
             disease={disease}
             recommendations={disease.recommendations || []}

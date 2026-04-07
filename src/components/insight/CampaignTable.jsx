@@ -59,7 +59,7 @@ function ConfirmModal({ campaign, action, onConfirm, onCancel }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-on-surface/30" onClick={onCancel} />
-      <div className="relative bg-surface-container-lowest rounded-[--radius-lg] p-6 w-[340px] shadow-2xl">
+      <div className="relative bg-surface-container-lowest rounded-lg p-6 w-[340px] shadow-2xl">
         <h3 className="font-display font-bold text-base text-on-surface mb-2">
           Xác nhận hành động
         </h3>
@@ -216,7 +216,7 @@ export function CampaignTable({ campaigns, onSelectCampaign }) {
   return (
     <div className="flex flex-col gap-1">
       {/* Header */}
-      <div className="grid grid-cols-[1fr_90px_80px_80px_95px_70px_70px_80px_100px_60px_40px] gap-3 px-4 py-3 bg-surface-container-low rounded-[--radius-md]">
+      <div className="grid grid-cols-[1fr_90px_80px_80px_95px_70px_70px_80px_100px_60px_40px] gap-3 px-4 py-3 bg-surface-container-low rounded-md">
         <span className="text-xs font-semibold text-on-surface-variant">Chiến dịch</span>
         <span className="text-xs font-semibold text-on-surface-variant">Chi tiêu</span>
         <span className="text-xs font-semibold text-on-surface-variant">Hội thoại</span>
@@ -237,7 +237,7 @@ export function CampaignTable({ campaigns, onSelectCampaign }) {
         const isExpanded = expandedId === camp.id;
 
         return (
-          <div key={camp.id} className="flex flex-col rounded-[--radius-md] overflow-hidden">
+          <div key={camp.id} className="flex flex-col rounded-md overflow-hidden">
             {/* Main row */}
             <div
               className={cn(

@@ -56,7 +56,11 @@ function Toast({ message, type, onClose }) {
   return (
     <div
       className={cn(
-        'flex items-center gap-3 px-4 py-3 rounded-[--radius-md] shadow-[0_4px_20px_rgba(44,52,55,0.12)] pointer-events-auto max-w-sm',
+        'flex items-center gap-3 px-4 py-3',
+        'rounded-lg',
+        'shadow-[--shadow-lg]',
+        'pointer-events-auto max-w-sm',
+        'bg-gradient-to-br from-white via-[#faf7fc] to-[#f5f1f5]',
         bgColors[type]
       )}
     >
@@ -64,7 +68,7 @@ function Toast({ message, type, onClose }) {
       <span className="text-sm font-medium text-on-surface flex-1">{message}</span>
       <button
         onClick={onClose}
-        className="p-0.5 rounded-full hover:bg-black/5 transition-colors cursor-pointer"
+        className="p-1 rounded-md hover:bg-[rgba(26,33,56,0.06)] active:bg-[rgba(26,33,56,0.10)] transition-all duration-150 cursor-pointer"
       >
         <X size={14} className="text-on-surface-variant" />
       </button>

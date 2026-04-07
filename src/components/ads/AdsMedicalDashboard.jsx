@@ -1,7 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { RotateCcw, Download } from 'lucide-react';
 import { Button } from '../ui/Button';
-import { cn } from '../../lib/utils';
 import { mockCampaigns } from '../../data/mockCampaigns';
 import {
   loadAttributionData,
@@ -13,9 +12,71 @@ import {
 } from '../../lib/adsMedicalService';
 import { AdsFilterTabs } from './AdsFilterTabs';
 import { AdsHealthScoreHeader } from './AdsHealthScoreHeader';
-import { AttributionFunnel } from './AttributionFunnel';
-import { AdsRoasBreakdown } from './AdsRoasBreakdown';
 import { AdsDiseaseItemLayout } from './AdsDiseaseItemLayout';
+import { AdsCampaignOverviewTable } from './AdsCampaignOverviewTable';
+
+function AdsKpiCards({ attrSummary, diseases }) {
+  const getDiseaseScore = (id) => diseases.find(d => d.id === id)?.score ?? 0;
+
+  const cards = [
+    {
+      id: 'matched-rate',
+      title: 'Tỉ lệ Match',
+      value: `${Math.round(attrSummary.matchedRate ?? 0)}%`,
+      color: '#0052FF',
+      trend: '↑2% hôm nay',
+      trendColor: '#059669',
+      icon: '🔗',
+    },
+    {
+      id: 'roas-real',
+      title: 'ROAS Thực',
+      value: `${getDiseaseScore('roas-health').toFixed(1)}/10`,
+      color: '#059669',
+      trend: '↑0.3 hôm nay',
+      trendColor: '#059669',
+      icon: '📊',
+    },
+    {
+      id: 'lead-order',
+      title: 'Tỉ lệ Lead→Đơn',
+      value: `${getDiseaseScore('lead-order-conversion').toFixed(1)}/10`,
+      color: '#d97706',
+      trend: '↓0.2 hôm nay',
+      trendColor: '#dc2626',
+      icon: '🔁',
+    },
+    {
+      id: 'junk-rate',
+      title: 'Tỉ lệ Campaign Rác',
+      value: `${getDiseaseScore('junk-campaigns').toFixed(1)}/10`,
+      color: '#dc2626',
+      trend: '↑0.1 hôm nay',
+      trendColor: '#059669',
+      icon: '⚠️',
+    },
+  ];
+
+  return (
+    <div>
+      <div className="text-label-sm font-semibold text-on-surface-variant uppercase tracking-wide mb-3 px-1">
+        Chỉ Số Quan Trọng
+      </div>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        {cards.map(card => (
+          <div key={card.id} className="bg-surface-container-low rounded-lg p-4">
+            <div className="flex items-center gap-1.5 mb-2">
+              <span>{card.icon}</span>
+              <span className="text-label-xs font-bold text-on-surface-variant uppercase tracking-wide">{card.title}</span>
+            </div>
+            <div className="text-headline-md font-bold" style={{ color: card.color }}>{card.value}</div>
+            <div className="mt-2 text-label-xs font-semibold" style={{ color: card.trendColor }}>{card.trend}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 // ─── Saved Actions Bar ────────────────────────────────────────────────────────
 
@@ -68,56 +129,19 @@ function buildAttributionSummary(attributionData) {
   const avgRate = (key) => attributionData.reduce((s, r) => s + (r[key] || 0), 0) / n;
   const total = (key) => attributionData.reduce((s, r) => s + (r[key] || 0), 0);
   const totalRev = total('untrackedRevenue');
+  const matchedRate = Math.round(avgRate('matchedRate'));
+  const orders = Math.round(totalRev / 580000); // derive orders from revenue
+  const matchedOrders = Math.round(orders * matchedRate / 100);
+  const untrackedOrders = orders - matchedOrders;
+  const conversations = Math.round(n * 12); // approximate conversations from attribution rows
   return {
-    impressions: 1245000, clicks: 18420, conversations: 368, orders: 89,
-    matchedOrders: Math.round(89 * avgRate('matchedRate') / 100),
-    untrackedOrders: Math.round(89 - 89 * avgRate('matchedRate') / 100),
+    impressions: 1245000, clicks: 18420, conversations,
+    orders, matchedOrders, untrackedOrders,
     phoneCollectedRate: 24.2,
-    matchedRate: Math.round(avgRate('matchedRate')),
+    phoneCollected: Math.round(conversations * 0.242),
+    matchedRate,
     avgOrderValue: 580000,
   };
-}
-
-// ─── ROAS Breakdown data from attribution rows ─────────────────────────────────
-
-function buildRoasBreakdownData(attributionData, campaigns) {
-  if (!attributionData?.length) {
-    return [
-      { id: 'camp-1', name: 'KPI Spring Sale 2026', platform: 'facebook', roasOriginal: 4.0, roasActual: 3.2, gapPercent: -20, orders: 164, matchedOrders: 131, untrackedOrders: 33, revenue: 65600000, untrackedRevenue: 13200000, aiAction: 'keep', status: 'active' },
-      { id: 'camp-2', name: 'Retargeting Q1 2026', platform: 'zalo', roasOriginal: 2.8, roasActual: 1.9, gapPercent: -32, orders: 89, matchedOrders: 60, untrackedOrders: 29, revenue: 34200000, untrackedRevenue: 10944000, aiAction: 'increase', status: 'active' },
-      { id: 'camp-3', name: 'Brand Awareness Q1', platform: 'facebook', roasOriginal: 1.2, roasActual: 0.9, gapPercent: -25, orders: 41, matchedOrders: 31, untrackedOrders: 10, revenue: 12300000, untrackedRevenue: 3075000, aiAction: 'decrease', status: 'active' },
-    ];
-  }
-
-  // Group by campaign
-  const byCampaign = {};
-  for (const row of attributionData) {
-    if (!byCampaign[row.campaignId]) {
-      byCampaign[row.campaignId] = { id: row.campaignId, name: row.campaignName, platform: row.platform, rows: [] };
-    }
-    byCampaign[row.campaignId].rows.push(row);
-  }
-
-  return Object.values(byCampaign).map(camp => {
-    const avgOrig = camp.rows.reduce((s, r) => s + r.roasOriginal, 0) / camp.rows.length;
-    const avgActual = camp.rows.reduce((s, r) => s + r.roasActual, 0) / camp.rows.length;
-    const gapPct = avgOrig > 0 ? -Math.round((1 - avgActual / avgOrig) * 100) : 0;
-    const matchedOrders = Math.round(camp.rows.reduce((s, r) => s + r.matchedRate * 0.01 * 10, 0));
-    const untrackedOrders = camp.rows.reduce((s, r) => s + r.unmatchedCount, 0);
-    const revenue = camp.rows.reduce((s, r) => s + r.untrackedRevenue, 0) + (avgActual * 100000);
-    return {
-      id: camp.id, name: camp.name, platform: camp.platform,
-      roasOriginal: parseFloat(avgOrig.toFixed(2)),
-      roasActual: parseFloat(avgActual.toFixed(2)),
-      gapPercent: gapPct,
-      orders: matchedOrders + untrackedOrders,
-      matchedOrders, untrackedOrders,
-      revenue: Math.round(revenue),
-      untrackedRevenue: camp.rows.reduce((s, r) => s + r.untrackedRevenue, 0),
-      aiAction: avgActual >= 3 ? 'keep' : avgActual >= 1.5 ? 'increase' : 'decrease',
-      status: 'active',
-    };
-  });
 }
 
 // ─── Main Dashboard ───────────────────────────────────────────────────────────
@@ -133,10 +157,8 @@ function buildRoasBreakdownData(attributionData, campaigns) {
  *   }
  *   onRestart = () => void
  */
-export function AdsMedicalDashboard({ config, onRestart }) {
-  const [activeTab, setActiveTab] = useState('funnel'); // 'funnel' | 'diseases'
+export function AdsMedicalDashboard({ config, selectedDiseaseIds = [], onRestart }) {
   const [activeFilter, setActiveFilter] = useState('all');
-  const [collapsedIds, setCollapsedIds] = useState([]);
   const [savedActions, setSavedActions] = useState(getAdsSavedActions());
 
   // ── Compute on mount / config change ──
@@ -150,21 +172,25 @@ export function AdsMedicalDashboard({ config, onRestart }) {
     return { attributionData: attrData, diseases: diagnosed };
   }, [config?.campaignIds, config?.dateRange, savedActions]);
 
+  // ── Filter by selectedDiseaseIds (from menu) ──
+  const visibleDiseases = selectedDiseaseIds.length > 0
+    ? diseases.filter(d => selectedDiseaseIds.includes(d.id))
+    : diseases;
+
   // ── Health score ──
-  const healthScore = getAdsHealthScore(diseases);
+  const healthScore = getAdsHealthScore(visibleDiseases);
 
   // ── Attribution summary for funnel ──
   const attrSummary = useMemo(() => buildAttributionSummary(attributionData), [attributionData]);
-  const roasBreakdownData = useMemo(() => buildRoasBreakdownData(attributionData, mockCampaigns), [attributionData]);
 
-  // ── Filter diseases ──
+  // ── Filter diseases by tab (within visible diseases) ──
   const filteredDiseases = activeFilter === 'all'
-    ? diseases
-    : diseases.filter(d => d.id === activeFilter);
+    ? visibleDiseases
+    : visibleDiseases.filter(d => d.id === activeFilter);
 
   // ── Handlers ──
   const handleSaveAction = useCallback((action) => {
-    const rec = diseases
+    const rec = visibleDiseases
       .flatMap(d => (d.recommendations || []).map(r => ({ ...r, diseaseId: d.id })))
       .find(r => r.id === action.id || r.title === action.title);
     const diseaseId = rec?.diseaseId || action.diseaseId || 'unknown';
@@ -174,17 +200,11 @@ export function AdsMedicalDashboard({ config, onRestart }) {
       ...prev,
       { diseaseId, actionId, title: action.title, savedAt: new Date().toISOString() }
     ]);
-  }, [diseases]);
+  }, [visibleDiseases]);
 
   const handleRemoveAction = useCallback((actionId) => {
     removeAdsAction(null, actionId);
     setSavedActions(prev => prev.filter(a => a.actionId !== actionId));
-  }, []);
-
-  const handleToggleExpand = useCallback((id) => {
-    setCollapsedIds(prev =>
-      prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
-    );
   }, []);
 
   const handleExportPDF = () => { window.print(); };
@@ -215,98 +235,79 @@ export function AdsMedicalDashboard({ config, onRestart }) {
         </Button>
       </div>
 
-      {/* ── Tab switcher: Funnel | Bệnh Ads ── */}
-      <div className="flex items-center gap-1 mb-5 bg-surface-container-low rounded-full p-1 w-fit">
-        {[
-          { value: 'funnel',   label: '🔗 Phễu Attribution' },
-          { value: 'diseases', label: '🔴 Bệnh Ads' },
-        ].map(tab => (
-          <button
-            key={tab.value}
-            onClick={() => setActiveTab(tab.value)}
-            className={cn(
-              'px-4 py-2 rounded-full text-label-sm font-semibold transition-all duration-150 cursor-pointer',
-              activeTab === tab.value
-                ? 'bg-primary text-on-primary shadow-[--shadow-sm]'
-                : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
-            )}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-
       {/* ── Health Score Header ── */}
       <div className="mb-5">
         <AdsHealthScoreHeader
           healthScore={healthScore}
-          attributionMetrics={attrSummary}
+          diseases={visibleDiseases}
           campaignCount={config?.campaignIds?.length || mockCampaigns.length}
           dateRange={{ start: config?.dateRange?.start || '07/03', end: config?.dateRange?.end || '28/03' }}
         />
       </div>
 
-      {/* ── Funnel Tab ── */}
-      {activeTab === 'funnel' && (
-        <div className="space-y-4">
-          <AttributionFunnel data={attrSummary} />
-          <AdsRoasBreakdown campaigns={roasBreakdownData} />
-        </div>
-      )}
+      <div className="mb-5">
+        <AdsKpiCards attrSummary={attrSummary} diseases={visibleDiseases} />
+      </div>
 
-      {/* ── Diseases Tab ── */}
-      {activeTab === 'diseases' && (
-        <div>
-          {/* Saved actions strip */}
-          {totalSaved > 0 && (
-            <div className="bg-surface-container-low rounded-[--radius-md] px-4 py-2.5 mb-4 flex items-center gap-3">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2">
-                <path d="M20 6L9 17l-5-5"/>
-              </svg>
-              <span className="text-body-sm text-on-surface">
-                <span className="font-semibold">{totalSaved} hành động</span> đã lưu
-              </span>
-            </div>
-          )}
+      {/* ── Campaign Overview Table ── */}
+      <div className="mb-6">
+        <AdsCampaignOverviewTable
+          campaigns={mockCampaigns}
+        />
+      </div>
 
-          {/* Filter tabs */}
-          <div className="flex items-center justify-between gap-4 mb-4">
-            <AdsFilterTabs
-              diseases={diseases}
-              activeFilter={activeFilter}
-              onFilterChange={setActiveFilter}
-            />
-            <span className="text-label-sm text-on-surface-variant shrink-0">
-              {filteredDiseases.length} nhóm bệnh
+      {/* ── Bệnh Ads (single result view) ── */}
+      <div>
+        {/* Saved actions strip */}
+        {totalSaved > 0 && (
+          <div className="bg-surface-container-low rounded-md px-4 py-2.5 mb-4 flex items-center gap-3">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2">
+              <path d="M20 6L9 17l-5-5"/>
+            </svg>
+            <span className="text-body-sm text-on-surface">
+              <span className="font-semibold">{totalSaved} hành động</span> đã lưu
             </span>
           </div>
+        )}
 
-          {/* Disease items — sorted worst-first from computeAdsDiagnosis */}
-          <div className="space-y-4">
-            {filteredDiseases.length === 0 ? (
-              <div className="text-center py-12 text-on-surface-variant">
-                <span className="text-4xl mb-3 block">🔍</span>
-                <p className="text-body-md">Không có bệnh nào trong nhóm này.</p>
-              </div>
-            ) : (
-              filteredDiseases.map(disease => (
-                <AdsDiseaseItemLayout
-                  key={disease.id}
-                  disease={disease}
-                  isExpanded={!collapsedIds.includes(disease.id)}
-                  onToggleExpand={() => handleToggleExpand(disease.id)}
-                  onSaveAction={handleSaveAction}
-                  onRemoveAction={handleRemoveAction}
-                  savedActionIds={savedActionIds}
-                />
-              ))
-            )}
-          </div>
-
-          {/* Bottom spacing for sticky bar */}
-          {totalSaved > 0 && <div className="h-20" />}
+        {/* Filter tabs */}
+        <div className="flex items-center justify-between gap-4 mb-4">
+          <AdsFilterTabs
+            diseases={visibleDiseases}
+            activeFilter={activeFilter}
+            onFilterChange={setActiveFilter}
+          />
+          <span className="text-label-sm text-on-surface-variant shrink-0">
+            {filteredDiseases.length} nhóm bệnh
+          </span>
         </div>
-      )}
+
+        {/* Disease items — sorted worst-first from computeAdsDiagnosis */}
+        <div className="space-y-4">
+          {filteredDiseases.length === 0 ? (
+            <div className="text-center py-12 text-on-surface-variant">
+              <span className="text-4xl mb-3 block">🔍</span>
+              <p className="text-body-md">Không có bệnh nào trong nhóm này.</p>
+            </div>
+          ) : (
+            filteredDiseases.map(disease => (
+              <AdsDiseaseItemLayout
+                key={disease.id}
+                disease={disease}
+                attributionData={attributionData}
+                campaigns={mockCampaigns}
+                defaultExpanded={true}
+                onSaveAction={handleSaveAction}
+                onRemoveAction={handleRemoveAction}
+                savedActionIds={savedActionIds}
+              />
+            ))
+          )}
+        </div>
+
+        {/* Bottom spacing for sticky bar */}
+        {totalSaved > 0 && <div className="h-20" />}
+      </div>
 
       {/* ── Sticky Saved Actions Bar ── */}
       <SavedActionsBar savedActions={savedActions} onRemove={handleRemoveAction} />

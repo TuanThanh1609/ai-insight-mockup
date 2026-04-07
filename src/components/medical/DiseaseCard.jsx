@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { cn } from '../../lib/utils';
-import { ConversationList } from './ConversationList';
-import { getKpiAlertLevel } from '../../lib/medicalService';
+import { ConversationDetailPanel } from './ConversationDetailPanel';
+import { getKpiAlertLevel, generateInterpretation } from '../../lib/medicalService';
 import {
   ResponsiveContainer,
   LineChart,
@@ -58,7 +58,7 @@ function HighlightedMetric({ metric, diseaseId }) {
 
   return (
     <div
-      className="rounded-[--radius-md] p-3 transition-all"
+      className="rounded-md p-3 transition-all"
       style={{ backgroundColor: bg, borderLeft: `3px solid ${color}` }}
     >
       <div className="flex items-start gap-2">
@@ -132,11 +132,14 @@ function formatTrendValue(metric, value) {
 /** Trending chart replaces left-panel Smax suggestions */
 function MetricTrendChart({ metrics, score }) {
   const data = useMemo(() => buildMetricTrendData(metrics, score * 1.37), [metrics, score]);
+  const [hiddenLines, setHiddenLines] = useState({});
+  const toggleLine = (key) =>
+    setHiddenLines((prev) => ({ ...prev, [key]: !prev[key] }));
 
   const seriesColors = ['#0052FF', '#059669', '#BF3003', '#d97706', '#7c3aed'];
 
   return (
-    <div className="bg-surface-container-low rounded-[--radius-md] p-4">
+    <div className="bg-gradient-to-br from-white via-[#faf7fc] to-[#f5f1f5] rounded-lg p-4 shadow-[--shadow-sm]">
       <h4 className="text-label-sm text-on-surface-variant mb-2.5">XU HƯỚNG 7 NGÀY GẦN NHẤT</h4>
 
       <div className="h-56">
@@ -167,9 +170,14 @@ function MetricTrendChart({ metrics, score }) {
                 return [formatTrendValue(metric || { format: 'percent' }, Number(value)), metric?.label || key];
               }}
             />
+
             <Legend
-              wrapperStyle={{ fontSize: 11 }}
+              wrapperStyle={{ fontSize: 11, paddingTop: 4 }}
               formatter={(key) => metrics.find(m => m.key === key)?.label || key}
+              onClick={(e) => {
+                const key = e.dataKey;
+                if (key) toggleLine(key);
+              }}
             />
 
             {metrics.map((m, idx) => (
@@ -181,10 +189,103 @@ function MetricTrendChart({ metrics, score }) {
                 strokeWidth={2}
                 dot={{ r: 2 }}
                 activeDot={{ r: 4 }}
+                hide={hiddenLines[m.key]}
               />
             ))}
           </LineChart>
         </ResponsiveContainer>
+      </div>
+    </div>
+  );
+}
+
+/** Interpretation / Diễn giải tab — prose text cho user không quen đọc chart */
+function InterpretationTab({ disease }) {
+  const interp = useMemo(() => generateInterpretation(disease), [disease]);
+
+  return (
+    <div className="space-y-4">
+      {/* Score highlight */}
+      <div className="bg-gradient-to-br from-white via-[#faf7fc] to-[#f5f1f5] rounded-lg p-4 shadow-[--shadow-sm]">
+        <div className="flex items-center gap-3">
+          <div
+            className="w-12 h-12 rounded-lg flex items-center justify-center text-2xl shrink-0"
+            style={{ backgroundColor: `${disease.severityColor}12` }}
+          >
+            {disease.icon}
+          </div>
+          <div>
+            <div className="text-headline-sm font-bold" style={{ color: disease.severityColor }}>
+              {disease.score} / 10
+              <span className="text-body-sm font-normal text-on-surface-variant ml-2">
+                — {disease.severity}
+              </span>
+            </div>
+            <p className="text-body-sm text-on-surface-variant">{disease.label}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Chẩn đoán — 1-2 đoạn văn */}
+      <div>
+        <h4 className="text-label-sm text-on-surface-variant uppercase tracking-wide mb-2 flex items-center gap-2">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          Chẩn đoán
+        </h4>
+        <p className="text-body-sm text-on-surface leading-relaxed">
+          {interp.diagnosis}
+        </p>
+      </div>
+
+      {/* Vấn đề nổi bật */}
+      <div>
+        <h4 className="text-label-sm text-on-surface-variant uppercase tracking-wide mb-2 flex items-center gap-2">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          Vấn đề nổi bật
+        </h4>
+        <div className="bg-gradient-to-br from-white to-[#faf7fc] rounded-lg p-3 shadow-[--shadow-sm] border-l-3"
+          style={{ borderLeftColor: disease.severityColor }}>
+          <p className="text-body-sm text-on-surface leading-relaxed">
+            {interp.keyConcern}
+          </p>
+        </div>
+      </div>
+
+      {/* Tóm lại + hành động */}
+      <div>
+        <h4 className="text-label-sm text-on-surface-variant uppercase tracking-wide mb-2 flex items-center gap-2">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <polyline points="9 11 12 14 22 4"/>
+            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+          </svg>
+          Tóm lại & Hành động
+        </h4>
+        <p className="text-body-sm text-on-surface leading-relaxed">
+          {interp.bottomLine}
+        </p>
+      </div>
+
+      {/* Summary chips */}
+      <div className="pt-2 border-t border-[rgba(26,33,56,0.08)]">
+        <p className="text-label-sm text-on-surface-variant mb-2">TỔNG QUAN CHỈ SỐ</p>
+        <div className="flex flex-wrap gap-2">
+          {interp.summary.split(' · ').map((chip, i) => (
+            <span
+              key={i}
+              className="px-2.5 py-1 bg-gradient-to-br from-[#f5f1f5] to-[#ede9ee] rounded-full text-[11px] font-medium text-on-surface"
+            >
+              {chip}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -224,7 +325,7 @@ function OverviewTab({ disease }) {
       )}
 
       {/* All metrics bar */}
-      <div className="bg-surface-container-low rounded-[--radius-md] p-4">
+      <div className="bg-gradient-to-br from-white via-[#faf7fc] to-[#f5f1f5] rounded-lg p-4 shadow-[--shadow-sm]">
         <h4 className="text-label-sm text-on-surface-variant mb-3">TẤT CẢ CHỈ SỐ</h4>
         <div className="flex flex-col gap-2.5">
           {metrics.map(m => {
@@ -268,8 +369,10 @@ export function DiseaseCard({ disease, conversations, isSaved, onToggleAction, o
   return (
     <div
       className={cn(
-        'rounded-[--radius-lg] overflow-hidden transition-all duration-300',
-        isExpanded ? 'bg-surface-container-low shadow-[--shadow-md]' : 'bg-surface-container-lowest hover:shadow-[--shadow-sm]',
+        'rounded-lg overflow-hidden transition-all duration-300',
+        isExpanded
+          ? 'bg-gradient-to-br from-[#f5f1f5] via-[#ede9ee] to-[#e8e3eb] shadow-[--shadow-md]'
+          : 'bg-gradient-to-br from-white via-[#faf7fc] to-[#f5f1f5] hover-lift shadow-[--shadow-sm]',
         severity === 'NẶNG' && !isExpanded ? 'border-l-4' : ''
       )}
       style={severity === 'NẶNG' && !isExpanded ? { borderLeftColor: severityColor } : {}}
@@ -281,7 +384,7 @@ export function DiseaseCard({ disease, conversations, isSaved, onToggleAction, o
       >
         {/* Severity icon */}
         <div
-          className="w-10 h-10 rounded-[--radius-md] flex items-center justify-center text-xl shrink-0 mt-0.5"
+          className="w-10 h-10 rounded-md flex items-center justify-center text-xl shrink-0 mt-0.5"
           style={{ backgroundColor: `${severityColor}15` }}
         >
           {icon}
@@ -355,25 +458,36 @@ export function DiseaseCard({ disease, conversations, isSaved, onToggleAction, o
       {isExpanded && (
         <div className="px-5 pb-5">
           {/* Tabs */}
-          <div className="flex items-center gap-1 mb-4 bg-surface-container-low rounded-full p-1 w-fit">
+          <div className="flex items-center gap-1.5 mb-4 bg-gradient-to-br from-[#f5f1f5] to-[#ede9ee] rounded-lg p-1.5 w-fit">
             <button
               onClick={() => setActiveTab('overview')}
               className={cn(
-                'px-4 py-1.5 rounded-full text-label-sm font-semibold transition-all cursor-pointer whitespace-nowrap',
+                'px-4 py-2 rounded-md text-label-sm font-semibold transition-all duration-150 cursor-pointer whitespace-nowrap',
                 activeTab === 'overview'
-                  ? 'bg-surface-container-lowest text-on-surface shadow-[--shadow-sm]'
-                  : 'text-on-surface-variant hover:text-on-surface'
+                  ? 'bg-gradient-to-br from-white to-[#faf7fc] text-on-surface shadow-[--shadow-sm]'
+                  : 'text-on-surface-variant hover:text-on-surface hover:bg-[rgba(255,255,255,0.50)]'
               )}
             >
               Tổng quan
             </button>
             <button
+              onClick={() => setActiveTab('interpret')}
+              className={cn(
+                'px-4 py-2 rounded-md text-label-sm font-semibold transition-all duration-150 cursor-pointer whitespace-nowrap',
+                activeTab === 'interpret'
+                  ? 'bg-gradient-to-br from-white to-[#faf7fc] text-on-surface shadow-[--shadow-sm]'
+                  : 'text-on-surface-variant hover:text-on-surface hover:bg-[rgba(255,255,255,0.50)]'
+              )}
+            >
+              Diễn giải
+            </button>
+            <button
               onClick={() => setActiveTab('detail')}
               className={cn(
-                'px-4 py-1.5 rounded-full text-label-sm font-semibold transition-all cursor-pointer whitespace-nowrap',
+                'px-4 py-2 rounded-md text-label-sm font-semibold transition-all duration-150 cursor-pointer whitespace-nowrap',
                 activeTab === 'detail'
-                  ? 'bg-surface-container-lowest text-on-surface shadow-[--shadow-sm]'
-                  : 'text-on-surface-variant hover:text-on-surface'
+                  ? 'bg-gradient-to-br from-white to-[#faf7fc] text-on-surface shadow-[--shadow-sm]'
+                  : 'text-on-surface-variant hover:text-on-surface hover:bg-[rgba(255,255,255,0.50)]'
               )}
             >
               Chi tiết {exampleCount > 0 && `(${exampleCount})`}
@@ -384,8 +498,11 @@ export function DiseaseCard({ disease, conversations, isSaved, onToggleAction, o
           {activeTab === 'overview' && (
             <OverviewTab disease={disease} />
           )}
-          {activeTab === 'detail' && conversations && (
-            <ConversationList conversations={conversations} disease={disease} />
+          {activeTab === 'detail' && (
+            <ConversationDetailPanel disease={disease} conversations={conversations} />
+          )}
+          {activeTab === 'interpret' && (
+            <InterpretationTab disease={disease} />
           )}
 
           {/* Collapse button */}

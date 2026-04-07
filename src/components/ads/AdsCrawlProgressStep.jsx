@@ -1,43 +1,76 @@
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 /**
  * Step 4 — Progress screen during Ads analysis crawl
  *
  * Props:
- *   progress    (0-100)
  *   statusText  — mô tả trạng thái hiện tại
  *   onComplete  — () => void  — gọi tự động khi progress = 100
  *
- * Demo: tự tăng progress 0→100 trong ~5 giây
+ * Self-simulates progress 0→100 using setInterval.
  */
 export function AdsCrawlProgressStep({
-  progress = 0,
   statusText = 'Đang thu thập dữ liệu chiến dịch...',
   onComplete,
 }) {
+  const [progress, setProgress] = useState(0);
   const hasCompleted = useRef(false);
+  const intervalRef = useRef(null);
+  const mountedRef = useRef(true);
 
-  // Demo: simulate progress if progress stays at 0
+  // Track component mount/unmount — prevents onComplete from firing after unmount
   useEffect(() => {
-    if (progress === 0 && !hasCompleted.current) {
-      // Will be driven externally via props in real usage
-    }
-    if (progress >= 100 && !hasCompleted.current) {
+    mountedRef.current = true;
+    return () => { mountedRef.current = false; };
+  }, []);
+
+  // Simulate crawl progress internally — yield immediately so React can paint
+  useEffect(() => {
+    // Reset completion flag on new mount (handles StrictMode double-invoke)
+    hasCompleted.current = false;
+
+    // Let React paint the initial 0% state first
+    const timer = setTimeout(() => {
+      // Simulate progress: ~20 steps over ~3-4 seconds, with varying increments
+      let current = 0;
+      intervalRef.current = setInterval(() => {
+        current += 5 + Math.random() * 15;
+        if (current >= 100) {
+          current = 100;
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+          setProgress(100);
+        } else {
+          setProgress(Math.round(current));
+        }
+      }, 150);
+    }, 0);
+
+    return () => {
+      clearTimeout(timer);
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, []);
+
+  // Fire onComplete when done — guard with mountedRef so unmount doesn't call it
+  useEffect(() => {
+    if (progress >= 100 && !hasCompleted.current && mountedRef.current) {
       hasCompleted.current = true;
+      if (intervalRef.current) clearInterval(intervalRef.current);
       onComplete?.();
     }
   }, [progress, onComplete]);
 
-  // 8 nhóm bệnh Ads tương ứng
+  // 9 nhóm bệnh Ads — khớp ADS_DISEASE_GROUPS trong adsMedicalService.js
   const diseaseGroups = [
-    { id: 'lead-quality',     label: 'Chất lượng Lead',     icon: '🎯',   progress: 0 },
-    { id: 'spend-efficiency',label: 'Hiệu quả Chi tiêu',   icon: '💰',   progress: 0 },
-    { id: 'roas-health',      label: 'ROAS & Doanh thu',    icon: '📈',   progress: 0 },
-    { id: 'campaign-health',  label: 'Sức khỏe Chiến dịch', icon: '🏥',   progress: 0 },
-    { id: 'attribution',      label: 'Attribution & CvR',   icon: '🔗',   progress: 0 },
-    { id: 'competitor',       label: 'Đối thủ Cạnh tranh',  icon: '⚔️',   progress: 0 },
-    { id: 'seasonal',         label: 'Xu hướng Mùa vụ',      icon: '📅',   progress: 0 },
-    { id: 'budget-alloc',     label: 'Phân bổ Ngân sách',   icon: '⚖️',   progress: 0 },
+    { id: 'roas-health',            label: 'ROAS Thực vs Ảo',         icon: '📊',  progress: 0 },
+    { id: 'attribution-quality',     label: 'Attribution Quality',      icon: '💰',  progress: 0 },
+    { id: 'ad-creative',            label: 'Ad Creative Health',       icon: '🎨',  progress: 0 },
+    { id: 'audience-targeting',      label: 'Audience Targeting',       icon: '🎯',  progress: 0 },
+    { id: 'budget-allocation',       label: 'Budget Allocation',        icon: '💸',  progress: 0 },
+    { id: 'platform-performance',    label: 'Platform Performance',     icon: '📱',  progress: 0 },
+    { id: 'lead-order-conversion',  label: 'Lead → Order Conversion', icon: '🔁',  progress: 0 },
+    { id: 'junk-campaigns',          label: 'Chiến Dịch Rác',         icon: '⚠️',  progress: 0 },
   ];
 
   // Simulate per-group progress based on overall progress
@@ -57,7 +90,7 @@ export function AdsCrawlProgressStep({
 
   const processed = Math.round((progress / 100) * 892);   // mock total records
   const total     = 892;
-  const remaining = Math.max(0, Math.round((1 - progress / 100) * 8));
+  const remaining = Math.max(0, Math.round((1 - progress / 100) * diseaseGroups.length));
 
   const statusIcon = (status) => {
     if (status === 'done')    return <span className="text-success">✓</span>;
@@ -98,7 +131,7 @@ export function AdsCrawlProgressStep({
       </div>
 
       {/* Progress Bar */}
-      <div className="bg-surface-container-low rounded-[--radius-lg] p-6 mb-6">
+      <div className="bg-surface-container-low rounded-lg p-6 mb-6">
         {/* Bar */}
         <div className="h-3 bg-surface-container-high rounded-full overflow-hidden mb-4">
           <div
@@ -137,7 +170,7 @@ export function AdsCrawlProgressStep({
       )}
 
       {/* Disease Groups */}
-      <div className="bg-surface-container-lowest rounded-[--radius-lg] shadow-[--shadow-sm] overflow-hidden">
+      <div className="bg-surface-container-lowest rounded-lg shadow-[--shadow-sm] overflow-hidden">
         <div className="px-5 py-4 border-b border-[var(--color-outline-variant)]/20">
           <h3 className="text-title-sm text-on-surface font-semibold flex items-center gap-2">
             <span>📊</span> Các nhóm phân tích

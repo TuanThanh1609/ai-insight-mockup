@@ -7,7 +7,7 @@ export function TopNavBar() {
         left: 0,
         right: 0,
         zIndex: 50,
-        background: 'rgba(26,33,56,0.70)',
+        background: 'rgba(250, 247, 252, 0.82)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
         boxShadow: '0 12px 32px rgba(25,28,29,0.04)',
@@ -30,7 +30,7 @@ export function TopNavBar() {
             fontWeight: '800',
             fontSize: '1.5rem',
             letterSpacing: '-0.03em',
-            color: '#fff',
+            color: '#1a2138',
             lineHeight: 1,
           }}
         >
@@ -61,7 +61,7 @@ export function TopNavBar() {
                 fontSize: '0.75rem',
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
-                color: item.active ? '#ffffff' : '#cbd5e1',
+                color: item.active ? '#1a2138' : '#49454f',
                 paddingBottom: '6px',
                 borderBottom: item.active ? '2px solid #BF3003' : '2px solid transparent',
                 textDecoration: 'none',
@@ -85,7 +85,7 @@ export function TopNavBar() {
               fontFamily: 'var(--font-body)',
               fontWeight: '600',
               fontSize: '0.875rem',
-              color: '#fff',
+              color: '#1a2138',
               background: 'transparent',
               border: 'none',
               cursor: 'pointer',
@@ -100,17 +100,18 @@ export function TopNavBar() {
               alignItems: 'center',
               justifyContent: 'center',
               padding: '10px 18px',
-              borderRadius: '8px',
-              background: '#BF3003',
+              borderRadius: '10px',
+              background: '#1a2138',
               color: '#fff',
               fontFamily: 'var(--font-body)',
               fontWeight: '700',
               fontSize: '0.8125rem',
               textDecoration: 'none',
               transition: 'all 0.15s ease',
+              boxShadow: '0 4px 16px rgba(26,33,56,0.12)',
             }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = '#cf3605'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = '#BF3003'; }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(26,33,56,0.85)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = '#1a2138'; }}
           >
             Bắt đầu ngay
           </a>

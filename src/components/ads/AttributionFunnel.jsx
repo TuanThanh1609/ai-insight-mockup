@@ -115,7 +115,7 @@ export function AttributionFunnel({
       </div>
 
       {/* ── Main card ── */}
-      <div className="bg-surface-container-low rounded-[--radius-xl] p-6">
+      <div className="bg-surface-container-low rounded-xl p-6">
         {/* 4-segment horizontal funnel bar */}
         <div className="mb-5">
           <div className="flex items-stretch rounded-full overflow-hidden gap-0" style={{ height: 56 }}>
@@ -150,11 +150,11 @@ export function AttributionFunnel({
             ))}
           </div>
 
-          {/* Labels below funnel */}
-          <div className="flex items-start mt-3">
+          {/* Labels below funnel — fixed 4 columns to avoid overlap */}
+          <div className="grid grid-cols-4 gap-2 mt-3">
             {steps.map((step, i) => (
-              <div key={step.label} className="flex flex-col items-center" style={{ width: `${step.pct}%` }}>
-                <div className="text-label-xs font-bold text-on-surface">{step.shortLabel}</div>
+              <div key={step.label} className="flex flex-col items-center text-center min-w-0">
+                <div className="text-label-xs font-bold text-on-surface truncate w-full">{step.shortLabel}</div>
                 <div className="text-[10px] text-on-surface-variant mt-0.5">{formatCount(step.count)}</div>
 
                 {/* CVR badge after each segment */}
@@ -202,7 +202,7 @@ export function AttributionFunnel({
 
           {/* Chi phí Ảo callout */}
           {totalUntrackedRevenue > 0 && (
-            <div className="flex items-center gap-2 p-3 rounded-[--radius-lg]"
+            <div className="flex items-center gap-2 p-3 rounded-lg"
               style={{ background: 'rgba(191,48,3,0.06)', border: '1px solid rgba(191,48,3,0.15)' }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                 <circle cx="12" cy="12" r="10" stroke="#BF3003" strokeWidth="1.8"/>

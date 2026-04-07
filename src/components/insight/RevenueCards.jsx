@@ -66,7 +66,7 @@ export function RevenueCards({ stats }) {
           <Card key={card.label} className="p-5 flex flex-col gap-3">
             <div className="flex items-center justify-between">
               <span className="text-xs text-on-surface-variant font-medium">{card.label}</span>
-              <div className={cn('p-2 rounded-[--radius-sm]', card.bg)}>
+              <div className={cn('p-2 rounded-sm', card.bg)}>
                 <Icon size={16} className={card.color} />
               </div>
             </div>

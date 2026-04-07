@@ -72,7 +72,7 @@ function buildMetricsFromColumns(columns, rows) {
       series.push({ key: `temp_nong_${cfg.field}`, label: `${cfg.label} — Nóng`, color, field: cfg.field, tempLevel: 'Nóng' });
       series.push({ key: `temp_am_${cfg.field}`,   label: `${cfg.label} — Ấm`,  color: PALETTE[(i + 2) % PALETTE.length], field: cfg.field, tempLevel: 'Ấm' });
       series.push({ key: `temp_lanh_${cfg.field}`, label: `${cfg.label} — Lạnh`, color: PALETTE[(i + 3) % PALETTE.length], field: cfg.field, tempLevel: 'Lạnh' });
-    } else if (cfg.type === 'donut' || cfg.type === 'score-card') {
+    } else if (cfg.type === 'donut' || cfg.type === 'donut-bool' || cfg.type === 'donut-binary' || cfg.type === 'score-card') {
       // 2 lines: Có / Không or Đạt / Chưa
       series.push({ key: `val_true_${cfg.field}`,  label: `${cfg.label} — Đạt`,  color, field: cfg.field, isBoolean: true, targetVal: true });
       series.push({ key: `val_false_${cfg.field}`, label: `${cfg.label} — Chưa`, color: PALETTE[(i + 4) % PALETTE.length], field: cfg.field, isBoolean: true, targetVal: false });
@@ -185,14 +185,18 @@ function computeAllSeriesBuckets(rawData, period, rows, columnSeries) {
 }
 
 // ── Component ──────────────────────────────────────────────────────────────────
-export function InsightTrendChart({ insightId, trendData, crossFilter, conversations }) {
+export function InsightTrendChart({ insightId, trendData, crossFilter, conversations, filteredRows }) {
   const [period, setPeriod] = useState('week');
   const [chartType, setChartType] = useState('bar'); // 'area' | 'bar'
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedSeries, setSelectedSeries] = useState(null); // null = default (all metrics)
 
   const columns = conversations?.columns || [];
-  const rows    = conversations?.rows || [];
+  // When a cross-filter is active, use filteredRows so the chart reflects only
+  // the data that matches the filter; otherwise fall back to all rows.
+  const rows = filteredRows !== undefined
+    ? filteredRows
+    : (conversations?.rows || []);
 
   // ── Determine static vs runtime ─────────────────────────────────────────
   const isStatic = (() => {
@@ -299,40 +303,12 @@ export function InsightTrendChart({ insightId, trendData, crossFilter, conversat
 
   // ── Final chart data ────────────────────────────────────────────────────
   const data = useMemo(() => {
-    let result;
-
     if (columnSeries && columnSeries.length > 0 && rows && rows.length > 0) {
-      // Compute time-series from conversations.rows for all active series
-      result = computeAllSeriesBuckets(rawData, period, rows, columnSeries);
-
-      // Apply cross-filter on top: scale each bucket's counts
-      if (crossFilter) {
-        const bucketCount = period === 'week' ? 7 : 30;
-        result = result.map((entry, i) => {
-          // crossFilter applies to conversations.rows
-          // We approximate by scaling down based on how many rows match the filter
-          // in each bucket. Since we don't keep per-bucket filter ratios,
-          // we apply the filter ratio from the full dataset as a uniform scale.
-          const totalRows = rows.length;
-          const matchingRows = rows.filter(row => {
-            const fv = row[crossFilter.field];
-            if (typeof crossFilter.value === 'boolean') return fv === crossFilter.value;
-            return String(fv) === String(crossFilter.value);
-          });
-          const ratio = totalRows > 0 ? matchingRows.length / totalRows : 1;
-          const scaled = { ...entry };
-          columnSeries.forEach(s => {
-            scaled[s.key] = Math.round((entry[s.key] || 0) * ratio);
-          });
-          return scaled;
-        });
-      }
-    } else {
-      result = rawData;
+      // Compute time-series from rows (already filtered when crossFilter active)
+      return computeAllSeriesBuckets(rawData, period, rows, columnSeries);
     }
-
-    return result;
-  }, [rawData, columnSeries, rows, period, crossFilter]);
+    return rawData;
+  }, [rawData, columnSeries, rows, period]);
 
   // ── Y-axis ──────────────────────────────────────────────────────────────
   const allValues = data.flatMap(d => activeMetrics.map(m => d[m.key] || 0));
@@ -410,7 +386,7 @@ export function InsightTrendChart({ insightId, trendData, crossFilter, conversat
                     className="fixed inset-0 z-10"
                     onClick={() => setDropdownOpen(false)}
                   />
-                  <div className="absolute right-0 top-full mt-1.5 z-20 w-64 max-h-72 overflow-y-auto bg-surface-container-lowest rounded-[--radius-md] shadow-xl border border-[var(--color-outline-variant)]">
+                  <div className="absolute right-0 top-full mt-1.5 z-20 w-64 max-h-72 overflow-y-auto bg-surface-container-lowest rounded-md shadow-xl border border-[var(--color-outline-variant)]">
                     {/* All / Mặc định option */}
                     <button
                       onClick={() => {
@@ -519,7 +495,7 @@ export function InsightTrendChart({ insightId, trendData, crossFilter, conversat
       </div>
 
       {/* Chart area */}
-      <div style={{ background: 'var(--color-surface-container-low)', borderRadius: 10, padding: '12px 8px 8px 0' }}>
+      <div style={{ background: 'var(--color-surface-container-low)', borderRadius: 'var(--radius-md)', padding: '12px 8px 8px 0' }}>
         <ResponsiveContainer width="100%" height={220}>
           {chartType === 'bar' ? (
             // Stacked Bar — absolute counts stacked, bar height varies per day
@@ -537,7 +513,7 @@ export function InsightTrendChart({ insightId, trendData, crossFilter, conversat
               <Tooltip
                 contentStyle={{
                   background: '#ffffff', border: '1px solid rgba(42,52,55,0.12)',
-                  borderRadius: 10, boxShadow: '0 4px 16px rgba(44,52,55,0.14)',
+                  borderRadius: 'var(--radius-md)', boxShadow: '0 4px 16px rgba(44,52,55,0.14)',
                   fontFamily: 'Inter', fontSize: 12, padding: '8px 12px', minWidth: 120,
                 }}
                 itemStyle={{ fontWeight: 700, paddingBottom: 2 }}
@@ -577,7 +553,7 @@ export function InsightTrendChart({ insightId, trendData, crossFilter, conversat
               <Tooltip
                 contentStyle={{
                   background: '#ffffff', border: '1px solid rgba(42,52,55,0.12)',
-                  borderRadius: 10, boxShadow: '0 4px 16px rgba(44,52,55,0.14)',
+                  borderRadius: 'var(--radius-md)', boxShadow: '0 4px 16px rgba(44,52,55,0.14)',
                   fontFamily: 'Inter', fontSize: 12, padding: '8px 12px', minWidth: 120,
                 }}
                 itemStyle={{ fontWeight: 700, paddingBottom: 2 }}

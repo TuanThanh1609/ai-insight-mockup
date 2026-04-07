@@ -113,7 +113,7 @@ export function TestimonialsSection() {
             maxWidth: '760px',
             margin: '0 auto',
             background: '#fff',
-            borderRadius: '16px',
+            borderRadius: 'var(--radius-xl)',
             padding: 'clamp(28px, 5vw, 48px)',
             boxShadow: '0 8px 40px rgba(0,0,0,0.08)',
             textAlign: 'center',

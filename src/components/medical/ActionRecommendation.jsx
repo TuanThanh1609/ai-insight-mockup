@@ -15,7 +15,7 @@ export function ActionRecommendation({ action, isSaved, onToggle, diseaseSeverit
 
   return (
     <div className={cn(
-      'rounded-[--radius-md] p-4 transition-all duration-200',
+      'rounded-md p-4 transition-all duration-200',
       diseaseSeverity === 'NẶNG' ? 'bg-surface-container-low' : 'bg-surface-container-lowest'
     )}>
       <div className="flex items-start justify-between gap-3 mb-2">

@@ -59,7 +59,7 @@ export function TemplateLibrary({ isOpen, onClose, onSave }) {
         {!selectedTemplate ? (
           <div className="flex flex-col gap-6">
             {/* Platform filter */}
-            <div className="bg-surface-container-low rounded-[--radius-md] p-1.5">
+            <div className="bg-surface-container-low rounded-md p-1.5">
             <Tabs
               tabs={industryTabs}
               activeTab={activeTab}

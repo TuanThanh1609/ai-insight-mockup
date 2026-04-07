@@ -15,7 +15,8 @@ import {
  * Col 3: Tốt (score ≥ 7.5)
  */
 export function HealthScoreHeader({ diseases, recordDate }) {
-  const score = getHealthScore(diseases);
+  const rawScore = getHealthScore(diseases);
+  const score = rawScore == null ? null : rawScore;
   const label = getHealthLabel(score);
   const color = getHealthColor(score);
 
@@ -34,7 +35,7 @@ export function HealthScoreHeader({ diseases, recordDate }) {
     hour: '2-digit', minute: '2-digit',
   });
 
-  const progressPct = Math.round((score / 10) * 100);
+  const progressPct = (score != null) ? Math.round((score / 10) * 100) : 0;
 
   // ── Disease group classification ──
   const { weak, medium, strong } = useMemo(() => {
@@ -60,24 +61,27 @@ export function HealthScoreHeader({ diseases, recordDate }) {
     });
   }, []);
 
-  const isEmergency = score < 3;
+  const isEmergency = score !== null && score < 3;
 
   // ── Mini progress bar for disease items ──
-  const MiniBar = ({ value, color: barColor }) => (
+  const MiniBar = ({ value, color: barColor }) => {
+    const pct = (value / 10) * 100;
+    return (
     <div className="h-2 bg-surface-container-high rounded-full overflow-hidden">
       <div
         className="h-full rounded-full transition-all"
-        style={{ width: `${(value / 10) * 100}%`, backgroundColor: barColor }}
+        style={{ width: `${isNaN(pct) ? 0 : pct}%`, backgroundColor: barColor }}
       />
     </div>
   );
+  };
 
   return (
-    <div className="bg-surface-container-low rounded-[--radius-xl] p-6 mb-6">
+    <div className="bg-gradient-to-br from-[#f5f1f5] via-[#ede9ee] to-[#e8e3eb] rounded-lg p-6 mb-6 shadow-[--shadow-sm]">
 
       {/* ── Emergency banner ── */}
       {isEmergency && (
-        <div className="flex items-center gap-2 mb-4 px-3 py-2 rounded-[--radius-md] bg-error/10 border border-error/20">
+        <div className="flex items-center gap-2 mb-4 px-3 py-2 rounded-lg bg-[rgba(186,26,26,0.06)] border border-[rgba(186,26,26,0.15)]">
           <AlertTriangle size={16} className="text-error shrink-0" />
           <span className="text-body-sm font-semibold text-error">
             Cảnh báo khẩn: Điểm sức khỏe rất thấp — Cần hành động ngay
@@ -104,7 +108,7 @@ export function HealthScoreHeader({ diseases, recordDate }) {
           {/* Score number */}
           <div className="flex items-end gap-2">
             <span className="text-display-lg font-bold leading-none" style={{ color }}>
-              {score.toFixed(1)}
+              {score != null ? score.toFixed(1) : '—'}
             </span>
             <span className="text-headline-sm text-on-surface-variant font-normal pb-1">/ 10</span>
           </div>
@@ -190,8 +194,8 @@ export function HealthScoreHeader({ diseases, recordDate }) {
                   <button
                     key={d.id}
                     onClick={() => handleScrollTo(d.id)}
-                    className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-[--radius-md] bg-surface-container-high text-body-sm
-                               hover:bg-surface-container-low cursor-pointer transition-colors border border-transparent hover:border-outline"
+                    className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-gradient-to-br from-[#f5f1f5] to-[#ede9ee] text-body-sm
+                               hover:from-white hover:to-[#faf7fc] cursor-pointer transition-all duration-150 border border-[rgba(26,33,56,0.06)] hover:border-[rgba(26,33,56,0.12)]"
                     title={`${d.label}: ${d.score.toFixed(1)}`}
                   >
                     <span className="text-label-sm text-on-surface-variant">{d.label}</span>
@@ -248,7 +252,7 @@ export function HealthScoreHeader({ diseases, recordDate }) {
               </div>
             </>
           ) : (
-            <div className="flex flex-col items-center justify-center py-6 text-center rounded-[--radius-lg] bg-surface-container-high">
+            <div className="flex flex-col items-center justify-center py-6 text-center rounded-lg bg-gradient-to-br from-white via-[#faf7fc] to-[#f5f1f5] shadow-[--shadow-sm]">
               <div className="text-3xl mb-2">🎯</div>
               <div className="text-body-sm text-on-surface font-medium mb-1">
                 Chưa có nhóm nào đạt mức Tốt

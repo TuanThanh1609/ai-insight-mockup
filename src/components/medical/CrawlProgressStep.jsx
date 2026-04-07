@@ -15,7 +15,7 @@ export function CrawlProgressStep({ progress }) {
     if (status === 'done')    return <span className="text-success text-label-sm">Hoàn thành</span>;
     if (status === 'active') return (
       <div className="flex items-center gap-2">
-        <div className="flex-1 h-1.5 bg-surface-container-low rounded-full overflow-hidden">
+        <div className="flex-1 h-1.5 bg-gradient-to-br from-[#f5f1f5] to-[#ede9ee] rounded-full overflow-hidden">
           <div
             className="h-full bg-tertiary rounded-full transition-all duration-500"
             style={{ width: `${pct || 0}%` }}
@@ -30,7 +30,7 @@ export function CrawlProgressStep({ progress }) {
   return (
     <div className="max-w-xl mx-auto">
       <div className="text-center mb-8">
-        <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+        <div className="w-14 h-14 rounded-md bg-primary/10 flex items-center justify-center mx-auto mb-4 shadow-[--shadow-sm]">
           <span className="text-3xl">🏥</span>
         </div>
         <h2 className="text-headline-md text-on-surface font-bold mb-2">
@@ -42,9 +42,9 @@ export function CrawlProgressStep({ progress }) {
       </div>
 
       {/* Progress Bar */}
-      <div className="bg-surface-container-low rounded-[--radius-lg] p-6 mb-6">
+      <div className="bg-gradient-to-br from-white via-[#faf7fc] to-[#f5f1f5] rounded-lg p-6 mb-6 shadow-[--shadow-sm]">
         {/* Bar */}
-        <div className="h-3 bg-surface-container-high rounded-full overflow-hidden mb-4">
+        <div className="h-3 bg-gradient-to-br from-[#f5f1f5] to-[#ede9ee] rounded-full overflow-hidden mb-4">
           <div
             className="h-full bg-gradient-to-r from-primary to-tertiary rounded-full transition-all duration-500 ease-out"
             style={{ width: `${p.progress}%` }}
@@ -76,7 +76,7 @@ export function CrawlProgressStep({ progress }) {
       </div>
 
       {/* Disease Groups */}
-      <div className="bg-surface-container-lowest rounded-[--radius-lg] shadow-[--shadow-sm] overflow-hidden">
+      <div className="bg-gradient-to-br from-white via-[#faf7fc] to-[#f5f1f5] rounded-lg shadow-[--shadow-sm] overflow-hidden">
         <div className="px-5 py-4 border-b border-[var(--color-outline-variant)]/30">
           <h3 className="text-title-sm text-on-surface font-semibold flex items-center gap-2">
             <span>🏥</span> Các "bệnh" đang được phân tích

@@ -85,7 +85,7 @@ export function PlatformROASCard({ campaigns, stats }) {
           <div className="flex items-center gap-2 mb-3">
             <div
               className={cn(
-                'w-7 h-7 rounded-[--radius-sm] flex items-center justify-center text-xs font-bold text-white',
+                'w-7 h-7 rounded-sm flex items-center justify-center text-xs font-bold text-white',
                 p.key === 'facebook' ? 'bg-facebook' : 'bg-zalo'
               )}
             >
@@ -132,7 +132,7 @@ export function PlatformROASCard({ campaigns, stats }) {
       ))}
 
       {/* So sánh ROAS */}
-      <div className="col-span-2 rounded-[--radius-md] p-3 bg-surface-container-low flex items-center justify-between">
+      <div className="col-span-2 rounded-md p-3 bg-surface-container-low flex items-center justify-between">
         <div className="flex items-center gap-2">
           {fbLead ? (
             <>

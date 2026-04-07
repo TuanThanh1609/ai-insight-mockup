@@ -36,10 +36,10 @@ export function QuantitySelectStep({ config, onQuantitySelect, onStart, onBack }
               key={opt.value}
               onClick={() => setSelected(opt.value)}
               className={`
-                relative rounded-[--radius-lg] p-6 text-center transition-all duration-200 cursor-pointer
+                relative rounded-lg p-6 text-center transition-all duration-200 cursor-pointer
                 ${isSelected
                   ? 'bg-primary/5 border-2 border-primary shadow-[--shadow-md]'
-                  : 'bg-surface-container-lowest border-2 border-transparent hover:border-[var(--color-outline-variant)] hover:shadow-[--shadow-sm]'
+                  : 'bg-gradient-to-br from-white via-[#faf7fc] to-[#f5f1f5] border-2 border-[rgba(26,33,56,0.08)] hover:border-[rgba(26,33,56,0.15)] hover:shadow-[--shadow-sm] hover:bg-[rgba(255,255,255,0.50)]'
                 }
               `}
             >
@@ -58,8 +58,8 @@ export function QuantitySelectStep({ config, onQuantitySelect, onStart, onBack }
                 hội thoại
               </div>
               <div className={`
-                text-label-sm mt-3 px-2 py-1 rounded-[--radius-full] inline-block
-                ${isSelected ? 'bg-primary/10 text-primary' : 'bg-surface-container-low text-on-surface-variant'}
+                text-label-sm mt-3 px-2 py-1 rounded-full inline-block
+                ${isSelected ? 'bg-primary/10 text-primary' : 'bg-gradient-to-br from-[#f5f1f5] to-[#ede9ee] text-on-surface-variant'}
               `}>
                 {opt.timeLabel}
               </div>
@@ -72,7 +72,7 @@ export function QuantitySelectStep({ config, onQuantitySelect, onStart, onBack }
       </div>
 
       {/* Info note */}
-      <div className="bg-surface-container-low rounded-[--radius-md] px-4 py-3 mb-8 flex items-start gap-2">
+      <div className="bg-gradient-to-br from-[#f5f1f5] to-[#ede9ee] rounded-lg px-4 py-3 mb-8 flex items-start gap-2">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="text-tertiary shrink-0 mt-0.5">
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
         </svg>

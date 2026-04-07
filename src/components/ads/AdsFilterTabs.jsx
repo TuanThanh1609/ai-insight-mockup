@@ -6,15 +6,15 @@ import { cn } from '../../lib/utils';
  */
 export function AdsFilterTabs({ diseases = [], activeFilter = 'all', onFilterChange }) {
   const tabs = [
-    { value: 'all',              label: 'Tất cả',   code: 'ALL' },
-    { value: 'roas-health',       label: 'ROAS',      code: 'RA' },
-    { value: 'attribution-quality', label: 'Attribution', code: 'AQ' },
-    { value: 'ad-creative',       label: 'Creative',  code: 'AC' },
-    { value: 'audience-targeting', label: 'Target',    code: 'AT' },
-    { value: 'budget-allocation', label: 'Ngân sách', code: 'BA' },
-    { value: 'platform-performance', label: 'Platform',  code: 'PP' },
-    { value: 'lead-order-conversion', label: 'Conv',    code: 'LC' },
-    { value: 'junk-campaigns',    label: 'Rác',       code: 'CR' },
+    { value: 'all',                    label: 'Tất cả',              code: 'ALL' },
+    { value: 'roas-health',            label: 'ROAS',                code: 'RA' },
+    { value: 'attribution-quality',   label: 'Attribution',         code: 'AQ' },
+    { value: 'ad-creative',           label: 'Creative',             code: 'AC' },
+    { value: 'audience-targeting',    label: 'Target',               code: 'AT' },
+    { value: 'budget-allocation',     label: 'Ngân sách',           code: 'BA' },
+    { value: 'platform-performance',  label: 'Platform',             code: 'PP' },
+    { value: 'lead-order-conversion', label: 'Conv',                 code: 'LC' },
+    { value: 'junk-campaigns',        label: 'Rác',                  code: 'CR' },
   ];
 
   // Count diseases per filter tab (diseases is already sorted worst-first)

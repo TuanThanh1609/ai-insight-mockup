@@ -142,7 +142,7 @@ function FeatureBlock({ icon: Icon, badge, title, description, highlights, color
           flex: '0 0 auto',
           width: 'clamp(220px, 28vw, 300px)',
           background: '#fff',
-          borderRadius: '12px',
+          borderRadius: 'var(--radius-lg)',
           padding: '20px',
           boxShadow: '0 8px 40px rgba(0,0,0,0.08)',
           border: '1px solid #f0f0f0',

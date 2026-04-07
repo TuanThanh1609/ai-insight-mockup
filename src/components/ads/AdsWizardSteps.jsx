@@ -18,8 +18,8 @@ export function AdsWizardSteps({ currentStep = 1, onStepClick }) {
   return (
     <div className="flex items-center gap-0">
       {STEPS.map((step, idx) => {
-        const isDone   = step.id < currentStep;
-        const isActive = step.id === currentStep;
+        const isDone    = step.id < currentStep;
+        const isActive  = step.id === currentStep && currentStep <= STEPS.length;
         const isPending = step.id > currentStep;
 
         return (

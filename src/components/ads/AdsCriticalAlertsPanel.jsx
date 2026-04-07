@@ -73,7 +73,7 @@ function AlertRow({ alert, attributionData, isExpanded, onToggle }) {
   return (
     <div className="flex flex-col">
       <div
-        className="flex items-start gap-2.5 px-3 py-2.5 rounded-[--radius-sm] transition-colors hover:bg-surface-container-low cursor-pointer"
+        className="flex items-start gap-2.5 px-3 py-2.5 rounded-sm transition-colors hover:bg-surface-container-low cursor-pointer"
         onClick={onToggle}
       >
         <div
@@ -113,7 +113,7 @@ function AlertRow({ alert, attributionData, isExpanded, onToggle }) {
           {examples.map(ex => (
             <div
               key={ex.id}
-              className="flex items-center gap-3 px-3 py-1.5 rounded-[--radius-sm] bg-surface-container-lowest border-b border-surface-secondary last:border-0"
+              className="flex items-center gap-3 px-3 py-1.5 rounded-sm bg-surface-container-lowest border-b border-surface-secondary last:border-0"
             >
               <div className="shrink-0">
                 <PlatformIcon platform={ex.platform} />

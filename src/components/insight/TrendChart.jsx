@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Card } from '../ui/Card';
 import {
   AreaChart,
@@ -7,10 +8,19 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Legend,
 } from 'recharts';
 
+const LINE_CONFIG = [
+  { key: 'facebook', name: 'Facebook', color: '#1877F2', gradient: 'fbGradient' },
+  { key: 'zalo',      name: 'Zalo',      color: '#0068FF', gradient: 'zaloGradient' },
+];
+
 export function TrendChart({ data }) {
+  const [hiddenLines, setHiddenLines] = useState({});
+
+  const toggleLine = (key) => {
+    setHiddenLines((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
   return (
     <Card className="p-6">
       <div className="mb-5">
@@ -59,31 +69,44 @@ export function TrendChart({ data }) {
             }}
             itemStyle={{ fontWeight: 600 }}
           />
-          <Legend
-            iconType="circle"
-            iconSize={8}
-            wrapperStyle={{ fontSize: 12, fontFamily: 'Inter', paddingTop: 12 }}
-          />
-          <Area
-            type="monotone"
-            dataKey="facebook"
-            name="Facebook"
-            stroke="#1877F2"
-            strokeWidth={2.5}
-            fill="url(#fbGradient)"
-            dot={false}
-            activeDot={{ r: 4, strokeWidth: 0 }}
-          />
-          <Area
-            type="monotone"
-            dataKey="zalo"
-            name="Zalo"
-            stroke="#0068FF"
-            strokeWidth={2.5}
-            fill="url(#zaloGradient)"
-            dot={false}
-            activeDot={{ r: 4, strokeWidth: 0 }}
-          />
+          {/* Custom toggleable legend */}
+          <div className="flex items-center gap-4 pb-1">
+            {LINE_CONFIG.map(({ key, name, color }) => {
+              const isHidden = hiddenLines[key];
+              return (
+                <button
+                  key={key}
+                  onClick={() => toggleLine(key)}
+                  className="flex items-center gap-1.5 text-xs font-medium transition-opacity cursor-pointer"
+                  style={{
+                    color: isHidden ? '#9ca3af' : color,
+                    opacity: isHidden ? 0.45 : 1,
+                  }}
+                  title={isHidden ? `Hiện ${name}` : `Ẩn ${name}`}
+                >
+                  <span
+                    className="inline-block w-6 h-0.5 rounded-full"
+                    style={{ background: isHidden ? '#d1d5db' : color }}
+                  />
+                  {name}
+                </button>
+              );
+            })}
+          </div>
+          {LINE_CONFIG.map(({ key, name, color, gradient }) => (
+            <Area
+              key={key}
+              type="monotone"
+              dataKey={key}
+              name={name}
+              stroke={color}
+              strokeWidth={2.5}
+              fill={`url(#${gradient})`}
+              dot={false}
+              activeDot={{ r: 4, strokeWidth: 0 }}
+              hide={hiddenLines[key]}
+            />
+          ))}
         </AreaChart>
       </ResponsiveContainer>
     </Card>

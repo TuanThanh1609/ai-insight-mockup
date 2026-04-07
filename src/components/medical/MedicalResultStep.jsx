@@ -1,38 +1,46 @@
-import { useState, useCallback } from 'react';
-import { RotateCcw, Download } from 'lucide-react';
+import { useState, useCallback, useMemo } from 'react';
+import { RotateCcw, FileText, Map } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { HealthScoreHeader } from './HealthScoreHeader';
 import { MedicalFilterTabs } from './MedicalFilterTabs';
 import { SavedActionsBar } from './SavedActionsBar';
 import { LeadsQualityDashboard } from './LeadsQualityDashboard';
-import { ConversationFunnelSection } from './ConversationFunnelSection';
 import { DiseaseItemLayout } from './DiseaseItemLayout';
+import { HealthSummaryPanel } from './HealthSummaryPanel';
 import {
   getSavedActions, saveAction, removeAction,
   getMedicalHistory, DISEASE_GROUPS, INDUSTRIES
 } from '../../lib/medicalService';
 
 /**
- * Step 5 — Kết quả Khám Bệnh
+ * MedicalResultStep — "Hồ Sơ Bệnh Án" style
  * Layout:
- *   - Leads Quality Dashboard (full width)
- *   - 2/3 Disease Cards | 1/3 Right Panel (Alerts + Recommendations)
+ *   - HealthScoreHeader (single card: score + bars)
+ *   - LeadsQualityDashboard (4 metric cards)
+ *   - Smax banner (top HIGH recommendation)
+ *   - Disease cards (2/3 + 1/3 per item)
  */
-export function MedicalResultStep({ diseases, conversations, config, onRestart }) {
+export function MedicalResultStep({ diseases, selectedDiseaseIds = [], conversations, config, onRestart }) {
   const [activeFilter, setActiveFilter] = useState('all');
+  const [showSummary, setShowSummary] = useState(false);
   // Mặc định: mọi mục khám bệnh mở rộng (không ở trạng thái thu gọn)
   const [collapsedIds, setCollapsedIds] = useState([]);
   const [savedActions, setSavedActions] = useState(getSavedActions());
 
-  // Disease counts for filter tabs
-  const diseaseCounts = {};
-  for (const d of diseases) diseaseCounts[d.id] = 1;
-  diseaseCounts.all = diseases.length;
+  // ── Filter by selectedDiseaseIds (from menu) ──
+  const visibleDiseases = selectedDiseaseIds.length > 0
+    ? diseases.filter(d => selectedDiseaseIds.includes(d.id))
+    : diseases;
 
-  // Filter diseases by tab
+  // Disease counts for filter tabs (based on visible diseases)
+  const diseaseCounts = {};
+  for (const d of visibleDiseases) diseaseCounts[d.id] = 1;
+  diseaseCounts.all = visibleDiseases.length;
+
+  // Filter diseases by tab (within visible diseases)
   const filteredDiseases = activeFilter === 'all'
-    ? diseases
-    : diseases.filter(d => d.id === activeFilter);
+    ? visibleDiseases
+    : visibleDiseases.filter(d => d.id === activeFilter);
 
   // ── Actions ──
   const handleToggleAction = useCallback((diseaseId, actionId, action) => {
@@ -72,9 +80,30 @@ export function MedicalResultStep({ diseases, conversations, config, onRestart }
     alert('Xuất báo cáo PDF: đang phát triển...');
   };
 
+  const handleOpenRoadmap = () => {
+    // Save current state to localStorage for the roadmap page to read
+    localStorage.setItem('roadmap-state', JSON.stringify({
+      diseases,
+      conversations,
+      config,
+    }));
+    window.location.href = '/insight/improvement-roadmap';
+  };
+
   // ── Derived ──
   const totalSaved = savedActions.length;
   const savedActionIds = savedActions.map(a => a.actionId);
+
+  // Top HIGH recommendation for banner
+  const topHighRec = useMemo(() => {
+    for (const d of visibleDiseases) {
+      const high = d.recommendations?.find(r => r.priority === 'HIGH');
+      if (high) return { ...high, diseaseLabel: d.label };
+    }
+    return null;
+  }, [visibleDiseases]);
+
+  const industryLabel = INDUSTRIES.find(i => i.value === config.industry)?.label || config.industry;
 
   return (
     <div>
@@ -87,26 +116,26 @@ export function MedicalResultStep({ diseases, conversations, config, onRestart }
           </Button>
           <div className="w-px h-4 bg-[var(--color-outline-variant)]" />
           <span className="text-body-sm text-on-surface-variant">
-            {INDUSTRIES.find(i => i.value === config.industry)?.label || config.industry}
+            {industryLabel}
             {config.customerGroup && ` · ${config.customerGroup}`}
           </span>
         </div>
-        <Button variant="tertiary" size="sm" onClick={handleExportPDF} className="gap-1.5">
-          <Download size={14} />
-          Xuất báo cáo PDF
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="primary" size="sm" onClick={() => setShowSummary(true)} className="gap-1.5">
+            <FileText size={14} />
+            Xem Tóm Tắt
+          </Button>
+          <Button variant="primary" size="sm" onClick={handleOpenRoadmap} className="gap-1.5">
+            <Map size={14} />
+            Lộ Trình Cải Thiện
+          </Button>
+        </div>
       </div>
 
       {/* ── Health Score ── */}
       <div className="mb-5">
-        <HealthScoreHeader diseases={diseases} />
+        <HealthScoreHeader diseases={visibleDiseases} />
       </div>
-
-      {/* ── Conversation Funnel ── */}
-      <ConversationFunnelSection
-        conversations={conversations}
-        totalCount={conversations.length}
-      />
 
       {/* ── Leads Quality Dashboard ── */}
       <div className="mb-5">
@@ -130,7 +159,7 @@ export function MedicalResultStep({ diseases, conversations, config, onRestart }
 
       {/* ── Saved Actions summary strip ── */}
       {totalSaved > 0 && (
-        <div className="bg-surface-container-low rounded-[--radius-md] px-4 py-2.5 mb-4 flex items-center gap-3">
+        <div className="bg-surface-container-low rounded-md px-4 py-2.5 mb-4 flex items-center gap-3">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2">
             <path d="M20 6L9 17l-5-5"/>
           </svg>
@@ -157,6 +186,8 @@ export function MedicalResultStep({ diseases, conversations, config, onRestart }
               onToggleExpand={() => handleToggleExpand(disease.id)}
               onToggleAction={handleToggleAction}
               savedActionIds={savedActionIds}
+              industry={config.industry}
+              industryLabel={industryLabel}
             />
           ))
         )}
@@ -168,9 +199,18 @@ export function MedicalResultStep({ diseases, conversations, config, onRestart }
       {/* ── SavedActionsBar sticky ── */}
       <SavedActionsBar
         savedActions={savedActions}
-        diseases={diseases}
+        diseases={visibleDiseases}
         onRemove={handleRemoveAction}
       />
+
+      {/* ── Health Summary Panel (slide-in) ── */}
+      {showSummary && (
+        <HealthSummaryPanel
+          diseases={visibleDiseases}
+          conversations={conversations}
+          onClose={() => setShowSummary(false)}
+        />
+      )}
     </div>
   );
 }

@@ -30,7 +30,7 @@ export function AdsConnectStep({ onNext }) {
       <div className="grid grid-cols-2 gap-4 mb-8">
         {/* Meta Ads — Facebook + Instagram */}
         <div className="
-          bg-surface-container-lowest rounded-[--radius-lg] p-6
+          bg-surface-container-lowest rounded-lg p-6
           shadow-[--shadow-sm] flex flex-col items-center text-center gap-4
         ">
           {/* Meta logo */}
@@ -54,7 +54,7 @@ export function AdsConnectStep({ onNext }) {
 
         {/* Google Ads — Search + Display */}
         <div className="
-          bg-surface-container-lowest rounded-[--radius-lg] p-6
+          bg-surface-container-lowest rounded-lg p-6
           shadow-[--shadow-sm] flex flex-col items-center text-center gap-4
         ">
           {/* Google logo */}

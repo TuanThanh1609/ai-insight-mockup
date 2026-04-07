@@ -1,14 +1,13 @@
 import { cn } from '../../lib/utils';
 
 /**
- * Card — Editorial Precision Design System
+ * Card — Ultra Soft Identity
  *
- * NO BORDERS. Boundaries via background shifts.
- * Lift effect: surface_container_lowest on surface_container
- * Border radius: 8px (DEFAULT)
+ * NO BORDERS. Gradient fills + ambient soft shadow.
+ * Hover: scale(1.015) + card shadow lift — alive feel
+ * Active: scale(0.99) — gentle press
  *
- * Elevation: Ambient shadows (tinted, not black) for floating effects.
- * Ghost border: use when accessibility demands a boundary.
+ * Radius: 14px (--radius-lg) for cards
  */
 export function Card({
   children,
@@ -22,11 +21,12 @@ export function Card({
   return (
     <div
       className={cn(
-        // Base: lift layer
-        'bg-surface-container-lowest rounded-[--radius-md]',
-        // Hover: tonal shift
-        hover && 'cursor-pointer hover:bg-surface-container-low',
-        // Clickable
+        // Ultra soft base: gradient fill + soft shadow
+        'bg-gradient-to-br from-white via-[#faf7fc] to-[#f5f1f5]',
+        'rounded-lg',
+        'shadow-[--shadow-sm]',
+        // Hover: lift + glow
+        hover && 'cursor-pointer hover-lift',
         onClick && 'cursor-pointer',
         // Floating elevation (e.g., primary action menus)
         elevated && 'shadow-[--shadow-lg]',

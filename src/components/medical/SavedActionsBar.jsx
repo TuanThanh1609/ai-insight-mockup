@@ -11,7 +11,7 @@ export function SavedActionsBar({ savedActions, diseases, onRemove }) {
 
   return (
     <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-30">
-      <div className="glass rounded-full shadow-[--shadow-xl] px-5 py-3 flex items-center gap-4 max-w-2xl w-full">
+      <div className="glass rounded-lg shadow-[--shadow-xl] px-5 py-3 flex items-center gap-4 max-w-2xl w-full">
         {/* Label */}
         <div className="flex items-center gap-2 shrink-0">
           <div className="w-6 h-6 rounded-full bg-success/10 flex items-center justify-center">

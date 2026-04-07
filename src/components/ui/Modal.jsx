@@ -3,15 +3,12 @@ import { X } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
 /**
- * Modal — Editorial Precision Design System
+ * Modal — Ultra Soft Identity
  *
- * Glassmorphism Formula:
- *   surface_container_lowest at 80% opacity + backdrop-blur: 12px
- *
- * Shadow: Ambient shadow (tinted, not black)
- * Border radius: 8px (DEFAULT)
- *
- * Ghost border: use when accessibility demands a boundary.
+ * Glassmorphism: surface_container_lowest at 82% opacity + backdrop-blur: 16px
+ * Shadow: Ambient soft shadow
+ * Border radius: 18px (--radius-xl) — large, soft, premium
+ * Close button: soft hover (scale + bg tint)
  */
 export function Modal({ isOpen, onClose, children, className, maxWidth = 'lg', ghostBorder = false }) {
   const handleKeyDown = useCallback(
@@ -46,19 +43,19 @@ export function Modal({ isOpen, onClose, children, className, maxWidth = 'lg', g
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Glassmorphism Backdrop */}
       <div
-        className="absolute inset-0 bg-on-surface/20 glass"
+        className="absolute inset-0 bg-[rgba(26,33,56,0.25)] glass"
         onClick={onClose}
       />
-      {/* Modal — glass + ambient shadow */}
+      {/* Modal — ultra soft glass + ambient shadow */}
       <div
         className={cn(
-          // Glassmorphism formula
-          'relative w-full bg-surface-container-lowest/80 glass',
-          // Border radius
-          'rounded-[--radius-md]',
-          // Visible border
-          'border border-[var(--color-outline-variant)]',
-          // Shadow
+          // Glassmorphism formula (slightly more opaque for softness)
+          'relative w-full bg-gradient-to-br from-white/90 via-white/85 to-[#faf7fc]/90 glass',
+          // Border radius: 18px — ultra soft
+          'rounded-xl',
+          // Subtle border
+          'border border-[rgba(255,255,255,0.5)]',
+          // Soft ambient shadow
           'shadow-[--shadow-xl]',
           // Size
           'max-h-[90vh] flex flex-col',
@@ -68,7 +65,15 @@ export function Modal({ isOpen, onClose, children, className, maxWidth = 'lg', g
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 rounded-[--radius-md] text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors cursor-pointer z-10"
+          className={cn(
+            'absolute top-4 right-4 p-2',
+            'text-[var(--color-on-surface-variant)]',
+            'hover:bg-[rgba(26,33,56,0.06)]',
+            'active:bg-[rgba(26,33,56,0.10)]',
+            'rounded-md',
+            'transition-all duration-150 cursor-pointer',
+            'flex items-center justify-center'
+          )}
           aria-label="Đóng"
         >
           <X size={18} />

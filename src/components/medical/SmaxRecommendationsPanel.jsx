@@ -11,14 +11,14 @@ function RecommendationItem({ rec, isSaved, onToggle }) {
 
   return (
     <div className={cn(
-      'rounded-[--radius-sm] p-3 transition-all',
-      'hover:bg-surface-container-low'
+      'rounded-lg p-3 transition-all duration-150',
+      'hover:bg-[rgba(26,33,56,0.04)]'
     )}>
       {/* Header row */}
       <div className="flex items-start gap-2 mb-1">
         {/* Priority badge */}
         <span
-          className="text-label-xs font-bold px-1.5 py-0.5 rounded shrink-0"
+          className="text-label-xs font-bold px-2 py-0.5 rounded-full shrink-0"
           style={{ backgroundColor: bg, color }}
         >
           {label.toUpperCase()}
@@ -38,10 +38,10 @@ function RecommendationItem({ rec, isSaved, onToggle }) {
         <button
           onClick={() => onToggle(rec)}
           className={cn(
-            'flex items-center gap-1 text-label-xs px-2 py-1 rounded-full transition-all cursor-pointer',
+            'flex items-center gap-1 text-label-xs px-2.5 py-1 rounded-full transition-all duration-150 cursor-pointer',
             isSaved
-              ? 'bg-success/10 text-success'
-              : 'bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface'
+              ? 'bg-[rgba(5,150,105,0.10)] text-[#059669]'
+              : 'bg-[rgba(26,33,56,0.06)] text-on-surface-variant hover:bg-[rgba(26,33,56,0.10)] hover:text-on-surface'
           )}
         >
           {isSaved ? (
@@ -82,12 +82,12 @@ export function SmaxRecommendationsPanel({ diseases, savedActionIds, onToggleAct
     <div className="flex flex-col gap-1">
       {/* Header */}
       <div className="flex items-center gap-1.5 mb-1 px-1">
-        <div className="w-4 h-4 rounded gradient-signature flex items-center justify-center">
-          <svg width="8" height="8" viewBox="0 0 24 24" fill="white">
+        <div className="w-5 h-5 rounded-sm gradient-signature flex items-center justify-center shrink-0">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="white">
             <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
           </svg>
         </div>
-        <h3 className="text-label-md font-semibold text-on-surface-variant uppercase tracking-wide">
+        <h3 className="text-label-sm font-semibold text-on-surface-variant uppercase tracking-wide">
           Gợi ý Smax
         </h3>
         {allRecs.length > 8 && (

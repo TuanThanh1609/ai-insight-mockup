@@ -94,11 +94,11 @@ export function EvaluationResultsTable({ results, runHistory }) {
         />
         <div className="flex items-center gap-2">
           {/* View mode toggle */}
-          <div className="flex items-center bg-surface-container-low rounded-[--radius-sm] p-0.5 gap-0.5">
+          <div className="flex items-center bg-surface-container-low rounded-sm p-0.5 gap-0.5">
             <button
               onClick={() => setViewMode('list')}
               className={cn(
-                'p-1.5 rounded-[--radius-sm] transition-colors cursor-pointer',
+                'p-1.5 rounded-sm transition-colors cursor-pointer',
                 viewMode === 'list'
                   ? 'bg-surface-container-lowest text-on-surface shadow-[0_1px_2px_rgba(44,52,55,0.08)]'
                   : 'text-on-surface-variant hover:text-on-surface'
@@ -109,7 +109,7 @@ export function EvaluationResultsTable({ results, runHistory }) {
             <button
               onClick={() => setViewMode('grid')}
               className={cn(
-                'p-1.5 rounded-[--radius-sm] transition-colors cursor-pointer',
+                'p-1.5 rounded-sm transition-colors cursor-pointer',
                 viewMode === 'grid'
                   ? 'bg-surface-container-lowest text-on-surface shadow-[0_1px_2px_rgba(44,52,55,0.08)]'
                   : 'text-on-surface-variant hover:text-on-surface'
@@ -148,7 +148,7 @@ export function EvaluationResultsTable({ results, runHistory }) {
                 key={f.value}
                 onClick={() => handleFilterChange(f.value)}
                 className={cn(
-                  'flex items-center gap-1.5 px-3 py-1.5 rounded-[--radius-full] text-xs font-medium transition-colors cursor-pointer border',
+                  'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors cursor-pointer border',
                   activeFilter === f.value
                     ? 'bg-primary text-white border-primary'
                     : 'bg-surface-container-lowest text-on-surface-variant border-outline-variant hover:bg-surface-container-low hover:text-on-surface'
@@ -238,7 +238,7 @@ export function EvaluationResultsTable({ results, runHistory }) {
                 {paginated.map((row) => (
                   <div
                     key={row.id}
-                    className="p-4 rounded-[--radius-md] border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-low transition-colors"
+                    className="p-4 rounded-md border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-low transition-colors"
                   >
                     <div className="flex items-start justify-between mb-2">
                       <div>
@@ -273,7 +273,7 @@ export function EvaluationResultsTable({ results, runHistory }) {
                 <button
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                   disabled={currentPage === 1}
-                  className="p-1.5 rounded-[--radius-sm] text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                  className="p-1.5 rounded-sm text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
                 >
                   <ChevronLeft size={15} />
                 </button>
@@ -282,7 +282,7 @@ export function EvaluationResultsTable({ results, runHistory }) {
                     key={page}
                     onClick={() => setCurrentPage(page)}
                     className={cn(
-                      'w-7 h-7 rounded-[--radius-sm] text-xs font-medium transition-colors cursor-pointer',
+                      'w-7 h-7 rounded-sm text-xs font-medium transition-colors cursor-pointer',
                       currentPage === page
                         ? 'bg-primary text-white'
                         : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface'
@@ -294,7 +294,7 @@ export function EvaluationResultsTable({ results, runHistory }) {
                 <button
                   onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                   disabled={currentPage === totalPages}
-                  className="p-1.5 rounded-[--radius-sm] text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                  className="p-1.5 rounded-sm text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
                 >
                   <ChevronRight size={15} />
                 </button>

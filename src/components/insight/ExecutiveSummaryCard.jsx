@@ -20,7 +20,7 @@ import { formatCurrency } from '../../lib/utils';
 function SectionHeader({ icon: Icon, label, colorClass, bgClass }) {
   return (
     <div className={cn('flex items-center gap-2 mb-3', colorClass)}>
-      <div className={cn('p-1 rounded-[--radius-sm]', bgClass)}>
+      <div className={cn('p-1 rounded-sm', bgClass)}>
         <Icon size={14} />
       </div>
       <span className="text-xs font-bold tracking-wide uppercase">{label}</span>
@@ -44,7 +44,7 @@ function BulletItem({ item, onActionClick }) {
   };
 
   return (
-    <div className={cn('rounded-[--radius-sm] p-3 bg-surface-container-lowest', borderColor[item.type])}>
+    <div className={cn('rounded-sm p-3 bg-surface-container-lowest', borderColor[item.type])}>
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-start gap-2 flex-1 min-w-0">
           <span className="text-base leading-none mt-0.5">{item.icon}</span>
@@ -76,7 +76,7 @@ function BulletItem({ item, onActionClick }) {
 
 function AISummaryBox({ summary }) {
   return (
-    <div className="rounded-[--radius-md] p-4 bg-gradient-to-r from-primary/8 to-primary-dim/8 border border-primary/20">
+    <div className="rounded-md p-4 bg-gradient-to-r from-primary/8 to-primary-dim/8 border border-primary/20">
       <div className="flex items-center gap-2 mb-2">
         <Sparkles size={14} className="text-primary" />
         <span className="text-xs font-bold text-primary">TÓM TẮT TUẦN NÀY</span>
@@ -88,7 +88,7 @@ function AISummaryBox({ summary }) {
 
 function PortfolioStats({ stats }) {
   return (
-    <div className="grid grid-cols-3 gap-3 p-3 bg-surface-container-low rounded-[--radius-sm]">
+    <div className="grid grid-cols-3 gap-3 p-3 bg-surface-container-low rounded-sm">
       <div className="text-center">
         <p className="font-display font-bold text-base text-on-surface leading-none">
           {formatCurrency(stats.totalRevenue)}
@@ -175,7 +175,7 @@ export function ExecutiveSummaryCard({ summary }) {
 
       {/* Budget Recommendation */}
       {summary.budgetRecommendation && (
-        <div className="rounded-[--radius-md] p-3 bg-surface-container-low border border-surface-container-high">
+        <div className="rounded-md p-3 bg-surface-container-low border border-surface-container-high">
           <p className="text-xs font-bold text-on-surface-variant uppercase tracking-wide mb-2">
             📊 Gợi ý phân bổ ngân sách tuần tới
           </p>

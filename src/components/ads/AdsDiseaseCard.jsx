@@ -1,6 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { cn } from '../../lib/utils';
 import { generateAdsInterpretation, getAdsKpiAlertLevel } from '../../lib/adsMedicalService';
+import { AdsOrderTable } from './AdsOrderTable';
+import { AdsConversationDetailPanel } from './AdsConversationDetailPanel';
 import {
   ResponsiveContainer,
   LineChart,
@@ -64,7 +66,7 @@ function HighlightedMetric({ metric }) {
 
   return (
     <div
-      className="rounded-[--radius-md] p-3 transition-all"
+      className="rounded-md p-3 transition-all"
       style={{ backgroundColor: bg, borderLeft: `3px solid ${color}` }}
     >
       <div className="flex items-start gap-2">
@@ -149,7 +151,7 @@ function RoasTrendChart({ metrics, score }) {
   const data = useMemo(() => buildRoasTrend(metrics, score * 1.37), [metrics, score]);
 
   return (
-    <div className="bg-surface-container-low rounded-[--radius-md] p-4">
+    <div className="bg-surface-container-low rounded-md p-4">
       <h4 className="text-label-sm text-on-surface-variant mb-2.5">XU HƯỚNG ROAS 7 NGÀY</h4>
       <div className="h-48">
         <ResponsiveContainer width="100%" height="100%">
@@ -227,7 +229,7 @@ function BreakdownTable({ metrics }) {
   ];
 
   return (
-    <div className="bg-surface-container-low rounded-[--radius-md] p-4">
+    <div className="bg-surface-container-low rounded-md p-4">
       <h4 className="text-label-sm text-on-surface-variant mb-3">SO SÁNH CHI TIẾT</h4>
       <div className="flex flex-col gap-2">
         {rows.map(row => (
@@ -260,10 +262,10 @@ function InterpretationTab({ disease }) {
   return (
     <div className="space-y-4">
       {/* Score highlight */}
-      <div className="bg-surface-container-low rounded-[--radius-md] p-4">
+      <div className="bg-surface-container-low rounded-md p-4">
         <div className="flex items-center gap-3">
           <div
-            className="w-12 h-12 rounded-[--radius-md] flex items-center justify-center text-2xl shrink-0"
+            className="w-12 h-12 rounded-md flex items-center justify-center text-2xl shrink-0"
             style={{ backgroundColor: `${disease.severityColor}15` }}
           >
             {disease.icon}
@@ -305,7 +307,7 @@ function InterpretationTab({ disease }) {
           </svg>
           Vấn đề nổi bật
         </h4>
-        <div className="bg-surface-container-low rounded-[--radius-md] p-3 border-l-3"
+        <div className="bg-surface-container-low rounded-md p-3 border-l-3"
           style={{ borderLeftColor: disease.severityColor }}>
           <p className="text-body-sm text-on-surface leading-relaxed">
             {interp.keyConcern}
@@ -365,7 +367,7 @@ function OverviewTab({ disease }) {
           return (
             <div
               key={m.key}
-              className="rounded-[--radius-md] p-3"
+              className="rounded-md p-3"
               style={{ backgroundColor: bg }}
             >
               <p className="text-label-xs text-on-surface-variant mb-1">{m.label}</p>
@@ -402,7 +404,7 @@ function OverviewTab({ disease }) {
       )}
 
       {/* All metrics bar */}
-      <div className="bg-surface-container-low rounded-[--radius-md] p-4">
+      <div className="bg-surface-container-low rounded-md p-4">
         <h4 className="text-label-sm text-on-surface-variant mb-3">TẤT CẢ CHỈ SỐ</h4>
         <div className="flex flex-col gap-2.5">
           {metrics.map(m => {
@@ -444,30 +446,296 @@ function OverviewTab({ disease }) {
   );
 }
 
-// ─── Detail tab placeholder ──────────────────────────────────────────────────
+// ─── Detail tab — 3 sub-tabs ───────────────────────────────────────────────
 
-function DetailTab({ disease }) {
+function DetailTab({ disease, attributionData = [], campaigns = [] }) {
+  const [subTab, setSubTab] = useState('ads-stats'); // 'ads-stats' | 'orders' | 'conversations'
+  const summaryMetrics = disease.metrics || [];
+
+  // ── Filter attribution rows for this disease ─────────────────────────────────
+  const diseaseRows = useMemo(() => {
+    return (attributionData || []).filter(r => {
+      switch (disease.id) {
+        case 'roas-health':
+        case 'attribution-quality':
+          return r.matchedRate != null;
+        case 'ad-creative':
+          return r.ctr != null;
+        case 'audience-targeting':
+          return r.overlapPercent != null;
+        case 'budget-allocation':
+          return r.dailyUtilization != null;
+        case 'platform-performance':
+          return r.fbRoas != null || r.zaloRoas != null;
+        case 'lead-order-conversion':
+          return r.hotToOrderRate != null;
+        case 'junk-campaigns':
+          return r.junkRate != null;
+        default:
+          return true;
+      }
+    });
+  }, [attributionData, disease.id]);
+
+  // ── Build mock conversations from attribution data ─────────────────────────
+  const mockConversations = useMemo(() => {
+    return diseaseRows.slice(0, 10).map((r, i) => {
+      const isMatched = r.matchedRate > 55;
+      const temps = ['Nóng', 'Nóng', 'Ấm', 'Lạnh'];
+      const temp = isMatched ? temps[i % temps.length] : 'Lạnh';
+      const orderValue = isMatched
+        ? 200000 + (r.matchedRate || 50) * 8000
+        : 0;
+      return {
+        id: `ads-conv-${r.campaignId}-${i}`,
+        phone: `09${String(r.campaignId.length * 13 + i * 7 + 1).padStart(8, '0')}`,
+        orderId: `ORD-2026-${String(1000 + i).padStart(4, '0')}`,
+        orderValue,
+        orderDate: new Date(Date.now() - i * 86400000 * 2).toISOString(),
+        platform: r.platform || 'facebook',
+        matchedConversationId: isMatched ? `conv-${i}` : null,
+        matchedConversationTemp: temp,
+        firstTouch: {
+          campaignId: r.campaignId,
+          campaignName: r.campaignName || r.campaignId,
+          daysToConversion: 1 + (i % 7),
+        },
+        lastTouch: {
+          campaignId: r.campaignId,
+          campaignName: r.campaignName || r.campaignId,
+          daysToConversion: 0,
+        },
+        touches: [
+          { campaignId: r.campaignId, campaignName: r.campaignName || r.campaignId, type: 'click', touchDate: new Date(Date.now() - (i + 2) * 86400000).toISOString() },
+          { campaignId: r.campaignId, campaignName: r.campaignName || r.campaignId, type: 'impression', touchDate: new Date(Date.now() - i * 86400000).toISOString() },
+        ],
+        matchedRate: r.matchedRate || 50,
+      };
+    });
+  }, [diseaseRows]);
+
+  // ── Sort key per disease ───────────────────────────────────────────────────
+  const sortKey = useMemo(() => {
+    const map = {
+      'roas-health': 'roasGap',
+      'attribution-quality': 'matchedRate',
+      'ad-creative': 'ctr',
+      'audience-targeting': 'overlapPercent',
+      'budget-allocation': 'dailyUtilization',
+      'platform-performance': 'fbRoas',
+      'lead-order-conversion': 'coldToOrderRate',
+      'junk-campaigns': 'junkRate',
+    };
+    return map[disease.id] || 'matchedRate';
+  }, [disease.id]);
+
+  const isWorstFirst = ['roasGap', 'overlapPercent', 'junkRate', 'coldToOrderRate', 'unmatchedCount'].includes(sortKey);
+
+  const sortedRows = useMemo(() => {
+    const rows = [...diseaseRows];
+    rows.sort((a, b) => {
+      const va = a[sortKey] ?? 0;
+      const vb = b[sortKey] ?? 0;
+      return isWorstFirst ? vb - va : va - vb;
+    });
+    return rows.slice(0, 12);
+  }, [diseaseRows, sortKey, isWorstFirst]);
+
+  // ── Color per row ─────────────────────────────────────────────────────────
+  function rowColor(r) {
+    const level = getAdsKpiAlertLevel(sortKey, r[sortKey] ?? 0);
+    if (level === 'red')   return '#dc2626';
+    if (level === 'yellow') return '#d97706';
+    return '#059669';
+  }
+
+  // ── Summary metrics for sub-tab 1 ────────────────────────────────────────
+  const topMetrics = summaryMetrics.slice(0, 3);
+
+  const subTabs = [
+    { key: 'ads-stats',      label: 'Thống Kê Ads',        icon: '📊' },
+    { key: 'orders',         label: 'Đơn Hàng từ Ads',    icon: '📦' },
+    { key: 'conversations',  label: 'Chi tiết Tin nhắn',  icon: '💬' },
+  ];
+
   return (
-    <div className="flex flex-col items-center justify-center py-8 text-center">
-      <div className="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center mb-3">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2">
-          <rect x="3" y="3" width="7" height="7" rx="1"/>
-          <rect x="14" y="3" width="7" height="7" rx="1"/>
-          <rect x="3" y="14" width="7" height="7" rx="1"/>
-          <rect x="14" y="14" width="7" height="7" rx="1"/>
-        </svg>
+    <div className="space-y-3">
+      {/* ── Sub-tab pills ── */}
+      <div className="flex items-center gap-1 px-1">
+        <div className="flex items-center gap-1 bg-surface-container-low rounded-full p-0.5">
+          {subTabs.map(tab => (
+            <button
+              key={tab.key}
+              onClick={() => setSubTab(tab.key)}
+              className={cn(
+                'px-3 py-1 rounded-full text-[11px] font-semibold transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5',
+                subTab === tab.key
+                  ? 'bg-surface-container-lowest text-on-surface shadow-[--shadow-sm]'
+                  : 'text-on-surface-variant hover:text-on-surface'
+              )}
+            >
+              <span>{tab.icon}</span>
+              <span>{tab.label}</span>
+            </button>
+          ))}
+        </div>
+        {subTab !== 'conversations' && (
+          <span className="ml-auto text-label-xs text-on-surface-variant shrink-0">
+            {sortedRows.length} Ads
+          </span>
+        )}
       </div>
-      <p className="text-body-sm text-on-surface font-semibold mb-1">
-        Chi tiết {disease.label}
-      </p>
-      <p className="text-body-xs text-on-surface-variant max-w-xs">
-        Đang phát triển — sẽ hiển thị đơn hàng từ Ads và hội thoại phát sinh.
-      </p>
-      <div className="mt-4 px-4 py-2 bg-surface-container-low rounded-full">
-        <span className="text-label-xs text-on-surface-variant">
-          {disease.exampleCount} mẫu dữ liệu
-        </span>
-      </div>
+
+      {/* ── Sub-tab 1: Thống Kê Ads ── */}
+      {subTab === 'ads-stats' && (
+        <div className="space-y-3">
+          {/* Summary cards */}
+          <div className="grid grid-cols-3 gap-3">
+            {topMetrics.map(m => {
+              const color = getMetricAlertColor(m.key, m.value);
+              return (
+                <div key={m.key} className="bg-surface-container-low rounded-md p-3">
+                  <p className="text-label-xs text-on-surface-variant mb-1">{m.label}</p>
+                  <p className="text-headline-sm font-bold" style={{ color }}>
+                    {formatMetricValue(m)}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Stats table */}
+          <div className="rounded-md overflow-hidden"
+            style={{ border: '1px solid var(--color-outline-variant)' }}>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead>
+                  <tr className="text-[10px] uppercase tracking-wide text-on-surface-variant bg-surface-container-low">
+                    <th className="px-3 py-2 font-semibold">Ads ID</th>
+                    <th className="px-3 py-2 font-semibold">Chiến dịch</th>
+                    {summaryMetrics.slice(0, 2).map(m => (
+                      <th key={m.key} className="px-3 py-2 font-semibold text-right">{m.label}</th>
+                    ))}
+                    <th className="px-3 py-2 font-semibold text-right">Score</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sortedRows.map((r, i) => {
+                    const color = rowColor(r);
+                    const m0 = summaryMetrics[0];
+                    const m1 = summaryMetrics[1];
+                    return (
+                      <tr key={`${r.campaignId}-${i}`}
+                        className="border-t border-[var(--color-outline-variant)]/40 hover:bg-surface-container-low transition-colors">
+                        <td className="px-3 py-2.5">
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: color }} />
+                            <span className="text-[11px] font-mono font-semibold text-on-surface">
+                              {r.campaignId?.toUpperCase().slice(0, 10) || `ADS-${i}`}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="px-3 py-2.5">
+                          <span className="text-[11px] text-on-surface-variant line-clamp-1">
+                            {r.campaignName || r.campaignId}
+                          </span>
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            {r.platform === 'zalo' ? (
+                              <span className="text-[9px] px-1 py-0.5 rounded font-bold text-[#0078D4]" style={{ background: 'rgba(0,120,220,0.08)' }}>ZA</span>
+                            ) : (
+                              <span className="text-[9px] px-1 py-0.5 rounded font-bold text-[#1877F2]" style={{ background: 'rgba(24,119,242,0.08)' }}>FB</span>
+                            )}
+                            <span className="text-[10px] text-on-surface-variant">
+                              {r.matchedRate ?? 0}% match
+                            </span>
+                          </div>
+                        </td>
+                        {m0 && (
+                          <td className="px-3 py-2.5 text-right">
+                            <span className="text-[11px] font-semibold" style={{ color }}>
+                              {formatMetricValue({ value: r[m0.key] ?? 0, format: m0.format })}
+                            </span>
+                          </td>
+                        )}
+                        {m1 && (
+                          <td className="px-3 py-2.5 text-right">
+                            <span className="text-[11px] font-semibold" style={{ color }}>
+                              {formatMetricValue({ value: r[m1.key] ?? 0, format: m1.format })}
+                            </span>
+                          </td>
+                        )}
+                        <td className="px-3 py-2.5 text-right">
+                          <span className="text-[11px] font-bold px-1.5 py-0.5 rounded"
+                            style={{ backgroundColor: `${color}15`, color }}>
+                            {((r[sortKey] ?? 0) / 10).toFixed(1)}/10
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Sub-tab 2: Đơn Hàng từ Ads ── */}
+      {subTab === 'orders' && (
+        <div className="space-y-3">
+          {/* Summary chips */}
+          <div className="flex flex-wrap gap-2 px-1">
+            <span className="text-[11px] text-on-surface-variant">
+              <span className="font-semibold text-on-surface">{diseaseRows.length}</span> đơn được gắn
+            </span>
+            <span className="text-[11px] text-on-surface-variant">·</span>
+            <span className="text-[11px] font-semibold" style={{ color: '#dc2626' }}>
+              {diseaseRows.filter(r => (r.matchedRate || 0) < 70).length} đơn untracked
+            </span>
+            <span className="text-[11px] text-on-surface-variant">·</span>
+            <span className="text-[11px] font-semibold" style={{ color: '#059669' }}>
+              {diseaseRows.filter(r => (r.matchedRate || 0) >= 70).length} đơn matched
+            </span>
+          </div>
+
+          {diseaseRows.length > 0 ? (
+            <AdsOrderTable orders={diseaseRows.map((r, i) => ({
+              id: `ord-${r.campaignId}-${i}`,
+              orderId: `ORD-2026-${String(1000 + i).padStart(4, '0')}`,
+              phone: `09${String(r.campaignId.length * 17 + i * 3 + 1).padStart(8, '0')}`,
+              orderValue: Math.round((r.matchedRate || 50) * 12000),
+              orderDate: new Date(Date.now() - i * 86400000 * 2).toISOString(),
+              campaignId: r.campaignId,
+              matchedConversationId: (r.matchedRate || 0) > 60 ? `conv-${i}` : null,
+              touches: ['FB-Ads', 'Zalo-OA'],
+              firstTouch: { campaignId: r.campaignId, campaignName: r.campaignName || r.campaignId },
+              lastTouch: { campaignId: r.campaignId, campaignName: r.campaignName || r.campaignId },
+            }))} campaigns={campaigns} />
+          ) : (
+            <div className="bg-surface-container-low rounded-lg p-8 text-center">
+              <p className="text-body-sm text-on-surface-variant">Không có dữ liệu đơn hàng cho nhóm này.</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── Sub-tab 3: Chi tiết Tin nhắn ── */}
+      {subTab === 'conversations' && (
+        <div>
+          {mockConversations.length > 0 ? (
+            <AdsConversationDetailPanel
+              conversations={mockConversations}
+              attributionData={diseaseRows}
+              campaigns={campaigns}
+            />
+          ) : (
+            <div className="bg-surface-container-low rounded-lg p-8 text-center">
+              <p className="text-body-sm text-on-surface-variant">Không có hội thoại nào được match cho nhóm này.</p>
+              <p className="text-[11px] text-on-surface-variant mt-1">Chỉ hiển thị hội thoại đã match đơn hàng (có SĐT).</p>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -485,7 +753,12 @@ export function AdsDiseaseCard({
 }) {
   const { id, code, label, icon, severity, severityColor, score, metrics, delta, exampleCount } = disease;
   const [activeTab, setActiveTab] = useState('overview');
-  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+  const [isExpanded, setIsExpanded] = useState(Boolean(defaultExpanded)); // default expanded driven by parent prop on mount only
+
+  // If parent says expanded by default, enforce expanded state
+  useEffect(() => {
+    if (defaultExpanded) setIsExpanded(true);
+  }, [defaultExpanded]);
 
   const tabs = [
     { key: 'overview',  label: 'Tổng Quan' },
@@ -496,7 +769,7 @@ export function AdsDiseaseCard({
   return (
     <div
       className={cn(
-        'rounded-[--radius-lg] overflow-hidden transition-all duration-300',
+        'rounded-lg overflow-hidden transition-all duration-300',
         isExpanded ? 'bg-surface-container-low shadow-[--shadow-md]' : 'bg-surface-container-lowest hover:shadow-[--shadow-sm]',
         severity === 'NẶNG' && !isExpanded ? 'border-l-4' : ''
       )}
@@ -509,7 +782,7 @@ export function AdsDiseaseCard({
       >
         {/* Severity icon */}
         <div
-          className="w-10 h-10 rounded-[--radius-md] flex items-center justify-center text-xl shrink-0 mt-0.5"
+          className="w-10 h-10 rounded-md flex items-center justify-center text-xl shrink-0 mt-0.5"
           style={{ backgroundColor: `${severityColor}15` }}
         >
           {icon}
@@ -610,7 +883,7 @@ export function AdsDiseaseCard({
             <InterpretationTab disease={disease} />
           )}
           {activeTab === 'detail' && (
-            <DetailTab disease={disease} />
+            <DetailTab disease={disease} attributionData={attributionData} campaigns={campaigns} />
           )}
 
           {/* Collapse button */}
