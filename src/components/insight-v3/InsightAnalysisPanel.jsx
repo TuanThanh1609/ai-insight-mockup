@@ -129,14 +129,14 @@ function TempBar({ data }) {
 
 export function InsightAnalysisPanel() {
   const tempData = [
-    { label: 'Nóng', count: KPI.hot, color: '#ef4444', pct: Math.round(KPI.hot / KPI.total * 100) },
-    { label: 'Ấm', count: KPI.warm, color: '#f59e0b', pct: Math.round(KPI.warm / KPI.total * 100) },
-    { label: 'Lạnh', count: KPI.total - KPI.hot - KPI.warm, color: '#9ca3af', pct: 100 - Math.round(KPI.hot / KPI.total * 100) - Math.round(KPI.warm / KPI.total * 100) },
+    { label: 'Nóng', count: KPI.hot, color: '#ef4444' },
+    { label: 'Ấm', count: KPI.warm, color: '#f59e0b' },
+    { label: 'Lạnh', count: KPI.total - KPI.hot - KPI.warm, color: '#9ca3af' },
   ]
   const sentimentData = [
     { label: 'Tích cực', pct: 55, color: '#22c55e' },
     { label: 'Băn khoăn', pct: 26, color: '#f59e0b' },
-    { label: 'Tiêu cực', pct: 20, color: '#ef4444' },
+    { label: 'Tiêu cực', pct: 19, color: '#ef4444' },
   ]
 
   return (
