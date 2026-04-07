@@ -42,6 +42,36 @@ function deriveMetrics(activeInsightId) {
   const rows = raw
   const total = rows.length
 
+  // ── Template-3 specific metrics (Phản hồi khách hàng) ──
+  const isTemplate3 = activeInsightId === 'template-3'
+
+  const khongBucXuc = isTemplate3
+    ? rows.filter(r => (r.kh_buc_xuc || '').trim() === 'Không bức xúc').length
+    : 0
+  const hoiKhongHL = isTemplate3
+    ? rows.filter(r => (r.kh_buc_xuc || '').trim() === 'Hơi không hài lòng').length
+    : 0
+  const bucXuc = isTemplate3
+    ? rows.filter(r => (r.kh_buc_xuc || '').trim() === 'Bức xúc').length
+    : 0
+
+  // Top kh_noi_ve_gi (what customers ask about)
+  const noiVeGiMap = {}
+  rows.forEach(r => {
+    const v = r.kh_noi_ve_gi || ''
+    if (v && v !== '—') noiVeGiMap[v] = (noiVeGiMap[v] || 0) + 1
+  })
+  const topNoiVeGi = Object.entries(noiVeGiMap).sort((a, b) => b[1] - a[1]).slice(0, 3)
+
+  // Top xu_huong_quan_tam (care trends)
+  const xuHuongMap = {}
+  rows.forEach(r => {
+    const v = r.xu_huong_quan_tam || ''
+    if (v && v !== '—') xuHuongMap[v] = (xuHuongMap[v] || 0) + 1
+  })
+  const topXuHuong = Object.entries(xuHuongMap).sort((a, b) => b[1] - a[1]).slice(0, 3)
+
+  // ── Template-1/2 shared metrics ──
   // Temperature
   const hot = rows.filter(r => {
     const t = (r.nong_am_lanh || r.tinh_hinh_tu_van || '').toLowerCase()
@@ -92,6 +122,10 @@ function deriveMetrics(activeInsightId) {
   return {
     total, hot, warm, cold, pos, neg, neut,
     convRate, converted, topPains, topAtt, topCh,
+    // Template-3 specific
+    isTemplate3,
+    khongBucXuc, hoiKhongHL, bucXuc,
+    topNoiVeGi, topXuHuong,
   }
 }
 
@@ -162,7 +196,44 @@ function Hr() {
 }
 
 // ─── Interpretation content by template ─────────────────────────────────────────
-function buildInterpretation(m, templateName) {
+function buildInterpretation(m, activeInsightId) {
+  if (activeInsightId === 'template-3') {
+    const total = m.total
+    const tichCucPct = total > 0 ? Math.round(m.khongBucXuc / total * 100) : 0
+    const hoiHL_Pct = total > 0 ? Math.round(m.hoiKhongHL / total * 100) : 0
+    const bucXucPct = total > 0 ? Math.round(m.bucXuc / total * 100) : 0
+
+    const topNoi = m.topNoiVeGi[0]
+    const topXuHuong = m.topXuHuong[0]
+
+    const actions = []
+    if (bucXucPct > 0) actions.push('Ưu tiên giải quyết khiếu nại khách bức xúc trong 24h')
+    if (tichCucPct >= 70) actions.push('Cảm ơn khách đã phản hồi tích cực — gửi voucher tri ân')
+    if (hoiHL_Pct > 30) actions.push('Chăm sóc nhóm hơi không hài lòng trước khi thành tiêu cực')
+    if (topNoi) actions.push(`Tập trung giải đáp: "${topNoi[0]}" (${topNoi[1]} lượt hỏi)`)
+
+    const shortTerm = [
+      'Tạo FAQ cho top 3 chủ đề khách hỏi nhiều nhất',
+      'Gửi khảo sát NPS tự động sau mỗi hội thoại có phản hồi tiêu cực',
+      m.topXuHuong[0] ? `Ra mắt nội dung giải đáp xu hướng "${m.topXuHuong[0][0]}"` : 'Phân tích xu hướng quan tâm của khách hàng',
+    ]
+
+    const midTerm = [
+      'Cải thiện điểm khách phàn nàn nhiều nhất — giảm tỷ lệ bức xúc',
+      'Xây dựng playbook xử lý khiếu nại chuẩn hóa cho đội ngũ CSKH',
+      'Thiết lập cảnh báo real-time khi khách bức xúc được ghi nhận',
+    ]
+
+    const longTerm = [
+      'Thiết lập survey NPS tự động sau mỗi hội thoại',
+      'Huấn luyện AI model phân loại mức độ hài lòng tự động',
+      'Cài đặt monthly insight report gửi về inbox quản lý',
+    ]
+
+    return { actions, shortTerm, midTerm, longTerm }
+  }
+
+  // ── Template-1 / Template-2 (default behavior) ──
   const hotPct = m.total > 0 ? Math.round(m.hot / m.total * 100) : 0
   const coldPct = m.total > 0 ? Math.round(m.cold / m.total * 100) : 0
   const posPct = m.total > 0 ? Math.round(m.pos / m.total * 100) : 0
@@ -214,14 +285,18 @@ export function InsightInterpretationPanel({ activeInsightId }) {
   const templateLabel = template ? template.name : 'Tổng quan'
 
   const { actions, shortTerm, midTerm, longTerm } = useMemo(
-    () => buildInterpretation(m, templateLabel),
-    [m, templateLabel]
+    () => buildInterpretation(m, activeInsightId),
+    [m, activeInsightId]
   )
 
   const hotPct = m.total > 0 ? Math.round(m.hot / m.total * 100) : 0
   const warmPct = m.total > 0 ? Math.round(m.warm / m.total * 100) : 0
   const coldPct = m.total > 0 ? Math.round(m.cold / m.total * 100) : 0
   const posPct = m.total > 0 ? Math.round(m.pos / m.total * 100) : 0
+
+  const tichCucPct = m.total > 0 ? Math.round(m.khongBucXuc / m.total * 100) : 0
+  const hoiHL_Pct = m.total > 0 ? Math.round(m.hoiKhongHL / m.total * 100) : 0
+  const bucXucPct = m.total > 0 ? Math.round(m.bucXuc / m.total * 100) : 0
 
   return (
     <div>
@@ -242,134 +317,277 @@ export function InsightInterpretationPanel({ activeInsightId }) {
         </span>
       </div>
 
-      {/* Tổng quan */}
-      <Section>
-        <H2>Tổng quan thực trạng</H2>
-        <P>
-          Hệ thống đã ghi nhận <strong style={{ color: C.primary }}>{m.total.toLocaleString('vi-VN')} cuộc hội thoại</strong>{' '}
-          {template ? `trong template "${templateLabel}"` : 'qua tất cả các template'}.
-          Điểm đáng chú ý là tỷ lệ <strong style={{ color: C.primary }}>Lead Nóng chiếm {hotPct}%</strong> —
-          {' '}tín hiệu tích cực cho thấy nội dung tư vấn đang chạm đúng nhu cầu khách hàng.
-        </P>
-        {coldPct > 15 && (
-          <P>
-            ⚠️ <strong style={{ color: C.rust }}>Tỷ lệ khách lạnh ở mức {coldPct}%</strong> —
-            {' '}cần rà soát phễu chuyển đổi và chất lượng đầu vào.
-          </P>
-        )}
-        {m.convRate > 0 && (
-          <P>
-            📈 Tỷ lệ chốt đơn: <strong style={{ color: C.positive }}>{m.convRate}%</strong>{' '}
-            ({m.converted.toLocaleString('vi-VN')} cuộc).
-          </P>
-        )}
-      </Section>
-
-      <Hr />
-
-      {/* Lead Nóng */}
-      <Section>
-        <H2>Lead Nóng — Ưu tiên cao</H2>
-        <P>
-          <strong style={{ color: C.primary }}>{m.hot.toLocaleString('vi-VN')} Lead Nóng</strong>{' '}
-          ({hotPct}%) đã được phân loại — đây là nhóm có ý định mua rõ ràng nhất.
-        </P>
-        <BulletList
-          items={[
-            hotPct >= 30 ? 'Tỷ lệ Nóng cao — duy trì script hiện tại' : 'Tỷ lệ Nóng thấp — cần cải thiện chất lượng tư vấn',
-            m.warm > m.hot ? 'Lead Ấm nhiều hơn Nóng — chuẩn bị nurturing sequence' : 'Lead Nóng nhiều — sẵn sàng chốt đơn',
-            'Phân công CSKH gọi lại trong 24-48h với nhóm Nóng',
-          ]}
-        />
-      </Section>
-
-      <Hr />
-
-      {/* Cảm xúc KH */}
-      <Section>
-        <H2>Cảm xúc khách hàng</H2>
-        <div className="flex flex-wrap gap-1.5 mb-3">
-          <TagBadge color={C.positive}>{posPct}% Tích cực</TagBadge>
-          <TagBadge color={C.neutral}>{m.neut > 0 ? Math.round(m.neut / m.total * 100) : 0}% Băn khoăn</TagBadge>
-          <TagBadge color={C.negative}>{m.total > 0 ? Math.round(m.neg / m.total * 100) : 0}% Tiêu cực</TagBadge>
-        </div>
-        <BulletList
-          items={[
-            posPct >= 50 ? 'Khách hàng hài lòng — duy trì chất lượng dịch vụ' : 'Cần cải thiện trải nghiệm — khách chưa hài lòng',
-            'Nhóm băn khoăn: cần FAQ rõ ràng, giải đáp thắc mắc nhanh',
-            m.neg > 0 ? 'Nhóm tiêu cực: ưu tiên xử lý khiếu nại, tránh lan truyền' : 'Không có phản hồi tiêu cực đáng kể',
-          ]}
-        />
-      </Section>
-
-      <Hr />
-
-      {/* Pain Points */}
-      {m.topPains.length > 0 && (
+      {/* ── TEMPLATE-3: Phản hồi khách hàng ── */}
+      {m.isTemplate3 ? (
         <>
+          {/* Tổng quan thực trạng — template-3 */}
           <Section>
-            <H2>Vấn đề nổi bật</H2>
-            {m.topPains.map(([name, count], i) => (
-              <div key={i} className="flex items-start gap-2 mb-2">
-                <span
-                  className="inline-block w-5 h-5 rounded-lg text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5"
-                  style={{ backgroundColor: `${C.rust}15`, color: C.rust }}
-                >
-                  {i + 1}
-                </span>
-                <div>
-                  <div className="text-sm font-medium" style={{ color: C.primary }}>{name}</div>
-                  <div className="text-xs" style={{ color: C.secondary }}>{count} lượt phản hồi</div>
-                </div>
-              </div>
-            ))}
+            <H2>Tổng quan thực trạng</H2>
+            <P>
+              Hệ thống đã ghi nhận <strong style={{ color: C.primary }}>{m.total.toLocaleString('vi-VN')} cuộc hội thoại</strong>{' '}
+              trong template "{templateLabel}".{' '}
+              Tỷ lệ <strong style={{ color: C.primary }}>phản hồi tích cực chiếm {tichCucPct}%</strong> —
+              tín hiệu tích cực cho thấy dịch vụ đang đáp ứng kỳ vọng khách hàng.
+            </P>
+            {bucXucPct > 0 && (
+              <P>
+                ⚠️ <strong style={{ color: C.rust }}>Tỷ lệ khách bức xúc ở mức {bucXucPct}%</strong> —
+                {' '}cần ưu tiên xử lý khiếu nại ngay trong ngày.
+              </P>
+            )}
           </Section>
+
           <Hr />
+
+          {/* Phản hồi tích cực */}
+          <Section>
+            <H2>Phản hồi tích cực — Ưu tiên cao</H2>
+            <P>
+              <strong style={{ color: C.primary }}>{m.khongBucXuc.toLocaleString('vi-VN')} phản hồi tích cực</strong>{' '}
+              ({tichCucPct}%) — đây là nhóm khách hài lòng nhất, cơ hội chuyển đổi cao.
+            </P>
+            <BulletList
+              items={[
+                tichCucPct >= 60
+                  ? 'Tỷ lệ tích cực cao — duy trì chất lượng phục vụ hiện tại'
+                  : 'Tỷ lệ tích cực chưa cao — cần cải thiện trải nghiệm tổng thể',
+                hoiHL_Pct > tichCucPct
+                  ? 'Nhóm hơi không hài lòng nhiều hơn — cần chăm sóc trước khi thành tiêu cực'
+                  : 'Nhóm tích cực chiếm đa số — cơ hội upsell cao',
+                'Gửi voucher tri ân cho nhóm phản hồi tích cực trong tuần này',
+              ]}
+            />
+          </Section>
+
+          <Hr />
+
+          {/* Xu hướng quan tâm */}
+          {m.topXuHuong.length > 0 && (
+            <>
+              <Section>
+                <H2>Xu hướng quan tâm</H2>
+                <div className="flex flex-wrap gap-1.5 mb-3">
+                  {m.topXuHuong.map(([name, count], i) => (
+                    <TagBadge key={i} color={C.accent}>
+                      {name} ({count} lượt)
+                    </TagBadge>
+                  ))}
+                </div>
+                <BulletList
+                  items={[
+                    m.topXuHuong[0]
+                      ? `Top quan tâm: "${m.topXuHuong[0][0]}" — ưu tiên tạo nội dung giải đáp`
+                      : 'Chưa có dữ liệu xu hướng',
+                    m.topXuHuong[1]
+                      ? `Xu hướng thứ 2: "${m.topXuHuong[1][0]}" — theo dõi để lên kế hoạch dài hạn`
+                      : 'Cần thêm dữ liệu để xác định xu hướng thứ 2',
+                  ]}
+                />
+              </Section>
+              <Hr />
+            </>
+          )}
+
+          {/* Chủ đề khách hỏi nhiều nhất */}
+          {m.topNoiVeGi.length > 0 && (
+            <>
+              <Section>
+                <H2>Khách hỏi nhiều nhất</H2>
+                {m.topNoiVeGi.map(([name, count], i) => (
+                  <div key={i} className="flex items-start gap-2 mb-2">
+                    <span
+                      className="inline-block w-5 h-5 rounded-lg text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5"
+                      style={{ backgroundColor: `${C.accent}15`, color: C.accent }}
+                    >
+                      {i + 1}
+                    </span>
+                    <div>
+                      <div className="text-sm font-medium" style={{ color: C.primary }}>{name}</div>
+                      <div className="text-xs" style={{ color: C.secondary }}>{count} lượt phản hồi</div>
+                    </div>
+                  </div>
+                ))}
+              </Section>
+              <Hr />
+            </>
+          )}
+
+          {/* Lời khuyên — template-3 */}
+          <Section>
+            <H2>Lời khuyên chuyên gia</H2>
+
+            <H3>Ngắn hạn (1–2 tuần)</H3>
+            <BulletList items={actions.length > 0 ? actions : shortTerm} />
+
+            <H3>Trung hạn (1 tháng)</H3>
+            <BulletList items={midTerm} />
+
+            <H3>Dài hạn (3 tháng)</H3>
+            <BulletList items={longTerm} />
+          </Section>
+
+          <Hr />
+
+          {/* KPIs — template-3 */}
+          <Section>
+            <H2>KPIs theo dõi tuần tới</H2>
+            <div className="space-y-2">
+              {[
+                { label: 'Phản hồi tích cực rate', base: `${tichCucPct}%`, target: tichCucPct >= 60 ? '≥ 70%' : '≥ 60%' },
+                { label: 'Tỷ lệ bức xúc', base: `${bucXucPct}%`, target: bucXucPct <= 10 ? '< 5%' : '< 10%' },
+                { label: 'Thời gian phản hồi KN', base: '4h', target: '< 2h' },
+                { label: 'NPS Score', base: '—', target: '≥ 50' },
+              ].map(({ label, base, target }, i) => (
+                <div
+                  key={i}
+                  className="flex items-center justify-between py-2"
+                  style={{ borderBottom: '1px solid rgba(194, 198, 214, 0.15)' }}
+                >
+                  <span className="text-xs" style={{ color: C.secondary }}>{label}</span>
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-semibold" style={{ color: C.primary }}>{base}</span>
+                    <span className="text-xs px-2 py-0.5 rounded-full" style={{ backgroundColor: `${C.accent}12`, color: C.accent }}>
+                      → {target}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Section>
+        </>
+      ) : (
+        /* ── TEMPLATE-1 / TEMPLATE-2 ── */
+        <>
+          {/* Tổng quan thực trạng — template-1/2 */}
+          <Section>
+            <H2>Tổng quan thực trạng</H2>
+            <P>
+              Hệ thống đã ghi nhận <strong style={{ color: C.primary }}>{m.total.toLocaleString('vi-VN')} cuộc hội thoại</strong>{' '}
+              {template ? `trong template "${templateLabel}"` : 'qua tất cả các template'}.
+              Điểm đáng chú ý là tỷ lệ <strong style={{ color: C.primary }}>Lead Nóng chiếm {hotPct}%</strong> —
+              {' '}tín hiệu tích cực cho thấy nội dung tư vấn đang chạm đúng nhu cầu khách hàng.
+            </P>
+            {coldPct > 15 && (
+              <P>
+                ⚠️ <strong style={{ color: C.rust }}>Tỷ lệ khách lạnh ở mức {coldPct}%</strong> —
+                {' '}cần rà soát phễu chuyển đổi và chất lượng đầu vào.
+              </P>
+            )}
+            {m.convRate > 0 && (
+              <P>
+                📈 Tỷ lệ chốt đơn: <strong style={{ color: C.positive }}>{m.convRate}%</strong>{' '}
+                ({m.converted.toLocaleString('vi-VN')} cuộc).
+              </P>
+            )}
+          </Section>
+
+          <Hr />
+
+          {/* Lead Nóng */}
+          <Section>
+            <H2>Lead Nóng — Ưu tiên cao</H2>
+            <P>
+              <strong style={{ color: C.primary }}>{m.hot.toLocaleString('vi-VN')} Lead Nóng</strong>{' '}
+              ({hotPct}%) đã được phân loại — đây là nhóm có ý định mua rõ ràng nhất.
+            </P>
+            <BulletList
+              items={[
+                hotPct >= 30 ? 'Tỷ lệ Nóng cao — duy trì script hiện tại' : 'Tỷ lệ Nóng thấp — cần cải thiện chất lượng tư vấn',
+                m.warm > m.hot ? 'Lead Ấm nhiều hơn Nóng — chuẩn bị nurturing sequence' : 'Lead Nóng nhiều — sẵn sàng chốt đơn',
+                'Phân công CSKH gọi lại trong 24-48h với nhóm Nóng',
+              ]}
+            />
+          </Section>
+
+          <Hr />
+
+          {/* Cảm xúc KH */}
+          <Section>
+            <H2>Cảm xúc khách hàng</H2>
+            <div className="flex flex-wrap gap-1.5 mb-3">
+              <TagBadge color={C.positive}>{posPct}% Tích cực</TagBadge>
+              <TagBadge color={C.neutral}>{m.neut > 0 ? Math.round(m.neut / m.total * 100) : 0}% Băn khoăn</TagBadge>
+              <TagBadge color={C.negative}>{m.total > 0 ? Math.round(m.neg / m.total * 100) : 0}% Tiêu cực</TagBadge>
+            </div>
+            <BulletList
+              items={[
+                posPct >= 50 ? 'Khách hàng hài lòng — duy trì chất lượng dịch vụ' : 'Cần cải thiện trải nghiệm — khách chưa hài lòng',
+                'Nhóm băn khoăn: cần FAQ rõ ràng, giải đáp thắc mắc nhanh',
+                m.neg > 0 ? 'Nhóm tiêu cực: ưu tiên xử lý khiếu nại, tránh lan truyền' : 'Không có phản hồi tiêu cực đáng kể',
+              ]}
+            />
+          </Section>
+
+          <Hr />
+
+          {/* Pain Points */}
+          {m.topPains.length > 0 && (
+            <>
+              <Section>
+                <H2>Vấn đề nổi bật</H2>
+                {m.topPains.map(([name, count], i) => (
+                  <div key={i} className="flex items-start gap-2 mb-2">
+                    <span
+                      className="inline-block w-5 h-5 rounded-lg text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5"
+                      style={{ backgroundColor: `${C.rust}15`, color: C.rust }}
+                    >
+                      {i + 1}
+                    </span>
+                    <div>
+                      <div className="text-sm font-medium" style={{ color: C.primary }}>{name}</div>
+                      <div className="text-xs" style={{ color: C.secondary }}>{count} lượt phản hồi</div>
+                    </div>
+                  </div>
+                ))}
+              </Section>
+              <Hr />
+            </>
+          )}
+
+          {/* Lời khuyên — template-1/2 */}
+          <Section>
+            <H2>Lời khuyên chuyên gia</H2>
+
+            <H3>Ngắn hạn (1–2 tuần)</H3>
+            <BulletList items={actions.length > 0 ? actions : shortTerm} />
+
+            <H3>Trung hạn (1 tháng)</H3>
+            <BulletList items={midTerm} />
+
+            <H3>Dài hạn (3 tháng)</H3>
+            <BulletList items={longTerm} />
+          </Section>
+
+          <Hr />
+
+          {/* KPIs — template-1/2 */}
+          <Section>
+            <H2>KPIs theo dõi tuần tới</H2>
+            <div className="space-y-2">
+              {[
+                { label: 'Lead Nóng rate', base: `${hotPct}%`, target: hotPct >= 35 ? '≥ 40%' : '≥ 35%' },
+                { label: 'Tỷ lệ chốt đơn', base: `${m.convRate}%`, target: m.convRate >= 10 ? '≥ 15%' : '≥ 10%' },
+                { label: 'Khách lạnh rate', base: `${coldPct}%`, target: coldPct <= 15 ? '< 10%' : '< 15%' },
+                { label: 'Thời gian phản hồi', base: '4 phút', target: '< 2 phút' },
+              ].map(({ label, base, target }, i) => (
+                <div
+                  key={i}
+                  className="flex items-center justify-between py-2"
+                  style={{ borderBottom: '1px solid rgba(194, 198, 214, 0.15)' }}
+                >
+                  <span className="text-xs" style={{ color: C.secondary }}>{label}</span>
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-semibold" style={{ color: C.primary }}>{base}</span>
+                    <span className="text-xs px-2 py-0.5 rounded-full" style={{ backgroundColor: `${C.accent}12`, color: C.accent }}>
+                      → {target}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Section>
         </>
       )}
-
-      {/* Lời khuyên */}
-      <Section>
-        <H2>Lời khuyên chuyên gia</H2>
-
-        <H3>Ngắn hạn (1–2 tuần)</H3>
-        <BulletList items={actions.length > 0 ? actions : shortTerm} />
-
-        <H3>Trung hạn (1 tháng)</H3>
-        <BulletList items={midTerm} />
-
-        <H3>Dài hạn (3 tháng)</H3>
-        <BulletList items={longTerm} />
-      </Section>
-
-      <Hr />
-
-      {/* KPIs */}
-      <Section>
-        <H2>KPIs theo dõi tuần tới</H2>
-        <div className="space-y-2">
-          {[
-            { label: 'Lead Nóng rate', base: `${hotPct}%`, target: hotPct >= 35 ? '≥ 40%' : '≥ 35%' },
-            { label: 'Tỷ lệ chốt đơn', base: `${m.convRate}%`, target: m.convRate >= 10 ? '≥ 15%' : '≥ 10%' },
-            { label: 'Khách lạnh rate', base: `${coldPct}%`, target: coldPct <= 15 ? '< 10%' : '< 15%' },
-            { label: 'Thời gian phản hồi', base: '4 phút', target: '< 2 phút' },
-          ].map(({ label, base, target }, i) => (
-            <div
-              key={i}
-              className="flex items-center justify-between py-2"
-              style={{ borderBottom: '1px solid rgba(194, 198, 214, 0.15)' }}
-            >
-              <span className="text-xs" style={{ color: C.secondary }}>{label}</span>
-              <div className="flex items-center gap-3">
-                <span className="text-xs font-semibold" style={{ color: C.primary }}>{base}</span>
-                <span className="text-xs px-2 py-0.5 rounded-full" style={{ backgroundColor: `${C.accent}12`, color: C.accent }}>
-                  → {target}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Section>
     </div>
   )
 }
