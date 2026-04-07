@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Smax AI | Khám Bệnh Hội Thoại</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;family=Berkeley+Mono&amp;family=Manrope:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-low": "#1b1c1d",
+              "secondary-fixed-dim": "#61d6ee",
+              "on-secondary-fixed": "#001f25",
+              "outline": "#968d9f",
+              "on-primary-fixed-variant": "#5f10b8",
+              "surface-container-highest": "#343536",
+              "outline-variant": "#4b4454",
+              "on-tertiary-fixed-variant": "#424b00",
+              "on-error-container": "#ffdad6",
+              "secondary-container": "#059fb5",
+              "surface-container": "#1f2021",
+              "tertiary-fixed-dim": "#bad220",
+              "surface-container-high": "#292a2b",
+              "surface-bright": "#38393a",
+              "error-container": "#93000a",
+              "surface-dim": "#121315",
+              "on-secondary-fixed-variant": "#004e5a",
+              "on-secondary": "#00363f",
+              "inverse-on-surface": "#303032",
+              "surface-tint": "#0052FF",
+              "on-secondary-container": "#002f37",
+              "on-primary-fixed": "#280056",
+              "tertiary-container": "#687700",
+              "secondary-fixed": "#a5eeff",
+              "primary": "#0052FF",
+              "surface": "#121315",
+              "primary-container": "#1A2138",
+              "on-surface": "#e3e2e3",
+              "inverse-surface": "#e3e2e3",
+              "surface-variant": "#343536",
+              "secondary": "#BF3003",
+              "inverse-primary": "#0041CC",
+              "on-tertiary-fixed": "#191e00",
+              "tertiary": "#0052FF",
+              "primary-fixed-dim": "#0052FF",
+              "background": "#0A0C14",
+              "on-primary": "#ffffff",
+              "on-tertiary-container": "#ecff84",
+              "on-primary-container": "#e3e2e3",
+              "on-background": "#e3e2e3",
+              "surface-container-lowest": "#0d0e0f",
+              "error": "#BF3003",
+              "primary-fixed": "#ecdcff",
+              "on-tertiary": "#2d3400",
+              "on-surface-variant": "#cdc3d6",
+              "tertiary-fixed": "#d6ef40",
+              "on-error": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Berkeley Mono"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        @keyframes radar-sweep {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-radar-sweep {
+            animation: radar-sweep 8s linear infinite;
+        }
+        
+        @keyframes tilt-rotate {
+            0% { transform: perspective(1000px) rotateX(60deg) rotateZ(0deg); }
+            100% { transform: perspective(1000px) rotateX(60deg) rotateZ(360deg); }
+        }
+        .animate-tilt-rotate {
+            animation: tilt-rotate 20s linear infinite;
+        }
+
+        @keyframes node-pulse {
+            0%, 5%, 15%, 100% { 
+                opacity: 0.2; 
+                filter: saturate(0.5); 
+                border-color: rgba(205, 195, 214, 0.05); 
+                box-shadow: none;
+                transform: scale(1);
+            }
+            10% { 
+                opacity: 1; 
+                filter: saturate(1.5); 
+                border-color: currentColor; 
+                box-shadow: 0 0 30px currentColor;
+                transform: scale(1.1);
+            }
+        }
+
+        /* 
+           Synchronized highlights for the 8s rotation.
+           Sweep starts at 0deg (North) and moves clockwise.
+           Cycle duration: 8s.
+           
+           Node mapping (Approx angles):
+           - Top Right (approx 45deg): 12.5% into cycle = 1s delay
+           - Middle Right (approx 90deg): 25% into cycle = 2s delay
+           - Bottom Right (approx 135deg): 37.5% into cycle = 3s delay
+           - Bottom Left (approx 225deg): 62.5% into cycle = 5s delay
+           - Top Left (approx 315deg): 87.5% into cycle = 7s delay
+        */
+        
+        .node-highlight-tr { animation: node-pulse 8s infinite linear; animation-delay: 1s; }
+        .node-highlight-mr { animation: node-pulse 8s infinite linear; animation-delay: 2s; }
+        .node-highlight-br { animation: node-pulse 8s infinite linear; animation-delay: 3s; }
+        .node-highlight-bl { animation: node-pulse 8s infinite linear; animation-delay: 5s; }
+        .node-highlight-tl { animation: node-pulse 8s infinite linear; animation-delay: 7s; }
+
+        .glass-panel {
+            background: rgba(26, 33, 56, 0.6);
+            backdrop-filter: blur(20px);
+        }
+        .architectural-void {
+            background: radial-gradient(circle at 50% 50%, #1A2138 0%, #0A0C14 100%);
+        }
+        .neon-glow-primary {
+            box-shadow: 0 0 15px rgba(0, 82, 255, 0.4);
+        }
+        .radar-grid-lines {
+            background-image: 
+                linear-gradient(rgba(0, 82, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 82, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        
+        /* Fixed conical gradient for the radar beam */
+        .radar-cone {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            transform: translate(-50%, -50%);
+            background: conic-gradient(
+                from 0deg at 50% 50%,
+                rgba(0, 82, 255, 0.6) 0deg,
+                rgba(0, 82, 255, 0.2) 20deg,
+                transparent 45deg,
+                transparent 360deg
+            );
+            mask-image: radial-gradient(circle at 50% 50%, black 0%, transparent 70%);
+            -webkit-mask-image: radial-gradient(circle at 50% 50%, black 0%, transparent 70%);
+        }
+    </style>
+</head>
+<body class="bg-[#0A0C14] text-on-surface font-body selection:bg-primary/30 selection:text-white">
+<!-- Top Navigation -->
+<nav class="bg-[#0A0C14]/80 backdrop-blur-xl docked full-width top-0 sticky z-50 border-b border-outline-variant/10">
+<div class="flex justify-between items-center w-full px-8 py-4 max-w-screen-2xl mx-auto z-50">
+<div class="text-xl font-bold tracking-tighter text-[#e3e2e3] flex items-center gap-2">
+<span class="w-6 h-6 bg-primary rounded-sm flex items-center justify-center text-[10px]">AI</span>
+            Smax AI
+        </div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-[#cdc3d6] hover:text-[#e3e2e3] transition-colors font-semibold tracking-tight text-sm" href="#">Sản phẩm</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 tracking-tight text-sm" href="#">Khám bệnh hội thoại</a>
+<a class="text-[#cdc3d6] hover:text-[#e3e2e3] transition-colors font-semibold tracking-tight text-sm" href="#">Giá cả</a>
+<a class="text-[#cdc3d6] hover:text-[#e3e2e3] transition-colors font-semibold tracking-tight text-sm" href="#">Tài nguyên</a>
+</div>
+<button class="bg-primary text-white px-5 py-2 rounded-lg font-semibold text-sm hover:opacity-90 transition-all active:scale-95 neon-glow-primary">
+            Trải nghiệm ngay
+        </button>
+</div>
+</nav>
+<!-- Main Live Demo Section -->
+<main class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden architectural-void px-6">
+<!-- Subtle Background Grid -->
+<div class="absolute inset-0 radar-grid-lines opacity-40 pointer-events-none"></div>
+<!-- Background Decorative Elements -->
+<div class="absolute top-0 left-0 w-full h-full pointer-events-none">
+<div class="absolute top-[10%] left-[5%] w-96 h-96 bg-primary/10 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-[10%] right-[5%] w-96 h-96 bg-secondary/10 rounded-full blur-[120px]"></div>
+</div>
+<!-- Header Content -->
+<div class="relative z-10 text-center mb-16 max-w-3xl mt-20">
+<span class="font-label text-primary text-[10px] tracking-[0.3em] uppercase mb-4 block">Diagnostic Module // 3D Live Analysis</span>
+<h1 class="text-5xl md:text-7xl font-bold tracking-tighter text-on-background mb-6">
+            Khám Bệnh Hội Thoại
+        </h1>
+<p class="text-on-surface-variant text-lg leading-relaxed">
+            Hệ thống phân tích đa chiều các điểm chạm khách hàng. Tự động quét và nhận diện các vấn đề trong quy trình tư vấn thông qua thuật toán radar 3D thời gian thực.
+        </p>
+</div>
+<!-- Radar Visualization Stage -->
+<div class="relative w-full max-w-4xl aspect-square md:aspect-video flex items-center justify-center">
+<!-- 3D Radar Perspective Container -->
+<div class="relative w-[400px] h-[400px] md:w-[600px] md:h-[600px] flex items-center justify-center">
+<!-- Tilted Concentric Rings -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="relative w-full h-full animate-tilt-rotate" style="transform-style: preserve-3d;">
+<!-- Outer Ring -->
+<div class="absolute inset-0 rounded-full border border-primary/20 shadow-[0_0_20px_rgba(0,82,255,0.1)]"></div>
+<!-- Mid Rings -->
+<div class="absolute inset-[15%] rounded-full border border-primary/15"></div>
+<div class="absolute inset-[30%] rounded-full border border-primary/10"></div>
+<div class="absolute inset-[45%] rounded-full border border-primary/5"></div>
+</div>
+</div>
+<!-- SINGLE Conical Radar Sweep -->
+<div class="absolute inset-0 animate-radar-sweep z-30 pointer-events-none flex items-center justify-center origin-center">
+<div class="radar-cone"></div>
+</div>
+<!-- Center Core -->
+<div class="relative z-40 w-6 h-6 bg-primary rounded-full shadow-[0_0_30px_rgba(0,82,255,1)] border border-white/20"></div>
+</div>
+<!-- Floating Diagnostic Nodes -->
+<!-- Top Left - 315 deg - 7s delay -->
+<div class="absolute top-[10%] left-[15%] group z-50">
+<div class="glass-panel p-4 rounded-xl border border-outline-variant/20 transition-all duration-300 node-highlight-tl text-primary">
+<span class="material-symbols-outlined text-2xl" data-icon="sentiment_satisfied">sentiment_satisfied</span>
+</div>
+<div class="absolute top-0 left-full ml-4 whitespace-nowrap">
+<div class="font-label text-[10px] text-primary uppercase tracking-widest">Khách hàng Hài Lòng</div>
+<div class="text-xl font-bold text-on-background">94.2%</div>
+</div>
+</div>
+<!-- Top Right - 45 deg - 1s delay -->
+<div class="absolute top-[15%] right-[10%] group z-50">
+<div class="glass-panel p-4 rounded-xl border border-outline-variant/20 transition-all duration-300 node-highlight-tr text-secondary">
+<span class="material-symbols-outlined text-2xl" data-icon="trending_down">trending_down</span>
+</div>
+<div class="absolute top-0 right-full mr-4 text-right whitespace-nowrap">
+<div class="font-label text-[10px] text-secondary uppercase tracking-widest">Tỉ lệ chốt đơn kém</div>
+<div class="text-xl font-bold text-secondary">Warning: -12%</div>
+</div>
+</div>
+<!-- Middle Right - 90 deg - 2s delay -->
+<div class="absolute top-[45%] right-[5%] group z-50">
+<div class="glass-panel p-4 rounded-xl border border-outline-variant/20 transition-all duration-300 node-highlight-mr text-secondary">
+<span class="material-symbols-outlined text-2xl">schedule</span>
+</div>
+<div class="absolute top-0 right-full mr-4 text-right whitespace-nowrap">
+<div class="font-label text-[10px] text-secondary uppercase tracking-widest">Nhân viên phản hồi chậm</div>
+<div class="text-xl font-bold text-secondary">Avg: 4.5m</div>
+</div>
+</div>
+<!-- Bottom Right - 135 deg - 3s delay -->
+<div class="absolute bottom-[25%] right-[12%] group z-50">
+<div class="glass-panel p-4 rounded-xl border border-outline-variant/20 transition-all duration-300 node-highlight-br text-on-surface-variant">
+<span class="material-symbols-outlined text-2xl">mood_bad</span>
+</div>
+<div class="absolute bottom-0 right-full mr-4 text-right whitespace-nowrap">
+<div class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Thái độ trả lời chưa tốt</div>
+<div class="text-xl font-bold text-on-background">18 Cases</div>
+</div>
+</div>
+<!-- Bottom Left - 225 deg - 5s delay -->
+<div class="absolute bottom-[15%] left-[10%] group z-50">
+<div class="glass-panel p-4 rounded-xl border border-outline-variant/20 transition-all duration-300 node-highlight-bl text-on-surface-variant">
+<span class="material-symbols-outlined text-2xl" data-icon="person_off">person_off</span>
+</div>
+<div class="absolute bottom-0 left-full ml-4 whitespace-nowrap">
+<div class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Chưa chăm sóc lại</div>
+<div class="text-xl font-bold text-on-background">142 Leads</div>
+</div>
+</div>
+<!-- Floating Data Points (Decoration) -->
+<div class="absolute top-1/2 left-[5%] w-2 h-2 bg-primary/40 rounded-full animate-pulse"></div>
+<div class="absolute bottom-1/4 right-[5%] w-2 h-2 bg-secondary/40 rounded-full animate-pulse" style="animation-delay: 1s"></div>
+</div>
+<!-- Technical Metadata Overlay -->
+<div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-8 w-full max-w-4xl px-4 border-t border-outline-variant/10 pt-12 mb-20">
+<div class="flex flex-col gap-1">
+<span class="font-label text-[10px] text-primary tracking-widest uppercase">Tần suất quét</span>
+<span class="text-xl font-semibold text-on-background">8.0s / chu kỳ</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label text-[10px] text-primary tracking-widest uppercase">Hội thoại đang chạy</span>
+<span class="text-xl font-semibold text-on-background">1,240</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label text-[10px] text-primary tracking-widest uppercase">Độ chính xác AI</span>
+<span class="text-xl font-semibold text-on-background">99.8%</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label text-[10px] text-primary tracking-widest uppercase">Phản hồi hệ thống</span>
+<span class="text-xl font-semibold text-on-background">Real-time</span>
+</div>
+</div>
+</main>
+<!-- Detailed Analysis Section -->
+<section class="py-32 px-8 max-w-screen-2xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<div class="md:col-span-8 glass-panel p-12 rounded-2xl border border-outline-variant/10 flex flex-col justify-center">
+<h3 class="text-3xl font-bold tracking-tight mb-6">Phát Hiện Điểm Đen Vận Hành</h3>
+<p class="text-on-surface-variant text-lg leading-relaxed max-w-2xl">
+                Module "Khám bệnh hội thoại" sử dụng xử lý ngôn ngữ tự nhiên để bóc tách từng câu chữ. Chúng tôi giúp bạn nhận diện chính xác lý do tại sao khách hàng rời đi, nhân viên nào đang tư vấn sai quy trình và đề xuất kịch bản tối ưu ngay lập tức.
+            </p>
+<div class="mt-8 flex flex-wrap gap-4">
+<button class="bg-primary text-white px-8 py-4 rounded-lg font-bold flex items-center gap-2 transition-transform hover:scale-105 neon-glow-primary">
+                    Bắt đầu chẩn đoán <span class="material-symbols-outlined">analytics</span>
+</button>
+<button class="border border-outline-variant/30 text-on-surface px-8 py-4 rounded-lg font-bold hover:bg-surface-container-high transition-colors">
+                    Xem tài liệu kỹ thuật
+                </button>
+</div>
+</div>
+<div class="md:col-span-4 bg-primary-container p-8 rounded-2xl border border-primary/20 flex flex-col justify-between">
+<div>
+<span class="font-label text-primary text-[10px] tracking-widest uppercase">Hiệu suất module</span>
+<h4 class="text-xl font-bold mt-2">Xử lý 10,000+ tin nhắn/giây</h4>
+<p class="text-on-surface-variant text-sm mt-4 leading-relaxed">
+                    Kiến trúc phân tán đảm bảo việc phân tích cảm xúc và dữ liệu hội thoại không gây trễ cho việc phản hồi của Chatbot hoặc nhân viên.
+                </p>
+</div>
+<div class="pt-8 mt-8 border-t border-outline-variant/10">
+<div class="flex justify-between items-center text-xs font-label opacity-60 mb-2">
+<span>Sức khỏe hội thoại</span>
+<span>92%</span>
+</div>
+<div class="w-full h-1 bg-background rounded-full overflow-hidden">
+<div class="w-[92%] h-full bg-primary shadow-[0_0_10px_rgba(0,82,255,0.5)]"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-[#0A0C14] full-width border-t border-outline-variant/10">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-12 w-full px-12 py-16 max-w-screen-2xl mx-auto">
+<div class="col-span-2 md:col-span-1">
+<div class="text-lg font-black text-[#e3e2e3] mb-4 flex items-center gap-2">
+<span class="w-5 h-5 bg-primary rounded-sm"></span>
+                Smax AI
+            </div>
+<p class="text-[10px] font-label uppercase tracking-widest text-[#cdc3d6]">
+                Architectural Intelligence.
+            </p>
+</div>
+<div class="flex flex-col gap-4">
+<span class="font-label uppercase text-[10px] tracking-widest text-primary">Sản phẩm</span>
+<a class="text-[#cdc3d6] hover:text-primary transition-colors duration-200 text-sm" href="#">Features</a>
+<a class="text-[#cdc3d6] hover:text-primary transition-colors duration-200 text-sm" href="#">Radar Core</a>
+<a class="text-[#cdc3d6] hover:text-primary transition-colors duration-200 text-sm" href="#">Hệ sinh thái</a>
+</div>
+<div class="flex flex-col gap-4">
+<span class="font-label uppercase text-[10px] tracking-widest text-primary">Giải pháp</span>
+<a class="text-[#cdc3d6] hover:text-primary transition-colors duration-200 text-sm" href="#">Doanh nghiệp</a>
+<a class="text-[#cdc3d6] hover:text-primary transition-colors duration-200 text-sm" href="#">E-commerce</a>
+<a class="text-[#cdc3d6] hover:text-primary transition-colors duration-200 text-sm" href="#">Bảo mật</a>
+</div>
+<div class="flex flex-col gap-4">
+<span class="font-label uppercase text-[10px] tracking-widest text-primary">Công ty</span>
+<a class="text-[#cdc3d6] hover:text-primary transition-colors duration-200 text-sm" href="#">Về chúng tôi</a>
+<a class="text-[#cdc3d6] hover:text-primary transition-colors duration-200 text-sm" href="#">Chính sách</a>
+<a class="text-[#cdc3d6] hover:text-primary transition-colors duration-200 text-sm" href="#">Liên hệ</a>
+</div>
+</div>
+<div class="w-full text-center pb-8 border-t border-outline-variant/5 pt-8 opacity-40">
+<span class="font-label uppercase text-[10px] tracking-widest text-[#cdc3d6]">
+            © 2024 Smax AI. Architectural Intelligence for Conversational Excellence.
+        </span>
+</div>
+</footer>
+</body></html>

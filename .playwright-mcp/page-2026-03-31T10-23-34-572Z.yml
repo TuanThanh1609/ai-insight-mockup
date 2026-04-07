@@ -1,0 +1,132 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e7]: S
+      - button "Fahasa" [ref=e10]:
+        - img [ref=e12]
+        - generic [ref=e20]: Fahasa
+        - img [ref=e21]
+    - navigation [ref=e23]:
+      - button "Bảng tin" [ref=e24]:
+        - img [ref=e25]
+        - text: Bảng tin
+      - button "Nhắn tin" [ref=e28]:
+        - img [ref=e29]
+        - text: Nhắn tin
+      - button "Bot-Auto" [ref=e31]:
+        - img [ref=e32]
+        - text: Bot-Auto
+      - button "Khách hàng" [ref=e35]:
+        - img [ref=e36]
+        - text: Khách hàng
+      - button "Thống kê" [ref=e41]:
+        - img [ref=e42]
+        - text: Thống kê
+      - button "Zalo ZBS" [ref=e43]
+    - generic [ref=e44]:
+      - button [ref=e45]:
+        - img [ref=e46]
+      - button [ref=e49]:
+        - img [ref=e50]
+      - button [ref=e56]:
+        - img [ref=e57]
+      - button "2469" [ref=e61]:
+        - img [ref=e62]
+        - generic [ref=e65]: "2469"
+      - button "TT" [ref=e67]:
+        - generic [ref=e68]:
+          - generic [ref=e70]: TT
+          - img [ref=e72]
+        - img [ref=e75]
+  - generic [ref=e77]:
+    - complementary [ref=e78]:
+      - generic [ref=e80]:
+        - img [ref=e82]
+        - generic [ref=e84]:
+          - generic [ref=e85]: AI Insight
+          - generic [ref=e86]: Multi-Channel
+      - navigation [ref=e87]:
+        - generic [ref=e88]: Menu
+        - link "Cài đặt Insight" [ref=e89] [cursor=pointer]:
+          - /url: /insight/settings
+          - img [ref=e90]
+          - generic [ref=e95]: Cài đặt Insight
+        - link "Dashboard Insight AI" [ref=e96] [cursor=pointer]:
+          - /url: /insight/insight-dashboard
+          - img [ref=e97]
+          - generic [ref=e98]: Dashboard Insight
+          - generic [ref=e99]: AI
+        - link "Khám Bệnh" [ref=e100] [cursor=pointer]:
+          - /url: /insight/medical-checkup
+          - img [ref=e101]
+          - generic [ref=e105]: Khám Bệnh
+        - link "Tổng quan Ads" [ref=e106] [cursor=pointer]:
+          - /url: /insight/dashboard
+          - img [ref=e107]
+          - generic [ref=e109]: Tổng quan Ads
+        - link "Gợi ý tối ưu Ads AI" [ref=e110] [cursor=pointer]:
+          - /url: /insight/ads-optimization
+          - img [ref=e111]
+          - generic [ref=e114]: Gợi ý tối ưu Ads
+          - generic [ref=e115]: AI
+      - generic [ref=e117]:
+        - text: Module Insight Ads
+        - text: v1.0 — Demo
+    - main [ref=e118]:
+      - generic [ref=e119]:
+        - generic [ref=e120]:
+          - generic [ref=e121]:
+            - generic [ref=e122]: 🏥
+            - heading "Khám Bệnh" [level=1] [ref=e123]
+          - paragraph [ref=e124]: Phân tích đa kênh · Chẩn đoán 10 nhóm vấn đề · Gợi ý hành động từ Chuyên gia Smax
+        - generic [ref=e126]:
+          - button "💬 Hội Thoại" [ref=e127] [cursor=pointer]
+          - button "📣 Quảng Cáo" [ref=e128] [cursor=pointer]
+        - generic [ref=e130]:
+          - generic [ref=e132]:
+            - generic [ref=e133]: ✓
+            - generic [ref=e134]: Kết nối Fanpage
+          - generic [ref=e137]:
+            - generic [ref=e138]: ✓
+            - generic [ref=e139]: Ngành hàng
+          - generic [ref=e142]:
+            - generic [ref=e143]: "3"
+            - generic [ref=e144]: Số lượng
+          - generic [ref=e147]:
+            - generic [ref=e148]: "4"
+            - generic [ref=e149]: Chọn hạng mục
+          - generic [ref=e152]:
+            - generic [ref=e153]: "5"
+            - generic [ref=e154]: Thu thập dữ liệu
+          - generic [ref=e157]:
+            - generic [ref=e158]: "6"
+            - generic [ref=e159]: Kết quả
+        - generic [ref=e301]:
+          - heading "Chọn số lượng hội thoại để khám bệnh" [level=2] [ref=e302]
+          - paragraph [ref=e303]: Số lượng càng lớn → phân tích càng chính xác, thời gian crawl lâu hơn.
+          - generic [ref=e304]:
+            - button "1,000 hội thoại ~1 phút Phù hợp để trải nghiệm" [ref=e305] [cursor=pointer]:
+              - generic [ref=e308]: 1,000
+              - generic [ref=e309]: hội thoại
+              - generic [ref=e310]: ~1 phút
+              - generic [ref=e311]: Phù hợp để trải nghiệm
+            - button "5,000 hội thoại ~5 phút Dữ liệu đại diện tốt" [active] [ref=e312] [cursor=pointer]:
+              - generic [ref=e314]: 5,000
+              - generic [ref=e315]: hội thoại
+              - generic [ref=e316]: ~5 phút
+              - generic [ref=e317]: Dữ liệu đại diện tốt
+            - button "10,000 hội thoại ~10 phút Phân tích toàn diện nhất" [ref=e318] [cursor=pointer]:
+              - generic [ref=e320]: 10,000
+              - generic [ref=e321]: hội thoại
+              - generic [ref=e322]: ~10 phút
+              - generic [ref=e323]: Phân tích toàn diện nhất
+          - generic [ref=e324]:
+            - img [ref=e325]
+            - paragraph [ref=e327]: Thời gian crawl ước tính dựa trên tốc độ thực. Trong quá trình crawl, bạn sẽ thấy tiến độ phân tích từng nhóm bệnh.
+          - generic [ref=e328]:
+            - button "Quay lại" [ref=e329] [cursor=pointer]:
+              - img [ref=e330]
+              - text: Quay lại
+            - button "Bắt đầu Khám" [ref=e332] [cursor=pointer]:
+              - text: Bắt đầu Khám
+              - img [ref=e333]

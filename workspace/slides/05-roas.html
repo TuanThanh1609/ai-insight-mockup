@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #fcf8fb; font-family: Arial, sans-serif;
+  display: flex; flex-direction: column;
+}
+.top-bar { height: 6pt; background: #1A2138; }
+.header { background: #1A2138; padding: 12pt 28pt 10pt 28pt; }
+.header p { color: #BF3003; font-size: 8pt; font-weight: bold; letter-spacing: 2pt; text-transform: uppercase; margin: 0 0 3pt 0; }
+.header h1 { color: #ffffff; font-size: 20pt; font-weight: bold; margin: 0; }
+.content { display: flex; flex: 1; padding: 10pt 24pt 10pt 24pt; gap: 16pt; }
+.left { flex: 1; }
+.right { flex: 1; }
+h2 { color: #1A2138; font-size: 10pt; font-weight: bold; margin: 0 0 6pt 0; padding-bottom: 4pt; border-bottom: 2pt solid #1A2138; }
+.camp-card {
+  background: #ffffff;
+  border-radius: 6pt;
+  margin-bottom: 8pt;
+  overflow: hidden;
+}
+.camp-header {
+  padding: 6pt 10pt;
+  display: flex;
+  align-items: center;
+  gap: 8pt;
+}
+.camp-name { color: #ffffff; font-size: 9pt; font-weight: bold; margin: 0; flex: 1; }
+.camp-badge { background: rgba(255,255,255,0.2); color: #ffffff; font-size: 7pt; font-weight: bold; padding: 2pt 6pt; border-radius: 3pt; margin-left: 4pt; }
+.camp-score { color: #ffffff; font-size: 9pt; font-weight: bold; margin: 0; }
+.camp-body { padding: 7pt 10pt; }
+.camp-row { display: flex; align-items: center; gap: 0; margin-bottom: 4pt; }
+.camp-label { color: #1A2138; font-size: 8pt; width: 70pt; margin: 0; }
+.camp-bar-wrap { flex: 1; display: flex; align-items: center; gap: 5pt; }
+.camp-bar { height: 8pt; border-radius: 2pt; }
+.camp-val { color: #1A2138; font-size: 8pt; font-weight: bold; min-width: 28pt; margin: 0; }
+.delta { color: #BF3003; font-size: 7pt; margin: 0; }
+.delta-ok { color: #059669; font-size: 7pt; margin: 0; }
+.legend-box { background: #1A2138; border-radius: 5pt; padding: 7pt 10pt; margin-top: 6pt; }
+.legend-item { display: flex; align-items: center; gap: 6pt; margin-bottom: 4pt; }
+.legend-dot { width: 10pt; height: 10pt; border-radius: 2pt; flex-shrink: 0; }
+.legend-text { color: #ffffff; font-size: 8pt; margin: 0; }
+.metrics-grid { display: flex; flex-wrap: wrap; gap: 8pt; }
+.metric-box { background: #ffffff; border-radius: 6pt; padding: 8pt; flex: 1; min-width: 70pt; border-top: 3pt solid #0052FF; }
+.metric-label { color: #6B7FA3; font-size: 7pt; font-weight: bold; margin: 0 0 2pt 0; text-transform: uppercase; letter-spacing: 1pt; }
+.metric-value { color: #1A2138; font-size: 16pt; font-weight: bold; margin: 0; }
+.metric-sub { color: #6B7FA3; font-size: 7pt; margin: 0; }
+</style>
+</head>
+<body>
+  <div class="top-bar"></div>
+  <div class="header">
+    <p>04 · Dashboard — ROAS Breakdown</p>
+    <h1>ROAS Thực vs Báo Cáo — Theo Chiến Dịch</h1>
+  </div>
+  <div class="content">
+    <div class="left">
+      <h2 style="margin-top:0;margin-bottom:0;"><span>Chiến Dịch</span></h2>
+      <div class="camp-card">
+        <div class="camp-header" style="background:#059669;">
+          <p class="camp-name">KPI Spring Sale 2026</p>
+          <span class="camp-badge">FB</span>
+          <p class="camp-score">⭐ Scale Up</p>
+        </div>
+        <div class="camp-body">
+          <div class="camp-row">
+            <p class="camp-label">ROAS gốc</p>
+            <div class="camp-bar-wrap">
+              <div class="camp-bar" style="background:#059669; width:80%;"></div>
+              <p class="camp-val">4.0x</p>
+            </div>
+          </div>
+          <div class="camp-row">
+            <p class="camp-label">ROAS thực</p>
+            <div class="camp-bar-wrap">
+              <div class="camp-bar" style="background:#BF3003; width:64%;"></div>
+              <p class="camp-val">3.2x</p>
+              <p class="delta">▼ -20%</p>
+            </div>
+          </div>
+          <p class="camp-label" style="margin-top:2pt;">Đơn: 164 · Matched: 131 (79.9%) · Untracked: 33 đơn</p>
+        </div>
+      </div>
+      <div class="camp-card">
+        <div class="camp-header" style="background:#0052FF;">
+          <p class="camp-name">Retargeting - Cart Abandoned</p>
+          <span class="camp-badge">FB</span>
+          <p class="camp-score">📈 Scale Up</p>
+        </div>
+        <div class="camp-body">
+          <div class="camp-row">
+            <p class="camp-label">ROAS gốc</p>
+            <div class="camp-bar-wrap">
+              <div class="camp-bar" style="background:#059669; width:64%;"></div>
+              <p class="camp-val">3.2x</p>
+            </div>
+          </div>
+          <div class="camp-row">
+            <p class="camp-label">ROAS thực</p>
+            <div class="camp-bar-wrap">
+              <div class="camp-bar" style="background:#BF3003; width:58%;"></div>
+              <p class="camp-val">2.9x</p>
+              <p class="delta">▼ -9%</p>
+            </div>
+          </div>
+          <p class="camp-label" style="margin-top:2pt;">Đơn: 67 · Matched: 58 (86.6%) · Untracked: 9 đơn</p>
+        </div>
+      </div>
+    </div>
+    <div class="right">
+      <h2 style="margin-top:0;margin-bottom:0;"><span>Chiến Dịch (Tiếp)</span></h2>
+      <div class="camp-card">
+        <div class="camp-header" style="background:#d97706;">
+          <p class="camp-name">Brand Awareness March</p>
+          <span class="camp-badge">ZA</span>
+          <p class="camp-score">⚠️ Review</p>
+        </div>
+        <div class="camp-body">
+          <div class="camp-row">
+            <p class="camp-label">ROAS gốc</p>
+            <div class="camp-bar-wrap">
+              <div class="camp-bar" style="background:#d97706; width:36%;"></div>
+              <p class="camp-val">1.8x</p>
+            </div>
+          </div>
+          <div class="camp-row">
+            <p class="camp-label">ROAS thực</p>
+            <div class="camp-bar-wrap">
+              <div class="camp-bar" style="background:#BF3003; width:18%;"></div>
+              <p class="camp-val">0.9x</p>
+              <p class="delta">▼ -50%</p>
+            </div>
+          </div>
+          <p class="camp-label" style="margin-top:2pt;">Đơn: 31 · Matched: 14 (45.2%) · Untracked: 17 đơn</p>
+        </div>
+      </div>
+      <h2 style="margin-top:8pt;">Tổng Quan Portfolio</span></h2>
+      <div class="metrics-grid">
+        <div class="metric-box" style="border-top-color:#059669;">
+          <p class="metric-label">Portfolio ROAS</p>
+          <p class="metric-value">2.4x</p>
+          <p class="metric-sub">Trung bình gốc</p>
+        </div>
+        <div class="metric-box" style="border-top-color:#BF3003;">
+          <p class="metric-label">ROAS Thực</p>
+          <p class="metric-value">1.9x</p>
+          <p class="metric-sub">Sau attribution</p>
+        </div>
+        <div class="metric-box" style="border-top-color:#d97706;">
+          <p class="metric-label">Chi Phí Ảo</p>
+          <p class="metric-value">39.3M</p>
+          <p class="metric-sub">Untracked revenue</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

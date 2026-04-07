@@ -1,0 +1,388 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e7]: S
+        - button "Fahasa" [ref=e10]:
+          - img [ref=e12]
+          - generic [ref=e20]: Fahasa
+          - img [ref=e21]
+      - navigation [ref=e23]:
+        - button "Bảng tin" [ref=e24]:
+          - img [ref=e25]
+          - text: Bảng tin
+        - button "Nhắn tin" [ref=e28]:
+          - img [ref=e29]
+          - text: Nhắn tin
+        - button "Bot-Auto" [ref=e31]:
+          - img [ref=e32]
+          - text: Bot-Auto
+        - button "Khách hàng" [ref=e35]:
+          - img [ref=e36]
+          - text: Khách hàng
+        - button "Thống kê" [ref=e41]:
+          - img [ref=e42]
+          - text: Thống kê
+        - button "Zalo ZBS" [ref=e43]
+      - generic [ref=e44]:
+        - button [ref=e45]:
+          - img [ref=e46]
+        - button [ref=e49]:
+          - img [ref=e50]
+        - button [ref=e56]:
+          - img [ref=e57]
+        - button "2469" [ref=e61]:
+          - img [ref=e62]
+          - generic [ref=e65]: "2469"
+        - button "TT" [ref=e67]:
+          - generic [ref=e68]:
+            - generic [ref=e70]: TT
+            - img [ref=e72]
+          - img [ref=e75]
+    - generic [ref=e77]:
+      - complementary [ref=e78]:
+        - generic [ref=e80]:
+          - img [ref=e82]
+          - generic [ref=e84]:
+            - generic [ref=e85]: AI Insight
+            - generic [ref=e86]: Multi-Channel
+        - navigation [ref=e87]:
+          - generic [ref=e88]: Menu
+          - link "Cài đặt Insight" [ref=e89] [cursor=pointer]:
+            - /url: /insight/settings
+            - img [ref=e90]
+            - generic [ref=e95]: Cài đặt Insight
+          - link "Dashboard Insight AI" [ref=e96] [cursor=pointer]:
+            - /url: /insight/insight-dashboard
+            - img [ref=e97]
+            - generic [ref=e98]: Dashboard Insight
+            - generic [ref=e99]: AI
+          - link "Khám Bệnh" [ref=e100] [cursor=pointer]:
+            - /url: /insight/medical-checkup
+            - img [ref=e101]
+            - generic [ref=e105]: Khám Bệnh
+          - link "Tổng quan Ads" [ref=e106] [cursor=pointer]:
+            - /url: /insight/dashboard
+            - img [ref=e107]
+            - generic [ref=e109]: Tổng quan Ads
+          - link "Gợi ý tối ưu Ads AI" [ref=e110] [cursor=pointer]:
+            - /url: /insight/ads-optimization
+            - img [ref=e111]
+            - generic [ref=e114]: Gợi ý tối ưu Ads
+            - generic [ref=e115]: AI
+        - generic [ref=e117]:
+          - text: Module Insight Ads
+          - text: v1.0 — Demo
+      - main [ref=e118]:
+        - generic [ref=e239]:
+          - generic [ref=e240]:
+            - generic [ref=e241]:
+              - button "Quay lại" [ref=e242] [cursor=pointer]:
+                - img [ref=e243]
+                - generic [ref=e245]: Quay lại
+              - heading "Lựa chọn Insight" [level=2] [ref=e247]
+            - generic [ref=e248]:
+              - button "🎯 Phân tích Nhu Cầu KH Thời Trang ĐANG CHẠY 234 hội thoại" [ref=e250] [cursor=pointer]:
+                - generic [ref=e251]:
+                  - generic [ref=e252]: 🎯
+                  - generic [ref=e253]:
+                    - heading "Phân tích Nhu Cầu KH Thời Trang" [level=4] [ref=e254]
+                    - generic [ref=e256]: ĐANG CHẠY
+                - paragraph [ref=e257]: 234 hội thoại
+              - button "📊 Đánh Giá Lead Ads Thời Trang ĐANG CHẠY 156 hội thoại" [ref=e259] [cursor=pointer]:
+                - generic [ref=e260]:
+                  - generic [ref=e261]: 📊
+                  - generic [ref=e262]:
+                    - heading "Đánh Giá Lead Ads Thời Trang" [level=4] [ref=e263]
+                    - generic [ref=e265]: ĐANG CHẠY
+                - paragraph [ref=e266]: 156 hội thoại
+              - button "⭐ Đánh Giá Sale Mẹ và Bé ĐANG CHẠY 312 hội thoại" [ref=e268] [cursor=pointer]:
+                - generic [ref=e269]:
+                  - generic [ref=e270]: ⭐
+                  - generic [ref=e271]:
+                    - heading "Đánh Giá Sale Mẹ và Bé" [level=4] [ref=e272]
+                    - generic [ref=e274]: ĐANG CHẠY
+                - paragraph [ref=e275]: 312 hội thoại
+              - button "👤 Phân Tích Chân Dung KH Mỹ Phẩm ĐANG CHẠY 189 hội thoại" [ref=e277] [cursor=pointer]:
+                - generic [ref=e278]:
+                  - generic [ref=e279]: 👤
+                  - generic [ref=e280]:
+                    - heading "Phân Tích Chân Dung KH Mỹ Phẩm" [level=4] [ref=e281]
+                    - generic [ref=e283]: ĐANG CHẠY
+                - paragraph [ref=e284]: 189 hội thoại
+          - generic [ref=e285]:
+            - generic [ref=e286]:
+              - generic [ref=e287]:
+                - generic [ref=e288]: 🎯
+                - generic [ref=e289]:
+                  - generic [ref=e290]:
+                    - heading "Phân tích Nhu Cầu KH Thời Trang" [level=1] [ref=e291]
+                    - generic [ref=e292]: ĐANG CHẠY
+                  - paragraph [ref=e293]: 4 cột AI · 234 hội thoại · Cập nhật 45s trước
+                - generic [ref=e294]:
+                  - button "Cấu hình AI" [ref=e295] [cursor=pointer]:
+                    - img [ref=e296]
+                    - generic [ref=e299]: Cấu hình AI
+                  - button "Xuất dữ liệu" [ref=e300] [cursor=pointer]:
+                    - img [ref=e301]
+                    - generic [ref=e304]: Xuất dữ liệu
+              - generic [ref=e306]:
+                - button "Tổng quan" [ref=e307] [cursor=pointer]
+                - button "Cấu hình" [ref=e308] [cursor=pointer]
+                - button "Chi tiết" [ref=e309] [cursor=pointer]
+            - generic [ref=e311]:
+              - generic [ref=e312]:
+                - generic [ref=e313]:
+                  - paragraph [ref=e314]: Tổng hội thoại
+                  - paragraph [ref=e315]: "20"
+                - generic [ref=e316]:
+                  - paragraph [ref=e317]: Lần phân tích cuối
+                  - paragraph [ref=e318]: 0 phút trước
+                - generic [ref=e319]:
+                  - paragraph [ref=e320]: Cột AI đang chạy
+                  - paragraph [ref=e321]: "4"
+              - generic [ref=e322]:
+                - generic [ref=e323]:
+                  - generic [ref=e324]:
+                    - generic [ref=e325]:
+                      - img [ref=e326]
+                      - heading "Xu hướng Hội thoại" [level=3] [ref=e329]
+                    - paragraph [ref=e330]: Biến động theo thời gian
+                  - generic [ref=e331]:
+                    - button "Mặc định" [ref=e333] [cursor=pointer]:
+                      - generic [ref=e334]: Mặc định
+                      - img [ref=e335]
+                    - generic [ref=e337]:
+                      - button "Theo Tuần 7 ngày" [ref=e338]:
+                        - generic [ref=e339]: Theo Tuần
+                        - generic [ref=e340]: 7 ngày
+                      - button "Theo Tháng" [ref=e341]:
+                        - generic [ref=e342]: Theo Tháng
+                    - generic [ref=e343]:
+                      - button "Cột" [ref=e344]
+                      - button "Vùng" [ref=e345]
+                - generic [ref=e346]:
+                  - generic [ref=e349]: Hội_thoại
+                  - generic [ref=e352]: Nóng (%)
+                  - generic [ref=e355]: Ấm (%)
+                  - generic [ref=e358]: Lạnh (%)
+                - img [ref=e362]:
+                  - generic [ref=e366]:
+                    - generic [ref=e368]: 26/03
+                    - generic [ref=e370]: 27/03
+                    - generic [ref=e372]: 28/03
+                    - generic [ref=e374]: 29/03
+                    - generic [ref=e376]: 30/03
+                    - generic [ref=e378]: 31/03
+                    - generic [ref=e380]: 01/04
+                  - generic [ref=e382]:
+                    - generic [ref=e384]: "0"
+                    - generic [ref=e386]: "30"
+                    - generic [ref=e388]: "60"
+                    - generic [ref=e390]: "114"
+              - generic [ref=e459]:
+                - generic [ref=e460]:
+                  - generic [ref=e461]:
+                    - heading "CỘT DỮ LIỆU THÔNG MINH" [level=3] [ref=e462]:
+                      - img [ref=e463]
+                      - text: CỘT DỮ LIỆU THÔNG MINH
+                    - generic [ref=e465]:
+                      - generic [ref=e466]:
+                        - generic [ref=e467]: 🏷️
+                        - generic [ref=e468]:
+                          - paragraph [ref=e469]: Sản phẩm / Mẫu quan tâm
+                          - paragraph [ref=e470]: Trích xuất tên chính xác sản phẩm, mã sản phẩm, hoặc lo…
+                        - img [ref=e471]
+                      - generic [ref=e474]:
+                        - generic [ref=e475]: 📏
+                        - generic [ref=e476]:
+                          - paragraph [ref=e477]: Size quan tâm
+                          - paragraph [ref=e478]: Khách hàng có hỏi về size nào không? Trích xuất size đư…
+                        - img [ref=e479]
+                      - generic [ref=e482]:
+                        - generic [ref=e483]: 🌡️
+                        - generic [ref=e484]:
+                          - paragraph [ref=e485]: Mức độ quan tâm (Lead Temperature)
+                          - paragraph [ref=e486]: Nóng, Ấm, Lạnh
+                        - img [ref=e487]
+                      - generic [ref=e490]:
+                        - generic [ref=e491]: 💬
+                        - generic [ref=e492]:
+                          - paragraph [ref=e493]: Nhu cầu cốt lõi (Pain Point)
+                          - paragraph [ref=e494]: Dựa vào nội dung chat, khách đang gặp vấn đề gì hoặc mo…
+                        - img [ref=e495]
+                  - generic [ref=e498]:
+                    - heading "LUỒNG TRỰC TIẾP" [level=3] [ref=e499]:
+                      - img [ref=e500]
+                      - text: LUỒNG TRỰC TIẾP
+                    - generic [ref=e502]:
+                      - generic [ref=e503]:
+                        - generic [ref=e504]:
+                          - generic [ref=e505]: FB
+                          - generic [ref=e506]: VỪA XONG
+                        - paragraph [ref=e507]: "\"Hi, mình muốn hỏi giá bộ sưu tập hè...\""
+                      - generic [ref=e508]:
+                        - generic [ref=e509]:
+                          - generic [ref=e510]: ZALO
+                          - generic [ref=e511]: 2 PHÚT TRƯỚC
+                        - paragraph [ref=e512]: "\"Shop có chi nhánh ở Quận 1 không?\""
+                - generic [ref=e514]:
+                  - generic [ref=e515]:
+                    - generic [ref=e516]:
+                      - generic [ref=e517]:
+                        - generic [ref=e519]: 📊
+                        - heading "Sản phẩm" [level=3] [ref=e520]
+                      - generic [ref=e521]: Top 5
+                    - generic [ref=e522]:
+                      - button "1 Quần jeans wide leg 5 (36%)" [ref=e523]:
+                        - generic [ref=e525]: "1"
+                        - generic [ref=e527]:
+                          - generic [ref=e528]: Quần jeans wide leg
+                          - generic [ref=e529]:
+                            - text: "5"
+                            - generic [ref=e530]: (36%)
+                      - button "2 Váy hoa nhí 3 (21%)" [ref=e533]:
+                        - generic [ref=e535]: "2"
+                        - generic [ref=e537]:
+                          - generic [ref=e538]: Váy hoa nhí
+                          - generic [ref=e539]:
+                            - text: "3"
+                            - generic [ref=e540]: (21%)
+                      - button "3 Áo sơ mi nam 2 (14%)" [ref=e543]:
+                        - generic [ref=e545]: "3"
+                        - generic [ref=e547]:
+                          - generic [ref=e548]: Áo sơ mi nam
+                          - generic [ref=e549]:
+                            - text: "2"
+                            - generic [ref=e550]: (14%)
+                      - button "4 Khăn len 2 (14%)" [ref=e553]:
+                        - generic [ref=e555]: "4"
+                        - generic [ref=e557]:
+                          - generic [ref=e558]: Khăn len
+                          - generic [ref=e559]:
+                            - text: "2"
+                            - generic [ref=e560]: (14%)
+                      - button "5 Túi xách 2 (14%)" [ref=e563]:
+                        - generic [ref=e565]: "5"
+                        - generic [ref=e567]:
+                          - generic [ref=e568]: Túi xách
+                          - generic [ref=e569]:
+                            - text: "2"
+                            - generic [ref=e570]: (14%)
+                  - generic [ref=e573]:
+                    - generic [ref=e574]:
+                      - generic [ref=e575]:
+                        - generic [ref=e577]: 📊
+                        - heading "Size" [level=3] [ref=e578]
+                      - generic [ref=e579]: Top 5
+                    - generic [ref=e580]:
+                      - button "1 M 5 (36%)" [ref=e581]:
+                        - generic [ref=e583]: "1"
+                        - generic [ref=e585]:
+                          - generic [ref=e586]: M
+                          - generic [ref=e587]:
+                            - text: "5"
+                            - generic [ref=e588]: (36%)
+                      - button "2 28 3 (21%)" [ref=e591]:
+                        - generic [ref=e593]: "2"
+                        - generic [ref=e595]:
+                          - generic [ref=e596]: "28"
+                          - generic [ref=e597]:
+                            - text: "3"
+                            - generic [ref=e598]: (21%)
+                      - button "3 30 2 (14%)" [ref=e601]:
+                        - generic [ref=e603]: "3"
+                        - generic [ref=e605]:
+                          - generic [ref=e606]: "30"
+                          - generic [ref=e607]:
+                            - text: "2"
+                            - generic [ref=e608]: (14%)
+                      - button "4 31 2 (14%)" [ref=e611]:
+                        - generic [ref=e613]: "4"
+                        - generic [ref=e615]:
+                          - generic [ref=e616]: "31"
+                          - generic [ref=e617]:
+                            - text: "2"
+                            - generic [ref=e618]: (14%)
+                      - button "5 32 2 (14%)" [ref=e621]:
+                        - generic [ref=e623]: "5"
+                        - generic [ref=e625]:
+                          - generic [ref=e626]: "32"
+                          - generic [ref=e627]:
+                            - text: "2"
+                            - generic [ref=e628]: (14%)
+                  - generic [ref=e631]:
+                    - generic [ref=e632]:
+                      - generic [ref=e633]:
+                        - generic [ref=e635]: 🌡️
+                        - heading "Mức độ quan tâm" [level=3] [ref=e636]
+                      - generic [ref=e637]: 20 KH
+                    - generic [ref=e638]:
+                      - button "Nóng 7(35%)" [ref=e639]:
+                        - generic [ref=e640]: Nóng
+                        - generic [ref=e643]:
+                          - text: "7"
+                          - generic [ref=e644]: (35%)
+                      - button "Ấm 10(50%)" [ref=e645]:
+                        - generic [ref=e646]: Ấm
+                        - generic [ref=e649]:
+                          - text: "10"
+                          - generic [ref=e650]: (50%)
+                      - button "Lạnh 3(15%)" [ref=e651]:
+                        - generic [ref=e652]: Lạnh
+                        - generic [ref=e655]:
+                          - text: "3"
+                          - generic [ref=e656]: (15%)
+                    - generic [ref=e657]:
+                      - button "Nóng 7" [ref=e658] [cursor=pointer]:
+                        - generic [ref=e659]: Nóng
+                        - generic [ref=e660]: "7"
+                      - button "Ấm 10" [ref=e661] [cursor=pointer]:
+                        - generic [ref=e662]: Ấm
+                        - generic [ref=e663]: "10"
+                      - button "Lạnh 3" [ref=e664] [cursor=pointer]:
+                        - generic [ref=e665]: Lạnh
+                        - generic [ref=e666]: "3"
+                  - generic [ref=e667]:
+                    - generic [ref=e668]:
+                      - generic [ref=e669]:
+                        - generic [ref=e671]: 📊
+                        - heading "Nhu cầu cốt lõi" [level=3] [ref=e672]
+                      - generic [ref=e673]: Top 5
+                    - generic [ref=e674]:
+                      - button "1 Tìm giày nam 6 (33%)" [ref=e675]:
+                        - generic [ref=e677]: "1"
+                        - generic [ref=e679]:
+                          - generic [ref=e680]: Tìm giày nam
+                          - generic [ref=e681]:
+                            - text: "6"
+                            - generic [ref=e682]: (33%)
+                      - button "2 Mua quà tặng 4 (22%)" [ref=e685]:
+                        - generic [ref=e687]: "2"
+                        - generic [ref=e689]:
+                          - generic [ref=e690]: Mua quà tặng
+                          - generic [ref=e691]:
+                            - text: "4"
+                            - generic [ref=e692]: (22%)
+                      - button "3 Mua cho bạn 3 (17%)" [ref=e695]:
+                        - generic [ref=e697]: "3"
+                        - generic [ref=e699]:
+                          - generic [ref=e700]: Mua cho bạn
+                          - generic [ref=e701]:
+                            - text: "3"
+                            - generic [ref=e702]: (17%)
+                      - button "4 Hỏi cho biết 3 (17%)" [ref=e705]:
+                        - generic [ref=e707]: "4"
+                        - generic [ref=e709]:
+                          - generic [ref=e710]: Hỏi cho biết
+                          - generic [ref=e711]:
+                            - text: "3"
+                            - generic [ref=e712]: (17%)
+                      - button "5 Mùa đông cần áo len 2 (11%)" [ref=e715]:
+                        - generic [ref=e717]: "5"
+                        - generic [ref=e719]:
+                          - generic [ref=e720]: Mùa đông cần áo len
+                          - generic [ref=e721]:
+                            - text: "2"
+                            - generic [ref=e722]: (11%)
+  - generic [ref=e725]: "0"

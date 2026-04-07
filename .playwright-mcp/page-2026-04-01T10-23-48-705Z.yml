@@ -1,0 +1,171 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e7]: S
+      - button "Fahasa" [ref=e10]:
+        - img [ref=e12]
+        - generic [ref=e20]: Fahasa
+        - img [ref=e21]
+    - navigation [ref=e23]:
+      - button "Bảng tin" [ref=e24]:
+        - img [ref=e25]
+        - text: Bảng tin
+      - button "Nhắn tin" [ref=e28]:
+        - img [ref=e29]
+        - text: Nhắn tin
+      - button "Bot-Auto" [ref=e31]:
+        - img [ref=e32]
+        - text: Bot-Auto
+      - button "Khách hàng" [ref=e35]:
+        - img [ref=e36]
+        - text: Khách hàng
+      - button "Thống kê" [ref=e41]:
+        - img [ref=e42]
+        - text: Thống kê
+      - button "Zalo ZBS" [ref=e43]
+    - generic [ref=e44]:
+      - button [ref=e45]:
+        - img [ref=e46]
+      - button [ref=e49]:
+        - img [ref=e50]
+      - button [ref=e56]:
+        - img [ref=e57]
+      - button "2469" [ref=e61]:
+        - img [ref=e62]
+        - generic [ref=e65]: "2469"
+      - button "TT" [ref=e67]:
+        - generic [ref=e68]:
+          - generic [ref=e70]: TT
+          - img [ref=e72]
+        - img [ref=e75]
+  - generic [ref=e77]:
+    - complementary [ref=e78]:
+      - generic [ref=e80]:
+        - img [ref=e82]
+        - generic [ref=e84]:
+          - generic [ref=e85]: AI Insight
+          - generic [ref=e86]: Multi-Channel
+      - navigation [ref=e87]:
+        - generic [ref=e88]: Menu
+        - link "Cài đặt Insight" [ref=e89] [cursor=pointer]:
+          - /url: /insight/settings
+          - img [ref=e90]
+          - generic [ref=e95]: Cài đặt Insight
+        - link "Dashboard Insight AI" [ref=e96] [cursor=pointer]:
+          - /url: /insight/insight-dashboard
+          - img [ref=e97]
+          - generic [ref=e98]: Dashboard Insight
+          - generic [ref=e99]: AI
+        - link "Khám Bệnh" [ref=e100] [cursor=pointer]:
+          - /url: /insight/medical-checkup
+          - img [ref=e101]
+          - generic [ref=e105]: Khám Bệnh
+        - link "Tổng quan Ads" [ref=e106] [cursor=pointer]:
+          - /url: /insight/dashboard
+          - img [ref=e107]
+          - generic [ref=e109]: Tổng quan Ads
+        - link "Gợi ý tối ưu Ads AI" [ref=e110] [cursor=pointer]:
+          - /url: /insight/ads-optimization
+          - img [ref=e111]
+          - generic [ref=e114]: Gợi ý tối ưu Ads
+          - generic [ref=e115]: AI
+      - generic [ref=e117]:
+        - text: Module Insight Ads
+        - text: v1.0 — Demo
+    - main [ref=e118]:
+      - generic [ref=e119]:
+        - generic [ref=e120]:
+          - generic [ref=e121]:
+            - generic [ref=e122]: 🏥
+            - heading "Khám Bệnh" [level=1] [ref=e123]
+          - paragraph [ref=e124]: Phân tích đa kênh · Chẩn đoán 10 nhóm vấn đề · Gợi ý hành động từ Chuyên gia Smax
+        - generic [ref=e126]:
+          - button "💬 Hội Thoại" [ref=e127] [cursor=pointer]
+          - button "📣 Quảng Cáo" [ref=e128] [cursor=pointer]
+        - generic [ref=e130]:
+          - generic [ref=e132]:
+            - generic [ref=e133]: ✓
+            - generic [ref=e134]: Kết nối Fanpage
+          - generic [ref=e137]:
+            - generic [ref=e138]: ✓
+            - generic [ref=e139]: Ngành hàng
+          - generic [ref=e142]:
+            - generic [ref=e143]: ✓
+            - generic [ref=e144]: Số lượng
+          - generic [ref=e147]:
+            - generic [ref=e148]: ✓
+            - generic [ref=e149]: Chọn hạng mục
+          - generic [ref=e152]:
+            - generic [ref=e153]: "5"
+            - generic [ref=e154]: Thu thập dữ liệu
+          - generic [ref=e157]:
+            - generic [ref=e158]: "6"
+            - generic [ref=e159]: Kết quả
+        - generic [ref=e614]:
+          - generic [ref=e615]:
+            - generic [ref=e617]: 🏥
+            - heading "Đang thu thập & phân tích hội thoại..." [level=2] [ref=e618]
+            - paragraph [ref=e619]: Hệ thống đang chẩn đoán 10 nhóm bệnh từ dữ liệu hội thoại của bạn.
+          - generic [ref=e622]:
+            - generic [ref=e623]:
+              - generic [ref=e624]:
+                - text: "560"
+                - generic [ref=e625]: /1,000
+              - generic [ref=e626]: Đã xử lý
+            - generic [ref=e627]:
+              - generic [ref=e628]: 56%
+              - generic [ref=e629]: Tiến độ
+            - generic [ref=e630]:
+              - generic [ref=e631]: ~4s
+              - generic [ref=e632]: Còn lại
+          - generic [ref=e633]:
+            - heading "🏥 Các \"bệnh\" đang được phân tích" [level=3] [ref=e635]:
+              - generic [ref=e636]: 🏥
+              - text: Các "bệnh" đang được phân tích
+            - generic [ref=e637]:
+              - generic [ref=e638]:
+                - generic [ref=e639]: 📊
+                - generic [ref=e640]: Chất Lượng Nguồn Lead
+                - generic [ref=e641]: Hoàn thành
+                - generic [ref=e642]: ✓
+              - generic [ref=e643]:
+                - generic [ref=e644]: ⏱️
+                - generic [ref=e645]: Phản Hồi & Chăm Sóc
+                - generic [ref=e646]: Hoàn thành
+                - generic [ref=e647]: ✓
+              - generic [ref=e648]:
+                - generic [ref=e649]: 🏆
+                - generic [ref=e650]: Nhân Viên Tư Vấn
+                - generic [ref=e651]: Hoàn thành
+                - generic [ref=e652]: ✓
+              - generic [ref=e653]:
+                - generic [ref=e654]: ⚔️
+                - generic [ref=e655]: Đối Thủ Cạnh Tranh
+                - generic [ref=e656]: Hoàn thành
+                - generic [ref=e657]: ✓
+              - generic [ref=e658]:
+                - generic [ref=e659]: 💬
+                - generic [ref=e660]: CSKH & Hậu Mua
+                - generic [ref=e662]: 100%
+                - generic [ref=e663]: ◉
+              - generic [ref=e664]:
+                - generic [ref=e665]: 🎯
+                - generic [ref=e666]: Kịch Bản Tư Vấn
+                - generic [ref=e668]: 33%
+                - generic [ref=e669]: ◉
+              - generic [ref=e670]:
+                - generic [ref=e671]: 🔁
+                - generic [ref=e672]: Cuộc Trò Chuyện Bỏ Dở
+                - generic [ref=e673]: Chờ...
+                - generic [ref=e674]: ○
+              - generic [ref=e675]:
+                - generic [ref=e676]: 🎨
+                - generic [ref=e677]: Ngôn Ngữ & Cách Giao Tiếp
+                - generic [ref=e678]: Chờ...
+                - generic [ref=e679]: ○
+              - generic [ref=e680]:
+                - generic [ref=e681]: 📦
+                - generic [ref=e682]: Upsell / Cross-sell
+                - generic [ref=e683]: Chờ...
+                - generic [ref=e684]: ○
+          - generic [ref=e686]: Đang phân tích nhóm "CSKH & Hậu Mua"...

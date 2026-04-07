@@ -1,0 +1,311 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e7]: S
+      - button "Fahasa" [ref=e10]:
+        - img [ref=e12]
+        - generic [ref=e20]: Fahasa
+        - img [ref=e21]
+    - navigation [ref=e23]:
+      - button "Bảng tin" [ref=e24]:
+        - img [ref=e25]
+        - text: Bảng tin
+      - button "Nhắn tin" [ref=e28]:
+        - img [ref=e29]
+        - text: Nhắn tin
+      - button "Bot-Auto" [ref=e31]:
+        - img [ref=e32]
+        - text: Bot-Auto
+      - button "Khách hàng" [ref=e35]:
+        - img [ref=e36]
+        - text: Khách hàng
+      - button "Thống kê" [ref=e41]:
+        - img [ref=e42]
+        - text: Thống kê
+      - button "Zalo ZBS" [ref=e43]
+    - generic [ref=e44]:
+      - button [ref=e45]:
+        - img [ref=e46]
+      - button [ref=e49]:
+        - img [ref=e50]
+      - button [ref=e56]:
+        - img [ref=e57]
+      - button "2469" [ref=e61]:
+        - img [ref=e62]
+        - generic [ref=e65]: "2469"
+      - button "TT" [ref=e67]:
+        - generic [ref=e68]:
+          - generic [ref=e70]: TT
+          - img [ref=e72]
+        - img [ref=e75]
+  - generic [ref=e77]:
+    - complementary [ref=e78]:
+      - generic [ref=e80]:
+        - img [ref=e82]
+        - generic [ref=e84]:
+          - generic [ref=e85]: AI Insight
+          - generic [ref=e86]: Multi-Channel
+      - navigation [ref=e87]:
+        - generic [ref=e88]: Menu
+        - link "Cài đặt Insight" [ref=e89] [cursor=pointer]:
+          - /url: /insight/settings
+          - img [ref=e90]
+          - generic [ref=e95]: Cài đặt Insight
+        - link "Dashboard Insight AI" [ref=e96] [cursor=pointer]:
+          - /url: /insight/insight-dashboard
+          - img [ref=e97]
+          - generic [ref=e98]: Dashboard Insight
+          - generic [ref=e99]: AI
+        - link "Khám Bệnh" [ref=e100] [cursor=pointer]:
+          - /url: /insight/medical-checkup
+          - img [ref=e101]
+          - generic [ref=e105]: Khám Bệnh
+        - link "Tổng quan Ads" [ref=e106] [cursor=pointer]:
+          - /url: /insight/dashboard
+          - img [ref=e107]
+          - generic [ref=e109]: Tổng quan Ads
+        - link "Gợi ý tối ưu Ads AI" [ref=e110] [cursor=pointer]:
+          - /url: /insight/ads-optimization
+          - img [ref=e111]
+          - generic [ref=e114]: Gợi ý tối ưu Ads
+          - generic [ref=e115]: AI
+      - generic [ref=e117]:
+        - text: Module Insight Ads
+        - text: v1.0 — Demo
+    - main [ref=e118]:
+      - generic [ref=e119]:
+        - generic [ref=e120]:
+          - paragraph [ref=e121]: AI phân tích và đề xuất hành động cho từng chiến dịch
+          - heading "Gợi ý Tối ưu Ads" [level=1] [ref=e122]
+        - generic [ref=e123]:
+          - button "Thông báo" [ref=e124] [cursor=pointer]:
+            - img [ref=e125]
+          - button "T" [ref=e128]
+      - main [ref=e129]:
+        - generic [ref=e130]:
+          - img [ref=e132]
+          - paragraph [ref=e134]:
+            - generic [ref=e135]: 2 chiến dịch rác
+            - text: được AI phát hiện và đề xuất tắt/giảm ngân sách.
+          - button "Xem chi tiết" [ref=e136] [cursor=pointer]
+        - generic [ref=e138]:
+          - generic [ref=e139]:
+            - generic [ref=e140]:
+              - paragraph [ref=e141]: 120.260.000 ₫
+              - paragraph [ref=e142]: Doanh thu
+              - paragraph [ref=e143]: +15.3%
+            - generic [ref=e144]:
+              - paragraph [ref=e145]: 2.66×
+              - paragraph [ref=e146]: ROAS Portfolio
+              - paragraph [ref=e147]: +8.2%
+            - generic [ref=e148]:
+              - paragraph [ref=e149]: 45.200.000 ₫
+              - paragraph [ref=e150]: Chi tiêu
+              - paragraph [ref=e151]: 7 ngày
+          - generic [ref=e152]:
+            - generic [ref=e153]:
+              - img [ref=e154]
+              - generic [ref=e156]: TÓM TẮT TUẦN NÀY
+            - paragraph [ref=e157]: "Tuần này portfolio đạt ROAS 2.66×, tăng 8.2% so với tuần trước. 2 chiến dịch retargeting đang đốt tiền rác — cần tắt ngay để tiết kiệm ~22.5M/ngày. Ngược lại, Zalo OA Khách hàng cũ và Product Launch đang là điểm sáng với ROAS vượt trội. Khuyến nghị: tăng ngân sách Zalo OA thêm 30-50%, chuẩn bị creative mới cho Brand Awareness Zalo."
+          - generic [ref=e158]:
+            - generic [ref=e159]:
+              - generic [ref=e160]:
+                - img [ref=e162]
+                - generic [ref=e164]: Cần xử lý ngay
+              - generic [ref=e166]:
+                - generic [ref=e167]:
+                  - generic [ref=e168]: 🚨
+                  - generic [ref=e169]:
+                    - paragraph [ref=e170]: Chiến dịch Retargeting Q1 chi tiêu phí
+                    - paragraph [ref=e171]: Chi tiêu 12.5M nhưng chỉ 2 lead chất lượng — junk rate 71%. AI đề xuất TẮT ngay.
+                - generic [ref=e172]: ↓ Giảm
+              - generic [ref=e174]:
+                - generic [ref=e175]:
+                  - generic [ref=e176]: ⚠️
+                  - generic [ref=e177]:
+                    - paragraph [ref=e178]: Chiến dịch Retargeting High Intent chìm trong "burnt audience"
+                    - paragraph [ref=e179]: 85% audience đã nhìn thấy quảng cáo 5+ lần nhưng không tương tác. Đang đốt 10M tiền rác.
+                - generic [ref=e180]: ⏸ Tạm dừng
+            - generic [ref=e181]:
+              - generic [ref=e182]:
+                - img [ref=e184]
+                - generic [ref=e187]: Theo dõi tuần này
+              - generic [ref=e189]:
+                - generic [ref=e190]:
+                  - generic [ref=e191]: 👀
+                  - generic [ref=e192]:
+                    - paragraph [ref=e193]: KPI Spring Sale 2026 — junk rate cao bất thường
+                    - paragraph [ref=e194]: 45% hội thoại là khách hỏi chơi/spam. Tỉ lệ lead chất lượng chỉ 29%, thấp hơn mức kênh (52%).
+                - generic [ref=e195]: ↔ Giữ
+              - generic [ref=e197]:
+                - generic [ref=e198]:
+                  - generic [ref=e199]: 📊
+                  - generic [ref=e200]:
+                    - paragraph [ref=e201]: Brand Awareness Zalo — tạm dừng chờ creative mới
+                    - paragraph [ref=e202]: Đang ở ngưỡng ROAS 1.2×. Nếu tuần tới không cải thiện, cân nhắc thử nghiệm creative mới với audience nhỏ hơn.
+                - generic [ref=e203]: ⏸ Tạm dừng
+            - generic [ref=e204]:
+              - generic [ref=e205]:
+                - img [ref=e207]
+                - generic [ref=e209]: Điểm sáng
+              - generic [ref=e211]:
+                - generic [ref=e212]:
+                  - generic [ref=e213]: 💎
+                  - generic [ref=e214]:
+                    - paragraph [ref=e215]: "Zalo OA — Khách hàng cũ: Chiến dịch tốt nhất toàn tài khoản!"
+                    - paragraph [ref=e216]: ROAS 5.9×, quality score 89, hot leads 41. Khách hàng cũ phản hồi tích cực, tỉ lệ mua lại cao nhất.
+                - generic [ref=e217]: ↑ Tăng
+              - generic [ref=e219]:
+                - generic [ref=e220]:
+                  - generic [ref=e221]: 🚀
+                  - generic [ref=e222]:
+                    - paragraph [ref=e223]: Product Launch Serum — đang trong giai đoạn vàng
+                    - paragraph [ref=e224]: 81 điểm chất lượng, 25% lead có dấu hiệu mua ngay. Đối thủ chưa phản ứng — đây là lúc capture demand.
+                - generic [ref=e225]: ↑ Tăng
+          - generic [ref=e226]:
+            - paragraph [ref=e227]: 📊 Gợi ý phân bổ ngân sách tuần tới
+            - generic [ref=e228]:
+              - generic [ref=e229]:
+                - paragraph [ref=e230]: ↑ Tăng
+                - paragraph [ref=e231]: "camp-8: 4.500.000 ₫"
+                - paragraph [ref=e232]: "camp-5: 18.000.000 ₫"
+              - generic [ref=e233]:
+                - paragraph [ref=e234]: ↔ Giữ
+                - paragraph [ref=e235]: "camp-2: 5.000.000 ₫"
+                - paragraph [ref=e236]: "camp-6: 6.000.000 ₫"
+              - generic [ref=e237]:
+                - paragraph [ref=e238]: ↓ Giảm
+                - paragraph [ref=e239]: "camp-1: 10.000.000 ₫"
+              - generic [ref=e240]:
+                - paragraph [ref=e241]: ⏸ Dừng
+                - paragraph [ref=e242]: camp-3
+                - paragraph [ref=e243]: camp-7
+                - paragraph [ref=e244]: camp-4
+        - generic [ref=e245]:
+          - generic [ref=e246]:
+            - generic [ref=e247]:
+              - heading "Gợi ý tối ưu" [level=2] [ref=e248]
+              - paragraph [ref=e249]: 5 chiến dịch — sắp xếp theo mức ưu tiên
+            - generic [ref=e250]:
+              - button "Tất cả" [ref=e251] [cursor=pointer]
+              - button "Facebook" [ref=e252] [cursor=pointer]
+              - button "Zalo" [ref=e253] [cursor=pointer]
+              - button "Đang chạy" [ref=e254] [cursor=pointer]
+              - button "Đã dừng" [ref=e255] [cursor=pointer]
+          - generic [ref=e257]:
+            - generic [ref=e258]:
+              - generic [ref=e259]: Chiến dịch
+              - generic [ref=e260]: AI Gợi ý
+              - generic [ref=e261]: Phân tích
+              - generic [ref=e262]: Chỉ số
+            - generic [ref=e265] [cursor=pointer]:
+              - generic [ref=e267]:
+                - paragraph [ref=e268]: Product Launch — Serum Dưỡng
+                - generic [ref=e269]:
+                  - generic [ref=e270]: FB
+                  - generic [ref=e271]: 112 hội thoại
+              - generic [ref=e272]:
+                - img [ref=e273]
+                - generic [ref=e275]: Tăng
+              - paragraph [ref=e277]: ROAS 4.5× — hiệu quả cao, nên scale.
+              - generic [ref=e278]:
+                - generic [ref=e279]:
+                  - paragraph [ref=e280]: Chi tiêu
+                  - paragraph [ref=e281]: 5.900.000 ₫
+                - generic [ref=e282]:
+                  - paragraph [ref=e283]: ROAS
+                  - paragraph [ref=e284]: 4.5×
+                - generic [ref=e285]:
+                  - paragraph [ref=e286]: Chất lượng
+                  - paragraph [ref=e287]: "81"
+              - button [ref=e289]:
+                - img [ref=e290]
+            - generic [ref=e293] [cursor=pointer]:
+              - generic [ref=e295]:
+                - paragraph [ref=e296]: KPI Spring Sale 2026
+                - generic [ref=e297]:
+                  - generic [ref=e298]: FB
+                  - generic [ref=e299]: 78 hội thoại
+              - generic [ref=e300]:
+                - img [ref=e301]
+                - generic [ref=e303]: Giữ
+              - paragraph [ref=e305]: Ổn định, duy trì ngân sách hiện tại.
+              - generic [ref=e306]:
+                - generic [ref=e307]:
+                  - paragraph [ref=e308]: Chi tiêu
+                  - paragraph [ref=e309]: 8.200.000 ₫
+                - generic [ref=e310]:
+                  - paragraph [ref=e311]: ROAS
+                  - paragraph [ref=e312]: 4.5×
+                - generic [ref=e313]:
+                  - paragraph [ref=e314]: Chất lượng
+                  - paragraph [ref=e315]: "72"
+              - button [ref=e317]:
+                - img [ref=e318]
+            - generic [ref=e321] [cursor=pointer]:
+              - generic [ref=e323]:
+                - paragraph [ref=e324]: Summer Collection 2026
+                - generic [ref=e325]:
+                  - generic [ref=e326]: FB
+                  - generic [ref=e327]: 89 hội thoại
+              - generic [ref=e328]:
+                - img [ref=e329]
+                - generic [ref=e331]: Giữ
+              - paragraph [ref=e333]: Ổn định, duy trì ngân sách hiện tại.
+              - generic [ref=e334]:
+                - generic [ref=e335]:
+                  - paragraph [ref=e336]: Chi tiêu
+                  - paragraph [ref=e337]: 3.600.000 ₫
+                - generic [ref=e338]:
+                  - paragraph [ref=e339]: ROAS
+                  - paragraph [ref=e340]: 4.0×
+                - generic [ref=e341]:
+                  - paragraph [ref=e342]: Chất lượng
+                  - paragraph [ref=e343]: "67"
+              - button [ref=e345]:
+                - img [ref=e346]
+            - generic [ref=e349] [cursor=pointer]:
+              - generic [ref=e351]:
+                - paragraph [ref=e352]: Retargeting 2026 — Q1
+                - generic [ref=e353]:
+                  - generic [ref=e354]: FB
+                  - generic [ref=e355]: 56 hội thoại
+              - generic [ref=e356]:
+                - img [ref=e357]
+                - generic [ref=e359]: Giảm
+              - paragraph [ref=e361]: Junk rate cao, chi phí cao hơn hiệu quả.
+              - generic [ref=e362]:
+                - generic [ref=e363]:
+                  - paragraph [ref=e364]: Chi tiêu
+                  - paragraph [ref=e365]: 12.500.000 ₫
+                - generic [ref=e366]:
+                  - paragraph [ref=e367]: ROAS
+                  - paragraph [ref=e368]: 1.2×
+                - generic [ref=e369]:
+                  - paragraph [ref=e370]: Chất lượng
+                  - paragraph [ref=e371]: "28"
+              - button [ref=e373]:
+                - img [ref=e374]
+            - generic [ref=e377] [cursor=pointer]:
+              - generic [ref=e379]:
+                - paragraph [ref=e380]: Retargeting High Intent
+                - generic [ref=e381]:
+                  - generic [ref=e382]: FB
+                  - generic [ref=e383]: 31 hội thoại
+                  - generic [ref=e384]: · Tạm dừng
+              - generic [ref=e385]:
+                - img [ref=e386]
+                - generic [ref=e388]: Tắt
+              - paragraph [ref=e390]: Không còn hiệu quả, đốt ngân sách rác.
+              - generic [ref=e391]:
+                - generic [ref=e392]:
+                  - paragraph [ref=e393]: Chi tiêu
+                  - paragraph [ref=e394]: 4.200.000 ₫
+                - generic [ref=e395]:
+                  - paragraph [ref=e396]: ROAS
+                  - paragraph [ref=e397]: 0.6×
+                - generic [ref=e398]:
+                  - paragraph [ref=e399]: Chất lượng
+                  - paragraph [ref=e400]: "15"
+              - button [ref=e402]:
+                - img [ref=e403]

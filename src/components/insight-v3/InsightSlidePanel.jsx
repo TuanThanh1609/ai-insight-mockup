@@ -15,10 +15,17 @@ export function InsightSlidePanel({ isOpen, onClose, title, children }) {
     return () => document.removeEventListener('keydown', handler)
   }, [onClose])
 
-  // Prevent body scroll when open
+  // Prevent body scroll when open — track previous overflow to avoid race conditions
   useEffect(() => {
-    if (isOpen) document.body.style.overflow = 'hidden'
-    return () => { document.body.style.overflow = '' }
+    if (!isOpen) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      // Only restore if we own the lock (no other component overwrote it)
+      if (document.body.style.overflow === 'hidden') {
+        document.body.style.overflow = prev
+      }
+    }
   }, [isOpen])
 
   return (

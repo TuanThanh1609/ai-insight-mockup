@@ -1,0 +1,350 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e7]: S
+        - button "Fahasa" [ref=e10]:
+          - img [ref=e12]
+          - generic [ref=e20]: Fahasa
+          - img [ref=e21]
+      - navigation [ref=e23]:
+        - button "Bảng tin" [ref=e24]:
+          - img [ref=e25]
+          - text: Bảng tin
+        - button "Nhắn tin" [ref=e28]:
+          - img [ref=e29]
+          - text: Nhắn tin
+        - button "Bot-Auto" [ref=e31]:
+          - img [ref=e32]
+          - text: Bot-Auto
+        - button "Khách hàng" [ref=e35]:
+          - img [ref=e36]
+          - text: Khách hàng
+        - button "Thống kê" [ref=e41]:
+          - img [ref=e42]
+          - text: Thống kê
+        - button "Zalo ZBS" [ref=e43]
+      - generic [ref=e44]:
+        - button [ref=e45]:
+          - img [ref=e46]
+        - button [ref=e49]:
+          - img [ref=e50]
+        - button [ref=e56]:
+          - img [ref=e57]
+        - button "2469" [ref=e61]:
+          - img [ref=e62]
+          - generic [ref=e65]: "2469"
+        - button "TT" [ref=e67]:
+          - generic [ref=e68]:
+            - generic [ref=e70]: TT
+            - img [ref=e72]
+          - img [ref=e75]
+    - generic [ref=e77]:
+      - complementary [ref=e78]:
+        - generic [ref=e80]:
+          - img [ref=e82]
+          - generic [ref=e84]:
+            - generic [ref=e85]: AI Insight
+            - generic [ref=e86]: Multi-Channel
+        - navigation [ref=e87]:
+          - generic [ref=e88]: Menu
+          - link "Cài đặt Insight" [ref=e89] [cursor=pointer]:
+            - /url: /insight/settings
+            - img [ref=e90]
+            - generic [ref=e95]: Cài đặt Insight
+          - link "Tổng Quan NEW" [ref=e96] [cursor=pointer]:
+            - /url: /insight/overview
+            - img [ref=e97]
+            - generic [ref=e102]: Tổng Quan
+            - generic [ref=e103]: NEW
+          - link "Dashboard Insight AI" [ref=e104] [cursor=pointer]:
+            - /url: /insight/insight-dashboard
+            - img [ref=e105]
+            - generic [ref=e106]: Dashboard Insight
+            - generic [ref=e107]: AI
+          - link "Khám Bệnh" [ref=e108] [cursor=pointer]:
+            - /url: /insight/medical-checkup
+            - img [ref=e109]
+            - generic [ref=e113]: Khám Bệnh
+          - link "Tổng quan Ads" [ref=e114] [cursor=pointer]:
+            - /url: /insight/dashboard
+            - img [ref=e115]
+            - generic [ref=e117]: Tổng quan Ads
+          - link "Gợi ý tối ưu Ads AI" [ref=e118] [cursor=pointer]:
+            - /url: /insight/ads-optimization
+            - img [ref=e119]
+            - generic [ref=e122]: Gợi ý tối ưu Ads
+            - generic [ref=e123]: AI
+        - generic [ref=e125]:
+          - text: Module Insight Ads
+          - text: v1.0 — Demo
+      - main [ref=e126]:
+        - generic [ref=e127]:
+          - generic [ref=e128]:
+            - generic [ref=e129]:
+              - heading "Tổng Quan" [level=1] [ref=e130]
+              - paragraph [ref=e131]: Tổng hợp toàn bộ dữ liệu Hội Thoại · Quảng cáo · Doanh thu
+            - generic [ref=e132]: 7 ngày gần nhất
+          - generic [ref=e133]:
+            - generic [ref=e134]:
+              - generic [ref=e135]:
+                - generic [ref=e136]: Tổng hội thoại
+                - img [ref=e138]
+              - paragraph [ref=e141]: "823"
+            - generic [ref=e142]:
+              - generic [ref=e143]:
+                - generic [ref=e144]: Chi tiêu Ads
+                - img [ref=e146]
+              - generic [ref=e149]:
+                - paragraph [ref=e150]: 34.400.000 ₫
+                - paragraph [ref=e151]: 4 chiến dịch đang chạy
+            - generic [ref=e152]:
+              - generic [ref=e153]:
+                - generic [ref=e154]: Doanh thu
+                - img [ref=e156]
+              - generic [ref=e159]:
+                - paragraph [ref=e160]: 96.000.000 ₫
+                - paragraph [ref=e161]: 137 đơn hàng
+            - generic [ref=e162]:
+              - generic [ref=e163]:
+                - generic [ref=e164]: ROAS trung bình
+                - img [ref=e166]
+              - generic [ref=e168]:
+                - paragraph [ref=e169]: 2.8×
+                - paragraph [ref=e170]: Ngưỡng cải thiện
+          - generic [ref=e171]:
+            - generic [ref=e173]:
+              - generic [ref=e174]:
+                - generic [ref=e175]:
+                  - generic [ref=e176]:
+                    - heading "Doanh thu vs Chi tiêu" [level=3] [ref=e177]
+                    - paragraph [ref=e178]: Theo chiến dịch — 7 ngày gần nhất
+                  - generic [ref=e179]:
+                    - generic [ref=e180]: Chi tiêu
+                    - generic [ref=e182]: Doanh thu
+                - img [ref=e186]:
+                  - generic [ref=e190]:
+                    - generic [ref=e192]: KPI Spring Sale 20…
+                    - generic [ref=e194]: Product Launch — S…
+                    - generic [ref=e196]: Retargeting 2026 —…
+                    - generic [ref=e198]: Retargeting High I…
+                    - generic [ref=e200]: Summer Collection …
+                  - generic [ref=e202]:
+                    - generic [ref=e204]: 0M
+                    - generic [ref=e206]: 10M
+                    - generic [ref=e208]: 19M
+                    - generic [ref=e210]: 29M
+                    - generic [ref=e212]: 38M
+                - generic [ref=e213]:
+                  - generic [ref=e214]:
+                    - text: Chi tiêu
+                    - paragraph [ref=e215]: 34.400.000 ₫
+                  - generic [ref=e216]:
+                    - text: Doanh thu
+                    - paragraph [ref=e217]: 96.000.000 ₫
+                  - generic [ref=e218]:
+                    - text: Lợi nhuận
+                    - paragraph [ref=e219]: 61.600.000 ₫
+              - generic [ref=e220]:
+                - generic [ref=e221]:
+                  - heading "Phễu Nhiệt Độ Lead" [level=3] [ref=e222]
+                  - paragraph [ref=e223]: Tổng 366 hội thoại — 7 ngày gần nhất
+                - generic [ref=e224]:
+                  - generic [ref=e225]:
+                    - generic [ref=e226]: Nóng
+                    - generic [ref=e229]: "102"
+                    - generic [ref=e230]: 28%
+                  - generic [ref=e231]:
+                    - generic [ref=e232]: Ấm
+                    - generic [ref=e235]: "146"
+                    - generic [ref=e236]: 40%
+                  - generic [ref=e237]:
+                    - generic [ref=e238]: Lạnh
+                    - generic [ref=e241]: "118"
+                    - generic [ref=e242]: 32%
+            - generic [ref=e244]:
+              - generic [ref=e246]:
+                - generic [ref=e247]:
+                  - img [ref=e248]
+                  - heading "Cảnh Báo Khẩn" [level=3] [ref=e250]
+                  - generic [ref=e251]: "6"
+                - generic [ref=e252]:
+                  - generic [ref=e254] [cursor=pointer]:
+                    - img [ref=e256]
+                    - generic [ref=e258]:
+                      - generic [ref=e259]:
+                        - generic [ref=e260]: Cuộc Trò Chuyện Bỏ Dở
+                        - generic [ref=e261]: Bỏ giữa chừng
+                      - generic [ref=e262]:
+                        - generic [ref=e263]: 29%
+                        - button "▼ Xem 10 hội thoại" [ref=e264]
+                  - generic [ref=e266] [cursor=pointer]:
+                    - img [ref=e268]
+                    - generic [ref=e270]:
+                      - generic [ref=e271]:
+                        - generic [ref=e272]: Cuộc Trò Chuyện Bỏ Dở
+                        - generic [ref=e273]: Không kết thúc
+                      - generic [ref=e274]:
+                        - generic [ref=e275]: 12%
+                        - button "▼ Xem 10 hội thoại" [ref=e276]
+                  - generic [ref=e278] [cursor=pointer]:
+                    - img [ref=e280]
+                    - generic [ref=e282]:
+                      - generic [ref=e283]:
+                        - generic [ref=e284]: Cuộc Trò Chuyện Bỏ Dở
+                        - generic [ref=e285]: Không tin nhắn cuối
+                      - generic [ref=e286]:
+                        - generic [ref=e287]: 20%
+                        - button "▼ Xem 10 hội thoại" [ref=e288]
+                  - generic [ref=e290] [cursor=pointer]:
+                    - img [ref=e292]
+                    - generic [ref=e294]:
+                      - generic [ref=e295]:
+                        - generic [ref=e296]: Ngôn Ngữ & Cách Giao Tiếp
+                        - generic [ref=e297]: Giọng không phù hợp
+                      - generic [ref=e298]:
+                        - generic [ref=e299]: 17%
+                        - button "▼ Xem 10 hội thoại" [ref=e300]
+                  - generic [ref=e302] [cursor=pointer]:
+                    - img [ref=e304]
+                    - generic [ref=e306]:
+                      - generic [ref=e307]:
+                        - generic [ref=e308]: Ngôn Ngữ & Cách Giao Tiếp
+                        - generic [ref=e309]: Tin quá dài
+                      - generic [ref=e310]:
+                        - generic [ref=e311]: 24%
+                        - button "▼ Xem 10 hội thoại" [ref=e312]
+                  - generic [ref=e314] [cursor=pointer]:
+                    - img [ref=e316]
+                    - generic [ref=e318]:
+                      - generic [ref=e319]:
+                        - generic [ref=e320]: Nhân Viên Tư Vấn
+                        - generic [ref=e321]: Thái độ tư vấn tốt
+                      - generic [ref=e322]:
+                        - generic [ref=e323]: 10%
+                        - button "▼ Xem 10 hội thoại" [ref=e324]
+              - generic [ref=e326]:
+                - generic [ref=e327]:
+                  - generic [ref=e328]:
+                    - img [ref=e329]
+                    - heading "Nhận xét Tổng hợp" [level=4] [ref=e331]
+                  - button "Xem thêm" [ref=e332]:
+                    - text: Xem thêm
+                    - img [ref=e333]
+                - generic [ref=e335]:
+                  - generic [ref=e337]:
+                    - generic [ref=e338]:
+                      - generic [ref=e339]: A. Chất lượng Hội Thoại
+                      - generic [ref=e340]: Cần cải thiện
+                    - paragraph [ref=e341]: Lead ở mức trung bình — cần cải thiện tỉ lệ Nóng và thu thập SĐT.
+                    - button "Phân tích chi tiết với AI" [ref=e342]:
+                      - img [ref=e343]
+                      - text: Phân tích chi tiết với AI
+                  - generic [ref=e346]:
+                    - generic [ref=e347]:
+                      - generic [ref=e348]: B. Nhân viên Tư vấn
+                      - generic [ref=e349]: Nguy cơ
+                    - paragraph [ref=e350]: NV chốt đơn thấp 1%, bỏ sót cao 1%. Cần training.
+                    - button "Phân tích chi tiết với AI" [ref=e351]:
+                      - img [ref=e352]
+                      - text: Phân tích chi tiết với AI
+                  - generic [ref=e355]:
+                    - generic [ref=e356]:
+                      - generic [ref=e357]: C. Chăm sóc Sau mua
+                      - generic [ref=e358]: Nguy cơ
+                    - paragraph [ref=e359]: Chỉ 0% hài lòng. Cần cải thiện CSKH sau mua.
+                    - button "Phân tích chi tiết với AI" [ref=e360]:
+                      - img [ref=e361]
+                      - text: Phân tích chi tiết với AI
+          - generic [ref=e363]:
+            - generic [ref=e364]:
+              - generic [ref=e365]:
+                - img [ref=e367]
+                - heading "Chất lượng Hội Thoại" [level=3] [ref=e370]
+              - generic [ref=e372]:
+                - generic [ref=e373]:
+                  - generic [ref=e374]: Tổng hội thoại
+                  - generic [ref=e375]: "823"
+                - generic [ref=e376]:
+                  - generic [ref=e378]: Phân loại Lead
+                  - generic [ref=e384]:
+                    - generic [ref=e385]:
+                      - generic [ref=e387]: Nóng
+                      - generic [ref=e388]: 58 (7%)
+                    - generic [ref=e389]:
+                      - generic [ref=e391]: Ấm
+                      - generic [ref=e392]: 58 (7%)
+                    - generic [ref=e393]:
+                      - generic [ref=e395]: Lạnh
+                      - generic [ref=e396]: 57 (7%)
+                - generic [ref=e397]:
+                  - generic [ref=e399]: Thu thập SĐT
+                  - generic [ref=e403]: 0/823
+              - generic [ref=e405]:
+                - generic [ref=e407]: Cần cải thiện
+                - generic [ref=e408]: · 34% Nóng trong 173 hội thoại có nhiệt độ
+            - generic [ref=e409]:
+              - generic [ref=e410]:
+                - img [ref=e412]
+                - heading "Nhân viên Tư vấn" [level=3] [ref=e418]
+              - generic [ref=e420]:
+                - generic [ref=e422]:
+                  - generic [ref=e423]: Chốt đơn thành công
+                  - generic [ref=e424]: 9 (1%)
+                - generic [ref=e428]:
+                  - generic [ref=e429]: Bỏ sót hội thoại
+                  - generic [ref=e430]: 7 (1%)
+                - generic [ref=e434]:
+                  - generic [ref=e435]: Khách im lặng
+                  - generic [ref=e436]: 6 (1%)
+              - generic [ref=e440]:
+                - generic [ref=e442]: Nguy cơ
+                - generic [ref=e443]: · 9 chốt / 7 bỏ sót
+            - generic [ref=e444]:
+              - generic [ref=e445]:
+                - img [ref=e447]
+                - heading "Chăm sóc Sau mua" [level=3] [ref=e451]
+              - generic [ref=e453]:
+                - generic [ref=e454]:
+                  - img [ref=e455]:
+                    - generic [ref=e458]: 0%
+                  - generic [ref=e459]:
+                    - generic [ref=e460]:
+                      - generic [ref=e462]: Quay lại
+                      - generic [ref=e463]: "0"
+                    - generic [ref=e464]:
+                      - generic [ref=e466]: Không quay lại
+                      - generic [ref=e467]: "823"
+                - generic [ref=e468]:
+                  - generic [ref=e469]: Khách quay lại
+                  - generic [ref=e470]: 0/823
+              - generic [ref=e472]:
+                - generic [ref=e474]: Nguy cơ
+                - generic [ref=e475]: · 0% hài lòng
+            - generic [ref=e476]:
+              - generic [ref=e477]:
+                - img [ref=e479]
+                - heading "Feedback Khách hàng" [level=3] [ref=e482]
+              - generic [ref=e484]:
+                - generic [ref=e485]:
+                  - generic [ref=e487]: 675%
+                  - generic [ref=e488]:
+                    - generic [ref=e489]:
+                      - generic [ref=e491]: Hài lòng
+                      - generic [ref=e492]: 0%
+                    - generic [ref=e493]:
+                      - generic [ref=e495]: Trung lập
+                      - generic [ref=e496]: 675%
+                    - generic [ref=e497]:
+                      - generic [ref=e499]: Không hài lòng
+                      - generic [ref=e500]: 0%
+                - generic [ref=e501]:
+                  - generic [ref=e502]: Phản hồi nổi bật
+                  - generic [ref=e503]:
+                    - generic [ref=e504]: Hỏi cho biết (29)
+                    - generic [ref=e505]: Không có size (28)
+                    - generic [ref=e506]: Không có rào cản (25)
+              - generic [ref=e508]:
+                - generic [ref=e510]: Cần cải thiện
+                - generic [ref=e511]: · 0 hài lòng / 0 không hài lòng
+  - generic [ref=e512]: 0M

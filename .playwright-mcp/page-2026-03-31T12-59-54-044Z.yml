@@ -1,0 +1,353 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e7]: S
+      - button "Fahasa" [ref=e10]:
+        - img [ref=e12]
+        - generic [ref=e20]: Fahasa
+        - img [ref=e21]
+    - navigation [ref=e23]:
+      - button "Bảng tin" [ref=e24]:
+        - img [ref=e25]
+        - text: Bảng tin
+      - button "Nhắn tin" [ref=e28]:
+        - img [ref=e29]
+        - text: Nhắn tin
+      - button "Bot-Auto" [ref=e31]:
+        - img [ref=e32]
+        - text: Bot-Auto
+      - button "Khách hàng" [ref=e35]:
+        - img [ref=e36]
+        - text: Khách hàng
+      - button "Thống kê" [ref=e41]:
+        - img [ref=e42]
+        - text: Thống kê
+      - button "Zalo ZBS" [ref=e43]
+    - generic [ref=e44]:
+      - button [ref=e45]:
+        - img [ref=e46]
+      - button [ref=e49]:
+        - img [ref=e50]
+      - button [ref=e56]:
+        - img [ref=e57]
+      - button "2469" [ref=e61]:
+        - img [ref=e62]
+        - generic [ref=e65]: "2469"
+      - button "TT" [ref=e67]:
+        - generic [ref=e68]:
+          - generic [ref=e70]: TT
+          - img [ref=e72]
+        - img [ref=e75]
+  - generic [ref=e77]:
+    - complementary [ref=e78]:
+      - generic [ref=e80]:
+        - img [ref=e82]
+        - generic [ref=e84]:
+          - generic [ref=e85]: AI Insight
+          - generic [ref=e86]: Multi-Channel
+      - navigation [ref=e87]:
+        - generic [ref=e88]: Menu
+        - link "Cài đặt Insight" [ref=e89] [cursor=pointer]:
+          - /url: /insight/settings
+          - img [ref=e90]
+          - generic [ref=e95]: Cài đặt Insight
+        - link "Dashboard Insight AI" [ref=e96] [cursor=pointer]:
+          - /url: /insight/insight-dashboard
+          - img [ref=e97]
+          - generic [ref=e98]: Dashboard Insight
+          - generic [ref=e99]: AI
+        - link "Khám Bệnh" [ref=e100] [cursor=pointer]:
+          - /url: /insight/medical-checkup
+          - img [ref=e101]
+          - generic [ref=e105]: Khám Bệnh
+        - link "Tổng quan Ads" [ref=e106] [cursor=pointer]:
+          - /url: /insight/dashboard
+          - img [ref=e107]
+          - generic [ref=e109]: Tổng quan Ads
+        - link "Gợi ý tối ưu Ads AI" [ref=e110] [cursor=pointer]:
+          - /url: /insight/ads-optimization
+          - img [ref=e111]
+          - generic [ref=e114]: Gợi ý tối ưu Ads
+          - generic [ref=e115]: AI
+      - generic [ref=e117]:
+        - text: Module Insight Ads
+        - text: v1.0 — Demo
+    - main [ref=e118]:
+      - generic [ref=e119]:
+        - generic [ref=e120]:
+          - generic [ref=e121]:
+            - button "Quay lại" [ref=e122] [cursor=pointer]:
+              - img [ref=e123]
+              - text: Quay lại
+            - generic [ref=e126]:
+              - heading "Lộ Trình Cải Thiện Sức Khỏe Hội Thoại" [level=1] [ref=e127]
+              - paragraph [ref=e128]: Danh sách checklist chi tiết để cải thiện các chỉ số
+          - button "Xuất PDF" [ref=e129] [cursor=pointer]:
+            - img [ref=e130]
+            - text: Xuất PDF
+        - generic [ref=e134]:
+          - generic [ref=e135]:
+            - generic [ref=e136]:
+              - generic [ref=e137]:
+                - img [ref=e138]
+                - generic [ref=e140]: Tiến Độ Tổng
+              - generic [ref=e141]: 0% Hoàn thành
+            - generic [ref=e143]:
+              - generic [ref=e144]: 0/34 công việc hoàn thành
+              - generic [ref=e145]: ·
+              - generic [ref=e146]: 12 công việc
+              - generic [ref=e147]: ·
+              - generic [ref=e148]: 4 giai đoạn
+          - generic [ref=e149]:
+            - generic [ref=e151]:
+              - generic [ref=e152]:
+                - generic [ref=e153]: "Lọc:"
+                - button "Tất cả" [ref=e154] [cursor=pointer]
+                - button "Đang làm" [ref=e155] [cursor=pointer]
+                - button "Chưa làm" [ref=e156] [cursor=pointer]
+                - button "Hoàn thành" [ref=e157] [cursor=pointer]
+              - generic [ref=e158]:
+                - generic [ref=e160]:
+                  - button "Phase 1 · Ổn định nền tảng W1-2 31/03 → 13/04 0/9 hoàn thành" [ref=e161] [cursor=pointer]:
+                    - img [ref=e163]
+                    - generic [ref=e165]:
+                      - generic [ref=e166]:
+                        - generic [ref=e167]: Phase 1 · Ổn định nền tảng
+                        - generic [ref=e168]: W1-2
+                        - generic [ref=e169]:
+                          - img [ref=e170]
+                          - text: 31/03 → 13/04
+                      - generic [ref=e175]: 0/9 hoàn thành
+                  - generic [ref=e176]:
+                    - generic [ref=e177]: Kết quả dự kiến khi hoàn thành
+                    - generic [ref=e178]:
+                      - generic [ref=e179]:
+                        - generic [ref=e180]: Lead Quality
+                        - generic [ref=e181]:
+                          - generic [ref=e182]: 3.2điểm
+                          - img [ref=e183]
+                          - generic [ref=e185]: 6.2điểm
+                          - generic [ref=e186]:
+                            - img [ref=e187]
+                            - text: 3điểm
+                      - generic [ref=e190]:
+                        - generic [ref=e191]: Junk Lead
+                        - generic [ref=e192]:
+                          - generic [ref=e193]: 0%
+                          - img [ref=e194]
+                          - generic [ref=e196]: 0%
+                          - generic [ref=e197]:
+                            - img [ref=e198]
+                            - text: 0%
+                  - generic [ref=e201]:
+                    - button "Thiết lập quy trình phản hồi nhanh Cao Nghiêm trọng 0/4" [ref=e202] [cursor=pointer]:
+                      - generic [ref=e203]:
+                        - img [ref=e205]
+                        - generic [ref=e208]:
+                          - generic [ref=e210]: Thiết lập quy trình phản hồi nhanh
+                          - generic [ref=e211]:
+                            - generic [ref=e212]: Cao
+                            - generic [ref=e213]: Nghiêm trọng
+                            - generic [ref=e214]: 0/4
+                    - button "Tối ưu chất lượng nguồn lead Cao Nghiêm trọng 0/3" [ref=e215] [cursor=pointer]:
+                      - generic [ref=e216]:
+                        - img [ref=e218]
+                        - generic [ref=e221]:
+                          - generic [ref=e223]: Tối ưu chất lượng nguồn lead
+                          - generic [ref=e224]:
+                            - generic [ref=e225]: Cao
+                            - generic [ref=e226]: Nghiêm trọng
+                            - generic [ref=e227]: 0/3
+                    - button "Thiết lập thu thập SĐT Trung Trung bình 0/2" [ref=e228] [cursor=pointer]:
+                      - generic [ref=e229]:
+                        - img [ref=e231]
+                        - generic [ref=e234]:
+                          - generic [ref=e236]: Thiết lập thu thập SĐT
+                          - generic [ref=e237]:
+                            - generic [ref=e238]: Trung
+                            - generic [ref=e239]: Trung bình
+                            - generic [ref=e240]: 0/2
+                - generic [ref=e242]:
+                  - button "Phase 2 · Cải thiện chất lượng W3-4 14/04 → 27/04 0/9 hoàn thành" [ref=e243] [cursor=pointer]:
+                    - img [ref=e245]
+                    - generic [ref=e247]:
+                      - generic [ref=e248]:
+                        - generic [ref=e249]: Phase 2 · Cải thiện chất lượng
+                        - generic [ref=e250]: W3-4
+                        - generic [ref=e251]:
+                          - img [ref=e252]
+                          - text: 14/04 → 27/04
+                      - generic [ref=e257]: 0/9 hoàn thành
+                  - generic [ref=e258]:
+                    - generic [ref=e259]: Kết quả dự kiến khi hoàn thành
+                    - generic [ref=e260]:
+                      - generic [ref=e261]:
+                        - generic [ref=e262]: Response Speed
+                        - generic [ref=e263]:
+                          - generic [ref=e264]: 4.5điểm
+                          - img [ref=e265]
+                          - generic [ref=e267]: 7điểm
+                          - generic [ref=e268]:
+                            - img [ref=e269]
+                            - text: 2.5điểm
+                      - generic [ref=e272]:
+                        - generic [ref=e273]: Phone Collection
+                        - generic [ref=e274]:
+                          - generic [ref=e275]: 30%
+                          - img [ref=e276]
+                          - generic [ref=e278]: 50%
+                          - generic [ref=e279]:
+                            - img [ref=e280]
+                            - text: 20%
+                  - generic [ref=e283]:
+                    - button "Đào tạo đội ngũ tư vấn Cao Nặng 0/4" [ref=e284] [cursor=pointer]:
+                      - generic [ref=e285]:
+                        - img [ref=e287]
+                        - generic [ref=e290]:
+                          - generic [ref=e292]: Đào tạo đội ngũ tư vấn
+                          - generic [ref=e293]:
+                            - generic [ref=e294]: Cao
+                            - generic [ref=e295]: Nặng
+                            - generic [ref=e296]: 0/4
+                    - button "Cải thiện tốc độ phản hồi Cao Nặng 0/3" [ref=e297] [cursor=pointer]:
+                      - generic [ref=e298]:
+                        - img [ref=e300]
+                        - generic [ref=e303]:
+                          - generic [ref=e305]: Cải thiện tốc độ phản hồi
+                          - generic [ref=e306]:
+                            - generic [ref=e307]: Cao
+                            - generic [ref=e308]: Nặng
+                            - generic [ref=e309]: 0/3
+                    - button "Xây dựng thư viện script chuẩn Trung Nhẹ 0/2" [ref=e310] [cursor=pointer]:
+                      - generic [ref=e311]:
+                        - img [ref=e313]
+                        - generic [ref=e316]:
+                          - generic [ref=e318]: Xây dựng thư viện script chuẩn
+                          - generic [ref=e319]:
+                            - generic [ref=e320]: Trung
+                            - generic [ref=e321]: Nhẹ
+                            - generic [ref=e322]: 0/2
+                - generic [ref=e324]:
+                  - button "Phase 3 · Tối ưu quy trình W5-6 28/04 → 11/05 0/8 hoàn thành" [ref=e325] [cursor=pointer]:
+                    - img [ref=e327]
+                    - generic [ref=e329]:
+                      - generic [ref=e330]:
+                        - generic [ref=e331]: Phase 3 · Tối ưu quy trình
+                        - generic [ref=e332]: W5-6
+                        - generic [ref=e333]:
+                          - img [ref=e334]
+                          - text: 28/04 → 11/05
+                      - generic [ref=e339]: 0/8 hoàn thành
+                  - generic [ref=e340]:
+                    - generic [ref=e341]: Kết quả dự kiến khi hoàn thành
+                    - generic [ref=e342]:
+                      - generic [ref=e343]:
+                        - generic [ref=e344]: Objection Handling
+                        - generic [ref=e345]:
+                          - generic [ref=e346]: 5.8điểm
+                          - img [ref=e347]
+                          - generic [ref=e349]: 8.8điểm
+                          - generic [ref=e350]:
+                            - img [ref=e351]
+                            - text: 3điểm
+                      - generic [ref=e354]:
+                        - generic [ref=e355]: Conversion Rate
+                        - generic [ref=e356]:
+                          - generic [ref=e357]: 10%
+                          - img [ref=e358]
+                          - generic [ref=e360]: 20%
+                          - generic [ref=e361]:
+                            - img [ref=e362]
+                            - text: 10%
+                  - generic [ref=e365]:
+                    - button "Tối ưu kịch bản chốt đơn Cao Trung bình 0/3" [ref=e366] [cursor=pointer]:
+                      - generic [ref=e367]:
+                        - img [ref=e369]
+                        - generic [ref=e372]:
+                          - generic [ref=e374]: Tối ưu kịch bản chốt đơn
+                          - generic [ref=e375]:
+                            - generic [ref=e376]: Cao
+                            - generic [ref=e377]: Trung bình
+                            - generic [ref=e378]: 0/3
+                    - button "Triển khai automation Trung Nhẹ 0/3" [ref=e379] [cursor=pointer]:
+                      - generic [ref=e380]:
+                        - img [ref=e382]
+                        - generic [ref=e385]:
+                          - generic [ref=e387]: Triển khai automation
+                          - generic [ref=e388]:
+                            - generic [ref=e389]: Trung
+                            - generic [ref=e390]: Nhẹ
+                            - generic [ref=e391]: 0/3
+                    - button "Theo dõi & đo lường hiệu quả Thấp Nhẹ 0/2" [ref=e392] [cursor=pointer]:
+                      - generic [ref=e393]:
+                        - img [ref=e395]
+                        - generic [ref=e398]:
+                          - generic [ref=e400]: Theo dõi & đo lường hiệu quả
+                          - generic [ref=e401]:
+                            - generic [ref=e402]: Thấp
+                            - generic [ref=e403]: Nhẹ
+                            - generic [ref=e404]: 0/2
+                - generic [ref=e406]:
+                  - button "Phase 4 · Mở rộng quy mô W7-8 12/05 → 25/05 0/8 hoàn thành" [ref=e407] [cursor=pointer]:
+                    - img [ref=e409]
+                    - generic [ref=e411]:
+                      - generic [ref=e412]:
+                        - generic [ref=e413]: Phase 4 · Mở rộng quy mô
+                        - generic [ref=e414]: W7-8
+                        - generic [ref=e415]:
+                          - img [ref=e416]
+                          - text: 12/05 → 25/05
+                      - generic [ref=e421]: 0/8 hoàn thành
+                  - generic [ref=e422]:
+                    - generic [ref=e423]: Kết quả dự kiến khi hoàn thành
+                    - generic [ref=e424]:
+                      - generic [ref=e425]:
+                        - generic [ref=e426]: Overall Health
+                        - generic [ref=e427]:
+                          - generic [ref=e428]: 4.9điểm
+                          - img [ref=e429]
+                          - generic [ref=e431]: 6.9điểm
+                          - generic [ref=e432]:
+                            - img [ref=e433]
+                            - text: 2điểm
+                      - generic [ref=e436]:
+                        - generic [ref=e437]: ROAS
+                        - generic [ref=e438]:
+                          - generic [ref=e439]: 1.2×
+                          - img [ref=e440]
+                          - generic [ref=e442]: 1.8×
+                          - generic [ref=e443]:
+                            - img [ref=e444]
+                            - text: 0.6×
+                  - generic [ref=e447]:
+                    - button "Triển khai CSKH sau mua Cao Nghiêm trọng 0/3" [ref=e448] [cursor=pointer]:
+                      - generic [ref=e449]:
+                        - img [ref=e451]
+                        - generic [ref=e454]:
+                          - generic [ref=e456]: Triển khai CSKH sau mua
+                          - generic [ref=e457]:
+                            - generic [ref=e458]: Cao
+                            - generic [ref=e459]: Nghiêm trọng
+                            - generic [ref=e460]: 0/3
+                    - button "Phân tích đối thủ cạnh tranh Trung Trung bình 0/3" [ref=e461] [cursor=pointer]:
+                      - generic [ref=e462]:
+                        - img [ref=e464]
+                        - generic [ref=e467]:
+                          - generic [ref=e469]: Phân tích đối thủ cạnh tranh
+                          - generic [ref=e470]:
+                            - generic [ref=e471]: Trung
+                            - generic [ref=e472]: Trung bình
+                            - generic [ref=e473]: 0/3
+                    - button "Mở rộng chiến dịch upsell Thấp Nhẹ 0/2" [ref=e474] [cursor=pointer]:
+                      - generic [ref=e475]:
+                        - img [ref=e477]
+                        - generic [ref=e480]:
+                          - generic [ref=e482]: Mở rộng chiến dịch upsell
+                          - generic [ref=e483]:
+                            - generic [ref=e484]: Thấp
+                            - generic [ref=e485]: Nhẹ
+                            - generic [ref=e486]: 0/2
+            - generic [ref=e488]:
+              - img [ref=e489]
+              - heading "Chọn công việc để xem chi tiết" [level=3] [ref=e491]
+              - paragraph [ref=e492]: Nhấn vào bất kỳ công việc nào bên trái để xem đầu việc cần làm.

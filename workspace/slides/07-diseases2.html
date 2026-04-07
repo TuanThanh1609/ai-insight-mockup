@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #fcf8fb; font-family: Arial, sans-serif;
+  display: flex; flex-direction: column;
+}
+.top-bar { height: 6pt; background: #1A2138; }
+.header { background: #1A2138; padding: 12pt 28pt 10pt 28pt; }
+.header p { color: #BF3003; font-size: 8pt; font-weight: bold; letter-spacing: 2pt; text-transform: uppercase; margin: 0 0 3pt 0; }
+.header h1 { color: #ffffff; font-size: 20pt; font-weight: bold; margin: 0; }
+.content { display: flex; flex: 1; padding: 10pt 24pt 10pt 24pt; gap: 16pt; }
+.left { flex: 1.2; }
+.right { flex: 0.8; }
+h2 { color: #1A2138; font-size: 10pt; font-weight: bold; margin: 0 0 6pt 0; padding-bottom: 4pt; border-bottom: 2pt solid #1A2138; }
+.disease-card {
+  background: #ffffff;
+  border-radius: 5pt;
+  margin-bottom: 7pt;
+  overflow: hidden;
+}
+.disease-header {
+  padding: 5pt 8pt;
+  display: flex;
+  align-items: center;
+  gap: 6pt;
+}
+.sev-badge { font-size: 7pt; font-weight: bold; padding: 2pt 5pt; border-radius: 3pt; flex-shrink: 0; }
+.disease-name { color: #ffffff; font-size: 8pt; font-weight: bold; margin: 0; flex: 1; }
+.disease-score { color: #ffffff; font-size: 8pt; font-weight: bold; margin: 0; }
+.disease-body { padding: 5pt 8pt; }
+.disease-metric { display: flex; align-items: center; gap: 5pt; margin-bottom: 3pt; }
+.metric-dot { width: 6pt; height: 6pt; border-radius: 50%; flex-shrink: 0; flex-shrink: 0; }
+.metric-text { color: #1A2138; font-size: 7pt; margin: 0; }
+.score-card {
+  background: #ffffff;
+  border-radius: 6pt;
+  padding: 10pt;
+  margin-bottom: 8pt;
+  border-top: 3pt solid #0052FF;
+}
+.score-header { display: flex; align-items: center; gap: 8pt; margin-bottom: 6pt; }
+.score-title { color: #1A2138; font-size: 9pt; font-weight: bold; margin: 0; flex: 1; }
+.score-num { color: #1A2138; font-size: 18pt; font-weight: bold; margin: 0; }
+.score-bar-wrap { background: #E8EDF4; border-radius: 4pt; height: 8pt; margin-bottom: 5pt; overflow: hidden; }
+.score-bar { height: 100%; border-radius: 4pt; }
+.score-row { display: flex; gap: 6pt; }
+.score-item { flex: 1; background: #fcf8fb; border-radius: 4pt; padding: 5pt; }
+.score-item-label { color: #6B7FA3; font-size: 7pt; margin: 0 0 2pt 0; }
+.score-item-val { color: #1A2138; font-size: 10pt; font-weight: bold; margin: 0; }
+.severity-legend { display: flex; gap: 8pt; flex-wrap: wrap; }
+.sev-item { display: flex; align-items: center; gap: 4pt; }
+.sev-dot { width: 8pt; height: 8pt; border-radius: 50%; }
+.sev-label { color: #1A2138; font-size: 7pt; margin: 0; }
+</style>
+</head>
+<body>
+  <div class="top-bar"></div>
+  <div class="header">
+    <p>06 · Nhóm Bệnh Ads — Trang 2/2</p>
+    <h1>8 Nhóm Bệnh Chẩn Đoán (Phần 2) & Tổng Điểm</h1>
+  </div>
+  <div class="content">
+    <div class="left">
+      <h2 style="margin-top:0;margin-bottom:0;"><span>#7 Lead → Order Conversion — LC</span></h2>
+      <div class="disease-card">
+        <div class="disease-header" style="background:#BF3003;">
+          <span class="sev-badge" style="background:#ffffff;color:#BF3003;">NẶNG</span>
+          <p class="disease-name">Tỉ Lệ Chuyển Đổi Thấp</p>
+          <p class="disease-score">3.2/10</p>
+        </div>
+        <div class="disease-body">
+          <div class="disease-metric"><div class="metric-dot" style="background:#059669;"></div><p class="metric-text">Nóng → Đơn: 38% (target ≥ 50%)</p></div>
+          <div class="disease-metric"><div class="metric-dot" style="background:#d97706;"></div><p class="metric-text">Ấm → Đơn: 12% (cần nuôi dưỡng)</p></div>
+          <div class="disease-metric"><div class="metric-dot" style="background:#BF3003;"></div><p class="metric-text">Lạnh → Đơn: 3% (rất thấp)</p></div>
+        </div>
+      </div>
+      <h2 style="margin-top:0;margin-bottom:0;"><span>#8 Chiến Dịch Rác — CR</span></h2>
+      <div class="disease-card">
+        <div class="disease-header" style="background:#059669;">
+          <span class="sev-badge" style="background:#ffffff;color:#059669;">NHẸ</span>
+          <p class="disease-name">aiAction = decrease / pause</p>
+          <p class="disease-score">7.1/10</p>
+        </div>
+        <div class="disease-body">
+          <div class="disease-metric"><div class="metric-dot" style="background:#059669;"></div><p class="metric-text">Junk rate: 8% (target < 15%)</p></div>
+          <div class="disease-metric"><div class="metric-dot" style="background:#0052FF;"></div><p class="metric-text">Quality rate: 84% (target ≥ 80%)</p></div>
+          <div class="disease-metric"><div class="metric-dot" style="background:#d97706;"></div><p class="metric-text">Spam rate: 7% — cần kiểm tra creative</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="right">
+      <h2 style="margin-top:0;margin-bottom:0;"><span>Tổng Điểm Sức Khỏe</span></h2>
+      <div class="score-card" style="border-top-color:#BF3003;">
+        <div class="score-header">
+          <p class="score-title">ĐIỂM SỨC KHỎE QUẢNG CÁO</p>
+          <p class="score-num">5.8</p>
+        </div>
+        <div class="score-bar-wrap">
+          <div class="score-bar" style="background:#BF3003; width:58%;"></div>
+        </div>
+        <div class="score-row">
+          <div class="score-item"><p class="score-item-label">Nặng</p><p class="score-item-val" style="color:#BF3003;">3</p></div>
+          <div class="score-item"><p class="score-item-label">Trung Bình</p><p class="score-item-val" style="color:#0052FF;">3</p></div>
+          <div class="score-item"><p class="score-item-label">Nhẹ</p><p class="score-item-val" style="color:#059669;">2</p></div>
+        </div>
+      </div>
+      <h2 style="margin-top:0;margin-bottom:0;"><span>Severity Thresholds</span></h2>
+      <div class="severity-legend">
+        <div class="sev-item"><div class="sev-dot" style="background:#BF3003;"></div><p class="sev-label">0–3 Nặng</p></div>
+        <div class="sev-item"><div class="sev-dot" style="background:#0052FF;"></div><p class="sev-label">3.1–6 Trung Bình</p></div>
+        <div class="sev-item"><div class="sev-dot" style="background:#059669;"></div><p class="sev-label">6.1–10 Nhẹ</p></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #fcf8fb; font-family: Arial, sans-serif;
+  display: flex; flex-direction: column;
+}
+.top-bar { height: 6pt; background: #1A2138; }
+.header { background: #1A2138; padding: 12pt 28pt 10pt 28pt; }
+.header p { color: #BF3003; font-size: 8pt; font-weight: bold; letter-spacing: 2pt; text-transform: uppercase; margin: 0 0 3pt 0; }
+.header h1 { color: #ffffff; font-size: 20pt; font-weight: bold; margin: 0; }
+.content { display: flex; flex: 1; padding: 10pt 20pt 10pt 20pt; gap: 14pt; }
+.left { flex: 0.55; }
+.right { flex: 0.45; }
+h2 { color: #1A2138; font-size: 9pt; font-weight: bold; margin: 0 0 5pt 0; padding-bottom: 3pt; border-bottom: 2pt solid #1A2138; }
+.diag-section {
+  background: #ffffff;
+  border-radius: 5pt;
+  margin-bottom: 7pt;
+  padding: 7pt 10pt;
+  border-left: 4pt solid #0052FF;
+}
+.diag-label { color: #0052FF; font-size: 8pt; font-weight: bold; margin: 0 0 4pt 0; letter-spacing: 1pt; text-transform: uppercase; }
+.diag-text { color: #1A2138; font-size: 8pt; margin: 0 0 4pt 0; line-height: 1.3; }
+.diag-text:last-child { margin-bottom: 0; }
+.worst-box { background: #BF3003; border-radius: 5pt; padding: 7pt 10pt; }
+.worst-label { color: #ffffff; font-size: 8pt; font-weight: bold; margin: 0 0 4pt 0; }
+.worst-text { color: rgba(255,255,255,0.9); font-size: 8pt; margin: 0 0 3pt 0; }
+.action-card {
+  background: #ffffff;
+  border-radius: 5pt;
+  margin-bottom: 6pt;
+  overflow: hidden;
+}
+.action-header { padding: 5pt 8pt; display: flex; align-items: center; gap: 6pt; }
+.action-sev { font-size: 7pt; font-weight: bold; padding: 2pt 5pt; border-radius: 3pt; }
+.action-name { color: #1A2138; font-size: 8pt; font-weight: bold; margin: 0; flex: 1; }
+.action-impact { color: #6B7FA3; font-size: 7pt; margin: 0; }
+.action-body { padding: 5pt 8pt; }
+.action-step { color: #1A2138; font-size: 7pt; margin: 0 0 2pt 0; display: flex; gap: 5pt; }
+.step-num { color: #0052FF; font-weight: bold; flex-shrink: 0; }
+</style>
+</head>
+<body>
+  <div class="top-bar"></div>
+  <div class="header">
+    <p>07 · Chi Tiết Bệnh — Tab Diễn Giải</p>
+    <h1>Bệnh 1: ROAS Thực Thấp Hơn Báo Cáo</h1>
+  </div>
+  <div class="content">
+    <div class="left">
+      <h2 style="margin-top:0;margin-bottom:0;"><span>Chẩn Đoán (Diagnosis)</span></h2>
+      <div class="diag-section">
+        <p class="diag-label">🔍 Chẩn Đoán</p>
+        <p class="diag-text">Chiến dịch "Brand Awareness March" đang báo cáo ROAS 1.8x, nhưng khi đối soát với đơn hàng thực tế (qua SĐT), chỉ 45.2% đơn có thể truy xuất nguồn về chiến dịch này.</p>
+        <p class="diag-text">• 17 đơn (55%) không match với bất kỳ Ads nào</p>
+        <p class="diag-text">• Tiền chi cho 17 đơn này = "chi phí ảo"</p>
+        <p class="diag-text">• Rủi ro: team đang tăng budget dựa trên ROAS ảo</p>
+      </div>
+      <div class="diag-section" style="border-left-color:#d97706;">
+        <p class="diag-label" style="color:#d97706;">⚠️ Vấn Đề Nổi Bật</p>
+        <p class="diag-text">Tỉ lệ match chỉ 45.2% — ngưỡng nguy hiểm. Thông thường, tỉ lệ tối thiểu nên đạt 70% để đảm bảo attribution data đáng tin cậy. Đặc biệt nghiêm trọng với Zalo OA — không có Pixel tracking mặc định.</p>
+      </div>
+      <div class="worst-box">
+        <p class="worst-label">💡 Bottom Line — Hành Động Ngay</p>
+        <p class="worst-text">• Thêm UTM parameter + Pixel event vào Zalo OA</p>
+        <p class="worst-text">• Track chính xác conversion path</p>
+        <p class="worst-text">• ROAS thực của camp-3 có thể cao hơn nếu đo lường đúng</p>
+      </div>
+    </div>
+    <div class="right">
+      <h2 style="margin-top:0;margin-bottom:0;"><span>Hành Động Gợi Ý (Smax AI)</span></h2>
+      <div class="action-card">
+        <div class="action-header">
+          <span class="action-sev" style="background:#BF3003;color:#ffffff;">⚠️ HIGH</span>
+          <p class="action-name">A/B Test 3 Creative Headlines</p>
+          <p class="action-impact">↑ CTR 25%</p>
+        </div>
+        <div class="action-body">
+          <p class="action-step"><span class="step-num">1.</span> Tạo 3 biến thể headline</p>
+          <p class="action-step"><span class="step-num">2.</span> Chạy test 7 ngày</p>
+          <p class="action-step"><span class="step-num">3.</span> Chọn winner và scale</p>
+        </div>
+      </div>
+      <div class="action-card">
+        <div class="action-header">
+          <span class="action-sev" style="background:#d97706;color:#ffffff;">⚡ MED</span>
+          <p class="action-name">Thêm UTM Parameters vào Zalo OA</p>
+          <p class="action-impact">↑ Match rate 40%</p>
+        </div>
+        <div class="action-body">
+          <p class="action-step"><span class="step-num">1.</span> Cấu hình UTM trong Zalo OA</p>
+          <p class="action-step"><span class="step-num">2.</span> Verify tracking trong 48h</p>
+        </div>
+      </div>
+      <div class="action-card">
+        <div class="action-header">
+          <span class="action-sev" style="background:#0052FF;color:#ffffff;">📊 INFO</span>
+          <p class="action-name">Review Retargeting Audience</p>
+          <p class="action-impact">↓ Overlap 18%</p>
+        </div>
+        <div class="action-body">
+          <p class="action-step"><span class="step-num">1.</span> Export audience overlap report</p>
+          <p class="action-step"><span class="step-num">2.</span> Loại bỏ audience trùng lặp</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #fcf8fb; font-family: Arial, sans-serif;
+  display: flex; flex-direction: column;
+}
+.top-bar {
+  height: 6pt;
+  background: #1A2138;
+}
+.header {
+  background: #1A2138;
+  padding: 12pt 28pt 10pt 28pt;
+}
+.header p {
+  color: #BF3003;
+  font-size: 8pt;
+  font-weight: bold;
+  letter-spacing: 2pt;
+  text-transform: uppercase;
+  margin: 0 0 3pt 0;
+}
+.header h1 {
+  color: #ffffff;
+  font-size: 20pt;
+  font-weight: bold;
+  margin: 0;
+}
+.content {
+  display: flex;
+  flex: 1;
+  padding: 16pt 28pt 14pt 28pt;
+  gap: 20pt;
+}
+.left {
+  flex: 1;
+}
+.right {
+  flex: 1;
+}
+h2 {
+  color: #1A2138;
+  font-size: 11pt;
+  font-weight: bold;
+  margin: 0 0 8pt 0;
+  padding-bottom: 5pt;
+  border-bottom: 2pt solid #1A2138;
+}
+.loop-box {
+  background: #1A2138;
+  border-radius: 6pt;
+  padding: 10pt;
+  margin-bottom: 10pt;
+}
+.loop-step {
+  display: flex;
+  align-items: center;
+  gap: 8pt;
+  margin-bottom: 5pt;
+}
+.loop-num {
+  background: #BF3003;
+  color: #ffffff;
+  font-size: 8pt;
+  font-weight: bold;
+  width: 16pt;
+  height: 16pt;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.loop-text {
+  color: #ffffff;
+  font-size: 9pt;
+  margin: 0;
+}
+.loop-arrow {
+  color: #BF3003;
+  font-size: 10pt;
+  text-align: center;
+  margin: 0 0 5pt 0;
+}
+.user-card {
+  background: #ffffff;
+  border-radius: 6pt;
+  padding: 8pt 10pt;
+  margin-bottom: 7pt;
+  border-left: 4pt solid #0052FF;
+}
+.user-type {
+  color: #0052FF;
+  font-size: 8pt;
+  font-weight: bold;
+  margin: 0 0 2pt 0;
+  letter-spacing: 1pt;
+  text-transform: uppercase;
+}
+.user-goal {
+  color: #1A2138;
+  font-size: 9pt;
+  margin: 0;
+}
+.unlock-box {
+  background: #ffffff;
+  border-radius: 6pt;
+  padding: 10pt;
+  border-left: 4pt solid #BF3003;
+}
+.unlock-title {
+  color: #BF3003;
+  font-size: 9pt;
+  font-weight: bold;
+  margin: 0 0 5pt 0;
+}
+.unlock-item {
+  color: #1A2138;
+  font-size: 8pt;
+  margin: 0 0 3pt 0;
+}
+</style>
+</head>
+<body>
+  <div class="top-bar"></div>
+  <div class="header">
+    <p>01 · Tổng Quan</p>
+    <h1>Core Loop & Target Users</h1>
+  </div>
+  <div class="content">
+    <div class="left">
+      <h2 style="margin-top:0;margin-bottom:0;"><span>Gamification Core Loop</span></h2>
+      <div class="loop-box">
+        <div class="loop-step">
+          <div class="loop-num"><p>1</p></div>
+          <p class="loop-text">Khám Hội Thoại (lần đầu) → Unlock Tab Ads</p>
+        </div>
+        <p class="loop-arrow">↓</p>
+        <div class="loop-step">
+          <div class="loop-num"><p>2</p></div>
+          <p class="loop-text">Kết nối tài khoản Ads → Wizard 4 bước</p>
+        </div>
+        <p class="loop-arrow">↓</p>
+        <div class="loop-step">
+          <div class="loop-num"><p>3</p></div>
+          <p class="loop-text">Dashboard: Funnel + Bệnh Ads</p>
+        </div>
+        <p class="loop-arrow">↓</p>
+        <div class="loop-step">
+          <div class="loop-num"><p>4</p></div>
+          <p class="loop-text">KH thấy ROAS thực + Chi phí "Ảo"</p>
+        </div>
+        <p class="loop-arrow">↓</p>
+        <div class="loop-step">
+          <div class="loop-num"><p>5</p></div>
+          <p class="loop-text">Action theo gợi ý Smax → cải thiện ngày hôm sau</p>
+        </div>
+      </div>
+    </div>
+    <div class="right">
+      <h2 style="margin-top:0;margin-bottom:0;"><span>Target Users</span></h2>
+      <div class="user-card" style="border-left-color: #BF3003;">
+        <p class="user-type" style="color:#BF3003;">A · Chủ Shop Nhỏ</p>
+        <p class="user-goal">"Tôi đang losing bao nhiêu tiền vào ads rác?"</p>
+      </div>
+      <div class="user-card" style="border-left-color: #0052FF;">
+        <p class="user-type" style="color:#0052FF;">B · Marketing Manager</p>
+        <p class="user-goal">"Chiến dịch nào thực sự chuyển đổi thành đơn?"</p>
+      </div>
+      <div class="user-card" style="border-left-color: #059669;">
+        <p class="user-type" style="color:#059669;">C · CEO / Chủ Doanh Nghiệp</p>
+        <p class="user-goal">"Tổng chi phí có đáng không? ROAS thật vs ảo?"</p>
+      </div>
+      <h2 style="margin-top:10pt;">Điều Kiện Unlock</span></h2>
+      <div class="unlock-box">
+        <p class="unlock-title">Tab Ads chỉ active khi:</p>
+        <p class="unlock-item">• localStorage có ≥1 medical record</p>
+        <p class="unlock-item">• Đã khám Hội Thoại ≥1 lần</p>
+        <p class="unlock-item">• Check: getMedicalHistory().length > 0</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

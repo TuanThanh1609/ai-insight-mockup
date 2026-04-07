@@ -83,7 +83,7 @@ export function InsightInterpretationPanel() {
         return <h3 key={i} className="text-sm font-semibold text-[#191c1e] mt-4 mb-2">{line.slice(4)}</h3>
       }
       if (line.startsWith('#### ')) {
-        return <h4 key={i} className="text-xs font-semibold text-[#0058be] mt-3 mb-1 uppercase tracking-wide">{line.slice(5)}</h4>
+        return <h4 key={i} className="text-xs font-semibold text-[#0052FF] mt-3 mb-1 uppercase tracking-wide">{line.slice(5)}</h4>
       }
       if (line.startsWith('- ')) {
         return <li key={i} className="text-sm text-[#424754] ml-4 mb-1 list-disc">{line.slice(2)}</li>

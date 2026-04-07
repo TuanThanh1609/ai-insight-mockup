@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #fcf8fb; font-family: Arial, sans-serif;
+  display: flex; flex-direction: column;
+}
+.top-bar { height: 6pt; background: #1A2138; }
+.header { background: #1A2138; padding: 12pt 28pt 10pt 28pt; }
+.header p { color: #BF3003; font-size: 8pt; font-weight: bold; letter-spacing: 2pt; text-transform: uppercase; margin: 0 0 3pt 0; }
+.header h1 { color: #ffffff; font-size: 20pt; font-weight: bold; margin: 0; }
+.content { display: flex; flex: 1; padding: 14pt 20pt 12pt 20pt; gap: 14pt; }
+.step-col { flex: 1; }
+h2 { color: #1A2138; font-size: 10pt; font-weight: bold; margin: 0 0 6pt 0; padding-bottom: 4pt; border-bottom: 2pt solid #1A2138; }
+.step-card {
+  background: #ffffff;
+  border-radius: 6pt;
+  margin-bottom: 7pt;
+  overflow: hidden;
+}
+.step-header {
+  background: #1A2138;
+  padding: 6pt 8pt;
+  display: flex;
+  align-items: center;
+  gap: 7pt;
+}
+.step-num {
+  background: #BF3003;
+  color: #ffffff;
+  font-size: 8pt;
+  font-weight: bold;
+  width: 18pt; height: 18pt;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.step-num p { margin: 0; font-size: 8pt; font-weight: bold; }
+.step-name { color: #ffffff; font-size: 9pt; font-weight: bold; margin: 0; }
+.step-body { padding: 7pt 8pt; }
+.step-desc { color: #1A2138; font-size: 8pt; margin: 0 0 4pt 0; }
+.step-badge {
+  display: inline-block;
+  background: #E8F0FE;
+  color: #0052FF;
+  font-size: 7pt;
+  font-weight: bold;
+  padding: 2pt 6pt;
+  border-radius: 3pt;
+  margin-right: 3pt;
+  margin-bottom: 3pt;
+}
+</style>
+</head>
+<body>
+  <div class="top-bar"></div>
+  <div class="header">
+    <p>02 · Luồng Người Dùng</p>
+    <h1>Wizard 4 Bước — Ads Medical Checkup</h1>
+  </div>
+  <div class="content">
+    <div class="step-col">
+      <h2 style="margin-top:0;margin-bottom:0;"><span>Step 1 · Kết Nối Ads</span></h2>
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-num"><p>1</p></div>
+          <p class="step-name">Kết nối Tài khoản</p>
+        </div>
+        <div class="step-body">
+          <p class="step-desc">Chọn nền tảng quảng cáo:</p>
+          <span class="step-badge">Meta Ads</span>
+          <span class="step-badge">Google Ads</span>
+          <p class="step-desc" style="margin-top:4pt;">Nhấn nút → 2-3s loading → auto chuyển Step 2</p>
+        </div>
+      </div>
+      <h2 style="margin-top:6pt;">Step 2 · Chọn Chiến Dịch</span></h2>
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-num"><p>2</p></div>
+          <p class="step-name">Chọn Chiến Dịch</p>
+        </div>
+        <div class="step-body">
+          <p class="step-desc">Checkbox multi-select, mặc định tất cả checked</p>
+          <p class="step-desc">Filter: Tất cả · Facebook · Zalo · Đang chạy</p>
+          <p class="step-desc">Hiển thị: Budget · ROAS · Spend · Đơn hàng</p>
+        </div>
+      </div>
+    </div>
+    <div class="step-col">
+      <h2 style="margin-top:0;margin-bottom:0;"><span>Step 3 · Khoảng Thời Gian</span></h2>
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-num"><p>3</p></div>
+          <p class="step-name">Chọn Date Range</p>
+        </div>
+        <div class="step-body">
+          <span class="step-badge">7 ngày</span>
+          <span class="step-badge">30 ngày</span>
+          <span class="step-badge">90 ngày</span>
+          <p class="step-desc" style="margin-top:4pt;">Ước tính: 2 chiến dịch × 7 ngày = ~350 đơn hàng</p>
+        </div>
+      </div>
+      <h2 style="margin-top:6pt;">Step 4 · Phân Tích</span></h2>
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-num"><p>4</p></div>
+          <p class="step-name">Progress Bar + Diseases</p>
+        </div>
+        <div class="step-body">
+          <p class="step-desc">Progress: ████████░░░ 60%</p>
+          <p class="step-desc">8 nhóm bệnh: ✅ Done · ◉ In-Progress · ○ Pending</p>
+          <p class="step-desc">Auto chuyển Dashboard khi progress = 100%</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

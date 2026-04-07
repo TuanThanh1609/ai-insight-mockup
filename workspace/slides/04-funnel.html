@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #fcf8fb; font-family: Arial, sans-serif;
+  display: flex; flex-direction: column;
+}
+.top-bar { height: 6pt; background: #1A2138; }
+.header { background: #1A2138; padding: 12pt 28pt 10pt 28pt; }
+.header p { color: #BF3003; font-size: 8pt; font-weight: bold; letter-spacing: 2pt; text-transform: uppercase; margin: 0 0 3pt 0; }
+.header h1 { color: #ffffff; font-size: 20pt; font-weight: bold; margin: 0; }
+.content { display: flex; flex: 1; padding: 12pt 24pt 12pt 24pt; gap: 18pt; }
+.left { flex: 0.55; display: flex; flex-direction: column; gap: 10pt; }
+.right { flex: 0.45; display: flex; flex-direction: column; gap: 10pt; }
+h2 { color: #1A2138; font-size: 10pt; font-weight: bold; margin: 0 0 6pt 0; padding-bottom: 4pt; border-bottom: 2pt solid #1A2138; }
+.funnel-stage {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border-radius: 5pt;
+  overflow: hidden;
+  margin-bottom: 5pt;
+}
+.funnel-label {
+  background: #1A2138;
+  color: #ffffff;
+  font-size: 8pt;
+  font-weight: bold;
+  padding: 5pt 8pt;
+  min-width: 80pt;
+  text-align: left;
+}
+.funnel-bar-wrap {
+  flex: 1;
+  padding: 5pt 8pt;
+  display: flex;
+  align-items: center;
+  gap: 6pt;
+}
+.funnel-bar {
+  flex: 1;
+  height: 12pt;
+  border-radius: 3pt;
+}
+.funnel-val { color: #ffffff; font-size: 8pt; font-weight: bold; min-width: 36pt; text-align: right; }
+.funnel-sub { color: #1A2138; font-size: 7pt; margin: 0 0 2pt 0; padding-left: 6pt; }
+.kpi-card {
+  background: #ffffff;
+  border-radius: 6pt;
+  padding: 8pt 10pt;
+  border-left: 4pt solid #0052FF;
+  margin-bottom: 6pt;
+}
+.kpi-label { color: #1A2138; font-size: 8pt; font-weight: bold; margin: 0 0 2pt 0; }
+.kpi-value { color: #0052FF; font-size: 14pt; font-weight: bold; margin: 0; }
+.kpi-sub { color: #6B7FA3; font-size: 7pt; margin: 0; }
+.alert-card {
+  background: #BF3003;
+  border-radius: 6pt;
+  padding: 8pt 10pt;
+}
+.alert-label { color: #ffffff; font-size: 8pt; font-weight: bold; margin: 0 0 3pt 0; }
+.alert-value { color: #ffffff; font-size: 16pt; font-weight: bold; margin: 0 0 2pt 0; }
+.alert-sub { color: rgba(255,255,255,0.8); font-size: 7pt; margin: 0; }
+.summary-box {
+  background: #1A2138;
+  border-radius: 6pt;
+  padding: 8pt 10pt;
+}
+.summary-label { color: #BF3003; font-size: 8pt; font-weight: bold; margin: 0 0 4pt 0; }
+.summary-item { color: #ffffff; font-size: 8pt; margin: 0 0 2pt 0; }
+</style>
+</head>
+<body>
+  <div class="top-bar"></div>
+  <div class="header">
+    <p>03 · Dashboard — Funnel Toàn Cảnh</p>
+    <h1>Funnel Attribution: Ads → Hội thoại → Đơn hàng</h1>
+  </div>
+  <div class="content">
+    <div class="left">
+      <h2 style="margin-top:0;margin-bottom:0;"><span>Funnel Stages</span></h2>
+      <div class="funnel-stage">
+        <div class="funnel-label"><p>Impressions</p></div>
+        <div class="funnel-bar-wrap">
+          <div class="funnel-bar" style="background:#1A2138; width:100%;"></div>
+          <p class="funnel-val">1,245,000</p>
+        </div>
+      </div>
+      <p class="funnel-sub">100% · Chi phí phát sinh</p>
+      <div class="funnel-stage">
+        <div class="funnel-label"><p>Clicks</p></div>
+        <div class="funnel-bar-wrap">
+          <div class="funnel-bar" style="background:#0052FF; width:16%;"></div>
+          <p class="funnel-val">18,420</p>
+        </div>
+      </div>
+      <p class="funnel-sub">1.48% CTR</p>
+      <div class="funnel-stage">
+        <div class="funnel-label"><p>Hội thoại</p></div>
+        <div class="funnel-bar-wrap">
+          <div class="funnel-bar" style="background:#7C3AED; width:10%;"></div>
+          <p class="funnel-val">368</p>
+        </div>
+      </div>
+      <p class="funnel-sub">2.00% của clicks</p>
+      <div class="funnel-stage">
+        <div class="funnel-label"><p>Đơn hàng</p></div>
+        <div class="funnel-bar-wrap">
+          <div class="funnel-bar" style="background:#059669; width:5%;"></div>
+          <p class="funnel-val">89</p>
+        </div>
+      </div>
+      <p class="funnel-sub">24.2% của hội thoại</p>
+    </div>
+    <div class="right">
+      <h2 style="margin-top:0;margin-bottom:0;"><span>Attribution Stats</span></h2>
+      <div class="kpi-card" style="border-left-color:#059669;">
+        <p class="kpi-label">SĐT thu thập</p>
+        <p class="kpi-value">24.2%</p>
+        <p class="kpi-sub">89 / 368 hội thoại</p>
+      </div>
+      <div class="kpi-card">
+        <p class="kpi-label">Attribution Matched</p>
+        <p class="kpi-value">75.3%</p>
+        <p class="kpi-sub">67 / 89 đơn có SĐT</p>
+      </div>
+      <div class="kpi-card" style="border-left-color:#d97706;">
+        <p class="kpi-label">Untracked Orders</p>
+        <p class="kpi-value" style="color:#d97706;">22 đơn</p>
+        <p class="kpi-sub">Không match được nguồn</p>
+      </div>
+      <div class="alert-card">
+        <p class="alert-label">⚠️ Chi Phí Ảo Phát Hiện</p>
+        <p class="alert-value">39.3M VND</p>
+        <p class="alert-sub">Đơn không truy xuất nguồn từ Ads</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

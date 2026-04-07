@@ -2,7 +2,36 @@
   "permissions": {
     "allow": [
       "Bash(node -e \"const fs=require\\(''fs''\\);const c=fs.readFileSync\\(r''d:\\\\vibe-coding\\\\Nâng cấp AI Insight\\\\src\\\\data\\\\mockConversations.js'',''utf8''\\);const l=c.split\\(''\\\\n''\\);l.slice\\(-6\\).forEach\\(\\(x,i\\)=>console.log\\(l.length-5+i+'': ''+JSON.stringify\\(x\\)\\)\\)\")",
-      "Bash(curl -s http://localhost:5173)"
+      "Bash(curl -s http://localhost:5173)",
+      "Bash(curl -v -s -X POST https://smaxai.cdp.vn/api/chat -H \"Content-Type: application/json\" -H \"x-api-key: 3a914320759947da9124f10b1b7d53df\" -H \"Origin: http://localhost:5177\" -d '{\"\"\"\"query\"\"\"\":\"\"\"\"Lead Quality test\"\"\"\",\"\"\"\"lang\"\"\"\":\"\"\"\"vi\"\"\"\",\"\"\"\"history\"\"\"\":[]}')",
+      "Bash(npm run:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" https://ai-insight-mockup.vercel.app/insight/dashboard)",
+      "mcp__nanobanana__generate_image",
+      "Bash(python3 -c \":*)",
+      "Bash(python -c \":*)",
+      "Read(//tmp/pptx_extract/cdp_proposal/ppt/slides/**)",
+      "Bash(node -e \":*)",
+      "Bash(node -e \"require\\(''xmldom''\\)\")",
+      "Bash(node -e \"const x=require\\(''node:fs''\\);console.log\\(''node ok''\\)\")",
+      "Bash(npx vercel:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" https://audit.cdp.vn/insight/medical-checkup)",
+      "Read(//app/src/pages/**)",
+      "Read(//d/app/src/pages/**)",
+      "mcp__stitch__get_project",
+      "Bash(npm test:*)",
+      "mcp__stitch__get_screen",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot",
+      "mcp__plugin_playwright_playwright__browser_console_messages",
+      "Bash(node scripts/seed-conversations.js)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" https://audit.cdp.vn/insight/settings)",
+      "Bash(node scripts/install-apply.js --target claude --dry-run --profile full)",
+      "mcp__plugin_playwright_playwright__browser_snapshot",
+      "Bash(npx vite:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"https://ai-insight-mockup.vercel.app/insight/overview\")"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\Te\\.claude\\plans"
     ]
   }
 }

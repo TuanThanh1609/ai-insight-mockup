@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #fcf8fb; font-family: Arial, sans-serif;
+  display: flex; flex-direction: column;
+}
+.top-bar { background: #1A2138; padding: 9pt 50pt; }
+.eyebrow { color: #BF3003; font-size: 7.5pt; font-weight: bold; letter-spacing: 2pt; text-transform: uppercase; margin: 0; }
+.main { display: flex; flex: 1; padding: 10pt 50pt 8pt 50pt; gap: 12pt; }
+.left { flex: 1.2; }
+.right { flex: 1; }
+.sl { color: #BF3003; font-size: 7.5pt; font-weight: bold; letter-spacing: 2pt; text-transform: uppercase; margin-bottom: 5pt; }
+h2 { color: #1A2138; font-size: 12pt; font-weight: bold; margin: 0 0 7pt 0; }
+.api-f { background: #ffffff; border-radius: 6pt; box-shadow: 0 1pt 6pt rgba(26,33,56,0.07); padding: 8pt 12pt; margin-bottom: 8pt; }
+.fs { display: flex; align-items: flex-start; gap: 7pt; margin-bottom: 7pt; }
+.fs:last-child { margin-bottom: 0; }
+.sn { width: 16pt; height: 16pt; border-radius: 50%; background: #1A2138; color: #ffffff; font-size: 7.5pt; font-weight: bold; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.sc { flex: 1; }
+.st { font-size: 8.5pt; font-weight: bold; color: #1A2138; margin-bottom: 2pt; }
+.sd { font-size: 7.5pt; color: #5A5A70; margin: 0; line-height: 1.4; }
+.js-box { background: #1A2138; border-radius: 6pt; padding: 8pt 10pt; }
+.jh { display: flex; align-items: center; gap: 6pt; margin-bottom: 5pt; }
+.jb { background: #BF3003; color: #ffffff; font-size: 7pt; font-weight: bold; padding: 1pt 5pt; border-radius: 2pt; }
+.jt { color: #ffffff; font-size: 8pt; }
+.jb2 { background: #0D1526; border-radius: 5pt; padding: 6pt 8pt; }
+.jl { color: #8BA3CC; font-size: 7pt; margin: 0 0 1pt 0; font-family: Courier New, monospace; }
+.sl2 { color: #BF3003; font-size: 7.5pt; font-weight: bold; letter-spacing: 2pt; text-transform: uppercase; margin: 0 0 5pt 0; }
+h2r { color: #1A2138; font-size: 12pt; font-weight: bold; margin: 0 0 7pt 0; }
+.ac { background: #ffffff; border-radius: 6pt; box-shadow: 0 1pt 6pt rgba(26,33,56,0.07); padding: 8pt 10pt; margin-bottom: 6pt; border-left: 3pt solid; }
+.ach { border-color: #BF3003; }
+.acm { border-color: #0052FF; }
+.ah { display: flex; align-items: center; gap: 5pt; margin-bottom: 3pt; }
+.abg { font-size: 7pt; font-weight: bold; padding: 1pt 4pt; border-radius: 2pt; }
+.bh { background: #FFF3E8; color: #BF3003; }
+.bm { background: #E8F0FF; color: #0052FF; }
+.at { font-size: 8.5pt; font-weight: bold; color: #1A2138; flex: 1; }
+.ai { font-size: 7.5pt; color: #059669; font-weight: bold; }
+.ad { font-size: 7.5pt; color: #5A5A70; margin: 0; line-height: 1.4; }
+.af { font-size: 7.5pt; color: #0052FF; margin-top: 2pt; }
+</style>
+</head>
+<body>
+<div class="top-bar"><p class="eyebrow">Chuyên Gia Smax — AI Recommendations Engine</p></div>
+<div class="main">
+  <div class="left">
+    <p class="sl">Luồng Xử Lý AI</p>
+    <div class="api-f">
+      <div class="fs"><div class="sn"><p style="color:#ffffff;font-size:7.5pt;font-weight:bold;margin:0;">1</p></div><div class="sc"><p class="st">Crawl hội thoại</p><p class="sd">Thu thập 1K–10K hội thoại từ Facebook / Zalo API theo ngành hàng đã chọn.</p></div></div>
+      <div class="fs"><div class="sn"><p style="color:#ffffff;font-size:7.5pt;font-weight:bold;margin:0;">2</p></div><div class="sc"><p class="st">Phân tích 9 nhóm bệnh</p><p class="sd">Rule-based + AI hybrid: tính metrics per nhóm (Junk%, CvR, objection, sentiment).</p></div></div>
+      <div class="fs"><div class="sn"><p style="color:#ffffff;font-size:7.5pt;font-weight:bold;margin:0;">3</p></div><div class="sc"><p class="st">Gọi Smax AI API</p><p class="sd">POST https://smaxai.cdp.vn/api/chat — streaming JSON, 24h localStorage cache.</p></div></div>
+      <div class="fs"><div class="sn"><p style="color:#ffffff;font-size:7.5pt;font-weight:bold;margin:0;">4</p></div><div class="sc"><p class="st">Render checklist actions</p><p class="sd">Parse JSON → { actions[] } → hiển thị checklist với impact + Smax feature link.</p></div></div>
+    </div>
+    <div class="js-box">
+      <div class="jh"><p class="jb">JSON</p><p class="jt">Smax AI Prompt / Response Format</p></div>
+      <div class="jb2">
+        <p class="jl">{"actions": [{"title":</p>
+        <p class="jl">  "Thêm câu hỏi sàng lọc",</p>
+        <p class="jl">  "smax_feature": "Auto-reply",</p>
+        <p class="jl">  "impact": "↓ Junk 20%",</p>
+        <p class="jl">  "steps": ["Bước 1...", "..."]</p>
+        <p class="jl">}]}</p>
+      </div>
+    </div>
+  </div>
+  <div class="right">
+    <p class="sl2">Actions Checklist Mẫu — Lead Quality</p>
+    <h2r>3 actions cho nhóm "Lead Quality" (Score 2.1)</h2r>
+    <div class="ac ach">
+      <div class="ah"><p class="abg bh">HIGH</p><p class="at">Thêm câu hỏi sàng lọc vào ad creative</p><p class="ai">↓ Junk 20%</p></div>
+      <p class="ad">Chỉnh sửa ad copy trong Ads Manager. Test A/B trong 7 ngày.</p>
+      <p class="af">→ Smax Auto-reply</p>
+    </div>
+    <div class="ac ach">
+      <div class="ah"><p class="abg bh">HIGH</p><p class="at">Script phản hồi nhanh trong 5 phút</p><p class="ai">↑ Chốt đơn 15%</p></div>
+      <p class="ad">Thiết lập KPI: phản hồi dưới 5 phút giờ hành chính.</p>
+      <p class="af">→ Smax Auto-reply</p>
+    </div>
+    <div class="ac acm">
+      <div class="ah"><p class="abg bm">MED</p><p class="at">Auto-reply với template phân loại</p><p class="ai">↑ Phản hồi 30%</p></div>
+      <p class="ad">Cài auto-reply phân loại: hỏi nhu cầu → gợi ý SP → thu SĐT.</p>
+      <p class="af">→ Smax Auto-reply + Chatbot</p>
+    </div>
+    <div class="ac acm" style="margin-top:4pt;">
+      <div class="ah"><p class="abg bm">MED</p><p class="at">Đặt KPI nhân viên: junk rate ≤ 20%</p><p class="ai">Team alignment</p></div>
+      <p class="ad">Thiết lập chỉ tiêu per nhân viên. Review tuần với báo cáo breakdown.</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

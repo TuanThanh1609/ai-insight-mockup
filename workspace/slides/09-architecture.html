@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #fcf8fb; font-family: Arial, sans-serif;
+  display: flex; flex-direction: column;
+}
+.top-bar { background: #1A2138; padding: 9pt 50pt; }
+.eyebrow { color: #BF3003; font-size: 7.5pt; font-weight: bold; letter-spacing: 2pt; text-transform: uppercase; margin: 0; }
+.main { padding: 7pt 50pt 5pt 50pt; }
+.sl { color: #BF3003; font-size: 7.5pt; font-weight: bold; letter-spacing: 2pt; text-transform: uppercase; margin-bottom: 5pt; }
+h2 { color: #1A2138; font-size: 12pt; font-weight: bold; margin: 0 0 7pt 0; }
+.row { display: flex; gap: 7pt; align-items: stretch; margin-bottom: 5pt; }
+.tl { width: 44pt; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.tt { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 7pt; font-weight: bold; letter-spacing: 1pt; text-transform: uppercase; border-radius: 4pt; padding: 5pt 3pt; text-align: center; }
+.tf { background: #1A2138; color: #ffffff; }
+.tp { background: #0052FF; color: #ffffff; }
+.ta { background: #BF3003; color: #ffffff; }
+.td { background: #059669; color: #ffffff; }
+.cards { flex: 1; display: flex; gap: 6pt; }
+.cc { flex: 1; background: #ffffff; border-radius: 6pt; box-shadow: 0 1pt 6pt rgba(26,33,56,0.07); padding: 7pt 9pt; }
+.cn { font-size: 8pt; font-weight: bold; color: #1A2138; margin-bottom: 3pt; }
+.cd { font-size: 7.5pt; color: #5A5A70; margin: 0 0 3pt 0; line-height: 1.4; }
+.ct { font-size: 7pt; color: #0052FF; margin: 0; }
+.ar { display: flex; justify-content: flex-start; padding: 2pt 51pt; }
+.arr { color: #BF3003; font-size: 12pt; }
+.sep { height: 1pt; background: #1A2138; opacity: 0.06; margin: 0 50pt; }
+.tech { background: #1A2138; border-radius: 6pt; padding: 7pt 14pt; display: flex; gap: 10pt; align-items: center; }
+.tlbl { color: #4A5E80; font-size: 7pt; letter-spacing: 1pt; text-transform: uppercase; flex-shrink: 0; }
+.chips { display: flex; gap: 5pt; flex-wrap: wrap; }
+.chip { background: #0D1526; color: #8BA3CC; font-size: 7.5pt; padding: 2pt 6pt; border-radius: 3pt; }
+</style>
+</head>
+<body>
+<div class="top-bar"><p class="eyebrow">Kiến Trúc Hệ Thống — MedicalCheckup Module</p></div>
+<div class="main">
+  <p class="sl">Tầng Layer — Frontend → Proxy → AI → Data</p>
+  <h2>Từ Wizard đến Hồ Sơ Bệnh Án Real-time</h2>
+  <div class="row">
+    <div class="tl"><div class="tt tf">Front End</div></div>
+    <div class="cards">
+      <div class="cc"><p class="cn">MedicalCheckup.jsx</p><p class="cd">Wizard 5 bước + Dashboard real-time. React 19 + Tailwind v4.</p><p class="ct">React 19 · Tailwind v4 · Recharts</p></div>
+      <div class="cc"><p class="cn">MedicalService.js</p><p class="cd">Tính metrics, chẩn đoán 9 nhóm bệnh, mock trend 7 ngày.</p><p class="ct">medicalService.js · localStorage cache</p></div>
+      <div class="cc"><p class="cn">SmaxAIService.js</p><p class="cd">Streaming wrapper cho Smax AI API, cache 24h, JSON parser.</p><p class="ct">fetch · ReadableStream · JSON</p></div>
+    </div>
+  </div>
+  <div class="ar"><p class="arr">↓</p></div>
+  <div class="sep"></div>
+  <div class="row">
+    <div class="tl"><div class="tt tp">Proxy</div></div>
+    <div class="cards">
+      <div class="cc"><p class="cn">api/smax-chat.js</p><p class="cd">Vercel Serverless proxy chống CORS. POST → smaxai.cdp.vn.</p><p class="ct">Vercel Edge · Node.js</p></div>
+      <div class="cc"><p class="cn">supabaseLanding.js</p><p class="cd">Native fetch đến Supabase REST API. Lưu lead capture.</p><p class="ct">fetch · Supabase REST API</p></div>
+    </div>
+  </div>
+  <div class="ar"><p class="arr">↓</p></div>
+  <div class="sep"></div>
+  <div class="row">
+    <div class="tl"><div class="tt ta">AI</div></div>
+    <div class="cards">
+      <div class="cc"><p class="cn">smaxai.cdp.vn/api/chat</p><p class="cd">Smax AI endpoint, nhận JSON prompt, trả streaming JSON actions[].</p><p class="ct">POST · x-api-key · Streaming</p></div>
+      <div class="cc"><p class="cn">Custom AI (token.ai.vn)</p><p class="cd">AI engine cho tạo Insight từ scratch — Track A Tạo Insight.</p><p class="ct">GPT-4.1-mini · Custom AI API</p></div>
+    </div>
+  </div>
+  <div class="ar"><p class="arr">↓</p></div>
+  <div class="sep"></div>
+  <div class="row" style="margin-bottom:0;">
+    <div class="tl"><div class="tt td">Data</div></div>
+    <div class="cards">
+      <div class="cc"><p class="cn">Supabase JSON</p><p class="cd">3,462 hội thoại × 42 templates × 7 ngành. Nguồn conversations.</p><p class="ct">db.cdp.vn · REST API</p></div>
+      <div class="cc"><p class="cn">localStorage</p><p class="cd">Smax AI cache (24h TTL) · Medical records · Saved actions.</p><p class="ct">localStorage · JSON serialization</p></div>
+    </div>
+  </div>
+  <div class="tech" style="margin-top:7pt;">
+    <p class="tlbl">Tech Stack</p>
+    <div class="chips">
+      <p class="chip">React 19</p><p class="chip">Vite 6</p><p class="chip">Tailwind v4</p>
+      <p class="chip">Recharts v2</p><p class="chip">Lucide React</p><p class="chip">Framer Motion</p>
+      <p class="chip">Supabase</p><p class="chip">Vercel</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

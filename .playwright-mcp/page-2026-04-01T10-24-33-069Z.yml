@@ -1,0 +1,1244 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e7]: S
+        - button "Fahasa" [ref=e10]:
+          - img [ref=e12]
+          - generic [ref=e20]: Fahasa
+          - img [ref=e21]
+      - navigation [ref=e23]:
+        - button "Bảng tin" [ref=e24]:
+          - img [ref=e25]
+          - text: Bảng tin
+        - button "Nhắn tin" [ref=e28]:
+          - img [ref=e29]
+          - text: Nhắn tin
+        - button "Bot-Auto" [ref=e31]:
+          - img [ref=e32]
+          - text: Bot-Auto
+        - button "Khách hàng" [ref=e35]:
+          - img [ref=e36]
+          - text: Khách hàng
+        - button "Thống kê" [ref=e41]:
+          - img [ref=e42]
+          - text: Thống kê
+        - button "Zalo ZBS" [ref=e43]
+      - generic [ref=e44]:
+        - button [ref=e45]:
+          - img [ref=e46]
+        - button [ref=e49]:
+          - img [ref=e50]
+        - button [ref=e56]:
+          - img [ref=e57]
+        - button "2469" [ref=e61]:
+          - img [ref=e62]
+          - generic [ref=e65]: "2469"
+        - button "TT" [ref=e67]:
+          - generic [ref=e68]:
+            - generic [ref=e70]: TT
+            - img [ref=e72]
+          - img [ref=e75]
+    - generic [ref=e77]:
+      - complementary [ref=e78]:
+        - generic [ref=e80]:
+          - img [ref=e82]
+          - generic [ref=e84]:
+            - generic [ref=e85]: AI Insight
+            - generic [ref=e86]: Multi-Channel
+        - navigation [ref=e87]:
+          - generic [ref=e88]: Menu
+          - link "Cài đặt Insight" [ref=e89] [cursor=pointer]:
+            - /url: /insight/settings
+            - img [ref=e90]
+            - generic [ref=e95]: Cài đặt Insight
+          - link "Dashboard Insight AI" [ref=e96] [cursor=pointer]:
+            - /url: /insight/insight-dashboard
+            - img [ref=e97]
+            - generic [ref=e98]: Dashboard Insight
+            - generic [ref=e99]: AI
+          - link "Khám Bệnh" [ref=e100] [cursor=pointer]:
+            - /url: /insight/medical-checkup
+            - img [ref=e101]
+            - generic [ref=e105]: Khám Bệnh
+          - link "Tổng quan Ads" [ref=e106] [cursor=pointer]:
+            - /url: /insight/dashboard
+            - img [ref=e107]
+            - generic [ref=e109]: Tổng quan Ads
+          - link "Gợi ý tối ưu Ads AI" [ref=e110] [cursor=pointer]:
+            - /url: /insight/ads-optimization
+            - img [ref=e111]
+            - generic [ref=e114]: Gợi ý tối ưu Ads
+            - generic [ref=e115]: AI
+        - generic [ref=e117]:
+          - text: Module Insight Ads
+          - text: v1.0 — Demo
+      - main [ref=e118]:
+        - generic [ref=e119]:
+          - generic [ref=e120]:
+            - generic [ref=e121]:
+              - generic [ref=e122]: 🏥
+              - heading "Khám Bệnh" [level=1] [ref=e123]
+            - paragraph [ref=e124]: Phân tích đa kênh · Chẩn đoán 10 nhóm vấn đề · Gợi ý hành động từ Chuyên gia Smax
+          - generic [ref=e126]:
+            - button "💬 Hội Thoại" [ref=e127] [cursor=pointer]
+            - button "📣 Quảng Cáo" [ref=e128] [cursor=pointer]
+          - generic [ref=e688]:
+            - generic [ref=e689]:
+              - generic [ref=e690]:
+                - button "Khám lại" [ref=e691] [cursor=pointer]:
+                  - img [ref=e692]
+                  - text: Khám lại
+                - generic [ref=e696]: Thời trang
+              - generic [ref=e697]:
+                - button "Xem Tóm Tắt" [ref=e698] [cursor=pointer]:
+                  - img [ref=e699]
+                  - text: Xem Tóm Tắt
+                - button "Lộ Trình Cải Thiện" [ref=e702] [cursor=pointer]:
+                  - img [ref=e703]
+                  - text: Lộ Trình Cải Thiện
+            - generic [ref=e706]:
+              - generic [ref=e707]:
+                - generic [ref=e708]: ĐIỂM SỨC KHỎE TỔNG QUAN
+                - generic [ref=e709]:
+                  - generic [ref=e710]: 01/04/2026
+                  - generic [ref=e711]: 17:23
+              - generic [ref=e712]:
+                - generic [ref=e713]:
+                  - generic [ref=e714]:
+                    - generic [ref=e715]: "6.8"
+                    - generic [ref=e716]: / 10
+                  - generic [ref=e717]: CẦN CẢI THIỆN
+                  - generic [ref=e721]:
+                    - generic [ref=e722]: Nghiêm trọng
+                    - generic [ref=e723]: Tốt
+                - generic [ref=e724]:
+                  - generic [ref=e725]:
+                    - generic [ref=e726]:
+                      - img [ref=e727]
+                      - generic [ref=e729]: CẦN CẢI THIỆN (2 nhóm)
+                    - generic [ref=e730]:
+                      - generic [ref=e731]:
+                        - generic [ref=e733]: Cuộc Trò Chuyện Bỏ Dở
+                        - generic [ref=e736]:
+                          - button "Xem →" [ref=e737] [cursor=pointer]
+                          - generic [ref=e738]: "4.4"
+                      - generic [ref=e739]:
+                        - generic [ref=e741]: Ngôn Ngữ & Cách Giao Tiếp
+                        - generic [ref=e744]:
+                          - button "Xem →" [ref=e745] [cursor=pointer]
+                          - generic [ref=e746]: "4.8"
+                  - generic [ref=e747]:
+                    - generic [ref=e748]: Trung bình (3 nhóm)
+                    - generic [ref=e749]:
+                      - button "Upsell / Cross-sell 5.3" [ref=e750] [cursor=pointer]:
+                        - generic [ref=e751]: Upsell / Cross-sell
+                        - generic [ref=e752]: "5.3"
+                      - button "Nhân Viên Tư Vấn 5.6" [ref=e753] [cursor=pointer]:
+                        - generic [ref=e754]: Nhân Viên Tư Vấn
+                        - generic [ref=e755]: "5.6"
+                      - button "CSKH & Hậu Mua 5.9" [ref=e756] [cursor=pointer]:
+                        - generic [ref=e757]: CSKH & Hậu Mua
+                        - generic [ref=e758]: "5.9"
+                - generic [ref=e759]:
+                  - generic [ref=e760]:
+                    - img [ref=e761]
+                    - generic [ref=e764]: TỐT (4 nhóm)
+                  - generic [ref=e765]:
+                    - generic [ref=e766]:
+                      - generic [ref=e768]: Chất Lượng Nguồn Lead
+                      - generic [ref=e771]:
+                        - button "Xem →" [ref=e772] [cursor=pointer]
+                        - generic [ref=e773]: "9.9"
+                    - generic [ref=e774]:
+                      - generic [ref=e776]: Đối Thủ Cạnh Tranh
+                      - generic [ref=e779]:
+                        - button "Xem →" [ref=e780] [cursor=pointer]
+                        - generic [ref=e781]: "8.9"
+                    - generic [ref=e782]:
+                      - generic [ref=e784]: Phản Hồi & Chăm Sóc
+                      - generic [ref=e787]:
+                        - button "Xem →" [ref=e788] [cursor=pointer]
+                        - generic [ref=e789]: "8.8"
+                    - generic [ref=e790]:
+                      - generic [ref=e792]: Kịch Bản Tư Vấn
+                      - generic [ref=e795]:
+                        - button "Xem →" [ref=e796] [cursor=pointer]
+                        - generic [ref=e797]: "7.9"
+            - generic [ref=e799]:
+              - generic [ref=e800]: Chỉ Số Quan Trọng
+              - generic [ref=e801]:
+                - generic [ref=e802]:
+                  - generic [ref=e803]:
+                    - img [ref=e805]
+                    - generic [ref=e807]: Tỉ Lệ Thu Thập SĐT
+                  - generic [ref=e808]:
+                    - generic [ref=e809]: "0"
+                    - generic [ref=e810]: "%"
+                  - img [ref=e812]
+                  - generic [ref=e816]:
+                    - generic [ref=e817]: ↓3%
+                    - generic [ref=e818]: hôm nay
+                - generic [ref=e819]:
+                  - generic [ref=e820]:
+                    - img [ref=e822]
+                    - generic [ref=e825]: Tỉ Lệ Chốt Đơn
+                  - generic [ref=e826]:
+                    - generic [ref=e827]: "7"
+                    - generic [ref=e828]: "%"
+                  - img [ref=e830]
+                  - generic [ref=e834]:
+                    - generic [ref=e835]: ↓8%
+                    - generic [ref=e836]: hôm nay
+                - generic [ref=e837]:
+                  - generic [ref=e838]:
+                    - img [ref=e840]
+                    - generic [ref=e843]: Tỉ Lệ Khách Cũ Quay Lại
+                  - generic [ref=e844]:
+                    - generic [ref=e845]: "0"
+                    - generic [ref=e846]: "%"
+                  - img [ref=e848]
+                  - generic [ref=e852]:
+                    - generic [ref=e853]: ↓3%
+                    - generic [ref=e854]: hôm nay
+                - generic [ref=e855]:
+                  - generic [ref=e856]:
+                    - img [ref=e858]
+                    - generic [ref=e860]: Tỉ Lệ Leads Rác
+                  - generic [ref=e861]:
+                    - generic [ref=e862]: "3"
+                    - generic [ref=e863]: "%"
+                  - img [ref=e865]
+                  - generic [ref=e869]:
+                    - generic [ref=e870]: ↓7%
+                    - generic [ref=e871]: hôm nay
+            - generic [ref=e872]:
+              - generic [ref=e873]:
+                - button "Tất cả 9" [ref=e874] [cursor=pointer]:
+                  - generic [ref=e875]: Tất cả
+                  - generic [ref=e876]: "9"
+                - button "Chất Lượng Nguồn Lead 1" [ref=e877] [cursor=pointer]:
+                  - generic [ref=e878]: Chất Lượng Nguồn Lead
+                  - generic [ref=e879]: "1"
+                - button "Phản Hồi & Chăm Sóc 1" [ref=e880] [cursor=pointer]:
+                  - generic [ref=e881]: Phản Hồi & Chăm Sóc
+                  - generic [ref=e882]: "1"
+                - button "Nhân Viên Tư Vấn 1" [ref=e883] [cursor=pointer]:
+                  - generic [ref=e884]: Nhân Viên Tư Vấn
+                  - generic [ref=e885]: "1"
+                - button "Đối Thủ Cạnh Tranh 1" [ref=e886] [cursor=pointer]:
+                  - generic [ref=e887]: Đối Thủ Cạnh Tranh
+                  - generic [ref=e888]: "1"
+                - button "CSKH & Hậu Mua 1" [ref=e889] [cursor=pointer]:
+                  - generic [ref=e890]: CSKH & Hậu Mua
+                  - generic [ref=e891]: "1"
+                - button "Kịch Bản Tư Vấn 1" [ref=e892] [cursor=pointer]:
+                  - generic [ref=e893]: Kịch Bản Tư Vấn
+                  - generic [ref=e894]: "1"
+                - button "Cuộc Trò Chuyện Bỏ Dở 1" [ref=e895] [cursor=pointer]:
+                  - generic [ref=e896]: Cuộc Trò Chuyện Bỏ Dở
+                  - generic [ref=e897]: "1"
+                - button "Ngôn Ngữ & Cách Giao Tiếp 1" [ref=e898] [cursor=pointer]:
+                  - generic [ref=e899]: Ngôn Ngữ & Cách Giao Tiếp
+                  - generic [ref=e900]: "1"
+                - button "Upsell / Cross-sell 1" [ref=e901] [cursor=pointer]:
+                  - generic [ref=e902]: Upsell / Cross-sell
+                  - generic [ref=e903]: "1"
+              - generic [ref=e904]: 9 nhóm bệnh
+            - generic [ref=e905]:
+              - generic [ref=e906]:
+                - generic [ref=e908]:
+                  - 'button "🔁 Cuộc Trò Chuyện Bỏ Dở TRUNG BÌNH Nhóm: BD 4.4/10 0.4" [ref=e909] [cursor=pointer]':
+                    - generic [ref=e910]: 🔁
+                    - generic [ref=e912]:
+                      - generic [ref=e913]:
+                        - heading "Cuộc Trò Chuyện Bỏ Dở" [level=3] [ref=e914]
+                        - generic [ref=e915]:
+                          - generic [ref=e916]: TRUNG BÌNH
+                          - generic [ref=e917]: "Nhóm: BD"
+                      - generic [ref=e918]:
+                        - generic [ref=e919]: 4.4/10
+                        - generic [ref=e920]:
+                          - img [ref=e921]
+                          - generic [ref=e923]: "0.4"
+                    - img [ref=e925]
+                  - generic [ref=e927]:
+                    - generic [ref=e928]:
+                      - button "Tổng quan" [ref=e929] [cursor=pointer]
+                      - button "Diễn giải" [ref=e930] [cursor=pointer]
+                      - button "Chi tiết (22)" [ref=e931] [cursor=pointer]
+                    - generic [ref=e932]:
+                      - generic [ref=e933]:
+                        - heading "TẤT CẢ CHỈ SỐ" [level=4] [ref=e934]
+                        - generic [ref=e935]:
+                          - generic [ref=e936]:
+                            - generic [ref=e937]: Bỏ giữa chừng
+                            - generic [ref=e940]: 29%
+                          - generic [ref=e941]:
+                            - generic [ref=e942]: Không kết thúc
+                            - generic [ref=e945]: 12%
+                          - generic [ref=e946]:
+                            - generic [ref=e947]: Không tin nhắn cuối
+                            - generic [ref=e950]: 20%
+                      - generic [ref=e951]:
+                        - heading "XU HƯỚNG 7 NGÀY GẦN NHẤT" [level=4] [ref=e952]
+                        - generic [ref=e955]:
+                          - img [ref=e956]:
+                            - generic [ref=e961]:
+                              - generic [ref=e963]: T-6
+                              - generic [ref=e965]: T-5
+                              - generic [ref=e967]: T-4
+                              - generic [ref=e969]: T-3
+                              - generic [ref=e971]: T-2
+                              - generic [ref=e973]: T-1
+                              - generic [ref=e975]: Hôm nay
+                            - generic [ref=e977]:
+                              - generic [ref=e979]: "0"
+                              - generic [ref=e981]: "9"
+                              - generic [ref=e983]: "18"
+                              - generic [ref=e985]: "27"
+                              - generic [ref=e987]: "36"
+                          - list [ref=e995]:
+                            - listitem [ref=e996]:
+                              - img [ref=e997]
+                              - text: Bỏ giữa chừng
+                            - listitem [ref=e999]:
+                              - img [ref=e1000]
+                              - text: Không kết thúc
+                            - listitem [ref=e1002]:
+                              - img [ref=e1003]
+                              - text: Không tin nhắn cuối
+                    - button "Thu gọn" [ref=e1006] [cursor=pointer]:
+                      - text: Thu gọn
+                      - img [ref=e1007]
+                - generic [ref=e1009]:
+                  - generic [ref=e1011]:
+                    - generic [ref=e1012]:
+                      - img [ref=e1013]
+                      - heading "Cảnh Báo Khẩn" [level=3] [ref=e1015]
+                      - generic [ref=e1016]: "3"
+                    - generic [ref=e1017]:
+                      - generic [ref=e1019] [cursor=pointer]:
+                        - img [ref=e1021]
+                        - generic [ref=e1023]:
+                          - generic [ref=e1024]:
+                            - generic [ref=e1025]: Cuộc Trò Chuyện Bỏ Dở
+                            - generic [ref=e1026]: Bỏ giữa chừng
+                          - generic [ref=e1027]:
+                            - generic [ref=e1028]: 29%
+                            - button "▼ Xem 10 hội thoại" [ref=e1029]
+                      - generic [ref=e1031] [cursor=pointer]:
+                        - img [ref=e1033]
+                        - generic [ref=e1035]:
+                          - generic [ref=e1036]:
+                            - generic [ref=e1037]: Cuộc Trò Chuyện Bỏ Dở
+                            - generic [ref=e1038]: Không kết thúc
+                          - generic [ref=e1039]:
+                            - generic [ref=e1040]: 12%
+                            - button "▼ Xem 10 hội thoại" [ref=e1041]
+                      - generic [ref=e1043] [cursor=pointer]:
+                        - img [ref=e1045]
+                        - generic [ref=e1047]:
+                          - generic [ref=e1048]:
+                            - generic [ref=e1049]: Cuộc Trò Chuyện Bỏ Dở
+                            - generic [ref=e1050]: Không tin nhắn cuối
+                          - generic [ref=e1051]:
+                            - generic [ref=e1052]: 20%
+                            - button "▼ Xem 10 hội thoại" [ref=e1053]
+                  - generic [ref=e1055]:
+                    - generic [ref=e1056]:
+                      - img [ref=e1058]
+                      - heading "Gợi ý Smax" [level=3] [ref=e1060]
+                    - generic [ref=e1061]:
+                      - generic [ref=e1062]:
+                        - generic [ref=e1063]:
+                          - generic [ref=e1064]: CAO
+                          - generic [ref=e1065]: Cài notification alert khi khách mới nhắn
+                        - generic [ref=e1066]:
+                          - generic [ref=e1067]: ↓ abandoned 25%
+                          - button "Lưu" [ref=e1068] [cursor=pointer]:
+                            - img [ref=e1069]
+                            - text: Lưu
+                      - generic [ref=e1071]:
+                        - generic [ref=e1072]:
+                          - generic [ref=e1073]: TRUNG BÌNH
+                          - generic [ref=e1074]: Kịch bản "đang typing..." để khách đợi có context
+                        - generic [ref=e1075]:
+                          - generic [ref=e1076]: ↓ rage quit 18%
+                          - button "Lưu" [ref=e1077] [cursor=pointer]:
+                            - img [ref=e1078]
+                            - text: Lưu
+              - generic [ref=e1080]:
+                - generic [ref=e1082]:
+                  - 'button "🎨 Ngôn Ngữ & Cách Giao Tiếp TRUNG BÌNH Nhóm: NN 4.8/10 0.1" [ref=e1083] [cursor=pointer]':
+                    - generic [ref=e1084]: 🎨
+                    - generic [ref=e1086]:
+                      - generic [ref=e1087]:
+                        - heading "Ngôn Ngữ & Cách Giao Tiếp" [level=3] [ref=e1088]
+                        - generic [ref=e1089]:
+                          - generic [ref=e1090]: TRUNG BÌNH
+                          - generic [ref=e1091]: "Nhóm: NN"
+                      - generic [ref=e1092]:
+                        - generic [ref=e1093]: 4.8/10
+                        - generic [ref=e1094]:
+                          - img [ref=e1095]
+                          - generic [ref=e1097]: "0.1"
+                    - img [ref=e1099]
+                  - generic [ref=e1101]:
+                    - generic [ref=e1102]:
+                      - button "Tổng quan" [ref=e1103] [cursor=pointer]
+                      - button "Diễn giải" [ref=e1104] [cursor=pointer]
+                      - button "Chi tiết (37)" [ref=e1105] [cursor=pointer]
+                    - generic [ref=e1106]:
+                      - generic [ref=e1107]:
+                        - heading "TẤT CẢ CHỈ SỐ" [level=4] [ref=e1108]
+                        - generic [ref=e1109]:
+                          - generic [ref=e1110]:
+                            - generic [ref=e1111]: Giọng không phù hợp
+                            - generic [ref=e1114]: 17%
+                          - generic [ref=e1115]:
+                            - generic [ref=e1116]: Over-emoji
+                            - generic [ref=e1119]: 35%
+                          - generic [ref=e1120]:
+                            - generic [ref=e1121]: Tin quá dài
+                            - generic [ref=e1124]: 24%
+                      - generic [ref=e1125]:
+                        - heading "XU HƯỚNG 7 NGÀY GẦN NHẤT" [level=4] [ref=e1126]
+                        - generic [ref=e1129]:
+                          - img [ref=e1130]:
+                            - generic [ref=e1135]:
+                              - generic [ref=e1137]: T-6
+                              - generic [ref=e1139]: T-5
+                              - generic [ref=e1141]: T-4
+                              - generic [ref=e1143]: T-3
+                              - generic [ref=e1145]: T-2
+                              - generic [ref=e1147]: T-1
+                              - generic [ref=e1149]: Hôm nay
+                            - generic [ref=e1151]:
+                              - generic [ref=e1153]: "0"
+                              - generic [ref=e1155]: "10"
+                              - generic [ref=e1157]: "20"
+                              - generic [ref=e1159]: "30"
+                              - generic [ref=e1161]: "40"
+                          - list [ref=e1169]:
+                            - listitem [ref=e1170]:
+                              - img [ref=e1171]
+                              - text: Giọng không phù hợp
+                            - listitem [ref=e1173]:
+                              - img [ref=e1174]
+                              - text: Over-emoji
+                            - listitem [ref=e1176]:
+                              - img [ref=e1177]
+                              - text: Tin quá dài
+                    - button "Thu gọn" [ref=e1180] [cursor=pointer]:
+                      - text: Thu gọn
+                      - img [ref=e1181]
+                - generic [ref=e1183]:
+                  - generic [ref=e1185]:
+                    - generic [ref=e1186]:
+                      - img [ref=e1187]
+                      - heading "Cảnh Báo Khẩn" [level=3] [ref=e1189]
+                      - generic [ref=e1190]: "2"
+                    - generic [ref=e1191]:
+                      - generic [ref=e1193] [cursor=pointer]:
+                        - img [ref=e1195]
+                        - generic [ref=e1197]:
+                          - generic [ref=e1198]:
+                            - generic [ref=e1199]: Ngôn Ngữ & Cách Giao Tiếp
+                            - generic [ref=e1200]: Giọng không phù hợp
+                          - generic [ref=e1201]:
+                            - generic [ref=e1202]: 17%
+                            - button "▼ Xem 10 hội thoại" [ref=e1203]
+                      - generic [ref=e1205] [cursor=pointer]:
+                        - img [ref=e1207]
+                        - generic [ref=e1209]:
+                          - generic [ref=e1210]:
+                            - generic [ref=e1211]: Ngôn Ngữ & Cách Giao Tiếp
+                            - generic [ref=e1212]: Tin quá dài
+                          - generic [ref=e1213]:
+                            - generic [ref=e1214]: 24%
+                            - button "▼ Xem 10 hội thoại" [ref=e1215]
+                      - generic [ref=e1217] [cursor=pointer]:
+                        - img [ref=e1219]
+                        - generic [ref=e1221]:
+                          - generic [ref=e1222]:
+                            - generic [ref=e1223]: Ngôn Ngữ & Cách Giao Tiếp
+                            - generic [ref=e1224]: Over-emoji
+                          - generic [ref=e1225]:
+                            - generic [ref=e1226]: 35%
+                            - button "▼ Xem 10 hội thoại" [ref=e1227]
+                  - generic [ref=e1229]:
+                    - generic [ref=e1230]:
+                      - img [ref=e1232]
+                      - heading "Gợi ý Smax" [level=3] [ref=e1234]
+                    - generic [ref=e1235]:
+                      - generic [ref=e1236]:
+                        - generic [ref=e1237]:
+                          - generic [ref=e1238]: CAO
+                          - generic [ref=e1239]: Guide giọng văn shop — friendly nhưng professional
+                        - generic [ref=e1240]:
+                          - generic [ref=e1241]: ↑ brand perception 22%
+                          - button "Lưu" [ref=e1242] [cursor=pointer]:
+                            - img [ref=e1243]
+                            - text: Lưu
+                      - generic [ref=e1245]:
+                        - generic [ref=e1246]:
+                          - generic [ref=e1247]: TRUNG BÌNH
+                          - generic [ref=e1248]: Voice message guidelines — khi nào nên dùng
+                        - generic [ref=e1249]:
+                          - generic [ref=e1250]: ↑ warmth 15%
+                          - button "Lưu" [ref=e1251] [cursor=pointer]:
+                            - img [ref=e1252]
+                            - text: Lưu
+              - generic [ref=e1254]:
+                - generic [ref=e1256]:
+                  - 'button "📦 Upsell / Cross-sell TRUNG BÌNH Nhóm: US 5.3/10 0.4" [ref=e1257] [cursor=pointer]':
+                    - generic [ref=e1258]: 📦
+                    - generic [ref=e1260]:
+                      - generic [ref=e1261]:
+                        - heading "Upsell / Cross-sell" [level=3] [ref=e1262]
+                        - generic [ref=e1263]:
+                          - generic [ref=e1264]: TRUNG BÌNH
+                          - generic [ref=e1265]: "Nhóm: US"
+                      - generic [ref=e1266]:
+                        - generic [ref=e1267]: 5.3/10
+                        - generic [ref=e1268]:
+                          - img [ref=e1269]
+                          - generic [ref=e1271]: "0.4"
+                    - img [ref=e1273]
+                  - generic [ref=e1275]:
+                    - generic [ref=e1276]:
+                      - button "Tổng quan" [ref=e1277] [cursor=pointer]
+                      - button "Diễn giải" [ref=e1278] [cursor=pointer]
+                      - button "Chi tiết (25)" [ref=e1279] [cursor=pointer]
+                    - generic [ref=e1280]:
+                      - generic [ref=e1281]:
+                        - heading "TẤT CẢ CHỈ SỐ" [level=4] [ref=e1282]
+                        - generic [ref=e1283]:
+                          - generic [ref=e1284]:
+                            - generic [ref=e1285]: Gợi ý sản phẩm
+                            - generic [ref=e1288]: 50%
+                          - generic [ref=e1289]:
+                            - generic [ref=e1290]: Upsell thành công
+                            - generic [ref=e1293]: 15%
+                          - generic [ref=e1294]:
+                            - generic [ref=e1295]: KH bỏ qua gợi ý
+                            - generic [ref=e1298]: 23%
+                      - generic [ref=e1299]:
+                        - heading "XU HƯỚNG 7 NGÀY GẦN NHẤT" [level=4] [ref=e1300]
+                        - generic [ref=e1303]:
+                          - img [ref=e1304]:
+                            - generic [ref=e1309]:
+                              - generic [ref=e1311]: T-6
+                              - generic [ref=e1313]: T-5
+                              - generic [ref=e1315]: T-4
+                              - generic [ref=e1317]: T-3
+                              - generic [ref=e1319]: T-2
+                              - generic [ref=e1321]: T-1
+                              - generic [ref=e1323]: Hôm nay
+                            - generic [ref=e1325]:
+                              - generic [ref=e1327]: "0"
+                              - generic [ref=e1329]: "15"
+                              - generic [ref=e1331]: "30"
+                              - generic [ref=e1333]: "45"
+                              - generic [ref=e1335]: "60"
+                          - list [ref=e1343]:
+                            - listitem [ref=e1344]:
+                              - img [ref=e1345]
+                              - text: Gợi ý sản phẩm
+                            - listitem [ref=e1347]:
+                              - img [ref=e1348]
+                              - text: Upsell thành công
+                            - listitem [ref=e1350]:
+                              - img [ref=e1351]
+                              - text: KH bỏ qua gợi ý
+                    - button "Thu gọn" [ref=e1354] [cursor=pointer]:
+                      - text: Thu gọn
+                      - img [ref=e1355]
+                - generic [ref=e1357]:
+                  - generic [ref=e1359]:
+                    - generic [ref=e1360]:
+                      - img [ref=e1361]
+                      - heading "Cảnh Báo Khẩn" [level=3] [ref=e1363]
+                    - generic [ref=e1366] [cursor=pointer]:
+                      - img [ref=e1368]
+                      - generic [ref=e1370]:
+                        - generic [ref=e1371]:
+                          - generic [ref=e1372]: Upsell / Cross-sell
+                          - generic [ref=e1373]: Tỉ lệ bỏ qua gợi ý
+                        - generic [ref=e1374]:
+                          - generic [ref=e1375]: 23%
+                          - button "▼ Xem 10 hội thoại" [ref=e1376]
+                  - generic [ref=e1378]:
+                    - generic [ref=e1379]:
+                      - img [ref=e1381]
+                      - heading "Gợi ý Smax" [level=3] [ref=e1383]
+                    - generic [ref=e1384]:
+                      - generic [ref=e1385]:
+                        - generic [ref=e1386]:
+                          - generic [ref=e1387]: CAO
+                          - generic [ref=e1388]: "Cross-sell script: \"Kèm theo [sản phẩm bổ sung]\""
+                        - generic [ref=e1389]:
+                          - generic [ref=e1390]: ↑ AOV 12%
+                          - button "Lưu" [ref=e1391] [cursor=pointer]:
+                            - img [ref=e1392]
+                            - text: Lưu
+                      - generic [ref=e1394]:
+                        - generic [ref=e1395]:
+                          - generic [ref=e1396]: TRUNG BÌNH
+                          - generic [ref=e1397]: Bundle offer — gói tiết kiệm 15%
+                        - generic [ref=e1398]:
+                          - generic [ref=e1399]: ↑ upsell success 20%
+                          - button "Lưu" [ref=e1400] [cursor=pointer]:
+                            - img [ref=e1401]
+                            - text: Lưu
+              - generic [ref=e1403]:
+                - generic [ref=e1405]:
+                  - 'button "🏆 Nhân Viên Tư Vấn TRUNG BÌNH Nhóm: NV 5.6/10 0.7" [ref=e1406] [cursor=pointer]':
+                    - generic [ref=e1407]: 🏆
+                    - generic [ref=e1409]:
+                      - generic [ref=e1410]:
+                        - heading "Nhân Viên Tư Vấn" [level=3] [ref=e1411]
+                        - generic [ref=e1412]:
+                          - generic [ref=e1413]: TRUNG BÌNH
+                          - generic [ref=e1414]: "Nhóm: NV"
+                      - generic [ref=e1415]:
+                        - generic [ref=e1416]: 5.6/10
+                        - generic [ref=e1417]:
+                          - img [ref=e1418]
+                          - generic [ref=e1420]: "0.7"
+                    - img [ref=e1422]
+                  - generic [ref=e1424]:
+                    - generic [ref=e1425]:
+                      - button "Tổng quan" [ref=e1426] [cursor=pointer]
+                      - button "Diễn giải" [ref=e1427] [cursor=pointer]
+                      - button "Chi tiết (24)" [ref=e1428] [cursor=pointer]
+                    - generic [ref=e1429]:
+                      - generic [ref=e1430]:
+                        - heading "TẤT CẢ CHỈ SỐ" [level=4] [ref=e1431]
+                        - generic [ref=e1432]:
+                          - generic [ref=e1433]:
+                            - generic [ref=e1434]: Thái độ tốt
+                            - generic [ref=e1437]: 10%
+                          - generic [ref=e1438]:
+                            - generic [ref=e1439]: Lỗi mất khách
+                            - generic [ref=e1441]: 0%
+                          - generic [ref=e1442]:
+                            - generic [ref=e1443]: Tư vấn đúng
+                            - generic [ref=e1446]: 77%
+                      - generic [ref=e1447]:
+                        - heading "XU HƯỚNG 7 NGÀY GẦN NHẤT" [level=4] [ref=e1448]
+                        - generic [ref=e1451]:
+                          - img [ref=e1452]:
+                            - generic [ref=e1457]:
+                              - generic [ref=e1459]: T-6
+                              - generic [ref=e1461]: T-5
+                              - generic [ref=e1463]: T-4
+                              - generic [ref=e1465]: T-3
+                              - generic [ref=e1467]: T-2
+                              - generic [ref=e1469]: T-1
+                              - generic [ref=e1471]: Hôm nay
+                            - generic [ref=e1473]:
+                              - generic [ref=e1475]: "0"
+                              - generic [ref=e1477]: "25"
+                              - generic [ref=e1479]: "50"
+                              - generic [ref=e1481]: "75"
+                              - generic [ref=e1483]: "100"
+                          - list [ref=e1491]:
+                            - listitem [ref=e1492]:
+                              - img [ref=e1493]
+                              - text: Thái độ tốt
+                            - listitem [ref=e1495]:
+                              - img [ref=e1496]
+                              - text: Lỗi mất khách
+                            - listitem [ref=e1498]:
+                              - img [ref=e1499]
+                              - text: Tư vấn đúng
+                    - button "Thu gọn" [ref=e1502] [cursor=pointer]:
+                      - text: Thu gọn
+                      - img [ref=e1503]
+                - generic [ref=e1505]:
+                  - generic [ref=e1507]:
+                    - generic [ref=e1508]:
+                      - img [ref=e1509]
+                      - heading "Cảnh Báo Khẩn" [level=3] [ref=e1511]
+                      - generic [ref=e1512]: "1"
+                    - generic [ref=e1515] [cursor=pointer]:
+                      - img [ref=e1517]
+                      - generic [ref=e1519]:
+                        - generic [ref=e1520]:
+                          - generic [ref=e1521]: Nhân Viên Tư Vấn
+                          - generic [ref=e1522]: Thái độ tư vấn tốt
+                        - generic [ref=e1523]:
+                          - generic [ref=e1524]: 10%
+                          - button "▼ Xem 10 hội thoại" [ref=e1525]
+                  - generic [ref=e1527]:
+                    - generic [ref=e1528]:
+                      - img [ref=e1530]
+                      - heading "Gợi ý Smax" [level=3] [ref=e1532]
+                    - generic [ref=e1533]:
+                      - generic [ref=e1534]:
+                        - generic [ref=e1535]:
+                          - generic [ref=e1536]: CAO
+                          - generic [ref=e1537]: Training objection handling — top 3 objections ngành
+                        - generic [ref=e1538]:
+                          - generic [ref=e1539]: ↑ chốt đơn 18%
+                          - button "Lưu" [ref=e1540] [cursor=pointer]:
+                            - img [ref=e1541]
+                            - text: Lưu
+                      - generic [ref=e1543]:
+                        - generic [ref=e1544]:
+                          - generic [ref=e1545]: TRUNG BÌNH
+                          - generic [ref=e1546]: Audit 10 cuộc hội thoại có vấn đề mỗi tuần
+                        - generic [ref=e1547]:
+                          - generic [ref=e1548]: ↓ lỗi 25%
+                          - button "Lưu" [ref=e1549] [cursor=pointer]:
+                            - img [ref=e1550]
+                            - text: Lưu
+              - generic [ref=e1552]:
+                - generic [ref=e1554]:
+                  - 'button "💬 CSKH & Hậu Mua TRUNG BÌNH Nhóm: KH 5.9/10 0.1" [ref=e1555] [cursor=pointer]':
+                    - generic [ref=e1556]: 💬
+                    - generic [ref=e1558]:
+                      - generic [ref=e1559]:
+                        - heading "CSKH & Hậu Mua" [level=3] [ref=e1560]
+                        - generic [ref=e1561]:
+                          - generic [ref=e1562]: TRUNG BÌNH
+                          - generic [ref=e1563]: "Nhóm: KH"
+                      - generic [ref=e1564]:
+                        - generic [ref=e1565]: 5.9/10
+                        - generic [ref=e1566]:
+                          - img [ref=e1567]
+                          - generic [ref=e1569]: "0.1"
+                    - img [ref=e1571]
+                  - generic [ref=e1573]:
+                    - generic [ref=e1574]:
+                      - button "Tổng quan" [ref=e1575] [cursor=pointer]
+                      - button "Diễn giải" [ref=e1576] [cursor=pointer]
+                      - button "Chi tiết (37)" [ref=e1577] [cursor=pointer]
+                    - generic [ref=e1578]:
+                      - generic [ref=e1579]:
+                        - heading "TẤT CẢ CHỈ SỐ" [level=4] [ref=e1580]
+                        - generic [ref=e1581]:
+                          - generic [ref=e1582]:
+                            - generic [ref=e1583]: CSKH sau mua
+                            - generic [ref=e1586]: 36%
+                          - generic [ref=e1587]:
+                            - generic [ref=e1588]: Risk review
+                            - generic [ref=e1591]: 13%
+                          - generic [ref=e1592]:
+                            - generic [ref=e1593]: Urgency
+                            - generic [ref=e1596]: 26%
+                      - generic [ref=e1597]:
+                        - heading "XU HƯỚNG 7 NGÀY GẦN NHẤT" [level=4] [ref=e1598]
+                        - generic [ref=e1601]:
+                          - img [ref=e1602]:
+                            - generic [ref=e1607]:
+                              - generic [ref=e1609]: T-6
+                              - generic [ref=e1611]: T-5
+                              - generic [ref=e1613]: T-4
+                              - generic [ref=e1615]: T-3
+                              - generic [ref=e1617]: T-2
+                              - generic [ref=e1619]: T-1
+                              - generic [ref=e1621]: Hôm nay
+                            - generic [ref=e1623]:
+                              - generic [ref=e1625]: "0"
+                              - generic [ref=e1627]: "15"
+                              - generic [ref=e1629]: "30"
+                              - generic [ref=e1631]: "45"
+                              - generic [ref=e1633]: "60"
+                          - list [ref=e1641]:
+                            - listitem [ref=e1642]:
+                              - img [ref=e1643]
+                              - text: CSKH sau mua
+                            - listitem [ref=e1645]:
+                              - img [ref=e1646]
+                              - text: Risk review
+                            - listitem [ref=e1648]:
+                              - img [ref=e1649]
+                              - text: Urgency
+                    - button "Thu gọn" [ref=e1652] [cursor=pointer]:
+                      - text: Thu gọn
+                      - img [ref=e1653]
+                - generic [ref=e1655]:
+                  - generic [ref=e1657]:
+                    - generic [ref=e1658]:
+                      - img [ref=e1659]
+                      - heading "Cảnh Báo Khẩn" [level=3] [ref=e1661]
+                    - generic [ref=e1664] [cursor=pointer]:
+                      - img [ref=e1666]
+                      - generic [ref=e1668]:
+                        - generic [ref=e1669]:
+                          - generic [ref=e1670]: CSKH & Hậu Mua
+                          - generic [ref=e1671]: Mức độ khẩn cấp
+                        - generic [ref=e1672]:
+                          - generic [ref=e1673]: 26%
+                          - button "▼ Xem 10 hội thoại" [ref=e1674]
+                  - generic [ref=e1676]:
+                    - generic [ref=e1677]:
+                      - img [ref=e1679]
+                      - heading "Gợi ý Smax" [level=3] [ref=e1681]
+                    - generic [ref=e1682]:
+                      - generic [ref=e1683]:
+                        - generic [ref=e1684]:
+                          - generic [ref=e1685]: CAO
+                          - generic [ref=e1686]: Triển khai chương trình CSKH sau mua 3 ngày
+                        - generic [ref=e1687]:
+                          - generic [ref=e1688]: ↑ repurchase 15%
+                          - button "Lưu" [ref=e1689] [cursor=pointer]:
+                            - img [ref=e1690]
+                            - text: Lưu
+                      - generic [ref=e1692]:
+                        - generic [ref=e1693]:
+                          - generic [ref=e1694]: TRUNG BÌNH
+                          - generic [ref=e1695]: Proactive review request — gửi sau 7 ngày
+                        - generic [ref=e1696]:
+                          - generic [ref=e1697]: ↑ 5-star reviews 25%
+                          - button "Lưu" [ref=e1698] [cursor=pointer]:
+                            - img [ref=e1699]
+                            - text: Lưu
+              - generic [ref=e1701]:
+                - generic [ref=e1703]:
+                  - 'button "🎯 Kịch Bản Tư Vấn NHẸ Nhóm: KB 7.9/10 0.2" [ref=e1704] [cursor=pointer]':
+                    - generic [ref=e1705]: 🎯
+                    - generic [ref=e1707]:
+                      - generic [ref=e1708]:
+                        - heading "Kịch Bản Tư Vấn" [level=3] [ref=e1709]
+                        - generic [ref=e1710]:
+                          - generic [ref=e1711]: NHẸ
+                          - generic [ref=e1712]: "Nhóm: KB"
+                      - generic [ref=e1713]:
+                        - generic [ref=e1714]: 7.9/10
+                        - generic [ref=e1715]:
+                          - img [ref=e1716]
+                          - generic [ref=e1718]: "0.2"
+                    - img [ref=e1720]
+                  - generic [ref=e1722]:
+                    - generic [ref=e1723]:
+                      - button "Tổng quan" [ref=e1724] [cursor=pointer]
+                      - button "Diễn giải" [ref=e1725] [cursor=pointer]
+                      - button "Chi tiết (28)" [ref=e1726] [cursor=pointer]
+                    - generic [ref=e1727]:
+                      - generic [ref=e1728]:
+                        - heading "TẤT CẢ CHỈ SỐ" [level=4] [ref=e1729]
+                        - generic [ref=e1730]:
+                          - generic [ref=e1731]:
+                            - generic [ref=e1732]: Objection gặp
+                            - generic [ref=e1735]: 17%
+                          - generic [ref=e1736]:
+                            - generic [ref=e1737]: Follow script
+                            - generic [ref=e1740]: 85%
+                          - generic [ref=e1741]:
+                            - generic [ref=e1742]: Khách "bốc hơi"
+                            - generic [ref=e1745]: 12%
+                      - generic [ref=e1746]:
+                        - heading "XU HƯỚNG 7 NGÀY GẦN NHẤT" [level=4] [ref=e1747]
+                        - generic [ref=e1750]:
+                          - img [ref=e1751]:
+                            - generic [ref=e1756]:
+                              - generic [ref=e1758]: T-6
+                              - generic [ref=e1760]: T-5
+                              - generic [ref=e1762]: T-4
+                              - generic [ref=e1764]: T-3
+                              - generic [ref=e1766]: T-2
+                              - generic [ref=e1768]: T-1
+                              - generic [ref=e1770]: Hôm nay
+                            - generic [ref=e1772]:
+                              - generic [ref=e1774]: "0"
+                              - generic [ref=e1776]: "25"
+                              - generic [ref=e1778]: "50"
+                              - generic [ref=e1780]: "75"
+                              - generic [ref=e1782]: "100"
+                          - list [ref=e1790]:
+                            - listitem [ref=e1791]:
+                              - img [ref=e1792]
+                              - text: Objection gặp
+                            - listitem [ref=e1794]:
+                              - img [ref=e1795]
+                              - text: Follow script
+                            - listitem [ref=e1797]:
+                              - img [ref=e1798]
+                              - text: Khách "bốc hơi"
+                    - button "Thu gọn" [ref=e1801] [cursor=pointer]:
+                      - text: Thu gọn
+                      - img [ref=e1802]
+                - generic [ref=e1804]:
+                  - generic [ref=e1806]:
+                    - generic [ref=e1807]:
+                      - img [ref=e1808]
+                      - heading "Cảnh Báo Khẩn" [level=3] [ref=e1810]
+                      - generic [ref=e1811]: "1"
+                    - generic [ref=e1814] [cursor=pointer]:
+                      - img [ref=e1816]
+                      - generic [ref=e1818]:
+                        - generic [ref=e1819]:
+                          - generic [ref=e1820]: Kịch Bản Tư Vấn
+                          - generic [ref=e1821]: Tỉ lệ gặp phản đối
+                        - generic [ref=e1822]:
+                          - generic [ref=e1823]: 17%
+                          - button "▼ Xem 10 hội thoại" [ref=e1824]
+                  - generic [ref=e1826]:
+                    - generic [ref=e1827]:
+                      - img [ref=e1829]
+                      - heading "Gợi ý Smax" [level=3] [ref=e1831]
+                    - generic [ref=e1832]:
+                      - generic [ref=e1833]:
+                        - generic [ref=e1834]:
+                          - generic [ref=e1835]: CAO
+                          - generic [ref=e1836]: Script "bốc hơi" — 3 tin nhắn follow-up trong 48h
+                        - generic [ref=e1837]:
+                          - generic [ref=e1838]: ↑ recovery 30%
+                          - button "Lưu" [ref=e1839] [cursor=pointer]:
+                            - img [ref=e1840]
+                            - text: Lưu
+                      - generic [ref=e1842]:
+                        - generic [ref=e1843]:
+                          - generic [ref=e1844]: TRUNG BÌNH
+                          - generic [ref=e1845]: Tạo objection FAQ document cho nhân viên
+                        - generic [ref=e1846]:
+                          - generic [ref=e1847]: ↓ hesitation 20%
+                          - button "Lưu" [ref=e1848] [cursor=pointer]:
+                            - img [ref=e1849]
+                            - text: Lưu
+              - generic [ref=e1851]:
+                - generic [ref=e1853]:
+                  - 'button "⏱️ Phản Hồi & Chăm Sóc NHẸ Nhóm: RS 8.8/10 0.4" [ref=e1854] [cursor=pointer]':
+                    - generic [ref=e1855]: ⏱️
+                    - generic [ref=e1857]:
+                      - generic [ref=e1858]:
+                        - heading "Phản Hồi & Chăm Sóc" [level=3] [ref=e1859]
+                        - generic [ref=e1860]:
+                          - generic [ref=e1861]: NHẸ
+                          - generic [ref=e1862]: "Nhóm: RS"
+                      - generic [ref=e1863]:
+                        - generic [ref=e1864]: 8.8/10
+                        - generic [ref=e1865]:
+                          - img [ref=e1866]
+                          - generic [ref=e1868]: "0.4"
+                    - img [ref=e1870]
+                  - generic [ref=e1872]:
+                    - generic [ref=e1873]:
+                      - button "Tổng quan" [ref=e1874] [cursor=pointer]
+                      - button "Diễn giải" [ref=e1875] [cursor=pointer]
+                      - button "Chi tiết (22)" [ref=e1876] [cursor=pointer]
+                    - generic [ref=e1877]:
+                      - generic [ref=e1878]:
+                        - heading "TẤT CẢ CHỈ SỐ" [level=4] [ref=e1879]
+                        - generic [ref=e1880]:
+                          - generic [ref=e1881]:
+                            - generic [ref=e1882]: TB phản hồi
+                            - generic [ref=e1885]: 22p
+                          - generic [ref=e1886]:
+                            - generic [ref=e1887]: Remind KH
+                            - generic [ref=e1890]: 24%
+                          - generic [ref=e1891]:
+                            - generic [ref=e1892]: Ưu đãi cá nhân
+                            - generic [ref=e1895]: 5%
+                      - generic [ref=e1896]:
+                        - heading "XU HƯỚNG 7 NGÀY GẦN NHẤT" [level=4] [ref=e1897]
+                        - generic [ref=e1900]:
+                          - img [ref=e1901]:
+                            - generic [ref=e1906]:
+                              - generic [ref=e1908]: T-6
+                              - generic [ref=e1910]: T-5
+                              - generic [ref=e1912]: T-4
+                              - generic [ref=e1914]: T-3
+                              - generic [ref=e1916]: T-2
+                              - generic [ref=e1918]: T-1
+                              - generic [ref=e1920]: Hôm nay
+                            - generic [ref=e1922]:
+                              - generic [ref=e1924]: "0"
+                              - generic [ref=e1926]: "8"
+                              - generic [ref=e1928]: "16"
+                              - generic [ref=e1930]: "24"
+                              - generic [ref=e1932]: "32"
+                          - list [ref=e1940]:
+                            - listitem [ref=e1941]:
+                              - img [ref=e1942]
+                              - text: TB phản hồi
+                            - listitem [ref=e1944]:
+                              - img [ref=e1945]
+                              - text: Remind KH
+                            - listitem [ref=e1947]:
+                              - img [ref=e1948]
+                              - text: Ưu đãi cá nhân
+                    - button "Thu gọn" [ref=e1951] [cursor=pointer]:
+                      - text: Thu gọn
+                      - img [ref=e1952]
+                - generic [ref=e1954]:
+                  - generic [ref=e1956]:
+                    - generic [ref=e1957]:
+                      - img [ref=e1958]
+                      - heading "Cảnh Báo Khẩn" [level=3] [ref=e1960]
+                      - generic [ref=e1961]: "2"
+                    - generic [ref=e1962]:
+                      - generic [ref=e1964] [cursor=pointer]:
+                        - img [ref=e1966]
+                        - generic [ref=e1968]:
+                          - generic [ref=e1969]:
+                            - generic [ref=e1970]: Phản Hồi & Chăm Sóc
+                            - generic [ref=e1971]: Tỉ lệ nhắc lại khách hàng
+                          - generic [ref=e1972]:
+                            - generic [ref=e1973]: 24%
+                            - button "▼ Xem 10 hội thoại" [ref=e1974]
+                      - generic [ref=e1976] [cursor=pointer]:
+                        - img [ref=e1978]
+                        - generic [ref=e1980]:
+                          - generic [ref=e1981]:
+                            - generic [ref=e1982]: Phản Hồi & Chăm Sóc
+                            - generic [ref=e1983]: Ưu đãi cá nhân hóa
+                          - generic [ref=e1984]:
+                            - generic [ref=e1985]: 5%
+                            - button "▼ Xem 10 hội thoại" [ref=e1986]
+                      - generic [ref=e1988] [cursor=pointer]:
+                        - img [ref=e1990]
+                        - generic [ref=e1992]:
+                          - generic [ref=e1993]:
+                            - generic [ref=e1994]: Phản Hồi & Chăm Sóc
+                            - generic [ref=e1995]: Thời gian phản hồi trung bình
+                          - generic [ref=e1996]:
+                            - generic [ref=e1997]: 22p
+                            - button "▼ Xem 10 hội thoại" [ref=e1998]
+                  - generic [ref=e2000]:
+                    - generic [ref=e2001]:
+                      - img [ref=e2003]
+                      - heading "Gợi ý Smax" [level=3] [ref=e2005]
+                    - generic [ref=e2006]:
+                      - generic [ref=e2007]:
+                        - generic [ref=e2008]:
+                          - generic [ref=e2009]: CAO
+                          - generic [ref=e2010]: Đặt KPI phản hồi dưới 10 phút (giờ hành chính)
+                        - generic [ref=e2011]:
+                          - generic [ref=e2012]: ↑ chốt đơn 12%
+                          - button "Lưu" [ref=e2013] [cursor=pointer]:
+                            - img [ref=e2014]
+                            - text: Lưu
+                      - generic [ref=e2016]:
+                        - generic [ref=e2017]:
+                          - generic [ref=e2018]: TRUNG BÌNH
+                          - generic [ref=e2019]: Cài auto-reply 2 phút cho khung giờ ngoài
+                        - generic [ref=e2020]:
+                          - generic [ref=e2021]: ↓ complaints 40%
+                          - button "Lưu" [ref=e2022] [cursor=pointer]:
+                            - img [ref=e2023]
+                            - text: Lưu
+              - generic [ref=e2025]:
+                - generic [ref=e2027]:
+                  - 'button "⚔️ Đối Thủ Cạnh Tranh NHẸ Nhóm: ĐT 8.9/10 0.3" [ref=e2028] [cursor=pointer]':
+                    - generic [ref=e2029]: ⚔️
+                    - generic [ref=e2031]:
+                      - generic [ref=e2032]:
+                        - heading "Đối Thủ Cạnh Tranh" [level=3] [ref=e2033]
+                        - generic [ref=e2034]:
+                          - generic [ref=e2035]: NHẸ
+                          - generic [ref=e2036]: "Nhóm: ĐT"
+                      - generic [ref=e2037]:
+                        - generic [ref=e2038]: 8.9/10
+                        - generic [ref=e2039]:
+                          - img [ref=e2040]
+                          - generic [ref=e2042]: "0.3"
+                    - img [ref=e2044]
+                  - generic [ref=e2046]:
+                    - generic [ref=e2047]:
+                      - button "Tổng quan" [ref=e2048] [cursor=pointer]
+                      - button "Diễn giải" [ref=e2049] [cursor=pointer]
+                      - button "Chi tiết (28)" [ref=e2050] [cursor=pointer]
+                    - generic [ref=e2051]:
+                      - generic [ref=e2052]:
+                        - heading "TẤT CẢ CHỈ SỐ" [level=4] [ref=e2053]
+                        - generic [ref=e2054]:
+                          - generic [ref=e2055]:
+                            - generic [ref=e2056]: Nhắc đến đối thủ
+                            - generic [ref=e2059]: 14%
+                          - generic [ref=e2060]:
+                            - generic [ref=e2061]: So sánh giá
+                            - generic [ref=e2063]: 0%
+                      - generic [ref=e2064]:
+                        - heading "XU HƯỚNG 7 NGÀY GẦN NHẤT" [level=4] [ref=e2065]
+                        - generic [ref=e2068]:
+                          - img [ref=e2069]:
+                            - generic [ref=e2074]:
+                              - generic [ref=e2076]: T-6
+                              - generic [ref=e2078]: T-5
+                              - generic [ref=e2080]: T-4
+                              - generic [ref=e2082]: T-3
+                              - generic [ref=e2084]: T-2
+                              - generic [ref=e2086]: T-1
+                              - generic [ref=e2088]: Hôm nay
+                            - generic [ref=e2090]:
+                              - generic [ref=e2092]: "0"
+                              - generic [ref=e2094]: "6"
+                              - generic [ref=e2096]: "12"
+                              - generic [ref=e2098]: "18"
+                              - generic [ref=e2100]: "24"
+                          - list [ref=e2106]:
+                            - listitem [ref=e2107]:
+                              - img [ref=e2108]
+                              - text: Nhắc đến đối thủ
+                            - listitem [ref=e2110]:
+                              - img [ref=e2111]
+                              - text: So sánh giá
+                    - button "Thu gọn" [ref=e2114] [cursor=pointer]:
+                      - text: Thu gọn
+                      - img [ref=e2115]
+                - generic [ref=e2117]:
+                  - generic [ref=e2120]:
+                    - img [ref=e2121]
+                    - heading "Cảnh Báo Khẩn" [level=3] [ref=e2123]
+                  - generic [ref=e2125]:
+                    - generic [ref=e2126]:
+                      - img [ref=e2128]
+                      - heading "Gợi ý Smax" [level=3] [ref=e2130]
+                    - generic [ref=e2131]:
+                      - generic [ref=e2132]:
+                        - generic [ref=e2133]:
+                          - generic [ref=e2134]: CAO
+                          - generic [ref=e2135]: Chuẩn bị "battle card" cho top 3 đối thủ thường gặp
+                        - generic [ref=e2136]:
+                          - generic [ref=e2137]: ↑ win rate 20%
+                          - button "Lưu" [ref=e2138] [cursor=pointer]:
+                            - img [ref=e2139]
+                            - text: Lưu
+                      - generic [ref=e2141]:
+                        - generic [ref=e2142]:
+                          - generic [ref=e2143]: TRUNG BÌNH
+                          - generic [ref=e2144]: Script "không so sánh giá" — focus vào giá trị
+                        - generic [ref=e2145]:
+                          - generic [ref=e2146]: ↓ price war 35%
+                          - button "Lưu" [ref=e2147] [cursor=pointer]:
+                            - img [ref=e2148]
+                            - text: Lưu
+              - generic [ref=e2150]:
+                - generic [ref=e2152]:
+                  - 'button "📊 Chất Lượng Nguồn Lead NHẸ Nhóm: LQ 9.9/10 0.9" [ref=e2153] [cursor=pointer]':
+                    - generic [ref=e2154]: 📊
+                    - generic [ref=e2156]:
+                      - generic [ref=e2157]:
+                        - heading "Chất Lượng Nguồn Lead" [level=3] [ref=e2158]
+                        - generic [ref=e2159]:
+                          - generic [ref=e2160]: NHẸ
+                          - generic [ref=e2161]: "Nhóm: LQ"
+                      - generic [ref=e2162]:
+                        - generic [ref=e2163]: 9.9/10
+                        - generic [ref=e2164]:
+                          - img [ref=e2165]
+                          - generic [ref=e2167]: "0.9"
+                    - img [ref=e2169]
+                  - generic [ref=e2171]:
+                    - generic [ref=e2172]:
+                      - button "Tổng quan" [ref=e2173] [cursor=pointer]
+                      - button "Diễn giải" [ref=e2174] [cursor=pointer]
+                      - button "Chi tiết (39)" [ref=e2175] [cursor=pointer]
+                    - generic [ref=e2176]:
+                      - generic [ref=e2177]:
+                        - generic [ref=e2178]:
+                          - img [ref=e2179]
+                          - heading "Những chỉ số cần chú ý" [level=4] [ref=e2181]
+                        - generic [ref=e2184]:
+                          - img [ref=e2186]
+                          - generic [ref=e2188]:
+                            - generic [ref=e2189]:
+                              - generic [ref=e2190]: Tỉ lệ chốt đơn
+                              - generic [ref=e2191]: 7%
+                            - paragraph [ref=e2194]: Tỉ lệ hội thoại chốt được đơn thấp. Cần cải thiện kịch bản tư vấn.
+                      - generic [ref=e2195]:
+                        - heading "TẤT CẢ CHỈ SỐ" [level=4] [ref=e2196]
+                        - generic [ref=e2197]:
+                          - generic [ref=e2198]:
+                            - generic [ref=e2199]: Junk Lead
+                            - generic [ref=e2202]: 3%
+                          - generic [ref=e2203]:
+                            - generic [ref=e2204]: SĐT thu thập
+                            - generic [ref=e2206]: 0%
+                          - generic [ref=e2207]:
+                            - generic [ref=e2208]: Tỉ lệ chốt đơn
+                            - generic [ref=e2211]: 7%
+                      - generic [ref=e2212]:
+                        - heading "XU HƯỚNG 7 NGÀY GẦN NHẤT" [level=4] [ref=e2213]
+                        - generic [ref=e2216]:
+                          - img [ref=e2217]:
+                            - generic [ref=e2222]:
+                              - generic [ref=e2224]: T-6
+                              - generic [ref=e2226]: T-5
+                              - generic [ref=e2228]: T-4
+                              - generic [ref=e2230]: T-3
+                              - generic [ref=e2232]: T-2
+                              - generic [ref=e2234]: T-1
+                              - generic [ref=e2236]: Hôm nay
+                            - generic [ref=e2238]:
+                              - generic [ref=e2240]: "0"
+                              - generic [ref=e2242]: "4"
+                              - generic [ref=e2244]: "8"
+                              - generic [ref=e2246]: "12"
+                              - generic [ref=e2248]: "16"
+                          - list [ref=e2256]:
+                            - listitem [ref=e2257]:
+                              - img [ref=e2258]
+                              - text: Junk Lead
+                            - listitem [ref=e2260]:
+                              - img [ref=e2261]
+                              - text: SĐT thu thập
+                            - listitem [ref=e2263]:
+                              - img [ref=e2264]
+                              - text: Tỉ lệ chốt đơn
+                    - button "Thu gọn" [ref=e2267] [cursor=pointer]:
+                      - text: Thu gọn
+                      - img [ref=e2268]
+                - generic [ref=e2270]:
+                  - generic [ref=e2272]:
+                    - generic [ref=e2273]:
+                      - img [ref=e2274]
+                      - heading "Cảnh Báo Khẩn" [level=3] [ref=e2276]
+                      - generic [ref=e2277]: "2"
+                    - generic [ref=e2278]:
+                      - generic [ref=e2280] [cursor=pointer]:
+                        - img [ref=e2282]
+                        - generic [ref=e2284]:
+                          - generic [ref=e2285]:
+                            - generic [ref=e2286]: Chất Lượng Nguồn Lead
+                            - generic [ref=e2287]: Thu thập số điện thoại
+                          - generic [ref=e2288]:
+                            - generic [ref=e2289]: 0%
+                            - button "▼ Xem 10 hội thoại" [ref=e2290]
+                      - generic [ref=e2292] [cursor=pointer]:
+                        - img [ref=e2294]
+                        - generic [ref=e2296]:
+                          - generic [ref=e2297]:
+                            - generic [ref=e2298]: Chất Lượng Nguồn Lead
+                            - generic [ref=e2299]: Tỉ lệ chốt đơn
+                          - generic [ref=e2300]:
+                            - generic [ref=e2301]: 7%
+                            - button "▼ Xem 10 hội thoại" [ref=e2302]
+                  - generic [ref=e2304]:
+                    - generic [ref=e2305]:
+                      - img [ref=e2307]
+                      - heading "Gợi ý Smax" [level=3] [ref=e2309]
+                    - generic [ref=e2310]:
+                      - generic [ref=e2311]:
+                        - generic [ref=e2312]:
+                          - generic [ref=e2313]: CAO
+                          - generic [ref=e2314]: Thêm câu hỏi sàng lọc vào ad creative
+                        - generic [ref=e2315]:
+                          - generic [ref=e2316]: ↓ junk 20%
+                          - button "Lưu" [ref=e2317] [cursor=pointer]:
+                            - img [ref=e2318]
+                            - text: Lưu
+                      - generic [ref=e2320]:
+                        - generic [ref=e2321]:
+                          - generic [ref=e2322]: CAO
+                          - generic [ref=e2323]: Script phản hồi nhanh trong 5p đầu
+                        - generic [ref=e2324]:
+                          - generic [ref=e2325]: ↑ chốt đơn 15%
+                          - button "Lưu" [ref=e2326] [cursor=pointer]:
+                            - img [ref=e2327]
+                            - text: Lưu
+                      - generic [ref=e2329]:
+                        - generic [ref=e2330]:
+                          - generic [ref=e2331]: TRUNG BÌNH
+                          - generic [ref=e2332]: Auto-reply với template tin nhắn cá nhân hóa
+                        - generic [ref=e2333]:
+                          - generic [ref=e2334]: ↑ phản hồi 30%
+                          - button "Lưu" [ref=e2335] [cursor=pointer]:
+                            - img [ref=e2336]
+                            - text: Lưu
+  - generic [ref=e2338]: "4"

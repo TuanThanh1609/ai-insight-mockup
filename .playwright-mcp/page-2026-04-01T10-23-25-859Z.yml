@@ -1,0 +1,345 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e7]: S
+      - button "Fahasa" [ref=e10]:
+        - img [ref=e12]
+        - generic [ref=e20]: Fahasa
+        - img [ref=e21]
+    - navigation [ref=e23]:
+      - button "Bảng tin" [ref=e24]:
+        - img [ref=e25]
+        - text: Bảng tin
+      - button "Nhắn tin" [ref=e28]:
+        - img [ref=e29]
+        - text: Nhắn tin
+      - button "Bot-Auto" [ref=e31]:
+        - img [ref=e32]
+        - text: Bot-Auto
+      - button "Khách hàng" [ref=e35]:
+        - img [ref=e36]
+        - text: Khách hàng
+      - button "Thống kê" [ref=e41]:
+        - img [ref=e42]
+        - text: Thống kê
+      - button "Zalo ZBS" [ref=e43]
+    - generic [ref=e44]:
+      - button [ref=e45]:
+        - img [ref=e46]
+      - button [ref=e49]:
+        - img [ref=e50]
+      - button [ref=e56]:
+        - img [ref=e57]
+      - button "2469" [ref=e61]:
+        - img [ref=e62]
+        - generic [ref=e65]: "2469"
+      - button "TT" [ref=e67]:
+        - generic [ref=e68]:
+          - generic [ref=e70]: TT
+          - img [ref=e72]
+        - img [ref=e75]
+  - generic [ref=e77]:
+    - complementary [ref=e78]:
+      - generic [ref=e80]:
+        - img [ref=e82]
+        - generic [ref=e84]:
+          - generic [ref=e85]: AI Insight
+          - generic [ref=e86]: Multi-Channel
+      - navigation [ref=e87]:
+        - generic [ref=e88]: Menu
+        - link "Cài đặt Insight" [ref=e89] [cursor=pointer]:
+          - /url: /insight/settings
+          - img [ref=e90]
+          - generic [ref=e95]: Cài đặt Insight
+        - link "Dashboard Insight AI" [ref=e96] [cursor=pointer]:
+          - /url: /insight/insight-dashboard
+          - img [ref=e97]
+          - generic [ref=e98]: Dashboard Insight
+          - generic [ref=e99]: AI
+        - link "Khám Bệnh" [ref=e100] [cursor=pointer]:
+          - /url: /insight/medical-checkup
+          - img [ref=e101]
+          - generic [ref=e105]: Khám Bệnh
+        - link "Tổng quan Ads" [ref=e106] [cursor=pointer]:
+          - /url: /insight/dashboard
+          - img [ref=e107]
+          - generic [ref=e109]: Tổng quan Ads
+        - link "Gợi ý tối ưu Ads AI" [ref=e110] [cursor=pointer]:
+          - /url: /insight/ads-optimization
+          - img [ref=e111]
+          - generic [ref=e114]: Gợi ý tối ưu Ads
+          - generic [ref=e115]: AI
+      - generic [ref=e117]:
+        - text: Module Insight Ads
+        - text: v1.0 — Demo
+    - main [ref=e118]:
+      - generic [ref=e119]:
+        - generic [ref=e120]:
+          - generic [ref=e121]:
+            - generic [ref=e122]: 🏥
+            - heading "Khám Bệnh" [level=1] [ref=e123]
+          - paragraph [ref=e124]: Phân tích đa kênh · Chẩn đoán 10 nhóm vấn đề · Gợi ý hành động từ Chuyên gia Smax
+        - generic [ref=e126]:
+          - button "💬 Hội Thoại" [ref=e127] [cursor=pointer]
+          - button "📣 Quảng Cáo" [ref=e128] [cursor=pointer]
+        - generic [ref=e130]:
+          - generic [ref=e132]:
+            - generic [ref=e133]: ✓
+            - generic [ref=e134]: Kết nối Fanpage
+          - generic [ref=e137]:
+            - generic [ref=e138]: ✓
+            - generic [ref=e139]: Ngành hàng
+          - generic [ref=e142]:
+            - generic [ref=e143]: ✓
+            - generic [ref=e144]: Số lượng
+          - generic [ref=e147]:
+            - generic [ref=e148]: "4"
+            - generic [ref=e149]: Chọn hạng mục
+          - generic [ref=e152]:
+            - generic [ref=e153]: "5"
+            - generic [ref=e154]: Thu thập dữ liệu
+          - generic [ref=e157]:
+            - generic [ref=e158]: "6"
+            - generic [ref=e159]: Kết quả
+        - generic [ref=e335]:
+          - generic [ref=e336]:
+            - generic [ref=e337]:
+              - generic [ref=e338]: 📋
+              - heading "Chọn Hạng Mục Khám Bệnh" [level=2] [ref=e339]
+            - paragraph [ref=e340]: Bạn đang gặp vấn đề gì? Tích chọn để khám ngay.
+            - paragraph [ref=e341]: Mỗi hạng mục = 1 vấn đề cụ thể. Chọn từ 1 → 9 hạng mục.
+          - generic [ref=e343]:
+            - generic [ref=e344] [cursor=pointer]:
+              - generic [ref=e345]:
+                - img [ref=e347]
+                - generic [ref=e350]:
+                  - generic [ref=e351]: 🔁
+                  - generic [ref=e352]: Cuộc Trò Chuyện Bỏ Dở
+                  - generic [ref=e353]: 🔵 TRUNG BÌNH
+              - generic [ref=e355]:
+                - generic [ref=e356]: 📌 Nguyên nhân
+                - list [ref=e357]:
+                  - listitem [ref=e358]: • Sale rep quá chậm → khách nhắn nhiều nơi, quên mất là đã nhắn shop này
+                  - listitem [ref=e359]: • Khách chỉ hỏi nhanh rồi mua chỗ khác (price shopping)
+                  - listitem [ref=e360]: • Không có "closing" rõ ràng → hội thoại kết thúc mà không có kết quả
+              - generic [ref=e361]:
+                - generic [ref=e362]: 🔬 Phương pháp khám
+                - list [ref=e363]:
+                  - listitem [ref=e364]: □ Đếm tỉ lệ hội thoại khách bỏ giữa chừng (không rep lại)
+                  - listitem [ref=e365]: □ Kiểm tra hội thoại có kết thúc rõ ràng (xin số, chốt đơn) hay không
+                  - listitem [ref=e366]: □ Đếm hội thoại không có tin nhắn cuối từ phía shop
+              - generic [ref=e367]:
+                - generic [ref=e368]: 📊 Chỉ số
+                - generic [ref=e369]:
+                  - generic [ref=e370]: Tỉ lệ bỏ giữa chừng
+                  - generic [ref=e371]: Tỉ lệ không kết thúc
+                  - generic [ref=e372]: Tin nhắn cuối của shop
+            - generic [ref=e373] [cursor=pointer]:
+              - generic [ref=e374]:
+                - img [ref=e376]
+                - generic [ref=e379]:
+                  - generic [ref=e380]: 🎨
+                  - generic [ref=e381]: Ngôn Ngữ & Cách Giao Tiếp
+                  - generic [ref=e382]: 🔵 TRUNG BÌNH
+              - generic [ref=e384]:
+                - generic [ref=e385]: 📌 Nguyên nhân
+                - list [ref=e386]:
+                  - listitem [ref=e387]: • Sale dùng từ ngữ không chuyên nghiệp → khách mất tin tưởng
+                  - listitem [ref=e388]: • Quá nhiều emoji / icon → nhìn không nghiêm túc, giảm giá trị sản phẩm
+                  - listitem [ref=e389]: • Tin nhắn quá dài / quá ngắn → khách không hiểu hoặc cảm giác bị spam
+              - generic [ref=e390]:
+                - generic [ref=e391]: 🔬 Phương pháp khám
+                - list [ref=e392]:
+                  - listitem [ref=e393]: □ Kiểm tra giọng điệu có phù hợp với thương hiệu và nhóm KH mục tiêu
+                  - listitem [ref=e394]: □ Đếm tỉ lệ tin nhắn over-emoji (quá 3 emoji / tin)
+                  - listitem [ref=e395]: □ Đánh giá độ dài tin nhắn TB (quá dài > 200 chữ / quá ngắn < 5 chữ)
+              - generic [ref=e396]:
+                - generic [ref=e397]: 📊 Chỉ số
+                - generic [ref=e398]:
+                  - generic [ref=e399]: Tỉ lệ giọng không phù hợp
+                  - generic [ref=e400]: Over-emoji
+                  - generic [ref=e401]: Tin quá dài/ngắn
+            - generic [ref=e402] [cursor=pointer]:
+              - generic [ref=e403]:
+                - img [ref=e405]
+                - generic [ref=e408]:
+                  - generic [ref=e409]: 📦
+                  - generic [ref=e410]: Upsell / Cross-sell
+                  - generic [ref=e411]: 🔵 TRUNG BÌNH
+              - generic [ref=e413]:
+                - generic [ref=e414]: 📌 Nguyên nhân
+                - list [ref=e415]:
+                  - listitem [ref=e416]: • Sale chỉ tập trung bán 1 sản phẩm chính → bỏ lỡ cơ hội tăng AOV
+                  - listitem [ref=e417]: • Không có script upsell → sale không biết gợi ý sản phẩm đi kèm nào
+                  - listitem [ref=e418]: • Khách chưa sẵn sàng mua thêm → gợi ý quá sớm, gây phiền
+              - generic [ref=e419]:
+                - generic [ref=e420]: 🔬 Phương pháp khám
+                - list [ref=e421]:
+                  - listitem [ref=e422]: □ Kiểm tra sale có gợi ý sản phẩm đi kèm / phiên bản cao cấp hơn không
+                  - listitem [ref=e423]: □ Đếm tỉ lệ upsell thành công (khách đồng ý mua thêm)
+                  - listitem [ref=e424]: □ Đếm tỉ lệ khách bỏ qua gợi ý upsell (im lặng hoặc từ chối)
+              - generic [ref=e425]:
+                - generic [ref=e426]: 📊 Chỉ số
+                - generic [ref=e427]:
+                  - generic [ref=e428]: Tỉ lệ gợi ý sản phẩm
+                  - generic [ref=e429]: Tỉ lệ upsell thành công
+                  - generic [ref=e430]: Tỉ lệ bỏ qua gợi ý
+            - generic [ref=e431] [cursor=pointer]:
+              - generic [ref=e432]:
+                - img [ref=e434]
+                - generic [ref=e437]:
+                  - generic [ref=e438]: 🏆
+                  - generic [ref=e439]: Nhân Viên Tư Vấn
+                  - generic [ref=e440]: 🔵 TRUNG BÌNH
+              - generic [ref=e442]:
+                - generic [ref=e443]: 📌 Nguyên nhân
+                - list [ref=e444]:
+                  - listitem [ref=e445]: • Sale chưa được đào tạo bài bản → tư vấn sai sản phẩm, sai giá
+                  - listitem [ref=e446]: • Thiếu script chuẩn → mỗi sale một cách trả lời, không nhất quán
+                  - listitem [ref=e447]: • Áp lực doanh số → sale vội vàng, bỏ qua bước hiểu nhu cầu khách
+              - generic [ref=e448]:
+                - generic [ref=e449]: 🔬 Phương pháp khám
+                - list [ref=e450]:
+                  - listitem [ref=e451]: □ Đánh giá thái độ tư vấn của từng sale (chu đáo vs vội vàng)
+                  - listitem [ref=e452]: □ Kiểm tra lỗi mất khách do tư vấn sai / bỏ qua khách
+                  - listitem [ref=e453]: □ So sánh tỉ lệ tư vấn đúng giữa các sale
+              - generic [ref=e454]:
+                - generic [ref=e455]: 📊 Chỉ số
+                - generic [ref=e456]:
+                  - generic [ref=e457]: Tỉ lệ thái độ tốt
+                  - generic [ref=e458]: Tỉ lệ lỗi mất khách
+                  - generic [ref=e459]: Tỉ lệ tư vấn đúng
+            - generic [ref=e460] [cursor=pointer]:
+              - generic [ref=e461]:
+                - img [ref=e463]
+                - generic [ref=e466]:
+                  - generic [ref=e467]: 💬
+                  - generic [ref=e468]: CSKH & Hậu Mua
+                  - generic [ref=e469]: 🔵 TRUNG BÌNH
+              - generic [ref=e471]:
+                - generic [ref=e472]: 📌 Nguyên nhân
+                - list [ref=e473]:
+                  - listitem [ref=e474]: • Khách mua xong không được chăm sóc → quên shop, mua chỗ khác cho lần sau
+                  - listitem [ref=e475]: • Không có chương trình giữ chân khách cũ → tỉ lệ quay lại thấp
+                  - listitem [ref=e476]: • Sản phẩm có vấn đề nhưng không được phát hiện → khách bực rồi đăng review
+              - generic [ref=e477]:
+                - generic [ref=e478]: 🔬 Phương pháp khám
+                - list [ref=e479]:
+                  - listitem [ref=e480]: □ Kiểm tra khách có được CSKH sau mua (tặng quà, hỏi thăm, hướng dẫn)
+                  - listitem [ref=e481]: □ Đếm tỉ lệ khách có dấu hiệu sẽ đăng review xấu (khiếu nại, đòi hoàn tiền)
+                  - listitem [ref=e482]: □ Đánh giá urgency trong tin nhắn hậu mua (bán thêm hay chỉ thank you)
+              - generic [ref=e483]:
+                - generic [ref=e484]: 📊 Chỉ số
+                - generic [ref=e485]:
+                  - generic [ref=e486]: Tỉ lệ CSKH sau mua
+                  - generic [ref=e487]: Rủi ro review xấu
+                  - generic [ref=e488]: Urgency trong hậu mua
+            - generic [ref=e489] [cursor=pointer]:
+              - generic [ref=e490]:
+                - img [ref=e492]
+                - generic [ref=e495]:
+                  - generic [ref=e496]: 🎯
+                  - generic [ref=e497]: Kịch Bản Tư Vấn
+                  - generic [ref=e498]: 🟢 NHẸ
+              - generic [ref=e500]:
+                - generic [ref=e501]: 📌 Nguyên nhân
+                - list [ref=e502]:
+                  - listitem [ref=e503]: • Sale không được training objection handling → không biết cách phản hồi
+                  - listitem [ref=e504]: • Shop không có kịch bản chuẩn → mỗi người một cách xử lý, không hiệu quả
+                  - listitem [ref=e505]: • Khách hỏi về giá / so sánh → sale không biết tạo giá trị thay vì giảm giá
+              - generic [ref=e506]:
+                - generic [ref=e507]: 🔬 Phương pháp khám
+                - list [ref=e508]:
+                  - listitem [ref=e509]: □ Đếm tần suất objection xuất hiện (giá đắt, hàng fake, hỏi chồng…)
+                  - listitem [ref=e510]: □ Kiểm tra sale có follow script kịch bản chuẩn khi gặp objection
+                  - listitem [ref=e511]: □ Đếm tỉ lệ khách "bốc hơi" ngay sau khi đưa ra objection
+              - generic [ref=e512]:
+                - generic [ref=e513]: 📊 Chỉ số
+                - generic [ref=e514]:
+                  - generic [ref=e515]: Tỉ lệ objection gặp
+                  - generic [ref=e516]: Tỉ lệ follow script
+                  - generic [ref=e517]: Tỉ lệ khách "bốc hơi"
+            - generic [ref=e518] [cursor=pointer]:
+              - generic [ref=e519]:
+                - img [ref=e521]
+                - generic [ref=e524]:
+                  - generic [ref=e525]: ⏱️
+                  - generic [ref=e526]: Phản Hồi & Chăm Sóc
+                  - generic [ref=e527]: 🟢 NHẸ
+              - generic [ref=e529]:
+                - generic [ref=e530]: 📌 Nguyên nhân
+                - list [ref=e531]:
+                  - listitem [ref=e532]: • Sale phản hồi thủ công, không có auto-reply → khách chờ lâu rồi bỏ
+                  - listitem [ref=e533]: • Ngoài giờ làm việc → tin nhắn không được trả lời
+                  - listitem [ref=e534]: • Khối lượng tin nhắn lớn → sale không kịp rep hết
+              - generic [ref=e535]:
+                - generic [ref=e536]: 🔬 Phương pháp khám
+                - list [ref=e537]:
+                  - listitem [ref=e538]: □ Đo thời gian phản hồi TB từ lúc khách nhắn đến lúc sale rep
+                  - listitem [ref=e539]: □ Đếm tỉ lệ khách được nhắc nhở (remind) khi chưa được rep
+                  - listitem [ref=e540]: □ Kiểm tra khách có được gửi ưu đãi cá nhân hóa hay không
+              - generic [ref=e541]:
+                - generic [ref=e542]: 📊 Chỉ số
+                - generic [ref=e543]:
+                  - generic [ref=e544]: Thời gian phản hồi TB
+                  - generic [ref=e545]: Tỉ lệ Remind KH
+                  - generic [ref=e546]: Tỉ lệ ưu đãi cá nhân
+            - generic [ref=e547] [cursor=pointer]:
+              - generic [ref=e548]:
+                - img [ref=e550]
+                - generic [ref=e553]:
+                  - generic [ref=e554]: ⚔️
+                  - generic [ref=e555]: Đối Thủ Cạnh Tranh
+                  - generic [ref=e556]: 🟢 NHẸ
+              - generic [ref=e558]:
+                - generic [ref=e559]: 📌 Nguyên nhân
+                - list [ref=e560]:
+                  - listitem [ref=e561]: • Đối thủ chạy quảng cáo hiệu quả hơn → khách bị cuốn đi
+                  - listitem [ref=e562]: • Shop không có USPs rõ ràng → khách dễ so sánh và rời bỏ
+                  - listitem [ref=e563]: • Giá cao hơn thị trường mà không có giá trị cộng thêm rõ ràng
+              - generic [ref=e564]:
+                - generic [ref=e565]: 🔬 Phương pháp khám
+                - list [ref=e566]:
+                  - listitem [ref=e567]: □ Đếm tần suất khách nhắc đến tên đối thủ trong hội thoại
+                  - listitem [ref=e568]: □ Kiểm tra khách có so sánh giá / chất lượng với đối thủ hay không
+                  - listitem [ref=e569]: □ Đánh giá mức độ shop phản hồi khi khách nhắc đến đối thủ
+              - generic [ref=e570]:
+                - generic [ref=e571]: 📊 Chỉ số
+                - generic [ref=e572]:
+                  - generic [ref=e573]: Tỉ lệ nhắc đến đối thủ
+                  - generic [ref=e574]: Tỉ lệ so sánh giá
+                  - generic [ref=e575]: Cách phản hồi đối thủ
+            - generic [ref=e576] [cursor=pointer]:
+              - generic [ref=e577]:
+                - img [ref=e579]
+                - generic [ref=e582]:
+                  - generic [ref=e583]: 📊
+                  - generic [ref=e584]: Chất Lượng Nguồn Lead
+                  - generic [ref=e585]: 🟢 NHẸ
+              - generic [ref=e587]:
+                - generic [ref=e588]: 📌 Nguyên nhân
+                - list [ref=e589]:
+                  - listitem [ref=e590]: • Ads targeting quá rộng → click không đúng KH mục tiêu
+                  - listitem [ref=e591]: • Không sàng lọc khách trước khi tư vấn → sale tốn thời gian vào junk
+                  - listitem [ref=e592]: • Landing page không đúng kỳ vọng → khách rời ngay sau khi click
+              - generic [ref=e593]:
+                - generic [ref=e594]: 🔬 Phương pháp khám
+                - list [ref=e595]:
+                  - listitem [ref=e596]: □ Đếm tỉ lệ khách spam / tự động nhắn từ ads
+                  - listitem [ref=e597]: □ Kiểm tra khách có để lại SĐT thật hay không
+                  - listitem [ref=e598]: □ Đánh giá khách có hành vi mua thật hay chỉ hỏi giá
+              - generic [ref=e599]:
+                - generic [ref=e600]: 📊 Chỉ số
+                - generic [ref=e601]:
+                  - generic [ref=e602]: Junk Lead %
+                  - generic [ref=e603]: Tỉ lệ thu thập SĐT
+                  - generic [ref=e604]: Tỉ lệ chốt đơn
+          - generic [ref=e605]:
+            - generic [ref=e606]:
+              - button "☑ Chọn tất cả" [ref=e607] [cursor=pointer]
+              - generic [ref=e608]: "|"
+              - button "☐ Bỏ chọn tất cả" [ref=e609] [cursor=pointer]
+            - generic [ref=e610]: 9/9 đã chọn
+            - generic [ref=e611]:
+              - button "← Quay lại" [ref=e612] [cursor=pointer]
+              - button "Tiếp tục →" [ref=e613] [cursor=pointer]

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #fcf8fb; font-family: Arial, sans-serif;
+  display: flex; flex-direction: column;
+}
+.top-bar { background: #1A2138; padding: 9pt 50pt; display: flex; align-items: center; gap: 8pt; }
+.eyebrow { color: #BF3003; font-size: 7.5pt; font-weight: bold; letter-spacing: 2pt; text-transform: uppercase; margin: 0; }
+.badge { background: #BF3003; color: #ffffff; font-size: 7pt; font-weight: bold; padding: 2pt 6pt; border-radius: 3pt; }
+.main { padding: 6pt 50pt 5pt 50pt; }
+.header-lbl { color: #BF3003; font-size: 7pt; font-weight: bold; letter-spacing: 2pt; text-transform: uppercase; margin-bottom: 3pt; }
+h2 { color: #1A2138; font-size: 12pt; font-weight: bold; margin: 0 0 6pt 0; }
+.grid { display: flex; flex-wrap: wrap; gap: 5pt; }
+.dc { width: calc(33.33% - 4pt); background: #ffffff; border-radius: 6pt; box-shadow: 0 1pt 5pt rgba(26,33,56,0.07); padding: 6pt 8pt; }
+.dh { display: flex; align-items: center; gap: 4pt; margin-bottom: 3pt; }
+.dot { width: 5pt; height: 5pt; border-radius: 50%; flex-shrink: 0; }
+.sev { background: #BF3003; }
+.mod { background: #0052FF; }
+.mld { background: #059669; }
+.dn { font-size: 8pt; font-weight: bold; color: #1A2138; flex: 1; }
+.sc { font-size: 7pt; font-weight: bold; padding: 1pt 4pt; border-radius: 2pt; }
+.sc-sev { background: #FFF3E8; color: #BF3003; }
+.sc-mod { background: #E8F0FF; color: #0052FF; }
+.sc-mld { background: #E8FFF4; color: #059669; }
+.dm { font-size: 7pt; color: #5A5A70; margin: 0; }
+.legend { display: flex; gap: 10pt; margin-top: 5pt; }
+.li { display: flex; align-items: center; gap: 4pt; font-size: 7pt; color: #5A5A70; }
+.dot-sm { width: 5pt; height: 5pt; border-radius: 50%; }
+.insight { background: #1A2138; border-radius: 6pt; padding: 7pt 10pt; margin-top: 6pt; display: flex; gap: 8pt; align-items: flex-start; }
+.ins-left { flex: 2; }
+.ins-right { flex: 1; }
+.il { color: #BF3003; font-size: 6.5pt; font-weight: bold; letter-spacing: 2pt; text-transform: uppercase; margin-bottom: 3pt; }
+.it { color: #ffffff; font-size: 8pt; font-weight: bold; margin-bottom: 2pt; }
+.id { color: #8BA3CC; font-size: 7.5pt; margin: 0; line-height: 1.4; }
+.at { color: #1A2138; font-size: 7.5pt; font-weight: bold; margin-bottom: 2pt; }
+.ad { color: #5A5A70; font-size: 7pt; margin: 0; }
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <p class="eyebrow">9 Nhóm Bệnh — Chẩn Đoán Toàn Diện</p>
+  <p class="badge">SMAX DIAGNOSTICS</p>
+</div>
+<div class="main">
+  <p class="header-lbl">Hồ sơ bệnh án mẫu: Ngành Thời trang · 3,462 hội thoại</p>
+  <h2>9 nhóm vấn đề — scan trong 3 giây, ưu tiên hành động ngay</h2>
+  <div class="grid">
+    <div class="dc"><div class="dh"><div class="dot sev"></div><p class="dn">Lead Quality</p><p class="sc sc-sev">2.1</p></div><p class="dm">Junk Lead 42% · SĐT 23% · Chốt 18%</p></div>
+    <div class="dc"><div class="dh"><div class="dot sev"></div><p class="dn">Nhân Viên Tư Vấn</p><p class="sc sc-sev">4.8</p></div><p class="dm">Thái độ · Lỗi mất khách · Tư vấn</p></div>
+    <div class="dc"><div class="dh"><div class="dot sev"></div><p class="dn">Upsell / Cross-sell</p><p class="sc sc-sev">4.6</p></div><p class="dm">Gợi ý SP bổ sung · Gói cao · Ignore</p></div>
+    <div class="dc"><div class="dh"><div class="dot mod"></div><p class="dn">CSKH & Hậu Mua</p><p class="sc sc-mod">6.4</p></div><p class="dm">CSKH · Review risk · Urgency</p></div>
+    <div class="dc"><div class="dh"><div class="dot mod"></div><p class="dn">Kịch Bản Tư Vấn</p><p class="sc sc-mod">7.2</p></div><p class="dm">Objection handling · Script follow-up</p></div>
+    <div class="dc"><div class="dh"><div class="dot mod"></div><p class="dn">Cuộc Trò Chuyện Bỏ Dở</p><p class="sc sc-mod">7.4</p></div><p class="dm">Abandoned chat · No closure</p></div>
+    <div class="dc"><div class="dh"><div class="dot mld"></div><p class="dn">Đối Thủ Cạnh Tranh</p><p class="sc sc-mld">7.1</p></div><p class="dm">Đối thủ nhắc · So sánh giá</p></div>
+    <div class="dc"><div class="dh"><div class="dot mld"></div><p class="dn">Ngôn Ngữ & Cách Giao Tiếp</p><p class="sc sc-mld">7.4</p></div><p class="dm">Tone giọng · Emoji usage</p></div>
+    <div class="dc"><div class="dh"><div class="dot mld"></div><p class="dn">Phản Hồi & Chăm Sóc</p><p class="sc sc-mld">8.6</p></div><p class="dm">Tốc độ phản hồi · Remind KH · Ưu đãi</p></div>
+  </div>
+  <div class="legend">
+    <div class="li"><div class="dot-sm" style="background:#BF3003;"></div><p>Nặng (0–3.0)</p></div>
+    <div class="li"><div class="dot-sm" style="background:#0052FF;"></div><p>Trung bình (3.1–6.0)</p></div>
+    <div class="li"><div class="dot-sm" style="background:#059669;"></div><p>Nhẹ (6.1–10)</p></div>
+  </div>
+  <div class="insight">
+    <div class="ins-left">
+      <p class="il">Điểm Nổi Bật</p>
+      <p class="it">Lead Quality = "Nặng" — Junk Lead 42%</p>
+      <p class="id">Trên 40% tin nhắn là khách rác (ads auto-reply, hỏi chung, bấm nhầm). Đây là vấn đề nghiêm trọng nhất kéo tụt toàn bộ team tư vấn. Smax gợi ý: thêm câu hỏi sàng lọc vào ad creative, script phản hồi nhanh 5 phút đầu.</p>
+    </div>
+    <div class="ins-right" style="background:#0D1526;border-radius:6pt;padding:8pt;">
+      <p class="il">Action Đầu Tiên</p>
+      <p class="at">Thêm câu hỏi sàng lọc</p>
+      <p class="ad">Giảm junk 20%. Tích hợp Smax Auto-reply.</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

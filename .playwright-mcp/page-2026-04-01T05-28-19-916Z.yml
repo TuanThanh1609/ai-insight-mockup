@@ -1,0 +1,164 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e7]: S
+      - button "Fahasa" [ref=e10]:
+        - img [ref=e12]
+        - generic [ref=e20]: Fahasa
+        - img [ref=e21]
+    - navigation [ref=e23]:
+      - button "Bảng tin" [ref=e24]:
+        - img [ref=e25]
+        - text: Bảng tin
+      - button "Nhắn tin" [ref=e28]:
+        - img [ref=e29]
+        - text: Nhắn tin
+      - button "Bot-Auto" [ref=e31]:
+        - img [ref=e32]
+        - text: Bot-Auto
+      - button "Khách hàng" [ref=e35]:
+        - img [ref=e36]
+        - text: Khách hàng
+      - button "Thống kê" [ref=e41]:
+        - img [ref=e42]
+        - text: Thống kê
+      - button "Zalo ZBS" [ref=e43]
+    - generic [ref=e44]:
+      - button [ref=e45]:
+        - img [ref=e46]
+      - button [ref=e49]:
+        - img [ref=e50]
+      - button [ref=e56]:
+        - img [ref=e57]
+      - button "2469" [ref=e61]:
+        - img [ref=e62]
+        - generic [ref=e65]: "2469"
+      - button "TT" [ref=e67]:
+        - generic [ref=e68]:
+          - generic [ref=e70]: TT
+          - img [ref=e72]
+        - img [ref=e75]
+  - generic [ref=e77]:
+    - complementary [ref=e78]:
+      - generic [ref=e80]:
+        - img [ref=e82]
+        - generic [ref=e84]:
+          - generic [ref=e85]: AI Insight
+          - generic [ref=e86]: Multi-Channel
+      - navigation [ref=e87]:
+        - generic [ref=e88]: Menu
+        - link "Cài đặt Insight" [ref=e89] [cursor=pointer]:
+          - /url: /insight/settings
+          - img [ref=e90]
+          - generic [ref=e95]: Cài đặt Insight
+        - link "Dashboard Insight AI" [ref=e96] [cursor=pointer]:
+          - /url: /insight/insight-dashboard
+          - img [ref=e97]
+          - generic [ref=e98]: Dashboard Insight
+          - generic [ref=e99]: AI
+        - link "Khám Bệnh" [ref=e100] [cursor=pointer]:
+          - /url: /insight/medical-checkup
+          - img [ref=e101]
+          - generic [ref=e105]: Khám Bệnh
+        - link "Tổng quan Ads" [ref=e106] [cursor=pointer]:
+          - /url: /insight/dashboard
+          - img [ref=e107]
+          - generic [ref=e109]: Tổng quan Ads
+        - link "Gợi ý tối ưu Ads AI" [ref=e110] [cursor=pointer]:
+          - /url: /insight/ads-optimization
+          - img [ref=e111]
+          - generic [ref=e114]: Gợi ý tối ưu Ads
+          - generic [ref=e115]: AI
+      - generic [ref=e117]:
+        - text: Module Insight Ads
+        - text: v1.0 — Demo
+    - main [ref=e118]:
+      - generic [ref=e119]:
+        - generic [ref=e120]:
+          - paragraph [ref=e121]: Quản lý cấu hình phân tích AI
+          - heading "Cài đặt Insight" [level=1] [ref=e122]
+        - generic [ref=e123]:
+          - button "Thêm mới" [ref=e124] [cursor=pointer]:
+            - img [ref=e125]
+            - text: Thêm mới
+          - button "Thông báo" [ref=e127] [cursor=pointer]:
+            - img [ref=e128]
+          - button "T" [ref=e131]
+      - main [ref=e132]:
+        - generic [ref=e133]:
+          - generic [ref=e134]:
+            - paragraph [ref=e135]: Tổng Insight
+            - paragraph [ref=e136]: "4"
+            - paragraph [ref=e137]: đang hoạt động
+          - generic [ref=e138]:
+            - paragraph [ref=e139]: Tổng hội thoại đã phân tích
+            - paragraph [ref=e140]: "891"
+            - paragraph [ref=e141]: hội thoại
+          - generic [ref=e142]:
+            - paragraph [ref=e143]: Thời gian setup trung bình
+            - paragraph [ref=e144]: ~45s
+            - paragraph [ref=e145]: ↓ 92% so với trước
+        - generic [ref=e146]:
+          - heading "Bắt đầu nhanh" [level=2] [ref=e147]
+          - generic [ref=e148]:
+            - button "Tạo Insight mới từ Template" [ref=e149] [cursor=pointer]:
+              - img [ref=e150]
+              - text: Tạo Insight mới từ Template
+            - button "Tạo Insight bằng AI" [ref=e152] [cursor=pointer]:
+              - img [ref=e153]
+              - text: Tạo Insight bằng AI
+        - generic [ref=e155]:
+          - heading "Insight đã tạo" [level=2] [ref=e156]
+          - generic [ref=e157]:
+            - generic [ref=e158]:
+              - generic [ref=e159]: Tên Insight
+              - generic [ref=e160]: Kênh
+              - generic [ref=e161]: Cột
+              - generic [ref=e162]: Trạng thái
+              - generic [ref=e163]: Hội thoại
+              - generic [ref=e164]: Hành động
+            - generic [ref=e165]:
+              - generic [ref=e166] [cursor=pointer]:
+                - paragraph [ref=e168]: Phân tích Nhu Cầu KH Thời Trang
+                - generic [ref=e170]: Tất cả
+                - generic [ref=e171]: "4"
+                - generic [ref=e173]: Đang chạy
+                - generic [ref=e174]: "234"
+                - generic [ref=e175]:
+                  - button "Sửa" [ref=e176]:
+                    - img [ref=e177]
+                  - button "Xóa" [ref=e180]:
+                    - img [ref=e181]
+              - generic [ref=e184] [cursor=pointer]:
+                - paragraph [ref=e186]: Đánh Giá Lead Ads Thời Trang
+                - generic [ref=e188]: Tất cả
+                - generic [ref=e189]: "4"
+                - generic [ref=e191]: Đang chạy
+                - generic [ref=e192]: "156"
+                - generic [ref=e193]:
+                  - button "Sửa" [ref=e194]:
+                    - img [ref=e195]
+                  - button "Xóa" [ref=e198]:
+                    - img [ref=e199]
+              - generic [ref=e202] [cursor=pointer]:
+                - paragraph [ref=e204]: Đánh Giá Sale Mẹ và Bé
+                - generic [ref=e206]: Tất cả
+                - generic [ref=e207]: "2"
+                - generic [ref=e209]: Đang chạy
+                - generic [ref=e210]: "312"
+                - generic [ref=e211]:
+                  - button "Sửa" [ref=e212]:
+                    - img [ref=e213]
+                  - button "Xóa" [ref=e216]:
+                    - img [ref=e217]
+              - generic [ref=e220] [cursor=pointer]:
+                - paragraph [ref=e222]: Phân Tích Chân Dung KH Mỹ Phẩm
+                - generic [ref=e224]: Tất cả
+                - generic [ref=e225]: "4"
+                - generic [ref=e227]: Đang chạy
+                - generic [ref=e228]: "189"
+                - generic [ref=e229]:
+                  - button "Sửa" [ref=e230]:
+                    - img [ref=e231]
+                  - button "Xóa" [ref=e234]:
+                    - img [ref=e235]

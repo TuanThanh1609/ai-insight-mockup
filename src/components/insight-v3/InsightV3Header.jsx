@@ -176,6 +176,7 @@ export function InsightV3Header({
           {/* 2 NÚT MỚI */}
           <button
             onClick={onOpenAnalysis}
+            aria-label="Mở bảng phân tích"
             className="flex items-center gap-1.5 px-4 py-2 bg-[#fa6e5b] text-white rounded-md text-sm font-medium hover:bg-[#e85a4a] transition-colors"
           >
             <BarChart2 className="w-4 h-4" />
@@ -183,6 +184,7 @@ export function InsightV3Header({
           </button>
           <button
             onClick={onOpenInterpretation}
+            aria-label="Mở bảng diễn giải"
             className="flex items-center gap-1.5 px-4 py-2 bg-[#fa6e5b] text-white rounded-md text-sm font-medium hover:bg-[#e85a4a] transition-colors"
           >
             <FileText className="w-4 h-4" />
