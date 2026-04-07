@@ -88,7 +88,7 @@ export default function InsightSettings() {
         dataOptions: col.dataOptions || null,
       }));
 
-      const convData = generateConversations(ins.id, genCols, ins.industry || 'fashion', 20);
+      const convData = generateConversations(ins.id, genCols, ins.industry || 'fashion', 50 + Math.floor(Math.random() * 51));
       registerInsightData(ins.id, convData);
 
       return {

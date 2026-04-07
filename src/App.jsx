@@ -8,7 +8,10 @@ import AdsOptimization from './pages/AdsOptimization';
 import InsightDashboard from './pages/InsightDashboard';
 import MedicalCheckup from './pages/MedicalCheckup';
 import MedicalCheckupLanding from './pages/MedicalCheckupLanding';
+import ImprovementRoadmapPage from './pages/ImprovementRoadmapPage';
+import OverviewDashboard from './pages/OverviewDashboard';
 import LandingPage from './pages/LandingPage';
+import OfficialPage from './pages/OfficialPage';
 
 // ── Layout: TopNavBar full-width + Sidebar left + Content right ───────────────
 // TopNavBar: sticky at top (z-50)
@@ -37,6 +40,7 @@ export default function App() {
         <Routes>
           {/* Standalone — no sidebar */}
           <Route path="/" element={<LandingPage />} />
+          <Route path="/official" element={<OfficialPage />} />
           <Route path="/kham-benh" element={<MedicalCheckupLanding />} />
 
           {/* App shell — with sidebar */}
@@ -52,8 +56,14 @@ export default function App() {
           <Route path="/insight/ads-optimization" element={
             <AppLayout><AdsOptimization /></AppLayout>
           } />
+          <Route path="/insight/overview" element={
+            <AppLayout><OverviewDashboard /></AppLayout>
+          } />
           <Route path="/insight/medical-checkup" element={
             <AppLayout><MedicalCheckup /></AppLayout>
+          } />
+          <Route path="/insight/improvement-roadmap" element={
+            <AppLayout><ImprovementRoadmapPage /></AppLayout>
           } />
         </Routes>
       </BrowserRouter>

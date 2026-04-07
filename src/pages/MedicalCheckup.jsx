@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { Lock } from 'lucide-react';
 import { FanpageConnectStep } from '../components/medical/FanpageConnectStep';
 import { IndustryFormStep } from '../components/medical/IndustryFormStep';
@@ -44,6 +44,8 @@ export default function MedicalCheckup() {
   const [crawlProgress, setCrawlProgress] = useState(null);
   const [diseases, setDiseases] = useState([]);
   const [conversations, setConversations] = useState([]);
+  // Stable ref so async callbacks can read latest conversations without stale closure
+  const convRef = useRef([]);
   const [selectedDiseases, setSelectedDiseases] = useState([]);
 
   // ── Ads tab state ──
@@ -77,9 +79,15 @@ export default function MedicalCheckup() {
   };
 
   const handleStartCrawl = () => {
-    // 1. Show step 3 (menu) immediately — user chooses disease groups first
+    // 1. Pre-compute conversations + diseases SYNCHRONOUSLY so the menu (step 3) has data
+    const convos = loadConversations(config.industry, config.quantity);
+    convRef.current = convos;
+    const diag = computeDiagnosis(convos, config.industry, []);
+    setConversations(convos);
+    setDiseases(diag);
+    // 2. Show step 3 (menu) with diseases already populated
     setCurrentStep(3);
-    // 2. Actual crawl is triggered after menu completes via handleMenuContinue
+    // 3. Actual crawl is triggered after menu completes via handleMenuContinue
   };
 
   const handleRestart = () => {
@@ -88,11 +96,13 @@ export default function MedicalCheckup() {
     setCrawlProgress(null);
     setDiseases([]);
     setConversations([]);
+    convRef.current = [];
     setSelectedDiseases([]);
   };
 
   const handleMenuContinue = (selectedIds) => {
     setSelectedDiseases(selectedIds);
+    // conversations + diseases already set in handleStartCrawl
     // 3. Now start actual crawl — show step 4 (crawl progress)
     setCurrentStep(4);
     setTimeout(() => {
@@ -103,24 +113,21 @@ export default function MedicalCheckup() {
         },
       ).then(() => {
         setTimeout(() => {
-          const convos = loadConversations(config.industry, config.quantity);
-          setTimeout(() => {
-            const diag = computeDiagnosis(convos, config.industry, []);
-            const record = {
-              id: Date.now().toString(),
-              date: new Date().toISOString(),
-              industry: config.industry,
-              industryLabel: INDUSTRIES.find(i => i.value === config.industry)?.label || config.industry,
-              customerGroup: config.customerGroup,
-              quantity: config.quantity,
-              healthScore: getHealthScore(diag),
-              diseases: diag,
-            };
-            saveMedicalRecord(record);
-            setConversations(convos);
-            setDiseases(diag);
-            setCurrentStep(5); // go to result
-          }, 0);
+          // Re-compute diagnosis using convRef (stale closure safe)
+          const diag = computeDiagnosis(convRef.current, config.industry, []);
+          const record = {
+            id: Date.now().toString(),
+            date: new Date().toISOString(),
+            industry: config.industry,
+            industryLabel: INDUSTRIES.find(i => i.value === config.industry)?.label || config.industry,
+            customerGroup: config.customerGroup,
+            quantity: config.quantity,
+            healthScore: getHealthScore(diag),
+            diseases: diag,
+          };
+          saveMedicalRecord(record);
+          setDiseases(diag);
+          setCurrentStep(5); // go to result
         }, 0);
       });
     }, 0);
@@ -221,7 +228,7 @@ export default function MedicalCheckup() {
           {/* Not yet unlocked */}
           {!hasMedicalHistory ? (
             <div className="flex-1 flex items-center justify-center">
-              <div className="max-w-md w-full bg-surface-container-low rounded-[--radius-lg] p-8 text-center shadow-[--shadow-md]">
+              <div className="max-w-md w-full bg-surface-container-low rounded-lg p-8 text-center shadow-[--shadow-md]">
                 <div className="w-14 h-14 rounded-full bg-surface-container-high mx-auto mb-4 flex items-center justify-center">
                   <Lock size={24} className="text-on-surface-variant/50" />
                 </div>
@@ -248,7 +255,7 @@ export default function MedicalCheckup() {
                 </ul>
                 <button
                   onClick={() => setActiveTab('conversation')}
-                  className="w-full px-4 py-2.5 bg-primary text-on-primary rounded-[--radius-md] text-label-sm font-semibold hover:bg-primary/90 transition-colors cursor-pointer"
+                  className="w-full px-4 py-2.5 bg-primary text-on-primary rounded-md text-label-sm font-semibold hover:bg-primary/90 transition-colors cursor-pointer"
                 >
                   Bắt đầu Khám Hội Thoại →
                 </button>

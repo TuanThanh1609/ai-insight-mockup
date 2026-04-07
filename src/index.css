@@ -64,23 +64,32 @@
   --font-display: 'Manrope', sans-serif;
   --font-body: 'Inter', sans-serif;
 
-  /* Border Radius — 8px DEFAULT (Curated Identity) */
+  /* Border Radius — Ultra Soft Identity Scale */
   --radius-none: 0;
-  --radius-sm: 0.375rem;   /* 6px */
-  --radius-md: 0.5rem;     /* 8px — DEFAULT */
-  --radius-lg: 0.75rem;    /* 12px */
-  --radius-xl: 1rem;       /* 16px */
-  --radius-full: 9999px;
+  --radius-sm:   0.375rem;  /* 6px — chips, small badges */
+  --radius-md:    0.625rem;  /* 10px — buttons, inputs, small cards (DEFAULT for interactive) */
+  --radius-lg:    0.875rem;  /* 14px — cards, panels, containers */
+  --radius-xl:    1.125rem;  /* 18px — modals, slide panels, large cards */
+  --radius-2xl:   1.5rem;  /* 24px — hero sections, feature blocks */
+  --radius-full:  9999px;   /* pills, avatar circles */
 
-  /* Ambient Shadows — Tinted, not black */
-  --shadow-sm:   0 1px 4px rgba(27, 27, 29, 0.04);
-  --shadow-md:   0 4px 16px rgba(27, 27, 29, 0.06);
-  --shadow-lg:   0 8px 32px rgba(27, 27, 29, 0.08);
-  --shadow-xl:   0 16px 48px rgba(27, 27, 29, 0.10);
+  /* Ambient Soft Shadows — Tinted, ultra soft */
+  --shadow-sm:    0 2px  8px  rgba(26,  33,  56,  0.04);
+  --shadow-md:    0 4px  16px rgba(26,  33,  56,  0.05);
+  --shadow-lg:    0 8px  24px rgba(26,  33,  56,  0.06);
+  --shadow-xl:    0 16px 40px rgba(26,  33,  56,  0.08);
+  --shadow-card:  0 4px  24px rgba(26,  33,  56,  0.05),  /* soft card lift */
+                  0 0   20px rgba(0,   82,  255,  0.04);  /* subtle blue glow */
+  --shadow-panel: 0 8px  32px rgba(26,  33,  56,  0.07); /* slide panel ambient */
 
   /* Glassmorphism — Floating elements (Modals, Popovers, Tooltips) */
   /* Formula: surface_container_lowest at 80% + backdrop-blur: 12px */
   --shadow-glass: 0 8px 32px rgba(27, 27, 29, 0.12);
+
+  /* Hover glow overlays — per-component use */
+  --glow-blue:  0 0 20px rgba(0,   82,  255,  0.12);
+  --glow-rust:  0 0 20px rgba(191, 48,   3,  0.10);
+  --glow-sm-blue: 0 0 12px rgba(0,  82,  255,  0.08);
 }
 
 /* ─────────────────────────────────────────────
@@ -232,16 +241,101 @@ body {
    Floating elements: Modals, Popovers, Tooltips
 ───────────────────────────────────────────── */
 .glass {
-  background: rgba(255, 255, 255, 0.80);
+  background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
 
 /* Dark glass variant for primary overlays */
 .glass-dark {
-  background: rgba(26, 33, 56, 0.80);
+  background: rgba(26, 33, 56, 0.82);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+}
+
+/* ─────────────────────────────────────────────
+   Ultra Soft Gradient Fills
+   Cards use gradient fills instead of flat solid colors
+───────────────────────────────────────────── */
+
+/* Card: warm white gradient — primary card surface */
+.gradient-card {
+  background: linear-gradient(160deg, #ffffff 0%, #faf7fc 60%, #f5f1f5 100%);
+}
+
+/* Surface: warm off-white gradient — page background */
+.gradient-surface {
+  background: linear-gradient(180deg, #fcf8fb 0%, #f8f4fa 100%);
+}
+
+/* Panel: soft lavender tint — elevated panels */
+.gradient-panel {
+  background: linear-gradient(160deg, #f5f1f5 0%, #ede9ee 60%, #e8e3eb 100%);
+}
+
+/* Card hover: subtle lift — warm white brightening */
+.gradient-card-hover {
+  background: linear-gradient(160deg, #ffffff 0%, #ffffff 50%, #faf7fc 100%);
+}
+
+/* Active state: cool lavender tint */
+.gradient-card-active {
+  background: linear-gradient(160deg, #f0ecf2 0%, #e8e3eb 60%, #e0dbe5 100%);
+}
+
+/* Section separator: barely-there lavender tint */
+.gradient-section {
+  background: linear-gradient(180deg, #fcf8fb 0%, #f5f1f5 100%);
+}
+
+/* ─────────────────────────────────────────────
+   Soft Hover Animations
+   Every interactive element breathes with gentle motion
+───────────────────────────────────────────── */
+
+/* Card hover — scale + shadow lift */
+.hover-lift {
+  transition: transform 200ms ease-out, box-shadow 200ms ease-out;
+}
+.hover-lift:hover {
+  transform: scale(1.015);
+  box-shadow: var(--shadow-card);
+}
+
+/* Card active — gentle press */
+.hover-lift:active {
+  transform: scale(0.99);
+}
+
+/* Button hover — scale + brightness + shadow */
+.hover-btn {
+  transition: transform 150ms ease-out, box-shadow 150ms ease-out, filter 150ms ease-out;
+}
+.hover-btn:hover {
+  transform: scale(1.02);
+  filter: brightness(1.05);
+  box-shadow: var(--shadow-md);
+}
+
+/* Button active — gentle press */
+.hover-btn:active {
+  transform: scale(0.97);
+}
+
+/* Tab hover — background fade */
+.hover-tab {
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+/* Row hover — tonal shift */
+.hover-row {
+  transition: background-color 100ms ease;
+}
+
+/* Icon hover — subtle glow */
+.hover-glow-blue:hover {
+  box-shadow: var(--glow-sm-blue);
+  border-radius: var(--radius-md);
 }
 
 /* ─────────────────────────────────────────────
@@ -268,29 +362,12 @@ body {
 }
 
 /* ─────────────────────────────────────────────
-   Custom Scrollbar — Subtle, Editorial
-───────────────────────────────────────────── */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: var(--color-outline-variant);
-  border-radius: var(--radius-full);
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-on-surface-variant);
-}
-
-/* ─────────────────────────────────────────────
-   Focus Styles
+   Focus Styles — Soft Blue Glow
 ───────────────────────────────────────────── */
 *:focus-visible {
-  outline: 2px solid var(--color-tertiary);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 82, 255, 0.15), 0 0 0 1px rgba(0, 82, 255, 0.10);
+  border-radius: var(--radius-md);
 }
 
 /* ─────────────────────────────────────────────
@@ -330,6 +407,24 @@ body {
 }
 
 /* ─────────────────────────────────────────────
+   Ultra Soft Scrollbar — Subtle, Rounded
+───────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(73, 69, 79, 0.25);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(73, 69, 79, 0.40);
+}
+
+/* ─────────────────────────────────────────────
    ROAS Color System (Dashboard Ads)
    Consistency: #059669 / #d97706 / #dc2626
 ───────────────────────────────────────────── */
@@ -340,3 +435,50 @@ body {
 .bg-roas-good     { background-color: #059669; }
 .bg-roas-improve { background-color: #d97706; }
 .bg-roas-low     { background-color: #dc2626; }
+
+/* ─────────────────────────────────────────────
+   Ultra Soft Utility Classes
+───────────────────────────────────────────── */
+
+/* Ultra soft card — gradient fill + shadow + hover lift */
+.card-soft {
+  background: linear-gradient(160deg, #ffffff 0%, #faf7fc 60%, #f5f1f5 100%);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: transform 200ms ease-out, box-shadow 200ms ease-out;
+}
+.card-soft:hover {
+  transform: scale(1.015);
+  box-shadow: var(--shadow-card);
+}
+
+/* Ultra soft panel — slide panel surface */
+.panel-soft {
+  background: linear-gradient(160deg, #f5f1f5 0%, #ede9ee 60%, #e8e3eb 100%);
+  border-radius: var(--radius-xl) 0 0 var(--radius-xl);
+  box-shadow: var(--shadow-panel);
+}
+
+/* Ultra soft chip */
+.chip-soft {
+  background: rgba(26, 33, 56, 0.06);
+  border-radius: var(--radius-full);
+  padding: 4px 12px;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Ultra soft section block */
+.section-soft {
+  background: linear-gradient(180deg, #fcf8fb 0%, #f5f1f5 100%);
+  border-radius: var(--radius-2xl);
+}
+
+/* Focus ring — soft blue glow instead of hard outline */
+.focus-soft:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 82, 255, 0.15), 0 0 0 1px rgba(0, 82, 255, 0.10);
+  border-radius: var(--radius-md);
+}

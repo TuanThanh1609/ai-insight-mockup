@@ -29,18 +29,32 @@ const runtimeTrend         = {};   // { insightId: [...daily points] }
 function buildColumnsFromRows(rows) {
   if (!rows || rows.length === 0) return [];
   const sample = rows[0];
-  const META_FIELDS = new Set(['id', 'customer', 'platform', 'converted_at', 'row']);
+  const META_FIELDS = new Set([
+    'id', 'template_id', 'customer_name',
+    'data_json', 'converted_at', 'created_at',
+    'customer', 'row', // alias / meta fields
+  ]);
+
+  // Rows from Supabase JSON: data lives in data_json
+  // Rows from runtime: data is flat at top level
+  const isNested = sample.data_json !== undefined;
+  const sourceRows = isNested
+    ? rows.map(r => ({ ...r, ...r.data_json }))
+    : rows;
 
   // Infer columns from data fields (bỏ meta fields)
-  const dataFields = Object.keys(sample).filter(k => !META_FIELDS.has(k));
+  const dataFields = Object.keys(sourceRows[0]).filter(k => !META_FIELDS.has(k));
 
   return dataFields.map(field => {
     // Map field name → display name (tiếng Việt)
     const displayName = FIELD_DISPLAY_NAMES[field] || FIELD_DISPLAY_NAMES[field.toLowerCase()] || toDisplayName(field);
+    // Infer dataType từ field name + value samples
+    const dataType = inferDataType(field, sourceRows);
     return {
       id: `col-${field}`,
       name: displayName,
       field,
+      dataType,
     };
   });
 }
@@ -52,6 +66,63 @@ function toDisplayName(field) {
     .split(' ')
     .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
     .join(' ');
+}
+
+// ─── dataType inference helpers ───────────────────────────────────────────────
+function inferDataType(field, rows) {
+  const sample = rows.slice(0, 20);
+  const f = field.toLowerCase();
+
+  // Boolean fields
+  if (f === 'is_junk' || f === 'isjunk' || f === 'has_competitor' ||
+      f === 'hascompetitor' || f === 'can_refer' || f === 'canrefer' ||
+      f === 'frustration' || f === 'is_negative') {
+    return 'true_false';
+  }
+
+  // Single-select enum fields (known options)
+  // Platform is always a 2-option categorical (facebook/zalo) — render as channel donut
+  if (f === 'platform') return 'channel';
+
+  const ENUM_FIELDS = {
+    temperature: 'single_select',
+    phone_status: 'single_select',
+    objection: 'dropdown',
+    ads_source: 'single_select',
+    attitude: 'single_select',
+    skin_type: 'single_select',
+    gender: 'single_select',
+    location: 'dropdown',
+    budget: 'dropdown',
+    treatment: 'single_select',
+    destination: 'dropdown',
+    ota_competitor: 'dropdown',
+    message_type: 'single_select',
+    mistake: 'dropdown',
+    scenario: 'single_select',
+    chot_don: 'true_false',
+    missed_conv: 'true_false',
+    silent_cust: 'true_false',
+    competitor_name: 'dropdown',
+    criteria: 'dropdown',
+    legal_status: 'single_select',
+    product: 'dropdown',
+    size: 'dropdown',
+    pain_point: 'dropdown',
+    segment: 'dropdown',
+    satisfaction: 'single_select',
+    baby_age: 'dropdown',
+    parent_gender: 'single_select',
+    bulk_interest: 'single_select',
+    urgency: 'single_select',
+  };
+  if (ENUM_FIELDS[f]) return ENUM_FIELDS[f];
+
+  // Short text: everything else with short values
+  const longTextFields = ['message', 'noidung', 'content', 'note', 'notes'];
+  if (longTextFields.some(lt => f.includes(lt))) return 'short_text';
+
+  return 'short_text';
 }
 
 // Mapping field → tiếng Việt display name
@@ -66,6 +137,10 @@ const FIELD_DISPLAY_NAMES = {
   ads_source: 'Nguồn Ads',
   attitude: 'Thái độ tư vấn',
   mistake: 'Lỗi mất khách',
+  scenario: 'Kịch bản bán hàng',
+  chot_don: 'Chốt đơn thành công',
+  missed_conv: 'Bỏ sót hội thoại',
+  silent_cust: 'Khách im lặng',
   gender: 'Giới tính',
   location: 'Khu vực',
   budget: 'Khoảng ngân sách',
@@ -86,17 +161,39 @@ const FIELD_DISPLAY_NAMES = {
   destination: 'Điểm đến',
   ota_competitor: 'Đối thủ OTA',
   urgency: 'Mức độ khẩn cấp',
+  platform: 'Kênh',
   // Add customer + platform as first/last columns
 };
+
+// Supabase conversations: JSON is a flat array → build index once by template_id
+let _supaIndex = null;
+function _getSupaIndex() {
+  if (_supaIndex) return _supaIndex;
+  _supaIndex = {};
+  for (const row of supabaseConversationsRaw) {
+    const tid = row.template_id;
+    if (!_supaIndex[tid]) _supaIndex[tid] = [];
+    _supaIndex[tid].push(row);
+  }
+  return _supaIndex;
+}
 
 // Supabase conversations cache: { templateId: { columns, rows } }
 const supabaseConversations = {};
 function getSupabaseConversations(templateId) {
   if (supabaseConversations[templateId]) return supabaseConversations[templateId];
-  const rows = supabaseConversationsRaw[templateId];
+  const rows = _getSupaIndex()[templateId];
   if (!rows || rows.length === 0) return null;
-  const columns = buildColumnsFromRows(rows);
-  supabaseConversations[templateId] = { columns, rows };
+  // Flatten data_json so row fields are accessible at top level
+  const flatRows = rows.map(r => ({
+    id: r.id,
+    customer: r.customer_name || r.customer,
+    platform: r.platform,
+    converted_at: r.converted_at,
+    ...r.data_json,
+  }));
+  const columns = buildColumnsFromRows(flatRows);
+  supabaseConversations[templateId] = { columns, rows: flatRows };
   return supabaseConversations[templateId];
 }
 
@@ -577,6 +674,27 @@ export function generateTrendData(conversationsData, days = 7) {
 
 // ─── Public API ─────────────────────────────────────────────────────────────
 
+// Inject extra columns for staff-eval templates (*-3) to power the new cards
+const STAFF_EVAL_TEMPLATES = new Set([
+  'fsh-3','mbb-3','cos-3','spa-3','rls-3','fb-3','trv-3',
+]);
+const EXTRA_COLUMNS = [
+  { id: 'col-scenario',    name: 'Kịch bản bán hàng',  field: 'scenario',    dataType: 'single_select' },
+  { id: 'col-chot_don',    name: 'Chốt đơn thành công', field: 'chot_don',    dataType: 'true_false'   },
+  { id: 'col-missed_conv', name: 'Bỏ sót hội thoại',    field: 'missed_conv', dataType: 'true_false'   },
+  { id: 'col-silent_cust', name: 'Khách im lặng',        field: 'silent_cust', dataType: 'true_false'   },
+];
+function injectStaffEvalColumns(insightId, data) {
+  if (!STAFF_EVAL_TEMPLATES.has(insightId)) return data;
+  // Only inject if not already present
+  const existingFields = new Set((data.columns || []).map(c => c.field));
+  const newCols = EXTRA_COLUMNS.filter(c => !existingFields.has(c.field));
+  return {
+    ...data,
+    columns: [...(data.columns || []), ...newCols],
+  };
+}
+
 export function registerInsightData(insightId, conversationsData) {
   runtimeConversations[insightId] = conversationsData;
   runtimeTrend[insightId] = generateTrendData(conversationsData, 7);
@@ -586,7 +704,7 @@ export function getConversations(insightId) {
   // Priority: runtime > Supabase JSON > mockConversations (static JS)
   if (runtimeConversations[insightId]) return runtimeConversations[insightId];
   const supa = getSupabaseConversations(insightId);
-  if (supa) return supa;
+  if (supa) return injectStaffEvalColumns(insightId, supa);
   if (mockConversations[insightId]) return mockConversations[insightId];
   return null;
 }

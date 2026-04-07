@@ -1,17 +1,20 @@
 // =====================================================================
-// BỘ TEMPLATE AI INSIGHT — 3 ngành × 6 insight = 18 templates
-// Nguồn: template-insight.md
-// Cập nhật: 2026-03-23
+// BỘ TEMPLATE AI INSIGHT — 10 ngành × 6 insight = 60 templates
+// Nguồn: template-insight.md + My AURIS Bot Plus Asia (PDF 2026-03-31)
+// Cập nhật: 2026-04-01
 // =====================================================================
 
 export const INDUSTRIES = [
-  { id: 'fashion',    label: 'Thời trang',  icon: '👗' },
-  { id: 'mebaby',     label: 'Mẹ và Bé',    icon: '🍼' },
-  { id: 'cosmetics',  label: 'Mỹ phẩm',      icon: '💄' },
-  { id: 'spa',        label: 'Spa / Thẩm mỹ', icon: '💆' },
+  { id: 'fashion',    label: 'Thời trang',    icon: '👗' },
+  { id: 'mebaby',     label: 'Mẹ và Bé',      icon: '🍼' },
+  { id: 'cosmetics',  label: 'Mỹ phẩm',        icon: '💄' },
+  { id: 'spa',        label: 'Spa / Thẩm mỹ',  icon: '💆' },
   { id: 'realestate', label: 'Bất động sản',  icon: '🏠' },
-  { id: 'fnb',        label: 'F&B',           icon: '🍜' },
-  { id: 'travel',     label: 'Du lịch',       icon: '✈️' },
+  { id: 'fnb',        label: 'F&B',             icon: '🍜' },
+  { id: 'travel',     label: 'Du lịch',         icon: '✈️' },
+  { id: 'nha_khoa',   label: 'Nha khoa',        icon: '🦷' },
+  { id: 'tham_my',    label: 'Thẩm mỹ / Y khoa',icon: '💉' },
+  { id: 'nha_hang',   label: 'Nhà hàng',        icon: '🍽️' },
 ];
 
 export const mockTemplates = [

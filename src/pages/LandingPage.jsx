@@ -16,7 +16,7 @@ import { Footer } from '../components/landing/Footer';
  */
 export default function LandingPage() {
   return (
-    <div className="min-h-screen" style={{ background: 'var(--color-surface)' }}>
+    <div className="min-h-screen bg-gradient-to-br from-white via-[#faf7fc] to-[#f5f1f5]">
       <TopNavBar />
       <HeroSection />
       <TrustSection />

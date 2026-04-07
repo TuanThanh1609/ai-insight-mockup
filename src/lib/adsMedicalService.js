@@ -354,7 +354,7 @@ function generateAttributionRow(campaign, rowIndex) {
 
   // Attribution quality
   const unmatchedCount  = Math.round(campaign.ordersCount * untrackedRatio * rng(2));
-  const avgDaysToConv   = Math.round(1 + rng(3) * 7);
+  const avgDaysToConversion = Math.round(1 + rng(3) * 7);
 
   // Ad creative (derived from CTR proxy = clicks/impressions)
   const ctr             = campaign.impressions > 0

@@ -57,7 +57,7 @@ export default function AdsDashboard() {
       <PageContainer className="pt-0">
         {/* Junk alert banner */}
         {junkCount > 0 && (
-          <div className="flex items-center gap-3 p-4 bg-warning-container rounded-[--radius-md] mb-6">
+          <div className="flex items-center gap-3 p-4 bg-warning-container rounded-md mb-6">
             <div className="p-1.5 rounded-full bg-on-warning-container/10">
               <AlertTriangle size={16} className="text-on-warning-container" />
             </div>
