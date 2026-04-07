@@ -410,7 +410,7 @@ export function InsightTrendChart({ insightId, trendData, crossFilter, conversat
                     className="fixed inset-0 z-10"
                     onClick={() => setDropdownOpen(false)}
                   />
-                  <div className="absolute right-0 top-full mt-1.5 z-20 w-64 max-h-72 overflow-y-auto bg-surface-container-lowest rounded-[--radius-md] shadow-xl border border-[var(--color-outline-variant)]">
+                  <div className="absolute right-0 top-full mt-1.5 z-20 w-64 max-h-72 overflow-y-auto bg-surface-container-lowest rounded-md shadow-xl border border-[var(--color-outline-variant)]">
                     {/* All / Mặc định option */}
                     <button
                       onClick={() => {

@@ -133,7 +133,7 @@ function AttitudeChart({ data, onItemClick }) {
           key={item.label}
           onClick={() => item.value > 0 && onItemClick?.({ field: 'attitude', value: item.filterKey, label: item.label, count: item.value })}
           className={cn(
-            "flex-1 text-center rounded-[--radius-md] p-2 transition-all duration-200",
+            "flex-1 text-center rounded-md p-2 transition-all duration-200",
             item.value > 0 ? "cursor-pointer hover:brightness-95 active:brightness-90 hover:scale-[1.02]" : "cursor-default opacity-50"
           )}
           style={item.value > 0 ? { background: `${item.color}18` } : undefined}
@@ -157,7 +157,7 @@ function ListItems({ items, highlight = false, onItemClick, clickableField, clic
         <div
           key={i}
           className={cn(
-            "flex items-center justify-between gap-2 rounded-[--radius-sm] transition-colors",
+            "flex items-center justify-between gap-2 rounded-sm transition-colors",
             onItemClick && item.count > 0
               ? "cursor-pointer hover:bg-surface-container-low active:bg-surface-container-low/70 px-1.5 -mx-1.5 py-0.5"
               : ""
@@ -332,7 +332,7 @@ function SentimentDonut({ data, onItemClick }) {
           <button
             key={item.label}
             onClick={() => item.value > 0 && onItemClick?.({ field: 'sentiment', value: item.filterKey, label: item.label, count: item.value })}
-            className={cn("flex items-center gap-2 rounded-[--radius-sm] transition-colors px-1 -mx-1 py-0.5", item.value > 0 ? "cursor-pointer hover:bg-surface-container-low active:bg-surface-container-low/70" : "cursor-default opacity-50")}
+            className={cn("flex items-center gap-2 rounded-sm transition-colors px-1 -mx-1 py-0.5", item.value > 0 ? "cursor-pointer hover:bg-surface-container-low active:bg-surface-container-low/70" : "cursor-default opacity-50")}
             title={item.value > 0 ? `Lọc ${item.value} hội thoại "${item.label}"` : "Không có dữ liệu"}
           >
             <div className="w-2 h-2 rounded-full shrink-0" style={{ background: item.color }} />
@@ -353,7 +353,7 @@ function InsightSelectorCard({ insight, isSelected, onClick }) {
     <button
       onClick={onClick}
       className={cn(
-        'flex-shrink-0 w-72 rounded-[--radius-lg] border-2 p-4 text-left transition-all duration-200 cursor-pointer',
+        'flex-shrink-0 w-72 rounded-lg border-2 p-4 text-left transition-all duration-200 cursor-pointer',
         isSelected
           ? 'border-primary bg-primary/5 shadow-sm'
           : 'border-[var(--color-outline-variant)] bg-surface-container-lowest hover:border-primary/40 hover:bg-surface-container-low'
@@ -361,7 +361,7 @@ function InsightSelectorCard({ insight, isSelected, onClick }) {
     >
       <div className="flex items-center gap-3 mb-3">
         <div className={cn(
-          'w-10 h-10 rounded-[--radius-md] flex items-center justify-center text-xl shrink-0',
+          'w-10 h-10 rounded-md flex items-center justify-center text-xl shrink-0',
           isSelected ? 'bg-primary/15' : 'bg-surface-container-low'
         )}>
           {template?.icon || insight.icon || '📊'}
@@ -526,7 +526,7 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
         <div className="flex items-center gap-3 mb-4">
           <button
             onClick={onBack}
-            className="flex items-center gap-1.5 text-sm text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer px-2 py-1 rounded-[--radius-sm] hover:bg-surface-container-low"
+            className="flex items-center gap-1.5 text-sm text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer px-2 py-1 rounded-sm hover:bg-surface-container-low"
           >
             <ChevronLeft size={16} />
             <span className="hidden sm:inline">Quay lại</span>
@@ -569,7 +569,7 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
           <div className="px-6 pt-5 pb-4 bg-surface-container-lowest">
             <div className="flex items-start gap-4">
               {/* Icon */}
-              <div className="w-14 h-14 rounded-[--radius-lg] bg-primary/10 flex items-center justify-center shrink-0 text-3xl mt-0.5">
+              <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 text-3xl mt-0.5">
                 {template?.icon || selectedInsight.icon || '📊'}
               </div>
 
@@ -655,8 +655,8 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
                       </h3>
                       <div className="flex flex-col gap-2">
                         {(template?.columns || []).map((col) => (
-                          <div key={col.id} className="flex items-start gap-2.5 p-2.5 rounded-[--radius-sm] bg-surface-container-low">
-                            <div className="w-7 h-7 rounded-[--radius-sm] bg-surface-container-lowest flex items-center justify-center shrink-0 text-xs">
+                          <div key={col.id} className="flex items-start gap-2.5 p-2.5 rounded-sm bg-surface-container-low">
+                            <div className="w-7 h-7 rounded-sm bg-surface-container-lowest flex items-center justify-center shrink-0 text-xs">
                               {col.icon || '📊'}
                             </div>
                             <div className="min-w-0 flex-1">
@@ -680,7 +680,7 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
                       </h3>
                       <div className="flex flex-col gap-2">
                         {liveMessages.map((msg, i) => (
-                          <div key={i} className="flex items-start gap-2 p-2.5 rounded-[--radius-sm] bg-surface-container-low">
+                          <div key={i} className="flex items-start gap-2 p-2.5 rounded-sm bg-surface-container-low">
                             <div className="flex flex-col items-center gap-1 shrink-0 pt-0.5">
                               <span className={cn(
                                 'text-[9px] font-bold px-1.5 py-0.5 rounded-full',
@@ -716,7 +716,7 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
             {activeTab === 'template' && (
               <div className="flex flex-col gap-5 max-w-3xl">
                 {/* Header card */}
-                <div className="flex items-start gap-3 p-4 bg-primary/5 rounded-[--radius-md] border border-primary/20">
+                <div className="flex items-start gap-3 p-4 bg-primary/5 rounded-md border border-primary/20">
                   <span className="text-2xl mt-0.5">{template?.icon}</span>
                   <div className="flex-1 min-w-0">
                     <h3 className="font-display font-bold text-base text-on-surface mb-0.5">{template?.name}</h3>
@@ -746,7 +746,7 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
 
                 {/* Saved notice */}
                 {savedNotice && (
-                  <div className="flex items-center gap-2 px-4 py-2.5 rounded-[--radius-md] bg-tertiary-container text-xs font-medium text-on-tertiary-container">
+                  <div className="flex items-center gap-2 px-4 py-2.5 rounded-md bg-tertiary-container text-xs font-medium text-on-tertiary-container">
                     <CheckCircle2 size={14} />
                     Đã lưu thay đổi — AI sẽ phân tích lại với cấu hình mới
                   </div>
@@ -762,7 +762,7 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
                         <div
                           key={isEditing ? `edit-${idx}` : col.id}
                           className={cn(
-                            'flex items-start gap-3 p-4 rounded-[--radius-md] transition-colors',
+                            'flex items-start gap-3 p-4 rounded-md transition-colors',
                             isEditing ? 'bg-surface-container-low border border-[var(--color-outline-variant)]' : 'bg-surface-container-low'
                           )}
                         >
@@ -774,7 +774,7 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
                                 value={col.icon || ''}
                                 maxLength={2}
                                 onChange={(e) => updateColumn(idx, 'icon', e.target.value)}
-                                className="w-10 h-10 text-center text-lg border border-[var(--color-outline-variant)] rounded-[--radius-sm] bg-surface-container-lowest focus:outline-none focus:border-primary"
+                                className="w-10 h-10 text-center text-lg border border-[var(--color-outline-variant)] rounded-sm bg-surface-container-lowest focus:outline-none focus:border-primary"
                               />
                             ) : (
                               <span className="text-lg">{col.icon}</span>
@@ -792,7 +792,7 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
                                     type="text"
                                     value={col.name || ''}
                                     onChange={(e) => updateColumn(idx, 'name', e.target.value)}
-                                    className="w-full px-2.5 py-1.5 text-sm border border-[var(--color-outline-variant)] rounded-[--radius-sm] bg-surface-container-lowest focus:outline-none focus:border-primary text-on-surface"
+                                    className="w-full px-2.5 py-1.5 text-sm border border-[var(--color-outline-variant)] rounded-sm bg-surface-container-lowest focus:outline-none focus:border-primary text-on-surface"
                                   />
                                 ) : (
                                   <p className="text-sm font-semibold text-on-surface">{col.name}</p>
@@ -806,7 +806,7 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
                                   <select
                                     value={col.dataType || 'short_text'}
                                     onChange={(e) => updateColumn(idx, 'dataType', e.target.value)}
-                                    className="px-2.5 py-1.5 text-xs border border-[var(--color-outline-variant)] rounded-[--radius-sm] bg-surface-container-lowest focus:outline-none focus:border-primary text-on-surface"
+                                    className="px-2.5 py-1.5 text-xs border border-[var(--color-outline-variant)] rounded-sm bg-surface-container-lowest focus:outline-none focus:border-primary text-on-surface"
                                   >
                                     {DATA_TYPE_OPTIONS.map((opt) => (
                                       <option key={opt.key} value={opt.key}>{opt.label}</option>
@@ -834,7 +834,7 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
                                   value={col.prompt || ''}
                                   onChange={(e) => updateColumn(idx, 'prompt', e.target.value)}
                                   rows={2}
-                                  className="w-full px-2.5 py-1.5 text-xs border border-[var(--color-outline-variant)] rounded-[--radius-sm] bg-surface-container-lowest focus:outline-none focus:border-primary text-on-surface resize-y leading-relaxed"
+                                  className="w-full px-2.5 py-1.5 text-xs border border-[var(--color-outline-variant)] rounded-sm bg-surface-container-lowest focus:outline-none focus:border-primary text-on-surface resize-y leading-relaxed"
                                 />
                               ) : (
                                 <p className="text-xs text-on-surface-variant leading-relaxed">{col.prompt}</p>
@@ -902,7 +902,7 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
                         };
                         setEditColumns((prev) => [...prev, newCol]);
                       }}
-                      className="mt-3 w-full py-2.5 border border-dashed border-[var(--color-outline-variant)] rounded-[--radius-md] text-xs text-on-surface-variant hover:border-primary hover:text-primary transition-colors"
+                      className="mt-3 w-full py-2.5 border border-dashed border-[var(--color-outline-variant)] rounded-md text-xs text-on-surface-variant hover:border-primary hover:text-primary transition-colors"
                     >
                       + Thêm cột mới
                     </button>
@@ -915,7 +915,7 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
             {activeTab === 'detail' && (
               <div className="flex flex-col gap-4">
                 {crossFilter && (
-                  <div className="flex items-center justify-between gap-3 px-4 py-3 rounded-[--radius-md] bg-primary/8 border border-primary/20">
+                  <div className="flex items-center justify-between gap-3 px-4 py-3 rounded-md bg-primary/8 border border-primary/20">
                     <div className="flex items-center gap-2 min-w-0">
                       <MousePointerClick size={14} className="text-primary shrink-0" />
                       <span className="text-xs text-on-surface">
@@ -965,7 +965,7 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
                     </div>
 
                     {/* Table */}
-                    <div className="overflow-x-auto rounded-[--radius-md] border border-[var(--color-outline-variant)]">
+                    <div className="overflow-x-auto rounded-md border border-[var(--color-outline-variant)]">
                       <table className="w-full text-xs">
                         <thead>
                           <tr className="bg-surface-container-low">
@@ -1077,7 +1077,7 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
                           <button
                             onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                             disabled={currentPage === 1}
-                            className="p-1.5 rounded-[--radius-sm] text-on-surface-variant hover:bg-surface-container-low disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                            className="p-1.5 rounded-sm text-on-surface-variant hover:bg-surface-container-low disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                           >
                             <ChevronLeft size={14} />
                           </button>
@@ -1085,7 +1085,7 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
                             <button
                               key={page}
                               onClick={() => setCurrentPage(page)}
-                              className={cn('w-7 h-7 rounded-[--radius-sm] text-xs font-medium transition-colors',
+                              className={cn('w-7 h-7 rounded-sm text-xs font-medium transition-colors',
                                 page === currentPage ? 'bg-primary text-on-primary' : 'text-on-surface-variant hover:bg-surface-container-low'
                               )}
                             >
@@ -1095,7 +1095,7 @@ export function InsightDetail({ insights, selectedInsightId, onSelectInsight, on
                           <button
                             onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                             disabled={currentPage === totalPages}
-                            className="p-1.5 rounded-[--radius-sm] text-on-surface-variant hover:bg-surface-container-low disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                            className="p-1.5 rounded-sm text-on-surface-variant hover:bg-surface-container-low disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                           >
                             <ChevronRight size={14} />
                           </button>
