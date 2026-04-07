@@ -424,6 +424,12 @@ Fanpage   Ngành hàng  lượng    Progress   (Dashboard real-time)
 | `src/components/medical/SmaxRecommendationsPanel.jsx` | Khối Gợi ý chuyên gia Smax ở panel 1/3 |
 | `src/components/medical/ConversationList.jsx` | Tab Chi tiết trong từng nhóm bệnh (hội thoại đầy đủ) |
 
+### File đã bổ sung (Chi tiết Hội Thoại 2 Cột — 2026-03-28)
+| File | Vai trò |
+|------|---------|
+| `src/data/mockConversationDetails.js` | Mock data: 12–15 conversations/nhóm bệnh, mỗi conv gồm `messages[]` + `evaluation{}` + `actions[]` |
+| `src/components/medical/ConversationDetailPanel.jsx` | Wireframe 2 cột: Cột Trái = Danh sách hội thoại (search + filter chips); Cột Phải = Chi tiết (3 tab: Tin nhắn / Đánh Giá / Hành Động) |
+
 ### File đã cập nhật (UI Revamp 2026-03-27)
 | File | Thay đổi |
 |------|----------|
@@ -626,3 +632,99 @@ Fanpage   Ngành hàng  lượng    Progress   (Dashboard real-time)
 ## 10. Còn cần làm
 
 - [ ] **PDF Export** — implement `window.print()` hoặc `html2pdf.js` để xuất báo cáo đầy đủ (metrics + actions + ví dụ hội thoại)
+
+### Update 2026-03-28 — Chi Tiết Hội Thoại 2 Cột
+
+**Trạng thái:** ✅ Implementation Complete
+
+- Tab **Chi tiết** trong DiseaseCard giờ hiển thị wireframe 2 cột:
+  - Cột Trái (40%): Danh sách hội thoại với search + filter chips Nóng/Ấm/Lạnh + tags per conv
+  - Cột Phải (60%): Chi tiết — 3 tab:
+    - **Tin nhắn**: Chat bubbles customer/shop + stats bar
+    - **Đánh Giá**: AI evaluation cards (temperature, phone, junk, attitude, sentiment, pain point, objection, mistake, competitor)
+    - **Hành Động**: Severity cards (✓ Thành công / → Gợi ý / ⚠ Cảnh báo / ✗ Lỗi) + summary
+- Mock data: `mockConversationDetails.js` — 12–15 convs/nhóm bệnh, deterministic seed
+- Typography: đồng bộ `text-[12px]` name, `text-[11px]` preview/time, `text-[10px]` tags
+- Deploy: https://ai-insight-mockup.vercel.app/insight/medical-checkup
+
+### Update 2026-03-28 — Smax AI JSON Checklist (Prompt/API/UI)
+
+**Trạng thái:** ✅ Implementation Complete
+
+- **Mục tiêu:** thay rule-based gợi ý bằng Smax AI thật, trả kết quả JSON để render checklist action ngắn gọn
+- **API integration:**
+  - Endpoint upstream: `POST https://smaxai.cdp.vn/api/chat`
+  - Proxy nội bộ: `POST /api/smax-chat` (Vercel Serverless) để tránh CORS
+  - Cache: `localStorage` key `smax-rec-{industry}-{diseaseId}`, TTL 24h
+- **Prompt contract (JSON):**
+  - AI được yêu cầu trả đúng format:
+    ```json
+    {
+      "actions": [
+        {
+          "title": "Tiêu đề hành động",
+          "smax_feature": "Tên tính năng Smax",
+          "impact": "Tác động mong đợi",
+          "steps": ["Bước 1", "Bước 2", "Bước 3"]
+        }
+      ]
+    }
+    ```
+- **UI/UX changes:**
+  - Block **Gợi ý Smax** hiển thị checklist thuần (không còn tab Hành Động)
+  - Click từng action để mở chi tiết steps thực hiện
+  - Có lưu từng action (bookmark) và nút làm mới cache
+  - Tối giản hierarchy: bỏ lớp nhãn dư như “AI gợi ý..."
+- **Bug fixes:**
+  - Fix lỗi hiển thị raw bytes (`91,84,72...`) / raw JSON string trong UI
+  - Fix trạng thái treo `Đang xử lý...` do parse JSON không đầy đủ
+  - Fix CORS trên production thông qua proxy `/api/smax-chat`
+- **Files liên quan:**
+  - `src/lib/smaxAIService.js`
+  - `api/smax-chat.js`
+  - `src/components/medical/SmaxRecommendationsPanel.jsx`
+  - `src/components/medical/DiseaseItemLayout.jsx`
+  - `src/components/medical/MedicalResultStep.jsx`
+- **Deploy:** https://audit.cdp.vn/insight/medical-checkup
+- **Còn cần làm:** hoàn thiện PDF export cho block action checklist theo template báo cáo quản trị.
+
+### Update 2026-03-28 — Smax AI JSON Checklist (Prompt/API/UI)
+
+**Trạng thái:** ✅ Implementation Complete
+
+- **Mục tiêu:** thay rule-based gợi ý bằng Smax AI thật, trả kết quả JSON để render checklist action ngắn gọn
+- **API integration:**
+  - Endpoint upstream: `POST https://smaxai.cdp.vn/api/chat`
+  - Proxy nội bộ: `POST /api/smax-chat` (Vercel Serverless) để tránh CORS
+  - Cache: `localStorage` key `smax-rec-{industry}-{diseaseId}`, TTL 24h
+- **Prompt contract (JSON):**
+  - AI được yêu cầu trả đúng format:
+    ```json
+    {
+      "actions": [
+        {
+          "title": "Tiêu đề hành động",
+          "smax_feature": "Tên tính năng Smax",
+          "impact": "Tác động mong đợi",
+          "steps": ["Bước 1", "Bước 2", "Bước 3"]
+        }
+      ]
+    }
+    ```
+- **UI/UX changes:**
+  - Block **Gợi ý Smax** hiển thị checklist thuần (không còn tab Hành Động)
+  - Click từng action để mở chi tiết steps thực hiện
+  - Có lưu từng action (bookmark) và nút làm mới cache
+  - Tối giản hierarchy: bỏ lớp nhãn dư như “AI gợi ý..."
+- **Bug fixes:**
+  - Fix lỗi hiển thị raw bytes (`91,84,72...`) / raw JSON string trong UI
+  - Fix trạng thái treo `Đang xử lý...` do parse JSON không đầy đủ
+  - Fix CORS trên production thông qua proxy `/api/smax-chat`
+- **Files liên quan:**
+  - `src/lib/smaxAIService.js`
+  - `api/smax-chat.js`
+  - `src/components/medical/SmaxRecommendationsPanel.jsx`
+  - `src/components/medical/DiseaseItemLayout.jsx`
+  - `src/components/medical/MedicalResultStep.jsx`
+- **Deploy:** https://audit.cdp.vn/insight/medical-checkup
+- **Còn cần làm:** hoàn thiện PDF export cho block action checklist theo template báo cáo quản trị.
