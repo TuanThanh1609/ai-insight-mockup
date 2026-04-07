@@ -66,13 +66,13 @@ export default function InsightV3Page() {
         />
       )}
 
-      {/* InsightSlidePanel for Analysis */}
+      {/* InsightSlidePanel for Analysis — real data driven by activeInsightId */}
       <InsightSlidePanel
         isOpen={panelType === 'analysis'}
         onClose={() => setPanelType(null)}
         title="Phân Tích"
       >
-        <InsightAnalysisPanel />
+        <InsightAnalysisPanel activeInsightId={activeInsightId} />
       </InsightSlidePanel>
 
       {/* InsightSlidePanel for Interpretation */}
@@ -81,7 +81,7 @@ export default function InsightV3Page() {
         onClose={() => setPanelType(null)}
         title="Diễn Giải"
       >
-        <InsightInterpretationPanel />
+        <InsightInterpretationPanel activeInsightId={activeInsightId} />
       </InsightSlidePanel>
     </div>
   )
