@@ -12,6 +12,7 @@ import ImprovementRoadmapPage from './pages/ImprovementRoadmapPage';
 import OverviewDashboard from './pages/OverviewDashboard';
 import LandingPage from './pages/LandingPage';
 import OfficialPage from './pages/OfficialPage';
+import InsightV3Page from './pages/InsightV3Page';
 
 // ── Layout: TopNavBar full-width + Sidebar left + Content right ───────────────
 // TopNavBar: sticky at top (z-50)
@@ -64,6 +65,9 @@ export default function App() {
           } />
           <Route path="/insight/improvement-roadmap" element={
             <AppLayout><ImprovementRoadmapPage /></AppLayout>
+          } />
+          <Route path="/insight/ai-insight-v3" element={
+            <AppLayout><InsightV3Page /></AppLayout>
           } />
         </Routes>
       </BrowserRouter>
